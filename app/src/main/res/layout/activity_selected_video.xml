@@ -13,7 +13,7 @@
         android:layout_marginLeft="50dp"
         android:layout_marginRight="50dp"
         android:layout_marginTop="40dp"
-        android:layout_weight="0.4"
+        android:layout_weight="0.3"
         android:orientation="vertical">
 
         <VideoView
@@ -78,6 +78,7 @@
     </LinearLayout>
 
     <ListView
+        android:id="@+id/lv_tags"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="0.7"
