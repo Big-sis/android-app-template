@@ -7,4 +7,19 @@
     <string name="user_name">User Name</string>
     <string name="search">Rechercher</string>
     <string name="username">My Name</string>
+    <string name="connected">Connection</string>
+    <string name="email">Email</string>
+    <string name="password">Mot de passe</string>
+    <string name="lost_password">Mot de passe oublié ?</string>
+    <string name="connected_maj">SE CONNECTER</string>
+    <string name="infor_session">Information sur la session</string>
+    <string name="title_video">Titre de ma vidéo</string>
+    <string name="add_description">Ajouter une description</string>
+    <string name="my_analyse">Mes grilles d\'analyses</string>
+    <string name="title_grille">Titre de la grille</string>
+    <string name="add_moment">Ajouter un moment</string>
+    <string name="go">DEMARRER</string>
+    <string name="back">RETOUR</string>
+    <string name="share_url">Partagez l\'adresse URL à vos apprenants</string>
+    <string name="url">http://vyfe.co/live/356</string>
 </resources>
