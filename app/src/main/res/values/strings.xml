@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Vyfe</string>
+    <string name="settings">settings</string>
+    <string name="lancer_une_session">Lancer une session</string>
+    <string name="lancer_une_session_collaborative">Lancer une session collaborative</string>
+    <string name="mes_vid_os">Mes vidéos</string>
+    <string name="user_name">User Name</string>
 </resources>
