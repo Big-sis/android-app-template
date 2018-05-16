@@ -1,22 +1,15 @@
 <resources>
     <string name="app_name">Vyfe</string>
-    <string name="video_description">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-        Nullam fermentum leo sed nibh rhoncus ultrices. Praesent dictum tortor at tellus tincidunt placerat.
-        Vestibulum consequat tellus congue egestas blandit. Cras in orci vel felis congue tristique.
-        In id felis ut eros lobortis tincidunt non et mauris. Etiam ac enim a tortor bibendum suscipit.
-        Etiam nec tortor sed nisl bibendum porttitor. Aliquam non euismod est. Quisque vitae lectus vestibulum,
-        tincidunt ligula nec, blandit velit.</string>
-    <string name="titre_de_la_video">Titre de la video</string>
-    <string name="dossier">Dossier</string>
+    <string name="video_tittle">Titre de la vidéo</string>
+    <string name="video_info">Information sur la vidéo</string>
+    <string name="folder">Dossier</string>
     <string name="description">Description</string>
-    <string name="visionner">VISIONNER</string>
-    <string name="modifier">MODIFIER</string>
-    <string name="uploader">UPLOADER</string>
-    <string name="informations_sur_la_vid_o">Informations sur la vidéo</string>
-    <string name="titre_de_la_vid_o">Titre de la vidéo</string>
-    <string name="description_de_la_vid_o">Description de la vidéo</string>
-    <string name="supprimer">SUPPRIMER</string>
-    <string-array name="InfoVideo">
+    <string name="play_video">VISIONNER</string>
+    <string name="edit">MODIFIER</string>
+    <string name="upload">UPLOADER</string>
+    <string name="information">Informations sur la vidéo</string>
+    <string name="delete_video">SUPPRIMER</string>
+    <string-array name="select_folder">
         <item>Dossier 1</item>
         <item>Dossier 2</item>
         <item>Dossier 3</item>
