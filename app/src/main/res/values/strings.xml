@@ -1,3 +1,15 @@
 <resources>
     <string name="app_name">Vyfe</string>
+    <string name="video_description">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        Nullam fermentum leo sed nibh rhoncus ultrices. Praesent dictum tortor at tellus tincidunt placerat.
+        Vestibulum consequat tellus congue egestas blandit. Cras in orci vel felis congue tristique.
+        In id felis ut eros lobortis tincidunt non et mauris. Etiam ac enim a tortor bibendum suscipit.
+        Etiam nec tortor sed nisl bibendum porttitor. Aliquam non euismod est. Quisque vitae lectus vestibulum,
+        tincidunt ligula nec, blandit velit.</string>
+    <string-array name="InfoVideo">
+        <item>Dossier 1</item>
+        <item>Dossier 2</item>
+        <item>Dossier 3</item>
+    </string-array>
+
 </resources>
