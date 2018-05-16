@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Vyfe</string>
+    <string name="title_video">Titre de la vidéo</string>
 </resources>
