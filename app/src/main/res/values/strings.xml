@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Vyfe</string>
+    <string name="connected">Connection</string>
+    <string name="email">Email</string>
+    <string name="password">Mot de passe</string>
+    <string name="lost_password">Mot de passe oublié ?</string>
+    <string name="connected_maj">SE CONNECTER</string>
 </resources>
