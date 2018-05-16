@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Vyfe</string>
     <string name="video_tittle">Titre de la vidéo</string>
-    <string name="video_info">Information sur la vidéo</string>
+    <string name="video_info">Informations sur la vidéo</string>
     <string name="folder">Dossier</string>
     <string name="description">Description</string>
     <string name="play_video">VISIONNER</string>
