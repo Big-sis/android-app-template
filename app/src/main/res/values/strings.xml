@@ -15,7 +15,6 @@
     <string name="informations_sur_la_vid_o">Informations sur la vidéo</string>
     <string name="titre_de_la_vid_o">Titre de la vidéo</string>
     <string name="description_de_la_vid_o">Description de la vidéo</string>
-    <string name="modifier">MODIFIER</string>
     <string name="supprimer">SUPPRIMER</string>
     <string-array name="InfoVideo">
         <item>Dossier 1</item>
