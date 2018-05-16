@@ -3,7 +3,7 @@ package fr.wildcodeschool.vyfe;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class GOSESSION extends AppCompatActivity {
+public class GoSession extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

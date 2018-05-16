@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".GOSESSION">
+    tools:context=".GoSession">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,7 +24,7 @@
                 android:layout_marginLeft="32dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="32dp"
-                android:text="Information sur la session"
+                android:text="@string/infor_session"
                 android:textColor="@android:color/black"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -37,7 +37,7 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="8dp"
                 android:ems="10"
-                android:hint="Titre de ma vidéo"
+                android:hint="@string/title_video"
                 android:inputType="textPersonName"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_information" />
@@ -50,7 +50,7 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="8dp"
                 android:ems="10"
-                android:hint="Ajouter une description"
+                android:hint="@string/add_description"
                 android:inputType="textPersonName"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_video_title" />
@@ -80,7 +80,7 @@
                 android:layout_marginLeft="32dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="32dp"
-                android:text="Mes grilles d'analyses"
+                android:text="@string/my_analyse"
                 android:textColor="@android:color/black"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -103,7 +103,7 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="8dp"
                 android:ems="10"
-                android:hint="Titre de la grille"
+                android:hint="@string/title_grille"
                 android:inputType="textPersonName"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/spinner_new_grille" />
@@ -115,7 +115,7 @@
                 android:layout_marginLeft="32dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="8dp"
-                android:text="Mes grilles d'analyses"
+                android:text="@string/my_analyse"
                 android:textColor="@android:color/black"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_grille_title" />
@@ -137,7 +137,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
-                android:text="Ajouter un moment"
+                android:text="@string/add_moment"
                 android:textColor="@android:color/black"
                 app:layout_constraintStart_toEndOf="@+id/floatingActionButton_add_moment"
                 app:layout_constraintTop_toBottomOf="@+id/lv_my_analyse" />
@@ -154,6 +154,17 @@
                 android:src="@android:drawable/ic_menu_add"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/lv_my_analyse" />
+
+            <Button
+                android:id="@+id/button_go"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginRight="16dp"
+                android:text="@string/go"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
         </android.support.constraint.ConstraintLayout>
     </LinearLayout>
