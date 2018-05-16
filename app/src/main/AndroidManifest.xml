@@ -20,7 +20,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".MyVideoActivity"
+        <activity
+            android:name=".MyVideoActivity"
+            android:screenOrientation="landscape" />
+        <activity android:name=".ProfilActivity"
             android:screenOrientation="landscape"/>
     </application>
 
