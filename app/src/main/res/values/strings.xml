@@ -6,6 +6,17 @@
         In id felis ut eros lobortis tincidunt non et mauris. Etiam ac enim a tortor bibendum suscipit.
         Etiam nec tortor sed nisl bibendum porttitor. Aliquam non euismod est. Quisque vitae lectus vestibulum,
         tincidunt ligula nec, blandit velit.</string>
+    <string name="titre_de_la_video">Titre de la video</string>
+    <string name="dossier">Dossier</string>
+    <string name="description">Description</string>
+    <string name="visionner">VISIONNER</string>
+    <string name="modifier">MODIFIER</string>
+    <string name="uploader">UPLOADER</string>
+    <string name="informations_sur_la_vid_o">Informations sur la vidéo</string>
+    <string name="titre_de_la_vid_o">Titre de la vidéo</string>
+    <string name="description_de_la_vid_o">Description de la vidéo</string>
+    <string name="modifier">MODIFIER</string>
+    <string name="supprimer">SUPPRIMER</string>
     <string-array name="InfoVideo">
         <item>Dossier 1</item>
         <item>Dossier 2</item>

@@ -25,14 +25,14 @@
             android:id="@+id/tv_tittle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Titre de la video"
+            android:text="@string/titre_de_la_video"
             android:textSize="18sp" />
 
         <TextView
             android:id="@+id/tv_folder"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Dossier" />
+            android:text="@string/dossier" />
 
         <TextView
             android:id="@+id/tv_description"
@@ -40,7 +40,7 @@
             android:layout_height="72dp"
             android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
-            android:text="Description"
+            android:text="@string/description"
             android:textSize="12sp" />
 
         <LinearLayout
@@ -49,31 +49,31 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/bt_visionner"
+                android:id="@+id/bt_play"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_weight="0.33"
-                android:text="VISIONNER" />
+                android:text="@string/visionner" />
 
             <Button
-                android:id="@+id/bt_modifier"
+                android:id="@+id/bt_edit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_weight="0.33"
-                android:text="MODIFIER" />
+                android:text="@string/modifier" />
 
             <Button
-                android:id="@+id/bt_uploader"
+                android:id="@+id/bt_upload"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
                 android:layout_weight="0.33"
-                android:text="UPLOADER" />
+                android:text="@string/uploader" />
         </LinearLayout>
     </LinearLayout>
 

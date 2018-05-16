@@ -13,7 +13,7 @@
         android:layout_marginLeft="60dp"
         android:layout_marginStart="60dp"
         android:layout_marginTop="31dp"
-        android:text="Informations sur la vidéo"
+        android:text="@string/informations_sur_la_vid_o"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -26,7 +26,7 @@
         android:layout_marginStart="60dp"
         android:layout_marginTop="25dp"
         android:ems="10"
-        android:hint="Titre de la vidéo"
+        android:hint="@string/titre_de_la_vid_o"
         android:inputType="textPersonName"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_tittle" />
@@ -39,7 +39,7 @@
         android:layout_marginStart="60dp"
         android:layout_marginTop="25dp"
         android:ems="10"
-        android:hint="Description de la vidéo"
+        android:hint="@string/description_de_la_vid_o"
         android:inputType="textPersonName"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_video_tittle" />
@@ -52,19 +52,19 @@
         android:layout_marginLeft="60dp"
         android:layout_marginStart="60dp"
         android:layout_marginTop="25dp"
-        android:entries="@string/InfoVideo"
+        android:entries="@string/video_description"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_description" />
 
     <Button
-        android:id="@+id/bt_modifier"
+        android:id="@+id/bt_edit"
         android:layout_width="100dp"
         android:layout_height="40dp"
         android:layout_marginEnd="60dp"
         android:layout_marginRight="60dp"
         android:layout_marginTop="29dp"
-        android:text="MODIFIER"
+        android:text="@string/modifier"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -76,8 +76,8 @@
         android:layout_marginEnd="60dp"
         android:layout_marginRight="60dp"
         android:layout_marginTop="20dp"
-        android:text="SUPRIMER"
+        android:text="@string/supprimer"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/bt_modifier" />
+        app:layout_constraintTop_toBottomOf="@+id/bt_edit" />
 </android.support.constraint.ConstraintLayout>
