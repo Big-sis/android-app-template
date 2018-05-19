@@ -21,7 +21,7 @@
         app:srcCompat="@android:drawable/ic_menu_share" />
 
     <TextView
-        android:id="@+id/tv_url"
+        android:id="@+id/tv_share"
         android:layout_width="wrap_content"
         android:layout_height="19dp"
         android:layout_marginEnd="8dp"
@@ -36,7 +36,7 @@
         app:layout_constraintTop_toBottomOf="@+id/iv_share" />
 
     <TextView
-        android:id="@+id/tv_URL"
+        android:id="@+id/tv_url"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -51,7 +51,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_url" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_share" />
 
     <Button
         android:id="@+id/button_back"
@@ -62,7 +62,7 @@
         android:layout_marginTop="32dp"
         android:text="@string/back"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_URL" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_url" />
 
     <Button
         android:id="@+id/button_go"
@@ -73,5 +73,5 @@
         android:layout_marginTop="32dp"
         android:text="@string/go"
         app:layout_constraintStart_toEndOf="@+id/button_back"
-        app:layout_constraintTop_toBottomOf="@+id/tv_URL" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_url" />
 </android.support.constraint.ConstraintLayout>

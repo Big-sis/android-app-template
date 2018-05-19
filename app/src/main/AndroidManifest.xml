@@ -30,7 +30,7 @@
         <activity android:name=".ProfilActivity"
             android:screenOrientation="landscape"/>
         <activity
-            android:name=".GoSession"
+            android:name=".StartActivity"
             android:screenOrientation="landscape" />
         <activity android:name=".ShareUrl"
             android:screenOrientation="landscape"/>

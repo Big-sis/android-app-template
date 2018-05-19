@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".GoSession">
+    tools:context=".StartActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -86,7 +86,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
             <Spinner
-                android:id="@+id/spinner_new_grille"
+                android:id="@+id/spinner_new_grid"
                 android:layout_width="213dp"
                 android:layout_height="20dp"
                 android:layout_marginLeft="32dp"
@@ -96,7 +96,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_my_analyse" />
 
             <EditText
-                android:id="@+id/et_grille_title"
+                android:id="@+id/et_grid_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="32dp"
@@ -106,7 +106,7 @@
                 android:hint="@string/title_grille"
                 android:inputType="textPersonName"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/spinner_new_grille" />
+                app:layout_constraintTop_toBottomOf="@+id/spinner_new_grid" />
 
             <TextView
                 android:id="@+id/tv_analyse"
@@ -118,7 +118,7 @@
                 android:text="@string/my_analyse"
                 android:textColor="@android:color/black"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/et_grille_title" />
+                app:layout_constraintTop_toBottomOf="@+id/et_grid_title" />
 
             <ListView
                 android:id="@+id/lv_my_analyse"
@@ -139,11 +139,11 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/add_moment"
                 android:textColor="@android:color/black"
-                app:layout_constraintStart_toEndOf="@+id/floatingActionButton_add_moment"
+                app:layout_constraintStart_toEndOf="@+id/fab_add_moment"
                 app:layout_constraintTop_toBottomOf="@+id/lv_my_analyse" />
 
             <android.support.design.widget.FloatingActionButton
-                android:id="@+id/floatingActionButton_add_moment"
+                android:id="@+id/fab_add_moment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
 
