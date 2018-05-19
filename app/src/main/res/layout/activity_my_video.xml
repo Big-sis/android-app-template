@@ -40,7 +40,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
             android:layout_weight="1"
-            android:text="Category"
+            android:text="@string/category"
             app:layout_constraintTop_toBottomOf="@+id/search_video" />
     </LinearLayout>
 
