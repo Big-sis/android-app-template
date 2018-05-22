@@ -17,12 +17,15 @@ public class StartActivity extends AppCompatActivity {
         RecyclerView listItems = findViewById(R.id.list_items);
 
         final ArrayList<ObservationItemsModel> observationItemsModels = new ArrayList<>();
+        //insertion des observations a ajouter
         observationItemsModels.add(new ObservationItemsModel("Vert", "Se gratte la tête"));
-        observationItemsModels.add(new ObservationItemsModel("Bleu", "Mange Mathieu"));
+        observationItemsModels.add(new ObservationItemsModel("Bleu", "Silence"));
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         listItems.setLayoutManager(layoutManager);
 
         final ObservationsRecyclerAdapter adapter = new ObservationsRecyclerAdapter(observationItemsModels);
         listItems.setAdapter(adapter);
+
+
     }
 }
