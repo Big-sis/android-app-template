@@ -23,5 +23,6 @@
     <string name="share_url">Partagez l\'adresse URL à vos apprenants</string>
     <string name="url">http://vyfe.co/live/356</string>
     <string name="category">Category</string>
+    <string name ="nom_observation">Nom observation</string>
 
 </resources>
