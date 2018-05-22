@@ -21,13 +21,13 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".Record"
+            android:name=".RecordActivity"
             android:screenOrientation="landscape"/>
         <activity
-            android:name=".InfoVideo"
+            android:name=".InfoVideoActivity"
             android:screenOrientation="landscape"/>
         <activity
-            android:name=".SelectedVideo"
+            android:name=".SelectedVideoActivity"
             android:screenOrientation="landscape"></activity>
     </application>
 

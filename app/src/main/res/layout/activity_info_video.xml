@@ -7,7 +7,7 @@
     tools:context=".InfoVideo">
 
     <TextView
-        android:id="@+id/tv_tittle"
+        android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="60dp"
@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/et_video_tittle"
+        android:id="@+id/et_video_title"
         android:layout_width="350dp"
         android:layout_height="wrap_content"
         android:layout_marginLeft="60dp"
@@ -29,7 +29,7 @@
         android:hint="@string/video_tittle"
         android:inputType="textPersonName"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_tittle" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
     <EditText
         android:id="@+id/et_description"
@@ -42,7 +42,7 @@
         android:hint="@string/description"
         android:inputType="textPersonName"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_video_tittle" />
+        app:layout_constraintTop_toBottomOf="@+id/et_video_title" />
 
     <Spinner
         android:id="@+id/spin_folder"
@@ -69,7 +69,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/bt_suprimer"
+        android:id="@+id/bt_delete"
         android:layout_width="100dp"
         android:layout_height="40dp"
         android:layout_marginBottom="320dp"

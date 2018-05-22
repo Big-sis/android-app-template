@@ -3,7 +3,7 @@ package fr.wildcodeschool.vyfe;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class SelectedVideo extends AppCompatActivity {
+public class SelectedVideoActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
