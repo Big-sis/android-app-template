@@ -1,3 +1,18 @@
 <resources>
     <string name="app_name">Vyfe</string>
+    <string name="video_tittle">Titre de la vidéo</string>
+    <string name="video_info">Informations sur la vidéo</string>
+    <string name="folder">Dossier</string>
+    <string name="description">Description</string>
+    <string name="play_video">VISIONNER</string>
+    <string name="edit">MODIFIER</string>
+    <string name="upload">UPLOADER</string>
+    <string name="information">Informations sur la vidéo</string>
+    <string name="delete_video">SUPPRIMER</string>
+    <string-array name="select_folder">
+        <item>Dossier 1</item>
+        <item>Dossier 2</item>
+        <item>Dossier 3</item>
+    </string-array>
+
 </resources>
