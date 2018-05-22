@@ -120,15 +120,19 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_grid_title" />
 
-            <ListView
-                android:id="@+id/lv_my_analyse"
+
+
+            <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+
+                android:id="@+id/list_items"
                 android:layout_width="213dp"
                 android:layout_height="169dp"
+                android:scrollbars="vertical"
                 android:layout_marginLeft="32dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="8dp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_analyse" />
+                app:layout_constraintTop_toBottomOf="@+id/tv_analyse"/>
 
             <TextView
                 android:id="@+id/tv_add_moment"
@@ -140,20 +144,19 @@
                 android:text="@string/add_moment"
                 android:textColor="@android:color/black"
                 app:layout_constraintStart_toEndOf="@+id/fab_add_moment"
-                app:layout_constraintTop_toBottomOf="@+id/lv_my_analyse" />
+                app:layout_constraintTop_toBottomOf="@+id/list_items" />
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/fab_add_moment"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-
                 android:layout_marginLeft="32dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="8dp"
                 android:clickable="true"
                 android:src="@android:drawable/ic_menu_add"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/lv_my_analyse" />
+                app:layout_constraintTop_toBottomOf="@+id/list_items" />
 
             <Button
                 android:id="@+id/button_go"
