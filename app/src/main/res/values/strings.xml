@@ -39,5 +39,6 @@
     <string name="url">http://vyfe.co/live/356</string>
     <string name="category">Category</string>
     <string name ="nom_observation">Nom observation</string>
+    <string name="avatar">avatar</string>
 
 </resources>
