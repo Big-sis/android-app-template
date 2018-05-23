@@ -46,18 +46,55 @@
             app:layout_constraintStart_toStartOf="parent"
             tools:layout_editor_absoluteY="104dp">
 
-            <Button
+            <LinearLayout
                 android:id="@+id/btn_start_session"
                 android:layout_width="400dp"
                 android:layout_height="100dp"
-                android:layout_marginRight="32dp"
-                android:text="@string/start_session" />
+                android:layout_margin="5dp"
+                android:background="@android:color/holo_blue_light">
 
-            <Button
+                <ImageView
+                    android:id="@+id/logo_unique_session"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/settings"
+                    android:layout_gravity="center_vertical"
+                    android:paddingLeft="15dp"/>
+
+                <TextView
+                    android:id="@+id/name_unique_session"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:text="@string/start_session"
+                    android:textSize="20sp"
+                    android:layout_gravity="center_vertical"/>
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/btn_multi_session"
                 android:layout_width="400dp"
                 android:layout_height="100dp"
-                android:text="@string/start_multi_session" />
+                android:layout_margin="5dp"
+                android:background="@android:color/holo_green_light">
+
+                <ImageView
+                    android:id="@+id/logo_multi_session"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/settings"
+                    android:layout_gravity="center_vertical"
+                    android:paddingLeft="15dp"/>
+
+                <TextView
+                    android:id="@+id/name_multi_session"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:text="@string/start_multi_session"
+                    android:textSize="20sp"
+                    android:layout_gravity="center_vertical"/>
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -69,12 +106,30 @@
             app:layout_constraintStart_toStartOf="parent"
             tools:layout_editor_absoluteY="236dp">
 
-            <Button
+            <LinearLayout
                 android:id="@+id/btn_videos"
                 android:layout_width="400dp"
                 android:layout_height="100dp"
-                android:layout_marginRight="32dp"
-                android:text="@string/my_videos" />
+                android:layout_margin="5dp"
+                android:background="@android:color/holo_orange_light">
+
+                <ImageView
+                    android:id="@+id/logo_videos"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:src="@drawable/settings"
+                    android:layout_gravity="center_vertical"
+                    android:paddingLeft="15dp"/>
+
+                <TextView
+                    android:id="@+id/name_videos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:text="@string/my_videos"
+                    android:textSize="20sp"
+                    android:layout_gravity="center_vertical"/>
+            </LinearLayout>
 
         </LinearLayout>
     </LinearLayout>
