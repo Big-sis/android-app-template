@@ -19,7 +19,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".RecordActivity"
@@ -29,9 +28,8 @@
             android:screenOrientation="landscape"/>
         <activity
             android:name=".SelectedVideoActivity"
-            android:screenOrientation="landscape">
+            android:screenOrientation="landscape"/>
 
-        </activity>
         <activity
             android:name=".ConnexionActivity"
             android:screenOrientation="landscape"/>
@@ -39,14 +37,16 @@
         <activity
             android:name=".MyVideoActivity"
             android:screenOrientation="landscape" />
+      
         <activity android:name=".ProfilActivity"
             android:screenOrientation="landscape"/>
+      
         <activity
             android:name=".StartActivity"
             android:screenOrientation="landscape" >
-
         </activity>
-        <activity android:name=".ShareUrlActivity"
+        
+      <activity android:name=".ShareUrlActivity"
             android:screenOrientation="landscape"/>
     </application>
 
