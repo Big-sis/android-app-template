@@ -14,7 +14,7 @@ public class StartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
-        RecyclerView listItems = findViewById(R.id.list_items);
+        RecyclerView listItems = findViewById(R.id.recycler_view);
 
         final ArrayList<ObservationItemsModel> observationItemsModels = new ArrayList<>();
         //insertion des observations a ajouter

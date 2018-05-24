@@ -23,7 +23,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="32dp"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:text="@string/my_analyse"
                 android:textColor="@android:color/black"
                 app:layout_constraintStart_toStartOf="parent"
@@ -47,7 +47,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="32dp"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:ems="10"
                 android:hint="@string/title_video"
                 android:inputType="textPersonName"
@@ -60,7 +60,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="32dp"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_my_analyse" />
 
@@ -78,7 +78,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="32dp"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:ems="10"
                 android:hint="@string/title_grille"
                 android:inputType="textPersonName"
@@ -90,7 +90,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:layout_marginTop="32dp"
-                android:text="Nouvelle grille d'analyse"
+                android:text="@string/new_grid"
                 android:textColor="@android:color/black"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:layout_editor_absoluteX="43dp" />
@@ -98,12 +98,12 @@
 
             <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
 
-                android:id="@+id/list_items"
+                android:id="@+id/recycler_view"
                 android:layout_width="213dp"
                 android:layout_height="169dp"
                 android:layout_marginLeft="32dp"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:scrollbars="vertical"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_grid_title" />
@@ -115,10 +115,10 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
-                android:text="@string/add_moment"
+                android:text="@string/add_evenement"
                 android:textColor="@android:color/black"
                 app:layout_constraintStart_toEndOf="@+id/fab_add_moment"
-                app:layout_constraintTop_toBottomOf="@+id/list_items" />
+                app:layout_constraintTop_toBottomOf="@+id/recycler_view" />
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/fab_add_moment"
@@ -130,7 +130,7 @@
                 android:clickable="true"
                 android:src="@android:drawable/ic_menu_add"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/list_items" />
+                app:layout_constraintTop_toBottomOf="@+id/recycler_view" />
 
             <Button
                 android:id="@+id/button_go"
