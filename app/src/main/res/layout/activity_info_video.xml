@@ -4,7 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".InfoVideo">
+    tools:context=".InfoVideoActivity">
+
+    <include
+        layout="@layout/toolbar"
+        android:id="@+id/appBar"/>
 
     <TextView
         android:id="@+id/tv_title"
@@ -12,7 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="60dp"
         android:layout_marginStart="60dp"
-        android:layout_marginTop="31dp"
+        android:layout_marginTop="100dp"
         android:text="@string/video_info"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -63,7 +67,7 @@
         android:layout_height="40dp"
         android:layout_marginEnd="60dp"
         android:layout_marginRight="60dp"
-        android:layout_marginTop="29dp"
+        android:layout_marginTop="100dp"
         android:text="@string/edit"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
