@@ -36,17 +36,20 @@
             android:screenOrientation="landscape" />
         <activity
             android:name=".StartActivity"
-            android:screenOrientation="landscape"></activity>
-        <activity
-            android:name=".ShareUrlActivity"
-            android:screenOrientation="landscape" />
-        <activity android:name=".AddGridActivity"
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".ShareUrlActivity"
+            android:screenOrientation="landscape" />
+        <activity android:name=".AddGridActivity"
+            android:screenOrientation="landscape"
+            android:theme="@style/AppEvent">
+
         </activity>
     </application>
 

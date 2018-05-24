@@ -26,6 +26,10 @@ public class AddGridActivity extends AppCompatActivity {
         final EditText etName = findViewById(R.id.et_name);
         final ImageView ivColor = findViewById(R.id.iv_color);
 
+        final RecyclerView listItems = findViewById(R.id.recycler_view);
+
+        final ArrayList<ObservationItemsModel> observationItemsModels = new ArrayList<>();
+
         Button btnChooseColor = findViewById(R.id.btn_chosse_color);
         btnChooseColor.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,9 +56,7 @@ public class AddGridActivity extends AppCompatActivity {
                 String valueName = etName.getText().toString();
                 ObservationItemsModel observationItemsModel = new ObservationItemsModel(finalcolor, valueName);
 
-                RecyclerView listItems = findViewById(R.id.recycler_view);
 
-                final ArrayList<ObservationItemsModel> observationItemsModels = new ArrayList<>();
 
                 observationItemsModels.add(observationItemsModel);
                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(AddGridActivity.this, LinearLayoutManager.VERTICAL, false);
