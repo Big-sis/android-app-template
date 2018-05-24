@@ -41,5 +41,6 @@
     <string name="nom_observation">Nom observation</string>
     <string name="avatar">avatar</string>
     <string name="new_grid">Nouvelle grille d\'analyse</string>
+    <string name="choose_color">Choisir votre couleur</string>
 
 </resources>

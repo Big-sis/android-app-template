@@ -68,7 +68,7 @@ public class AddGridActivity extends AppCompatActivity {
         colorPicker.setColors(colors)
                 .setColumns(5)
                 .setRoundColorButton(true)
-                .setTitle("Choisir votre couleur")
+                .setTitle(getString(R.string.choose_color))
                 .setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
                     @Override
                     public void onChooseColor(int position, int color) {
