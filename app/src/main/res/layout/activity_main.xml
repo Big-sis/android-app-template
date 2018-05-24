@@ -6,15 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <include
+        layout="@layout/toolbar"
+        android:id="@+id/appBar"/>
+
     <ImageView
         android:id="@+id/img_avatar"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginLeft="50dp"
         android:layout_marginStart="50dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="100dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/appBar"
         app:srcCompat="@android:color/darker_gray" />
 
     <TextView
@@ -23,20 +27,21 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="42dp"
+        android:layout_marginTop="110dp"
         android:text="@string/user_name"
         app:layout_constraintStart_toEndOf="@+id/img_avatar"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/appBar" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="52dp"
+        android:layout_marginTop="8dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/img_avatar">
 
         <LinearLayout
             android:id="@+id/line1"
@@ -57,18 +62,18 @@
                     android:id="@+id/logo_unique_session"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:src="@drawable/settings"
                     android:layout_gravity="center_vertical"
-                    android:paddingLeft="15dp"/>
+                    android:paddingLeft="15dp"
+                    android:src="@drawable/settings" />
 
                 <TextView
                     android:id="@+id/name_unique_session"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:layout_marginLeft="16dp"
                     android:text="@string/start_session"
-                    android:textSize="20sp"
-                    android:layout_gravity="center_vertical"/>
+                    android:textSize="20sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -82,18 +87,18 @@
                     android:id="@+id/logo_multi_session"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:src="@drawable/settings"
                     android:layout_gravity="center_vertical"
-                    android:paddingLeft="15dp"/>
+                    android:paddingLeft="15dp"
+                    android:src="@drawable/settings" />
 
                 <TextView
                     android:id="@+id/name_multi_session"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:layout_marginLeft="16dp"
                     android:text="@string/start_multi_session"
-                    android:textSize="20sp"
-                    android:layout_gravity="center_vertical"/>
+                    android:textSize="20sp" />
             </LinearLayout>
 
         </LinearLayout>
@@ -117,18 +122,18 @@
                     android:id="@+id/logo_videos"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
-                    android:src="@drawable/settings"
                     android:layout_gravity="center_vertical"
-                    android:paddingLeft="15dp"/>
+                    android:paddingLeft="15dp"
+                    android:src="@drawable/settings" />
 
                 <TextView
                     android:id="@+id/name_videos"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:layout_marginLeft="16dp"
                     android:text="@string/my_videos"
-                    android:textSize="20sp"
-                    android:layout_gravity="center_vertical"/>
+                    android:textSize="20sp" />
             </LinearLayout>
 
         </LinearLayout>

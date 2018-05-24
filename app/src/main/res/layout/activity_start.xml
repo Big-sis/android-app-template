@@ -6,10 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".StartActivity">
 
+    <include
+        layout="@layout/toolbar"
+        android:id="@+id/appBar"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:layout_marginTop="70dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent">
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/linear_layout_left"
@@ -121,18 +127,17 @@
                 app:layout_constraintTop_toBottomOf="@+id/et_grid_title" />
 
 
-
             <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
 
                 android:id="@+id/list_items"
                 android:layout_width="213dp"
                 android:layout_height="169dp"
-                android:scrollbars="vertical"
                 android:layout_marginLeft="32dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="8dp"
+                android:scrollbars="vertical"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_analyse"/>
+                app:layout_constraintTop_toBottomOf="@+id/tv_analyse" />
 
             <TextView
                 android:id="@+id/tv_add_moment"
