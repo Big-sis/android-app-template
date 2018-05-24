@@ -4,12 +4,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Record">
+    tools:context=".RecordActivity">
+
+    <include
+        android:id="@+id/appBar"
+        layout="@layout/toolbar"
+        tools:layout_editor_absoluteX="142dp"
+        tools:layout_editor_absoluteY="0dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
+        android:layout_marginTop="65dp"
+        android:orientation="horizontal"
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
