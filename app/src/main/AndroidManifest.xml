@@ -14,11 +14,7 @@
         <activity
             android:name=".MainActivity"
             android:screenOrientation="landscape">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".RecordActivity"
@@ -44,7 +40,14 @@
         <activity
             android:name=".ShareUrlActivity"
             android:screenOrientation="landscape" />
-        <activity android:name=".AddGridActivity"></activity>
+        <activity android:name=".AddGridActivity"
+            android:screenOrientation="landscape">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>
