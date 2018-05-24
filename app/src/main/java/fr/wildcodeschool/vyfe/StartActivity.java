@@ -18,8 +18,8 @@ public class StartActivity extends AppCompatActivity {
 
         final ArrayList<ObservationItemsModel> observationItemsModels = new ArrayList<>();
         //insertion des observations a ajouter
-        observationItemsModels.add(new ObservationItemsModel("Vert", "Se gratte la tête"));
-        observationItemsModels.add(new ObservationItemsModel("Bleu", "Silence"));
+        observationItemsModels.add(new ObservationItemsModel(0, "Se gratte la tête"));
+        observationItemsModels.add(new ObservationItemsModel(0, "Silence"));
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         listItems.setLayoutManager(layoutManager);
 

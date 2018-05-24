@@ -1,19 +1,19 @@
 package fr.wildcodeschool.vyfe;
 
 public class ObservationItemsModel {
-    private String color;
+    private int color;
     private String name;
 
-    public ObservationItemsModel(String color, String name) {
+    public ObservationItemsModel(int color, String name) {
         this.color = color;
         this.name = name;
     }
 
-    public String getColor() {
+    public int getColor() {
         return color;
     }
 
-    public void setColor(String color) {
+    public void setColor(int color) {
         this.color = color;
     }
 

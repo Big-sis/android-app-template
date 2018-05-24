@@ -15,14 +15,21 @@
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="8dp">
 
+        <ImageView
+            android:id="@+id/iv_color"
+            android:layout_width="20dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@android:color/darker_gray" />
+
         <EditText
             android:id="@+id/et_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
+            android:hint="Nom"
             android:inputType="textPersonName"
-            android:text="Nom"
             tools:layout_editor_absoluteX="116dp"
             tools:layout_editor_absoluteY="58dp" />
 
