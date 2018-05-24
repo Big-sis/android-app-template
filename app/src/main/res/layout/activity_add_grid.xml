@@ -28,7 +28,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:ems="10"
-            android:hint="Nom"
+            android:hint="@string/name"
             android:inputType="textPersonName"
             tools:layout_editor_absoluteX="116dp"
             tools:layout_editor_absoluteY="58dp" />
@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Couleur"
+            android:text="@string/color"
             tools:layout_editor_absoluteX="363dp"
             tools:layout_editor_absoluteY="79dp" />
 
@@ -47,7 +47,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Choisir"
+            android:text="@string/choose"
             tools:layout_editor_absoluteX="449dp"
             tools:layout_editor_absoluteY="50dp" />
 
@@ -56,7 +56,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Aléatoire"
+            android:text="@string/aleatory"
             tools:layout_editor_absoluteX="586dp"
             tools:layout_editor_absoluteY="50dp" />
 
@@ -65,7 +65,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Ajouter"
+            android:text="@string/add"
             tools:layout_editor_absoluteX="717dp"
             tools:layout_editor_absoluteY="50dp" />
     </LinearLayout>

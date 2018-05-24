@@ -42,5 +42,10 @@
     <string name="avatar">avatar</string>
     <string name="new_grid">Nouvelle grille d\'analyse</string>
     <string name="choose_color">Choisir votre couleur</string>
+    <string name="name">Nom</string>
+    <string name="color">Couleur</string>
+    <string name="choose">Choisir</string>
+    <string name="aleatory">Aléatoire</string>
+    <string name="add">Ajouter</string>
 
 </resources>

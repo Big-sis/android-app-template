@@ -17,7 +17,8 @@ import java.util.Random;
 import petrov.kristiyan.colorpicker.ColorPicker;
 
 public class AddGridActivity extends AppCompatActivity {
-int finalcolor;
+    int finalcolor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,7 +50,7 @@ int finalcolor;
             @Override
             public void onClick(View view) {
                 String valueName = etName.getText().toString();
-                ObservationItemsModel observationItemsModel = new ObservationItemsModel(finalcolor,valueName);
+                ObservationItemsModel observationItemsModel = new ObservationItemsModel(finalcolor, valueName);
 
                 RecyclerView listItems = findViewById(R.id.recycler_view);
 
@@ -96,10 +97,9 @@ int finalcolor;
                 .setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
                     @Override
                     public void onChooseColor(int position, int color) {
-                        EditText etName = findViewById(R.id.et_name);
                         ImageView ivColor = findViewById(R.id.iv_color);
                         ivColor.setBackgroundColor(color);
-                        finalcolor =color;
+                        finalcolor = color;
 
                     }
 
