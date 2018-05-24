@@ -20,14 +20,14 @@ public class ObservationsRecyclerAdapter extends RecyclerView.Adapter<Observatio
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView  tvName;
+        TextView tvName;
         ImageView ivColor;
 
         public ViewHolder(View v) {
             super(v);
             // rajouter la couleur
             this.tvName = v.findViewById(R.id.tv_name);
-            this.ivColor =v.findViewById(R.id.iv_color);
+            this.ivColor = v.findViewById(R.id.iv_color);
         }
     }
 
