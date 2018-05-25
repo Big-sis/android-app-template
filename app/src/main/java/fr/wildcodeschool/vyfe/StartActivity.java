@@ -32,6 +32,12 @@ public class StartActivity extends AppCompatActivity {
         }
 
 
+        mObservationItemsModels = getIntent().getExtras().getParcelableArrayList("list");
+        RecyclerView listItems = findViewById(R.id.recycler_view);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        listItems.setLayoutManager(layoutManager);
+        final ObservationsRecyclerAdapter adapter = new ObservationsRecyclerAdapter(mObservationItemsModels, "start");
+        listItems.setAdapter(adapter);
 
         FloatingActionButton fabAddMoment = findViewById(R.id.fab_add_moment);
         fabAddMoment.setOnClickListener(new View.OnClickListener() {
