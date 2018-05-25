@@ -24,8 +24,15 @@
             android:screenOrientation="landscape" />
         <activity
             android:name=".SelectedVideoActivity"
-            android:screenOrientation="landscape" />
-        <activity
+            android:screenOrientation="landscape" >
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+    </activity>
+
+    <activity
             android:name=".ConnexionActivity"
             android:screenOrientation="landscape" />
         <activity

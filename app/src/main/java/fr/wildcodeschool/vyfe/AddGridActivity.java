@@ -125,6 +125,7 @@ public class AddGridActivity extends AppCompatActivity {
                         ivColor.setBackgroundColor(color);
                         finalcolor = color;
 
+
                     }
 
                     @Override
