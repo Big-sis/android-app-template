@@ -29,9 +29,10 @@ public class RecordActivity extends AppCompatActivity {
         recyclerTags.setLayoutManager(layoutManagerTags);
         recyclerTime.setLayoutManager(layoutManagerTime);
 
-        final ObservationsRecyclerAdapter adapter = new ObservationsRecyclerAdapter(mObservationItemsModels);
-        recyclerTags.setAdapter(adapter);
-        recyclerTime.setAdapter(adapter);
+        final ObservationsRecyclerAdapter adapterTags = new ObservationsRecyclerAdapter(mObservationItemsModels, "record");
+        final ObservationsRecyclerAdapter adapterTime = new ObservationsRecyclerAdapter(mObservationItemsModels, "timelines");
+        recyclerTags.setAdapter(adapterTags);
+        recyclerTime.setAdapter(adapterTime);
 
 
         FloatingActionButton btFinish = findViewById(R.id.bt_finish);
