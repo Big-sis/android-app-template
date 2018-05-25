@@ -73,10 +73,10 @@ public class ObservationsRecyclerAdapter extends RecyclerView.Adapter<Observatio
         }
         else if (mFrom.equals("count")) {
             holder.tvNum.setVisibility(View.VISIBLE);
-            holder.tvNum.setText("10");
             holder.bar.setVisibility(View.GONE);
             holder.btnDelete.setVisibility(View.GONE);
-
+            // Pour tester :
+            holder.tvNum.setText("10");
         }
     }
 
