@@ -30,7 +30,5 @@ public class RecordActivity extends AppCompatActivity {
         recyclerTags.setAdapter(adapter);
         recyclerTime.setAdapter(adapter);
 
-
-
     }
 }
