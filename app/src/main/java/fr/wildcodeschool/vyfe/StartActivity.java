@@ -23,21 +23,14 @@ public class StartActivity extends AppCompatActivity {
 
         if (AddGridActivity.mAddEvent) {
             recyclerView.setVisibility(View.VISIBLE);
-            mobservationItemsModels = getIntent().getExtras().getParcelableArrayList("list");
+            mObservationItemsModels = getIntent().getExtras().getParcelableArrayList("list");
             RecyclerView listItems = findViewById(R.id.recycler_view);
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
             listItems.setLayoutManager(layoutManager);
-            final ObservationsRecyclerAdapter adapter = new ObservationsRecyclerAdapter(mobservationItemsModels);
+            final ObservationsRecyclerAdapter adapter = new ObservationsRecyclerAdapter(mObservationItemsModels, "start");
             listItems.setAdapter(adapter);
         }
 
-
-        mObservationItemsModels = getIntent().getExtras().getParcelableArrayList("list");
-        RecyclerView listItems = findViewById(R.id.recycler_view);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        listItems.setLayoutManager(layoutManager);
-        final ObservationsRecyclerAdapter adapter = new ObservationsRecyclerAdapter(mObservationItemsModels, "start");
-        listItems.setAdapter(adapter);
 
         FloatingActionButton fabAddMoment = findViewById(R.id.fab_add_moment);
         fabAddMoment.setOnClickListener(new View.OnClickListener() {

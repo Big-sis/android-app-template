@@ -37,7 +37,6 @@ public class ObservationsRecyclerAdapter extends RecyclerView.Adapter<Observatio
             // rajouter la couleur
             this.tvName = v.findViewById(R.id.tv_name);
             this.ivColor = v.findViewById(R.id.iv_color);
-
             this.btnDelete = v.findViewById(R.id.btn_delete);
             this.tvNum = v.findViewById(R.id.tv_num);
             this.bar = v.findViewById(R.id.progressBar);

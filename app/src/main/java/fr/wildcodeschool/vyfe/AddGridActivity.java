@@ -61,14 +61,12 @@ public class AddGridActivity extends AppCompatActivity {
                 } else {
                     mAddEvent = true;
 
-
                     ObservationItemsModel observationItemsModel = new ObservationItemsModel(finalcolor, valueName);
                     observationItemsModels.add(observationItemsModel);
                     RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(AddGridActivity.this, LinearLayoutManager.VERTICAL, false);
                     listItems.setLayoutManager(layoutManager);
                     final ObservationsRecyclerAdapter adapter = new ObservationsRecyclerAdapter(observationItemsModels, "start");
                     listItems.setAdapter(adapter);
-
                     finalcolor = 0;
                     etName.setText("");
                     ivColor.setBackgroundColor(Color.parseColor("#ffaaaaaa"));
