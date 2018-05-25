@@ -47,5 +47,9 @@
     <string name="choose">Choisir</string>
     <string name="aleatory">Aléatoire</string>
     <string name="add">Ajouter</string>
+    <string name="end">Fin</string>
+    <string name="name_event">Nom de l\'évènement</string>
+    <string name="color_event">Couleur de l\'évènement</string>
+    <string name="def_colot">Définissez un nom et une couleur à l\'évènement</string>
 
 </resources>

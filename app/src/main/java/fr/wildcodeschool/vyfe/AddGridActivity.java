@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -19,6 +20,7 @@ import petrov.kristiyan.colorpicker.ColorPicker;
 
 public class AddGridActivity extends AppCompatActivity {
     int finalcolor;
+    static boolean mAddEvent = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,16 +56,24 @@ public class AddGridActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String valueName = etName.getText().toString();
-                ObservationItemsModel observationItemsModel = new ObservationItemsModel(finalcolor, valueName);
+                if (valueName.equals("") || finalcolor == 0) {
+                    Toast.makeText(AddGridActivity.this, R.string.def_colot, Toast.LENGTH_SHORT).show();
+                } else {
+                    mAddEvent = true;
+
+                    ObservationItemsModel observationItemsModel = new ObservationItemsModel(finalcolor, valueName);
+                    observationItemsModels.add(observationItemsModel);
+                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(AddGridActivity.this, LinearLayoutManager.VERTICAL, false);
+                    listItems.setLayoutManager(layoutManager);
+                    final ObservationsRecyclerAdapter adapter = new ObservationsRecyclerAdapter(observationItemsModels);
+                    listItems.setAdapter(adapter);
+
+                    finalcolor = 0;
+                    etName.setText("");
+                    ivColor.setBackgroundColor(Color.parseColor("#ffaaaaaa"));
+                }
 
 
-
-                observationItemsModels.add(observationItemsModel);
-                RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(AddGridActivity.this, LinearLayoutManager.VERTICAL, false);
-                listItems.setLayoutManager(layoutManager);
-
-                final ObservationsRecyclerAdapter adapter = new ObservationsRecyclerAdapter(observationItemsModels);
-                listItems.setAdapter(adapter);
             }
         });
 
@@ -76,7 +86,6 @@ public class AddGridActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
 
 
     }
