@@ -56,13 +56,11 @@ public class AddGridActivity extends AppCompatActivity {
                 String valueName = etName.getText().toString();
                 ObservationItemsModel observationItemsModel = new ObservationItemsModel(finalcolor, valueName);
 
-
-
                 observationItemsModels.add(observationItemsModel);
                 RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(AddGridActivity.this, LinearLayoutManager.VERTICAL, false);
                 listItems.setLayoutManager(layoutManager);
 
-                final ObservationsRecyclerAdapter adapter = new ObservationsRecyclerAdapter(observationItemsModels);
+                final ObservationsRecyclerAdapter adapter = new ObservationsRecyclerAdapter(observationItemsModels, "start");
                 listItems.setAdapter(adapter);
             }
         });
