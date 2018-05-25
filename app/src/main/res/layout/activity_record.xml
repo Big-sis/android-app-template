@@ -8,9 +8,7 @@
 
     <include
         android:id="@+id/appBar"
-        layout="@layout/toolbar"
-        tools:layout_editor_absoluteX="142dp"
-        tools:layout_editor_absoluteY="0dp" />
+        layout="@layout/toolbar" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -22,7 +20,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="0.3"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <android.support.constraint.ConstraintLayout
@@ -74,11 +72,12 @@
 
         </LinearLayout>
 
-        <ListView
-            android:id="@+id/lv_tags"
+        <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/list_tags"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="0.7"
+            android:layout_weight="0"
             android:padding="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
