@@ -9,22 +9,33 @@ import java.util.ArrayList;
 
 public class RecordActivity extends AppCompatActivity {
 
+    ArrayList<ObservationItemsModel> mobservationItemsModels = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
 
-        RecyclerView recycler = findViewById(R.id.list_tags);
+        RecyclerView recyclerTags = findViewById(R.id.re_tags);
+        RecyclerView recyclerTime = findViewById(R.id.re_time_lines);
 
-        final ArrayList<ObservationItemsModel> tagsList = new ArrayList<>();
+        mobservationItemsModels = getIntent().getExtras().getParcelableArrayList("list");
+
+
+
         //insertion des observations a ajouter
+        /*final ArrayList<ObservationItemsModel> tagsList = new ArrayList<>();
         tagsList.add(new ObservationItemsModel(0, "Se gratte la tête"));
-        tagsList.add(new ObservationItemsModel(0, "Silence"));
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        recycler.setLayoutManager(layoutManager);
+        tagsList.add(new ObservationItemsModel(0, "Silence"));*/
 
-        final ObservationsRecyclerAdapter adapter = new ObservationsRecyclerAdapter(tagsList);
-        recycler.setAdapter(adapter);
+        RecyclerView.LayoutManager layoutManagerTags = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        RecyclerView.LayoutManager layoutManagerTime = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        recyclerTags.setLayoutManager(layoutManagerTags);
+        recyclerTime.setLayoutManager(layoutManagerTime);
+
+        final ObservationsRecyclerAdapter adapter = new ObservationsRecyclerAdapter(mobservationItemsModels);
+        recyclerTags.setAdapter(adapter);
+        recyclerTime.setAdapter(adapter);
 
 
 

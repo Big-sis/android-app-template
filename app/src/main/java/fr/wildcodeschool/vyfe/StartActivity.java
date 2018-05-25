@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.GridView;
 
 import java.util.ArrayList;
@@ -36,6 +37,17 @@ public class StartActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(StartActivity.this, AddGridActivity.class);
                 startActivity(intent);
+            }
+        });
+
+
+        Button buttonGo = findViewById(R.id.button_go);
+        buttonGo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent toRecord = new Intent(StartActivity.this, RecordActivity.class);
+                toRecord.putParcelableArrayListExtra("list", mobservationItemsModels);
+                startActivity(toRecord);
             }
         });
 
