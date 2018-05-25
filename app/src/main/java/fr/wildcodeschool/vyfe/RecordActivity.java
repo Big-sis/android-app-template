@@ -14,17 +14,17 @@ public class RecordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
 
-        RecyclerView listItems = findViewById(R.id.list_tags);
+        RecyclerView recycler = findViewById(R.id.list_tags);
 
         final ArrayList<ObservationItemsModel> tagsList = new ArrayList<>();
         //insertion des observations a ajouter
         tagsList.add(new ObservationItemsModel(0, "Se gratte la tête"));
         tagsList.add(new ObservationItemsModel(0, "Silence"));
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        listItems.setLayoutManager(layoutManager);
+        recycler.setLayoutManager(layoutManager);
 
         final ObservationsRecyclerAdapter adapter = new ObservationsRecyclerAdapter(tagsList);
-        listItems.setAdapter(adapter);
+        recycler.setAdapter(adapter);
 
 
 
