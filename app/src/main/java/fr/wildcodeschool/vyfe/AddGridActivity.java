@@ -1,5 +1,6 @@
 package fr.wildcodeschool.vyfe;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,7 +28,6 @@ public class AddGridActivity extends AppCompatActivity {
         final ImageView ivColor = findViewById(R.id.iv_color);
 
         final RecyclerView listItems = findViewById(R.id.recycler_view);
-
         final ArrayList<ObservationItemsModel> observationItemsModels = new ArrayList<>();
 
         Button btnChooseColor = findViewById(R.id.btn_chosse_color);
@@ -66,6 +66,19 @@ public class AddGridActivity extends AppCompatActivity {
                 listItems.setAdapter(adapter);
             }
         });
+
+        Button btnEnd = findViewById(R.id.btn_end);
+        btnEnd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(AddGridActivity.this, StartActivity.class);
+                intent.putParcelableArrayListExtra("list", observationItemsModels);
+                startActivity(intent);
+            }
+        });
+
+
+
     }
 
     public void openColorChoose() {

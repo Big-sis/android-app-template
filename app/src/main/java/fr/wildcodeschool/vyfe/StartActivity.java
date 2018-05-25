@@ -7,27 +7,28 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.GridView;
 
 import java.util.ArrayList;
 
 public class StartActivity extends AppCompatActivity {
+    ArrayList<ObservationItemsModel> mobservationItemsModels = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
+        mobservationItemsModels = getIntent().getExtras().getParcelableArrayList("list");
         RecyclerView listItems = findViewById(R.id.recycler_view);
-
-        final ArrayList<ObservationItemsModel> observationItemsModels = new ArrayList<>();
-        //insertion des observations a ajouter
-        observationItemsModels.add(new ObservationItemsModel(0, "Se gratte la tête"));
-        observationItemsModels.add(new ObservationItemsModel(0, "Silence"));
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         listItems.setLayoutManager(layoutManager);
-
-        final ObservationsRecyclerAdapter adapter = new ObservationsRecyclerAdapter(observationItemsModels);
+        final ObservationsRecyclerAdapter adapter = new ObservationsRecyclerAdapter(mobservationItemsModels);
         listItems.setAdapter(adapter);
+
+
+
+
 
         FloatingActionButton fabAddMoment = findViewById(R.id.fab_add_moment);
         fabAddMoment.setOnClickListener(new View.OnClickListener() {
@@ -37,6 +38,8 @@ public class StartActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
 
 
     }
