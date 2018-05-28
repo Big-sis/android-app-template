@@ -18,13 +18,19 @@ public class StartActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
+        RecyclerView recyclerView = findViewById(R.id.recycler_view);
 
-        mObservationItemsModels = getIntent().getExtras().getParcelableArrayList("list");
-        RecyclerView listItems = findViewById(R.id.recycler_view);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        listItems.setLayoutManager(layoutManager);
-        final ObservationsRecyclerAdapter adapter = new ObservationsRecyclerAdapter(mObservationItemsModels, "start");
-        listItems.setAdapter(adapter);
+
+        if (AddGridActivity.mAddEvent) {
+            recyclerView.setVisibility(View.VISIBLE);
+            mObservationItemsModels = getIntent().getExtras().getParcelableArrayList("list");
+            RecyclerView listItems = findViewById(R.id.recycler_view);
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+            listItems.setLayoutManager(layoutManager);
+            final ObservationsRecyclerAdapter adapter = new ObservationsRecyclerAdapter(mObservationItemsModels, "start");
+            listItems.setAdapter(adapter);
+        }
+
 
         FloatingActionButton fabAddMoment = findViewById(R.id.fab_add_moment);
         fabAddMoment.setOnClickListener(new View.OnClickListener() {
@@ -44,8 +50,6 @@ public class StartActivity extends AppCompatActivity {
                 startActivity(toRecord);
             }
         });
-
-
 
 
     }

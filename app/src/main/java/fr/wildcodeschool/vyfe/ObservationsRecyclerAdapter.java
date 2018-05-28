@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -26,18 +27,19 @@ public class ObservationsRecyclerAdapter extends RecyclerView.Adapter<Observatio
 
         TextView tvName;
         ImageView ivColor;
+
         TextView tvNum;
         Button btnDelete;
         ProgressBar bar;
 
         public ViewHolder(View v) {
             super(v);
-            // rajouter la couleur
             this.tvName = v.findViewById(R.id.tv_name);
             this.ivColor = v.findViewById(R.id.iv_color);
-            this.tvNum = v.findViewById(R.id.tv_num);
             this.btnDelete = v.findViewById(R.id.btn_delete);
+            this.tvNum = v.findViewById(R.id.tv_num);
             this.bar = v.findViewById(R.id.progressBar);
+
         }
     }
 
@@ -54,7 +56,13 @@ public class ObservationsRecyclerAdapter extends RecyclerView.Adapter<Observatio
         ObservationItemsModel itineraryModel = mObservations.get(position);
         holder.tvName.setText(itineraryModel.getName());
         holder.ivColor.setBackgroundColor(itineraryModel.getColor());
-        //rajouter pour la couleur
+        holder.btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // texte en dur mais qui sera remplacé par la suppression de ligne
+                Toast.makeText(view.getContext(), "évènement supprimé", Toast.LENGTH_SHORT).show();
+            }
+        });
 
         if (mFrom.equals("start")) {
             holder.tvNum.setVisibility(View.GONE);

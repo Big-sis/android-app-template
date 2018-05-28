@@ -2,17 +2,22 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/events"
+    android:layout_marginBottom="5dp"
+    tools:layout_editor_absoluteY="25dp">
 
     <ImageView
         android:id="@+id/iv_color"
         android:layout_width="40dp"
         android:layout_height="40dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="@android:color/holo_blue_light"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -20,13 +25,15 @@
         android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="13dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
+        android:maxLength="30"
         android:text="@string/nom_observation"
         android:textColor="@android:color/black"
-        app:layout_constraintBottom_toTopOf="@+id/progressBar"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/iv_color"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -34,16 +41,12 @@
         android:id="@+id/btn_delete"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginStart="24dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
         android:background="@android:drawable/ic_delete"
         android:visibility="gone"
-        app:layout_constraintEnd_toStartOf="@+id/tv_num"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/tv_name"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="visible" />
 
@@ -51,11 +54,8 @@
         android:id="@+id/tv_num"
         android:layout_width="35dp"
         android:layout_height="23dp"
-        android:layout_marginBottom="9dp"
-        android:layout_marginTop="20dp"
         android:text="TextView"
         android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/progressBar"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="235dp"
         tools:visibility="visible" />
@@ -66,14 +66,12 @@
         android:layout_width="0dp"
         android:layout_height="10dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/iv_color"
-        tools:visibility="visible" />
+        app:layout_constraintTop_toTopOf="parent" />
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/iv_color"
+    tools:visibility="visible" />
 </android.support.constraint.ConstraintLayout>
