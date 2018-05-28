@@ -34,7 +34,6 @@ public class ObservationsRecyclerAdapter extends RecyclerView.Adapter<Observatio
 
         public ViewHolder(View v) {
             super(v);
-            // rajouter la couleur
             this.tvName = v.findViewById(R.id.tv_name);
             this.ivColor = v.findViewById(R.id.iv_color);
             this.btnDelete = v.findViewById(R.id.btn_delete);
@@ -60,7 +59,7 @@ public class ObservationsRecyclerAdapter extends RecyclerView.Adapter<Observatio
         holder.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // texte en dur mais qu'il sera remplacer par la suppression de ligne
+                // texte en dur mais qui sera remplacé par la suppression de ligne
                 Toast.makeText(view.getContext(), "évènement supprimé", Toast.LENGTH_SHORT).show();
             }
         });
