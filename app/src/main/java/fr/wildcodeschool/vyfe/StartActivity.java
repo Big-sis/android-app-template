@@ -1,6 +1,7 @@
 package fr.wildcodeschool.vyfe;
 
 import android.content.Intent;
+import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RadioButton;
 
 import java.util.ArrayList;
 
@@ -20,6 +22,15 @@ public class StartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_start);
 
         RecyclerView listItems = findViewById(R.id.recycler_view);
+        RadioButton radioButtonImport = findViewById(R.id.radio_button_insert);
+        RadioButton radioButtonNew = findViewById(R.id.radio_Button_new);
+
+        if(radioButtonImport.isChecked()){
+            //accès elements
+        }
+        if(radioButtonNew.isChecked()){
+            //accès elements
+        }
 
         if (AddGridActivity.mAddEvent) {
             listItems.setVisibility(View.VISIBLE);
