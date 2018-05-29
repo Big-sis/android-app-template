@@ -123,7 +123,6 @@ public class AddGridActivity extends AppCompatActivity {
         colors.add(("#b7bb00"));
         colors.add(("#b664ba"));
 
-
         colors.add(("#f91734"));
         colors.add(("#932bf9"));
         colors.add(("#5bba25"));

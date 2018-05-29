@@ -8,8 +8,10 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.RadioButton;
+import android.widget.Spinner;
 
 import java.util.ArrayList;
 
@@ -25,6 +27,14 @@ public class StartActivity extends AppCompatActivity {
         RecyclerView listItems = findViewById(R.id.recycler_view);
         final RadioButton radioButtonImport = findViewById(R.id.radio_button_insert);
         final RadioButton radioButtonNew = findViewById(R.id.radio_Button_new);
+
+        final Spinner spinner=findViewById(R.id.spinner_session_infos);
+        //creer array utiliser un adapterSpinner pour rentrer les donner du spinner arrays
+        final ArrayAdapter<CharSequence> adapterSpinner=ArrayAdapter.createFromResource(this, R.array.select_folder, android.R.layout.simple_spinner_item);
+        //specifier le layout a utiliser lors affichage donné
+        adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //appliquer ladapter au spinner
+        spinner.setAdapter(adapterSpinner);
 
         radioButtonImport.setOnClickListener(new View.OnClickListener() {
             @Override
