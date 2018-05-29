@@ -44,12 +44,14 @@
     <string name="choose_color">Choisir votre couleur</string>
     <string name="name">Nom</string>
     <string name="color">Couleur</string>
-    <string name="choose">Choisir</string>
-    <string name="aleatory">Aléatoire</string>
-    <string name="add">Ajouter</string>
-    <string name="end">Fin</string>
+    <string name="choose">Choisir une couleur</string>
+    <string name="aleatory">Couleur aléatoire</string>
+    <string name="add">Ajouter l\'évènement</string>
+    <string name="end">Terminer</string>
     <string name="name_event">Nom de l\'évènement</string>
     <string name="color_event">Couleur de l\'évènement</string>
     <string name="def_colot">Définissez un nom et une couleur à l\'évènement</string>
+    <string name="grid_import">Importer une grille d\'analyse</string>
+    <string name="new_grid2">Créer une nouvelle grille d\'analyse</string>
 
 </resources>
