@@ -94,10 +94,10 @@ public class AddGridActivity extends AppCompatActivity {
             }
         });
 
-        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP| ItemTouchHelper.DOWN, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                Toast.makeText(AddGridActivity.this, "Événement déplacé", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddGridActivity.this, R.string.move, Toast.LENGTH_SHORT).show();
                 moveItem(viewHolder.getAdapterPosition(), target.getAdapterPosition());
                 return true;
             }
@@ -105,7 +105,7 @@ public class AddGridActivity extends AppCompatActivity {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 deleteItem(viewHolder.getAdapterPosition());
-                Toast.makeText(AddGridActivity.this, "Événement supprimé", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddGridActivity.this, R.string.delete, Toast.LENGTH_SHORT).show();
             }
         });
         itemTouchHelper.attachToRecyclerView(listItems);
@@ -158,6 +158,7 @@ public class AddGridActivity extends AppCompatActivity {
 
 
     }
+
     void moveItem(int oldPos, int newPos) {
 
         if (oldPos < newPos) {
@@ -171,11 +172,6 @@ public class AddGridActivity extends AppCompatActivity {
         }
         adapter.notifyItemMoved(oldPos, newPos);
 
-        /* Autre methode
-        ObservationItemsModel newObservationItemsModel = observationItemsModels.get(oldPos);
-        observationItemsModels.remove(oldPos);
-        observationItemsModels.add(newPos, newObservationItemsModel);
-        adapter.notifyItemMoved(oldPos, newPos);*/
     }
 
     void deleteItem(final int position) {

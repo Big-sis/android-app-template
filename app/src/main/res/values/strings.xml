@@ -53,5 +53,7 @@
     <string name="def_colot">Définissez un nom et une couleur à l\'évènement</string>
     <string name="grid_import">Importer une grille d\'analyse</string>
     <string name="new_grid2">Créer une nouvelle grille d\'analyse</string>
+    <string name="move">Événement déplacé</string>
+    <string name="delete">Événement supprimé</string>
 
 </resources>
