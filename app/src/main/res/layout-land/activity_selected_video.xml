@@ -73,19 +73,21 @@
                 <Button
                     android:id="@+id/bt_edit"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
                     android:layout_weight="0.33"
+                    android:background="@drawable/style_button_white"
                     android:text="@string/edit" />
 
                 <Button
                     android:id="@+id/bt_upload"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
                     android:layout_weight="0.33"
+                    android:background="@drawable/style_button_white"
                     android:text="@string/upload" />
             </LinearLayout>
         </LinearLayout>
