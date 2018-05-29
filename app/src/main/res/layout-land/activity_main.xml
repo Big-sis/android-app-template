@@ -13,38 +13,46 @@
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="129dp" />
 
-    <ImageView
-        android:id="@+id/img_avatar"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginTop="100dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/appBar"
-        app:srcCompat="@android:color/darker_gray" />
-
-    <TextView
-        android:id="@+id/name_user"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="110dp"
-        android:text="@string/user_name"
-        app:layout_constraintStart_toEndOf="@+id/img_avatar"
-        app:layout_constraintTop_toTopOf="@+id/appBar" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="52dp"
+        android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/img_avatar">
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="32dp">
+
+            <ImageView
+                android:id="@+id/img_avatar"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/appBar"
+                app:srcCompat="@android:color/darker_gray" />
+
+            <TextView
+                android:id="@+id/name_user"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="16dp"
+                android:text="@string/hello_user"
+                android:textColor="@color/white"
+                app:fontFamily="@font/roboto_bold"
+                app:layout_constraintStart_toEndOf="@+id/img_avatar"
+                app:layout_constraintTop_toTopOf="@+id/appBar" />
+
+        </LinearLayout>
+
 
         <LinearLayout
             android:id="@+id/line1"
@@ -77,7 +85,8 @@
                     android:layout_marginLeft="16dp"
                     android:text="@string/start_session"
                     android:textColor="@color/white"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    app:fontFamily="@font/roboto_bold" />
             </LinearLayout>
 
             <LinearLayout
@@ -103,7 +112,8 @@
                     android:layout_marginLeft="16dp"
                     android:text="@string/start_multi_session"
                     android:textColor="@color/white"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    app:fontFamily="@font/roboto_bold" />
             </LinearLayout>
 
         </LinearLayout>
@@ -139,7 +149,8 @@
                     android:layout_marginLeft="16dp"
                     android:text="@string/my_videos"
                     android:textColor="@color/white"
-                    android:textSize="20sp" />
+                    android:textSize="20sp"
+                    app:fontFamily="@font/roboto_bold" />
             </LinearLayout>
 
         </LinearLayout>
