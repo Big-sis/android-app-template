@@ -22,7 +22,7 @@
     <string name="my_videos">Mes vidéos</string>
     <string name="user_name">User Name</string>
     <string name="search">Rechercher</string>
-    <string name="username">My Name</string>
+    <string name="hello_user">Bonjour</string>
     <string name="connected">Connection</string>
     <string name="email">Email</string>
     <string name="password">Mot de passe</string>

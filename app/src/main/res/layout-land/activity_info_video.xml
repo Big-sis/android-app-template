@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".InfoVideoActivity">
+    tools:context=".InfoVideoActivity"
+    android:background="@drawable/bg">
 
     <include
         layout="@layout/toolbar"
@@ -63,23 +64,26 @@
 
     <Button
         android:id="@+id/bt_edit"
-        android:layout_width="100dp"
-        android:layout_height="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
         android:layout_marginEnd="60dp"
         android:layout_marginRight="60dp"
         android:layout_marginTop="100dp"
+        android:background="@drawable/style_button"
         android:text="@string/edit"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/bt_delete"
-        android:layout_width="100dp"
-        android:layout_height="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
         android:layout_marginBottom="320dp"
         android:layout_marginEnd="60dp"
         android:layout_marginRight="60dp"
         android:layout_marginTop="20dp"
+        android:background="@drawable/style_button_white"
         android:text="@string/delete_video"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

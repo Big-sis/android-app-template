@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SelectedVideoActivity">
+    tools:context=".SelectedVideoActivity"
+    android:background="@drawable/bg">
 
     <include
         layout="@layout/toolbar"
@@ -61,28 +62,32 @@
                 <Button
                     android:id="@+id/bt_play"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
                     android:layout_weight="0.33"
-                    android:text="@string/play_video" />
+                    android:background="@drawable/style_button"
+                    android:text="@string/play_video"
+                    android:textColor="@color/white" />
 
                 <Button
                     android:id="@+id/bt_edit"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
                     android:layout_weight="0.33"
+                    android:background="@drawable/style_button_white"
                     android:text="@string/edit" />
 
                 <Button
                     android:id="@+id/bt_upload"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
                     android:layout_marginLeft="20dp"
                     android:layout_marginRight="20dp"
                     android:layout_weight="0.33"
+                    android:background="@drawable/style_button_white"
                     android:text="@string/upload" />
             </LinearLayout>
         </LinearLayout>
