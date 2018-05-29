@@ -6,6 +6,8 @@
     <solid
         android:color= "@color/colorLightMagenta" />
 
+    <size android:width="135dp" />
+
     <corners
         android:radius="5dp" />
 

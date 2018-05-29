@@ -101,10 +101,10 @@
                 android:id="@+id/btn_connected"
                 style="@style/Widget.AppCompat.Button.Small"
                 android:layout_width="134dp"
-                android:layout_height="29dp"
+                android:layout_height="30dp"
                 android:background="@drawable/style_button"
-                android:text="@string/connected_maj"
                 android:fontFamily="@font/roboto_bold"
+                android:text="@string/connected_maj"
                 android:textColor="@color/white"
 
                 app:layout_constraintEnd_toEndOf="parent" />
