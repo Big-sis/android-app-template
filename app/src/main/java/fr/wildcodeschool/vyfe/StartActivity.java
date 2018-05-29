@@ -16,21 +16,37 @@ import java.util.ArrayList;
 public class StartActivity extends AppCompatActivity {
     ArrayList<ObservationItemsModel> mObservationItemsModels = new ArrayList<>();
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
         RecyclerView listItems = findViewById(R.id.recycler_view);
-        RadioButton radioButtonImport = findViewById(R.id.radio_button_insert);
-        RadioButton radioButtonNew = findViewById(R.id.radio_Button_new);
+        final RadioButton radioButtonImport = findViewById(R.id.radio_button_insert);
+        final RadioButton radioButtonNew = findViewById(R.id.radio_Button_new);
 
-        if(radioButtonImport.isChecked()){
-            //accès elements
-        }
-        if(radioButtonNew.isChecked()){
-            //accès elements
-        }
+        radioButtonImport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //accès elements
+                if(radioButtonImport.isChecked()){
+                    radioButtonNew.setChecked(false);
+
+                }
+            }
+        });
+
+        radioButtonNew.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(radioButtonNew.isChecked()){
+                    radioButtonImport.setChecked(false);
+                }
+
+            }
+        });
+
 
         if (AddGridActivity.mAddEvent) {
             listItems.setVisibility(View.VISIBLE);
