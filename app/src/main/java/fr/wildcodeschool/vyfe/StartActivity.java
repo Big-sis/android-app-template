@@ -18,17 +18,18 @@ public class StartActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
-        RecyclerView recyclerView = findViewById(R.id.recycler_view);
 
+        RecyclerView listItems = findViewById(R.id.recycler_view);
+
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        listItems.setLayoutManager(layoutManager);
+        final ObservationsRecyclerAdapter adapter = new ObservationsRecyclerAdapter(mObservationItemsModels, "start");
+        listItems.setAdapter(adapter);
 
         if (AddGridActivity.mAddEvent) {
-            recyclerView.setVisibility(View.VISIBLE);
+            listItems.setVisibility(View.VISIBLE);
             mObservationItemsModels = getIntent().getExtras().getParcelableArrayList("list");
-            RecyclerView listItems = findViewById(R.id.recycler_view);
-            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-            listItems.setLayoutManager(layoutManager);
-            final ObservationsRecyclerAdapter adapter = new ObservationsRecyclerAdapter(mObservationItemsModels, "start");
-            listItems.setAdapter(adapter);
+
         }
 
 

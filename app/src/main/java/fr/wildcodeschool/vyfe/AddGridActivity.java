@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 import petrov.kristiyan.colorpicker.ColorPicker;
@@ -21,6 +24,8 @@ import petrov.kristiyan.colorpicker.ColorPicker;
 public class AddGridActivity extends AppCompatActivity {
     int finalcolor;
     static boolean mAddEvent = false;
+    final ArrayList<ObservationItemsModel> observationItemsModels = new ArrayList<>();
+    final ObservationsRecyclerAdapter adapter = new ObservationsRecyclerAdapter(observationItemsModels, "start");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,10 +33,10 @@ public class AddGridActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_grid);
         final EditText etName = findViewById(R.id.et_name);
         final ImageView ivColor = findViewById(R.id.iv_color);
-
         final RecyclerView listItems = findViewById(R.id.recycler_view);
-        final ArrayList<ObservationItemsModel> observationItemsModels = new ArrayList<>();
 
+
+        // Gestion couleurs
         Button btnChooseColor = findViewById(R.id.btn_chosse_color);
         btnChooseColor.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,6 +56,14 @@ public class AddGridActivity extends AppCompatActivity {
             }
         });
 
+
+        // Elements du recycler
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(AddGridActivity.this, LinearLayoutManager.VERTICAL, false);
+        listItems.setLayoutManager(layoutManager);
+        listItems.setHasFixedSize(true);
+        listItems.setItemAnimator(new DefaultItemAnimator());
+        listItems.setAdapter(adapter);
+
         Button btnAddEvenement = findViewById(R.id.btn_add);
         btnAddEvenement.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,17 +76,11 @@ public class AddGridActivity extends AppCompatActivity {
 
                     ObservationItemsModel observationItemsModel = new ObservationItemsModel(finalcolor, valueName);
                     observationItemsModels.add(observationItemsModel);
-                    RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(AddGridActivity.this, LinearLayoutManager.VERTICAL, false);
-                    listItems.setLayoutManager(layoutManager);
-                    final ObservationsRecyclerAdapter adapter = new ObservationsRecyclerAdapter(observationItemsModels, "start");
-                    listItems.setAdapter(adapter);
+                    adapter.notifyDataSetChanged();
                     finalcolor = 0;
                     etName.setText("");
                     ivColor.setBackgroundColor(Color.parseColor("#ffaaaaaa"));
                 }
-
-
-
             }
         });
 
@@ -86,6 +93,22 @@ public class AddGridActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP| ItemTouchHelper.DOWN, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
+            @Override
+            public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
+                Toast.makeText(AddGridActivity.this, "Événement déplacé", Toast.LENGTH_SHORT).show();
+                moveItem(viewHolder.getAdapterPosition(), target.getAdapterPosition());
+                return true;
+            }
+
+            @Override
+            public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
+                deleteItem(viewHolder.getAdapterPosition());
+                Toast.makeText(AddGridActivity.this, "Événement supprimé", Toast.LENGTH_SHORT).show();
+            }
+        });
+        itemTouchHelper.attachToRecyclerView(listItems);
 
 
     }
@@ -136,4 +159,30 @@ public class AddGridActivity extends AppCompatActivity {
 
 
     }
+    void moveItem(int oldPos, int newPos) {
+
+        if (oldPos < newPos) {
+            for (int i = oldPos; i < newPos; i++) {
+                Collections.swap(observationItemsModels, i, i + 1);
+            }
+        } else {
+            for (int i = oldPos; i > newPos; i--) {
+                Collections.swap(observationItemsModels, i, i - 1);
+            }
+        }
+        adapter.notifyItemMoved(oldPos, newPos);
+
+        /* Autre methode
+        ObservationItemsModel newObservationItemsModel = observationItemsModels.get(oldPos);
+        observationItemsModels.remove(oldPos);
+        observationItemsModels.add(newPos, newObservationItemsModel);
+        adapter.notifyItemMoved(oldPos, newPos);*/
+    }
+
+    void deleteItem(final int position) {
+        observationItemsModels.remove(position);
+        adapter.notifyItemRemoved(position);
+
+    }
+
 }
