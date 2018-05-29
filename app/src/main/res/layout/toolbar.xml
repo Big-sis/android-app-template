@@ -7,8 +7,8 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:alpha="0.7"
-        android:background="#2E2E2E"
+        android:alpha="0.25"
+        android:background="@color/colorDarkBlueGrey"
         android:minHeight="?attr/actionBarSize" />
 
 </android.support.constraint.ConstraintLayout>

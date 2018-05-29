@@ -9,7 +9,9 @@
 
     <include
         android:id="@+id/appBar"
-        layout="@layout/toolbar" />
+        layout="@layout/toolbar"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="129dp" />
 
     <ImageView
         android:id="@+id/img_avatar"
@@ -57,7 +59,7 @@
                 android:layout_width="400dp"
                 android:layout_height="100dp"
                 android:layout_margin="5dp"
-                android:background="#3B4648">
+                android:background="@color/colorCharcoalGrey">
 
                 <ImageView
                     android:id="@+id/logo_unique_session"
@@ -74,7 +76,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="16dp"
                     android:text="@string/start_session"
-                    android:textColor="#fff"
+                    android:textColor="@color/white"
                     android:textSize="20sp" />
             </LinearLayout>
 
@@ -83,7 +85,7 @@
                 android:layout_width="400dp"
                 android:layout_height="100dp"
                 android:layout_margin="5dp"
-                android:background="#3B4648">
+                android:background="@color/colorCharcoalGrey">
 
                 <ImageView
                     android:id="@+id/logo_multi_session"
@@ -100,7 +102,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="16dp"
                     android:text="@string/start_multi_session"
-                    android:textColor="#fff"
+                    android:textColor="@color/white"
                     android:textSize="20sp" />
             </LinearLayout>
 
@@ -119,7 +121,7 @@
                 android:layout_width="400dp"
                 android:layout_height="100dp"
                 android:layout_margin="5dp"
-                android:background="#3B4648">
+                android:background="@color/colorCharcoalGrey">
 
                 <ImageView
                     android:id="@+id/logo_videos"
@@ -136,7 +138,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="16dp"
                     android:text="@string/my_videos"
-                    android:textColor="#fff"
+                    android:textColor="@color/white"
                     android:textSize="20sp" />
             </LinearLayout>
 
