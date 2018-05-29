@@ -41,6 +41,7 @@
             android:layout_height="26dp"
             android:text="@string/connected"
             android:textColor="@color/white"
+            app:fontFamily="@font/roboto_bold"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/iv_logo" />
 
@@ -52,6 +53,8 @@
             android:background="@drawable/style_input"
             android:ems="10"
             android:hint="@string/email"
+            app:fontFamily="@font/roboto"
+            android:includeFontPadding="false"
             android:inputType="textPersonName"
             android:textColor="@color/white"
             android:textColorHint="@color/white"
@@ -71,6 +74,7 @@
             android:textColor="@color/white"
             android:textColorHint="@color/white"
             android:textSize="16sp"
+            android:fontFamily="@font/roboto"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/et_mail" />
 
@@ -90,7 +94,8 @@
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:fontFamily="@font/roboto"/>
 
             <Button
                 android:id="@+id/btn_connected"
@@ -99,7 +104,9 @@
                 android:layout_height="29dp"
                 android:background="@drawable/style_button"
                 android:text="@string/connected_maj"
+                android:fontFamily="@font/roboto_bold"
                 android:textColor="@color/white"
+
                 app:layout_constraintEnd_toEndOf="parent" />
 
         </android.support.constraint.ConstraintLayout>
