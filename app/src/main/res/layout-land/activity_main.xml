@@ -4,11 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg"
     tools:context=".MainActivity">
 
     <include
-        layout="@layout/toolbar"
-        android:id="@+id/appBar"/>
+        android:id="@+id/appBar"
+        layout="@layout/toolbar" />
 
     <ImageView
         android:id="@+id/img_avatar"
@@ -56,7 +57,7 @@
                 android:layout_width="400dp"
                 android:layout_height="100dp"
                 android:layout_margin="5dp"
-                android:background="@android:color/holo_blue_light">
+                android:background="#3B4648">
 
                 <ImageView
                     android:id="@+id/logo_unique_session"
@@ -64,7 +65,7 @@
                     android:layout_height="80dp"
                     android:layout_gravity="center_vertical"
                     android:paddingLeft="15dp"
-                    android:src="@drawable/settings" />
+                    app:srcCompat="@drawable/camsimple" />
 
                 <TextView
                     android:id="@+id/name_unique_session"
@@ -73,6 +74,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="16dp"
                     android:text="@string/start_session"
+                    android:textColor="#fff"
                     android:textSize="20sp" />
             </LinearLayout>
 
@@ -81,7 +83,7 @@
                 android:layout_width="400dp"
                 android:layout_height="100dp"
                 android:layout_margin="5dp"
-                android:background="@android:color/holo_green_light">
+                android:background="#3B4648">
 
                 <ImageView
                     android:id="@+id/logo_multi_session"
@@ -89,7 +91,7 @@
                     android:layout_height="80dp"
                     android:layout_gravity="center_vertical"
                     android:paddingLeft="15dp"
-                    android:src="@drawable/settings" />
+                    app:srcCompat="@drawable/cammulti" />
 
                 <TextView
                     android:id="@+id/name_multi_session"
@@ -98,6 +100,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="16dp"
                     android:text="@string/start_multi_session"
+                    android:textColor="#fff"
                     android:textSize="20sp" />
             </LinearLayout>
 
@@ -116,7 +119,7 @@
                 android:layout_width="400dp"
                 android:layout_height="100dp"
                 android:layout_margin="5dp"
-                android:background="@android:color/holo_orange_light">
+                android:background="#3B4648">
 
                 <ImageView
                     android:id="@+id/logo_videos"
@@ -124,7 +127,7 @@
                     android:layout_height="80dp"
                     android:layout_gravity="center_vertical"
                     android:paddingLeft="15dp"
-                    android:src="@drawable/settings" />
+                    app:srcCompat="@drawable/video" />
 
                 <TextView
                     android:id="@+id/name_videos"
@@ -133,6 +136,7 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="16dp"
                     android:text="@string/my_videos"
+                    android:textColor="#fff"
                     android:textSize="20sp" />
             </LinearLayout>
 
