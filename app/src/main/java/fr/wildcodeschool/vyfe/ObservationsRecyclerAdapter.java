@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -37,7 +36,7 @@ public class ObservationsRecyclerAdapter extends RecyclerView.Adapter<Observatio
             this.tvName = v.findViewById(R.id.tv_name);
             this.ivColor = v.findViewById(R.id.iv_color);
             this.btnDelete = v.findViewById(R.id.btn_delete);
-            this.tvNum = v.findViewById(R.id.tv_num);
+            this.tvNum = v.findViewById(R.id.tv_stats);
             this.bar = v.findViewById(R.id.progressBar);
 
         }

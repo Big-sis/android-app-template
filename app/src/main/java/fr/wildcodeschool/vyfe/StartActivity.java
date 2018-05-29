@@ -21,15 +21,13 @@ public class StartActivity extends AppCompatActivity {
 
         RecyclerView listItems = findViewById(R.id.recycler_view);
 
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        listItems.setLayoutManager(layoutManager);
-        final ObservationsRecyclerAdapter adapter = new ObservationsRecyclerAdapter(mObservationItemsModels, "start");
-        listItems.setAdapter(adapter);
-
         if (AddGridActivity.mAddEvent) {
             listItems.setVisibility(View.VISIBLE);
             mObservationItemsModels = getIntent().getExtras().getParcelableArrayList("list");
-
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+            listItems.setLayoutManager(layoutManager);
+            final ObservationsRecyclerAdapter adapter = new ObservationsRecyclerAdapter(mObservationItemsModels, "start");
+            listItems.setAdapter(adapter);
         }
 
 
