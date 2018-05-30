@@ -32,20 +32,25 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="32dp"
                 android:text="@string/infor_session"
-                android:textColor="@android:color/black"
+                android:textColor="@color/white"
+                app:fontFamily="@font/roboto_bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
                 android:id="@+id/et_video_title"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:layout_marginLeft="32dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="16dp"
+                android:background="@drawable/style_input"
                 android:ems="10"
                 android:hint="@string/title_video"
                 android:inputType="textPersonName"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                app:fontFamily="@font/roboto"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_information" />
 
@@ -57,7 +62,8 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="16dp"
                 android:text="@string/my_analyse"
-                android:textColor="@android:color/black"
+                android:textColor="@color/white"
+                app:fontFamily="@font/roboto_bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_video_title" />
 
@@ -69,16 +75,19 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="16dp"
                 android:text="@string/grid_import"
+                android:textColor="@color/white"
+                app:fontFamily="@font/roboto"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_my_analyse" />
 
             <Spinner
                 android:id="@+id/spinner_session_infos"
                 android:layout_width="256dp"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:layout_marginLeft="32dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="12dp"
+                android:background="@drawable/style_input"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/radio_button_insert" />
 
@@ -117,19 +126,24 @@
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="32dp"
                 android:text="@string/new_grid2"
+                android:textColor="@color/white"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <EditText
                 android:id="@+id/et_grid_title"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="30dp"
                 android:layout_marginLeft="32dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="8dp"
+                android:background="@drawable/style_input"
                 android:ems="10"
                 android:hint="@string/title_grille"
                 android:inputType="textPersonName"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                app:fontFamily="@font/roboto"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/radio_Button_new" />
 
@@ -150,44 +164,53 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/et_grid_title" />
 
-
-
-            <TextView
-                android:id="@+id/tv_add_moment"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
-                android:text="@string/add_evenement"
-                android:textColor="@android:color/black"
-                app:layout_constraintStart_toEndOf="@+id/fab_add_moment"
-                app:layout_constraintTop_toBottomOf="@+id/recycler_view" />
-
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/fab_add_moment"
+            <LinearLayout
+                android:id="@+id/new_event"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="32dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="8dp"
-                android:clickable="true"
-                android:src="@android:drawable/ic_menu_add"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/recycler_view" />
+                app:layout_constraintTop_toBottomOf="@+id/recycler_view">
+
+                <android.support.design.widget.FloatingActionButton
+                    android:id="@+id/fab_add_moment"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:clickable="true"
+                    android:src="@android:drawable/ic_menu_add"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/recycler_view" />
+
+
+                <TextView
+                    android:id="@+id/tv_add_moment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="8dp"
+                    android:text="@string/add_evenement"
+                    android:textColor="@android:color/white"
+                    app:fontFamily="@font/roboto"
+                    app:layout_constraintStart_toEndOf="@+id/fab_add_moment"
+                    app:layout_constraintTop_toBottomOf="@+id/recycler_view" />
+            </LinearLayout>
+
 
             <Button
                 android:id="@+id/button_go"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
-                android:layout_marginBottom="16dp"
                 android:layout_marginEnd="16dp"
                 android:layout_marginRight="16dp"
+                android:layout_marginTop="8dp"
                 android:background="@drawable/style_button"
                 android:text="@string/go"
                 android:textColor="@color/white"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:fontFamily="@font/roboto"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/new_event" />
 
         </android.support.constraint.ConstraintLayout>
     </LinearLayout>

@@ -10,6 +10,7 @@
         android:layout_height="wrap_content"
         android:background="@color/colorDarkBlueGrey25"
         android:minHeight="?attr/actionBarSize"
-        app:titleTextColor="@color/white" />
+        app:titleTextColor="@color/white"
+        app:fontFamily="@font/roboto_bold"/>
 
 </android.support.constraint.ConstraintLayout>

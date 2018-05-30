@@ -57,5 +57,6 @@
     <string name="delete">Événement supprimé</string>
     <string name="infos_video">Informations sur la vidéo</string>
     <string name="video_name">Nom de la vidéo</string>
+    <string name="record_session">Enregistrer une session</string>
 
 </resources>

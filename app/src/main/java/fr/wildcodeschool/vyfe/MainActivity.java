@@ -16,8 +16,6 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        //getSupportActionBar().setHomeButtonEnabled(true);
-        //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         LinearLayout btnStartSession = findViewById(R.id.btn_start_session);
         LinearLayout btnMultiSession = findViewById(R.id.btn_multi_session);

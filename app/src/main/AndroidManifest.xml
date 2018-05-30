@@ -26,16 +26,18 @@
         <activity
             android:name=".SelectedVideoActivity"
             android:screenOrientation="landscape" >
+
+        </activity>
+
+        <activity
+            android:name=".ConnexionActivity"
+            android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity
-            android:name=".ConnexionActivity"
-            android:screenOrientation="landscape" />
         <activity
             android:name=".MyVideoActivity"
             android:screenOrientation="landscape" />
@@ -54,7 +56,7 @@
 
         <activity android:name=".AddGridActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/AppEvent">
+            android:theme="@style/AppTheme.NoActionBar">
 
 
         </activity>
