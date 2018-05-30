@@ -81,6 +81,7 @@
 
                 <Button
                     android:id="@+id/bt_edit"
+                    style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_marginLeft="20dp"
@@ -88,11 +89,12 @@
                     android:layout_weight="0.33"
                     android:background="@drawable/style_button_white"
                     android:text="@string/edit"
-                    app:fontFamily="@font/roboto_bold"
-                    style="?android:attr/buttonBarButtonStyle"/>
+                    android:textColor="@color/colorBlack"
+                    app:fontFamily="@font/roboto_bold" />
 
                 <Button
                     android:id="@+id/bt_upload"
+                    style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_marginLeft="20dp"
@@ -100,8 +102,8 @@
                     android:layout_weight="0.33"
                     android:background="@drawable/style_button_white"
                     android:text="@string/upload"
-                    app:fontFamily="@font/roboto_bold"
-                    style="?android:attr/buttonBarButtonStyle"/>
+                    android:textColor="@color/colorBlack"
+                    app:fontFamily="@font/roboto_bold" />
             </LinearLayout>
         </LinearLayout>
 

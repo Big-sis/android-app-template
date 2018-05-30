@@ -8,6 +8,7 @@
         <item name="colorAccent">@color/colorLightMagenta</item>
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="drawerArrowStyle">@color/white</item>
     </style>
   
     <style name="AppEvent" parent="Theme.AppCompat.Light.Dialog.Alert">
