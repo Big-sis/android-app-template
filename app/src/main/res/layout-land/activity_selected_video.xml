@@ -37,13 +37,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/video_tittle"
-                android:textSize="18sp" />
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                app:fontFamily="@font/roboto_bold" />
 
             <TextView
                 android:id="@+id/tv_folder"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/folder" />
+                android:text="@string/folder"
+                android:textColor="@color/white"
+                app:fontFamily="@font/roboto" />
 
             <TextView
                 android:id="@+id/tv_description"
@@ -52,12 +56,15 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/description"
-                android:textSize="12sp" />
+                android:textColor="@color/white"
+                android:textSize="12sp"
+                app:fontFamily="@font/roboto" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                style="?android:attr/buttonBarStyle">
 
                 <Button
                     android:id="@+id/bt_play"
@@ -68,7 +75,9 @@
                     android:layout_weight="0.33"
                     android:background="@drawable/style_button"
                     android:text="@string/play_video"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    app:fontFamily="@font/roboto_bold"
+                    style="?android:attr/buttonBarButtonStyle"/>
 
                 <Button
                     android:id="@+id/bt_edit"
@@ -78,7 +87,9 @@
                     android:layout_marginRight="20dp"
                     android:layout_weight="0.33"
                     android:background="@drawable/style_button_white"
-                    android:text="@string/edit" />
+                    android:text="@string/edit"
+                    app:fontFamily="@font/roboto_bold"
+                    style="?android:attr/buttonBarButtonStyle"/>
 
                 <Button
                     android:id="@+id/bt_upload"
@@ -88,7 +99,9 @@
                     android:layout_marginRight="20dp"
                     android:layout_weight="0.33"
                     android:background="@drawable/style_button_white"
-                    android:text="@string/upload" />
+                    android:text="@string/upload"
+                    app:fontFamily="@font/roboto_bold"
+                    style="?android:attr/buttonBarButtonStyle"/>
             </LinearLayout>
         </LinearLayout>
 

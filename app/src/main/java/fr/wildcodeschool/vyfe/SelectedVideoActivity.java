@@ -5,6 +5,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 
 import java.util.ArrayList;
 
@@ -29,6 +31,16 @@ public class SelectedVideoActivity extends AppCompatActivity {
         final ObservationsRecyclerAdapter adapter = new ObservationsRecyclerAdapter(mObservationItemsModels, "count");
         recyclerTags.setAdapter(adapter);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle("Nom de la vidéo");
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.settings, menu);
+        return true;
     }
 }
