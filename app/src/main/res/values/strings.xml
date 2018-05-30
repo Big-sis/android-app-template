@@ -55,5 +55,7 @@
     <string name="new_grid2">Créer une nouvelle grille d\'analyse</string>
     <string name="move">Événement déplacé</string>
     <string name="delete">Événement supprimé</string>
+    <string name="infos_video">Informations sur la vidéo</string>
+    <string name="video_name">Nom de la vidéo</string>
 
 </resources>

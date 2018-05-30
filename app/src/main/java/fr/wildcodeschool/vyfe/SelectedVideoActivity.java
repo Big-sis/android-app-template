@@ -47,7 +47,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Nom de la vidéo");
+        getSupportActionBar().setTitle(R.string.video_name);
     }
 
     @Override
