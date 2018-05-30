@@ -8,8 +8,10 @@
     android:background="@drawable/bg">
 
     <include
+        android:id="@+id/appBar"
         layout="@layout/toolbar"
-        android:id="@+id/appBar"/>
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="340dp" />
 
     <TextView
         android:id="@+id/tv_title"
@@ -19,22 +21,28 @@
         android:layout_marginStart="60dp"
         android:layout_marginTop="100dp"
         android:text="@string/video_info"
+        android:textColor="@color/white"
         android:textSize="24sp"
+        app:fontFamily="@font/roboto_bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/et_video_title"
         android:layout_width="350dp"
-        android:layout_height="wrap_content"
+        android:layout_height="40dp"
         android:layout_marginLeft="60dp"
         android:layout_marginStart="60dp"
         android:layout_marginTop="25dp"
+        android:background="@drawable/style_input"
         android:ems="10"
         android:hint="@string/video_tittle"
         android:inputType="textPersonName"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_title"
+        app:fontFamily="@font/roboto"/>
 
     <EditText
         android:id="@+id/et_description"
@@ -43,22 +51,25 @@
         android:layout_marginLeft="60dp"
         android:layout_marginStart="60dp"
         android:layout_marginTop="25dp"
+        android:background="@drawable/style_input"
         android:ems="10"
         android:hint="@string/description"
         android:inputType="textPersonName"
+        android:textColor="@color/white"
+        android:textColorHint="@color/white"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/et_video_title" />
+        app:layout_constraintTop_toBottomOf="@+id/et_video_title"
+        app:fontFamily="@font/roboto"/>
 
     <Spinner
         android:id="@+id/spin_folder"
         android:layout_width="350dp"
-        android:layout_height="27dp"
-        android:layout_marginBottom="145dp"
+        android:layout_height="30dp"
         android:layout_marginLeft="60dp"
         android:layout_marginStart="60dp"
         android:layout_marginTop="25dp"
+        android:background="@drawable/style_input"
         android:entries="@array/select_folder"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_description" />
 
@@ -73,19 +84,19 @@
         android:text="@string/edit"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:fontFamily="@font/roboto_bold"/>
 
     <Button
         android:id="@+id/bt_delete"
         android:layout_width="wrap_content"
         android:layout_height="30dp"
-        android:layout_marginBottom="320dp"
         android:layout_marginEnd="60dp"
         android:layout_marginRight="60dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/style_button_white"
         android:text="@string/delete_video"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:fontFamily="@font/roboto_bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/bt_edit" />
 </android.support.constraint.ConstraintLayout>

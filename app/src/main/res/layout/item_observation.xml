@@ -32,8 +32,9 @@
         android:layout_marginTop="8dp"
         android:maxLength="30"
         android:text="@string/nom_observation"
-        android:textColor="@android:color/black"
+        android:textColor="@color/white"
         android:textSize="18sp"
+        app:fontFamily="@font/roboto_bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/iv_color"
         app:layout_constraintTop_toTopOf="parent" />
@@ -60,6 +61,7 @@
         android:layout_height="23dp"
         android:text="Stats"
         android:visibility="gone"
+        app:fontFamily="@font/roboto_bold"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="235dp"
         tools:visibility="visible" />

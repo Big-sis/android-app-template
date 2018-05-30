@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorDarkBlueGrey25"
     tools:context=".ShareUrlActivity">
 
     <ImageView
@@ -30,7 +31,9 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
         android:text="@string/share_url"
-        android:textColor="@android:color/black"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:fontFamily="@font/roboto_bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iv_share" />
@@ -38,7 +41,7 @@
     <TextView
         android:id="@+id/tv_url"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_marginEnd="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
@@ -47,34 +50,47 @@
         android:background="@android:color/darker_gray"
         android:gravity="center"
         android:text="@string/url"
-        android:textColor="@android:color/black"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        app:fontFamily="@font/roboto_bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_share" />
 
-    <Button
-        android:id="@+id/button_back"
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:layout_marginLeft="372dp"
-        android:layout_marginStart="372dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
-        android:background="@null"
-        android:text="@string/back"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_url" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_url">
 
-    <Button
-        android:id="@+id/button_go"
-        android:layout_width="wrap_content"
-        android:layout_height="30dp"
-        android:layout_marginLeft="36dp"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="32dp"
-        android:background="@drawable/style_button"
-        android:text="@string/go"
-        android:textColor="@color/white"
-        app:layout_constraintStart_toEndOf="@+id/button_back"
-        app:layout_constraintTop_toBottomOf="@+id/tv_url" />
+        <Button
+            android:id="@+id/button_back"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:background="@null"
+            android:text="@string/back"
+            android:textColor="@color/white"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <Button
+            android:id="@+id/button_go"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginLeft="36dp"
+            android:background="@drawable/style_button"
+            android:text="@string/go"
+            android:textColor="@color/white" />
+
+    </LinearLayout>
+
+
+
+
 </android.support.constraint.ConstraintLayout>
