@@ -4,21 +4,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
 public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.ViewHolder> {
 
-    private ArrayList<TagModel> mTagModel;
+    private ArrayList<TagModel> mTagModelList;
     private String mFrom;
 
     public TagRecyclerAdapter(ArrayList<TagModel> observations, String from) {
-        mTagModel = observations;
+        mTagModelList = observations;
         mFrom = from;
     }
 
@@ -48,7 +46,7 @@ public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.
 
     @Override
     public void onBindViewHolder(TagRecyclerAdapter.ViewHolder holder, int position) {
-        TagModel itineraryModel = mTagModel.get(position);
+        TagModel itineraryModel = mTagModelList.get(position);
         holder.tvName.setText(itineraryModel.getName());
         holder.ivColor.setBackgroundColor(itineraryModel.getColor());
 
@@ -74,7 +72,7 @@ public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.
 
     @Override
     public int getItemCount() {
-        return mTagModel.size();
+        return mTagModelList.size();
     }
 
 }

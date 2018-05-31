@@ -13,11 +13,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
 public class StartActivity extends AppCompatActivity {
-    ArrayList<TagModel> mTagModels = new ArrayList<>();
+    ArrayList<TagModel> mTagModelList = new ArrayList<>();
+    static boolean mChangeTag = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +32,8 @@ public class StartActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.start_session);
 
-        RecyclerView listItems = findViewById(R.id.recycler_view);
+        TextView tvAddTag = findViewById(R.id.tv_add_tag);
+        RecyclerView recyclerTagList = findViewById(R.id.recycler_view);
         final RadioButton radioButtonImport = findViewById(R.id.radio_button_insert);
         final RadioButton radioButtonNew = findViewById(R.id.radio_Button_new);
 
@@ -45,7 +48,7 @@ public class StartActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if(radioButtonImport.isChecked()){
                     radioButtonNew.setChecked(false);
-                    //TODO: affichier l'accès aux elements de imports grilles
+                    //TODO: affichier l'accès aux elements: imports grilles
                 }
             }
         });
@@ -55,23 +58,13 @@ public class StartActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if(radioButtonNew.isChecked()){
                     radioButtonImport.setChecked(false);
-                    //TODO: affichier l'accès aux elements de création grilles
+                    //TODO: affichier l'accès aux elements: création grilles
                 }
 
             }
         });
 
         //TODO: en fct du radio button selectionner envoyer telles ou telles arraylist
-
-
-        if (AddGridActivity.mAddEvent) {
-            listItems.setVisibility(View.VISIBLE);
-            mTagModels = getIntent().getExtras().getParcelableArrayList("list");
-            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-            listItems.setLayoutManager(layoutManager);
-            final TagRecyclerAdapter adapter = new TagRecyclerAdapter(mTagModels, "start");
-            listItems.setAdapter(adapter);
-        }
 
 
         FloatingActionButton fabAddMoment = findViewById(R.id.fab_add_moment);
@@ -88,10 +81,33 @@ public class StartActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent toRecord = new Intent(StartActivity.this, RecordActivity.class);
-                toRecord.putParcelableArrayListExtra("list", mTagModels);
+                toRecord.putParcelableArrayListExtra("list", mTagModelList);
                 startActivity(toRecord);
             }
         });
+
+
+        if (AddGridActivity.mAddEvent) {
+            recyclerTagList.setVisibility(View.VISIBLE);
+            mTagModelList = getIntent().getExtras().getParcelableArrayList("list");
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+            recyclerTagList.setLayoutManager(layoutManager);
+            final TagRecyclerAdapter adapter = new TagRecyclerAdapter(mTagModelList, "start");
+            recyclerTagList.setAdapter(adapter);
+            tvAddTag.setText("Ajouter ou modifier les événements");
+
+            fabAddMoment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mChangeTag = true;
+                    Intent intent = new Intent(StartActivity.this, AddGridActivity.class);
+                    intent.putParcelableArrayListExtra("change", mTagModelList);
+                    startActivity(intent);
+                }
+            });
+
+
+        }
 
 
     }
