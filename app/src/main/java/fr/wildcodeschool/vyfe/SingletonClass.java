@@ -1,11 +1,14 @@
 package fr.wildcodeschool.vyfe;
 
+import java.util.ArrayList;
+
 public class SingletonClass {
 
 
     public static SingletonClass sInstance = null;
-    private int mColor;
-    private String mName;
+
+
+    private ArrayList<TagModel> mTagsList = new ArrayList<>();
 
     private SingletonClass() {
     }
@@ -17,20 +20,12 @@ public class SingletonClass {
         return sInstance;
     }
 
-    public int getmColor() {
-        return mColor;
+    public ArrayList<TagModel> getmTagsList() {
+        return mTagsList;
     }
 
-    public void setmColor(int mColor) {
-        this.mColor = mColor;
-    }
-
-    public String getmName() {
-        return mName;
-    }
-
-    public void setmName(String mName) {
-        this.mName = mName;
+    public void setmTagsList(ArrayList<TagModel> mTagsList) {
+        this.mTagsList = mTagsList;
     }
 }
 
