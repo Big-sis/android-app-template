@@ -94,11 +94,8 @@ public class StartActivity extends AppCompatActivity {
             recyclerTagList.setAdapter(adapter);
 
 
-            if (mTagModelList.size() == 0) {
+            if (mTagModelList.size() != 0) {
 
-                tvAddTag.setText(R.string.add_tags);
-            }
-            else {
                 tvAddTag.setText(R.string.edit_tags);
 
             }
