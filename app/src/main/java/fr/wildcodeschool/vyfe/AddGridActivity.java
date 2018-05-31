@@ -24,7 +24,7 @@ public class AddGridActivity extends AppCompatActivity {
     int mfinalcolor;
     static boolean mAddEvent = false;
     ArrayList<TagModel> mTagModelList = new ArrayList<>();
-    final TagRecyclerAdapter madapter = new TagRecyclerAdapter(mTagModelList, "start");
+    final TagRecyclerAdapter mAdapter = new TagRecyclerAdapter(mTagModelList, "start");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,18 +56,17 @@ public class AddGridActivity extends AppCompatActivity {
             }
         });
 
-
-
-        if(StartActivity.mChangeTag){
-            mTagModelList = getIntent().getExtras().getParcelableArrayList("change");
-
-        }
-        // Elements du recycler
+// Elements du recycler
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(AddGridActivity.this, LinearLayoutManager.VERTICAL, false);
         recyclerTagList.setLayoutManager(layoutManager);
         recyclerTagList.setHasFixedSize(true);
         recyclerTagList.setItemAnimator(new DefaultItemAnimator());
-        recyclerTagList.setAdapter(madapter);
+        recyclerTagList.setAdapter(mAdapter);
+
+        if(StartActivity.mChangeTag){
+            mTagModelList = getIntent().getExtras().getParcelableArrayList("change");
+        }
+
 
         Button btnAddEvenement = findViewById(R.id.btn_add);
         btnAddEvenement.setOnClickListener(new View.OnClickListener() {
@@ -80,7 +79,7 @@ public class AddGridActivity extends AppCompatActivity {
                     mAddEvent = true;
                     TagModel tagModel = new TagModel(mfinalcolor, valueName);
                     mTagModelList.add(tagModel);
-                    madapter.notifyDataSetChanged();
+                    mAdapter.notifyDataSetChanged();
                     mfinalcolor = 0;
                     etName.setText("");
                     ivColor.setBackgroundColor(Color.parseColor("#ffaaaaaa"));
@@ -173,12 +172,12 @@ public class AddGridActivity extends AppCompatActivity {
                 Collections.swap(mTagModelList, i, i - 1);
             }
         }
-        madapter.notifyItemMoved(oldPos, newPos);
+        mAdapter.notifyItemMoved(oldPos, newPos);
     }
 
     void deleteItem(final int position) {
         mTagModelList.remove(position);
-        madapter.notifyItemRemoved(position);
+        mAdapter.notifyItemRemoved(position);
 
     }
 
