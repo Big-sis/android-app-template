@@ -40,8 +40,8 @@ public class StartActivity extends AppCompatActivity {
         final RadioButton radioButtonNew = findViewById(R.id.radio_Button_new);
 
         final Spinner spinner=findViewById(R.id.spinner_session_infos);
-        final ArrayAdapter<CharSequence> adapterSpinner=ArrayAdapter.createFromResource(this, R.array.select_folder, android.R.layout.simple_spinner_item);
-        adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        final ArrayAdapter<CharSequence> adapterSpinner=ArrayAdapter.createFromResource(this, R.array.select_folder, R.layout.item_spinner);
+        adapterSpinner.setDropDownViewResource(R.layout.item_spinner);
         spinner.setAdapter(adapterSpinner);
         //TODO: recuperation données API pour afficher spinner + recyclerview
 
