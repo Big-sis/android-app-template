@@ -96,10 +96,10 @@ public class StartActivity extends AppCompatActivity {
 
             if (mTagModelList.size() == 0) {
 
-                tvAddTag.setText("Ajouter des événements");
+                tvAddTag.setText(R.string.add_tags);
             }
             else {
-                tvAddTag.setText("Modifier les événements");
+                tvAddTag.setText(R.string.edit_tags);
 
             }
             fabAddMoment.setOnClickListener(new View.OnClickListener() {
@@ -109,12 +109,6 @@ public class StartActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
-
-
-
-
-
-
     }
 
     @Override
