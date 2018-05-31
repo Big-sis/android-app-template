@@ -3,6 +3,7 @@ package fr.wildcodeschool.vyfe;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+//TODO: enlever parcelable
 public class TagModel implements Parcelable {
     private int color;
     private String name;
