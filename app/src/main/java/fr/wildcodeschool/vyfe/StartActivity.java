@@ -1,7 +1,6 @@
 package fr.wildcodeschool.vyfe;
 
 import android.content.Intent;
-import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,8 +17,7 @@ import android.widget.Spinner;
 import java.util.ArrayList;
 
 public class StartActivity extends AppCompatActivity {
-    ArrayList<ObservationItemsModel> mObservationItemsModels = new ArrayList<>();
-
+    ArrayList<TagModel> mTagModels = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,20 +35,17 @@ public class StartActivity extends AppCompatActivity {
         final RadioButton radioButtonNew = findViewById(R.id.radio_Button_new);
 
         final Spinner spinner=findViewById(R.id.spinner_session_infos);
-        //creer array utiliser un adapterSpinner pour rentrer les donner du spinner arrays
         final ArrayAdapter<CharSequence> adapterSpinner=ArrayAdapter.createFromResource(this, R.array.select_folder, android.R.layout.simple_spinner_item);
-        //specifier le layout a utiliser lors affichage donné
         adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //appliquer ladapter au spinner
         spinner.setAdapter(adapterSpinner);
+        //TODO: recuperation données API pour afficher spinner + recyclerview
 
         radioButtonImport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //accès elements
                 if(radioButtonImport.isChecked()){
                     radioButtonNew.setChecked(false);
-
+                    //TODO: affichier l'accès aux elements de imports grilles
                 }
             }
         });
@@ -60,18 +55,21 @@ public class StartActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if(radioButtonNew.isChecked()){
                     radioButtonImport.setChecked(false);
+                    //TODO: affichier l'accès aux elements de création grilles
                 }
 
             }
         });
 
+        //TODO: en fct du radio button selectionner envoyer telles ou telles arraylist
+
 
         if (AddGridActivity.mAddEvent) {
             listItems.setVisibility(View.VISIBLE);
-            mObservationItemsModels = getIntent().getExtras().getParcelableArrayList("list");
+            mTagModels = getIntent().getExtras().getParcelableArrayList("list");
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
             listItems.setLayoutManager(layoutManager);
-            final ObservationsRecyclerAdapter adapter = new ObservationsRecyclerAdapter(mObservationItemsModels, "start");
+            final TagRecyclerAdapter adapter = new TagRecyclerAdapter(mTagModels, "start");
             listItems.setAdapter(adapter);
         }
 
@@ -90,7 +88,7 @@ public class StartActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent toRecord = new Intent(StartActivity.this, RecordActivity.class);
-                toRecord.putParcelableArrayListExtra("list", mObservationItemsModels);
+                toRecord.putParcelableArrayListExtra("list", mTagModels);
                 startActivity(toRecord);
             }
         });
