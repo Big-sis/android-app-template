@@ -87,14 +87,21 @@ public class StartActivity extends AppCompatActivity {
             }
         });
 
-        if (mTagModelList != null) {
             recyclerTagList.setVisibility(View.VISIBLE);
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
             recyclerTagList.setLayoutManager(layoutManager);
             final TagRecyclerAdapter adapter = new TagRecyclerAdapter(mTagModelList, "start");
             recyclerTagList.setAdapter(adapter);
-            tvAddTag.setText(R.string.modif_tags);
 
+
+            if (mTagModelList.size() == 0) {
+
+                tvAddTag.setText("Ajouter des événements");
+            }
+            else {
+                tvAddTag.setText("Modifier les événements");
+
+            }
             fabAddMoment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -102,7 +109,7 @@ public class StartActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
-        }
+
 
 
 
