@@ -18,8 +18,10 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 public class StartActivity extends AppCompatActivity {
-    ArrayList<TagModel> mTagModelList = new ArrayList<>();
-    static boolean mChangeTag = false;
+
+    SingletonTags mSingletonTags = SingletonTags.getInstance();
+    ArrayList<TagModel> mTagModelList = mSingletonTags.getmTagsList();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,35 +83,29 @@ public class StartActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent toRecord = new Intent(StartActivity.this, RecordActivity.class);
-                toRecord.putParcelableArrayListExtra("list", mTagModelList);
                 startActivity(toRecord);
             }
         });
 
-
-        if (AddGridActivity.mAddEvent) {
             recyclerTagList.setVisibility(View.VISIBLE);
-            mTagModelList = getIntent().getExtras().getParcelableArrayList("list");
             RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
             recyclerTagList.setLayoutManager(layoutManager);
             final TagRecyclerAdapter adapter = new TagRecyclerAdapter(mTagModelList, "start");
             recyclerTagList.setAdapter(adapter);
-            tvAddTag.setText("Ajouter ou modifier les événements");
 
+
+            if (mTagModelList.size() != 0) {
+
+                tvAddTag.setText(R.string.edit_tags);
+
+            }
             fabAddMoment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mChangeTag = true;
                     Intent intent = new Intent(StartActivity.this, AddGridActivity.class);
-                    intent.putParcelableArrayListExtra("change", mTagModelList);
                     startActivity(intent);
                 }
             });
-
-
-        }
-
-
     }
 
     @Override

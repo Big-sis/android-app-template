@@ -22,8 +22,8 @@ import petrov.kristiyan.colorpicker.ColorPicker;
 
 public class AddGridActivity extends AppCompatActivity {
     int mfinalcolor;
-    static boolean mAddEvent = false;
-    ArrayList<TagModel> mTagModelList = new ArrayList<>();
+    SingletonTags mSingletonTags = SingletonTags.getInstance();
+    ArrayList<TagModel> mTagModelList = mSingletonTags.getmTagsList();
     final TagRecyclerAdapter mAdapter = new TagRecyclerAdapter(mTagModelList, "start");
 
     @Override
@@ -61,38 +61,37 @@ public class AddGridActivity extends AppCompatActivity {
         recyclerTagList.setLayoutManager(layoutManager);
         recyclerTagList.setHasFixedSize(true);
         recyclerTagList.setItemAnimator(new DefaultItemAnimator());
-        recyclerTagList.setAdapter(mAdapter);
 
-        if(StartActivity.mChangeTag){
-            mTagModelList = getIntent().getExtras().getParcelableArrayList("change");
+        if (mTagModelList != null) {
+            recyclerTagList.setAdapter(mAdapter);
+
         }
 
 
-        Button btnAddEvenement = findViewById(R.id.btn_add);
-        btnAddEvenement.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String valueName = etName.getText().toString();
-                if (valueName.equals("") || mfinalcolor == 0) {
-                    Toast.makeText(AddGridActivity.this, R.string.def_colot, Toast.LENGTH_SHORT).show();
-                } else {
-                    mAddEvent = true;
-                    TagModel tagModel = new TagModel(mfinalcolor, valueName);
-                    mTagModelList.add(tagModel);
-                    mAdapter.notifyDataSetChanged();
-                    mfinalcolor = 0;
-                    etName.setText("");
-                    ivColor.setBackgroundColor(Color.parseColor("#ffaaaaaa"));
+            Button btnAddEvenement = findViewById(R.id.btn_add);
+            btnAddEvenement.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    String valueName = etName.getText().toString();
+                    if (valueName.equals("") || mfinalcolor == 0) {
+                        Toast.makeText(AddGridActivity.this, R.string.def_colot, Toast.LENGTH_SHORT).show();
+                    } else {
+                        TagModel tagModel = new TagModel(mfinalcolor, valueName);
+                        mTagModelList.add(tagModel);
+                        mAdapter.notifyDataSetChanged();
+                        mfinalcolor = 0;
+                        etName.setText("");
+                        ivColor.setBackgroundColor(Color.parseColor("#ffaaaaaa"));
+                    }
                 }
-            }
-        });
+            });
 
         Button btnEnd = findViewById(R.id.btn_end);
         btnEnd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mSingletonTags.setmTagsList(mTagModelList);
                 Intent intent = new Intent(AddGridActivity.this, StartActivity.class);
-                intent.putParcelableArrayListExtra("list", mTagModelList);
                 startActivity(intent);
             }
         });
