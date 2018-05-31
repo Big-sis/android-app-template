@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -22,10 +21,10 @@ import java.util.Random;
 import petrov.kristiyan.colorpicker.ColorPicker;
 
 public class AddGridActivity extends AppCompatActivity {
-    int finalcolor;
+    int mfinalcolor;
     static boolean mAddEvent = false;
-    final ArrayList<ObservationItemsModel> observationItemsModels = new ArrayList<>();
-    final ObservationsRecyclerAdapter adapter = new ObservationsRecyclerAdapter(observationItemsModels, "start");
+    ArrayList<TagModel> mTagModelList = new ArrayList<>();
+    final TagRecyclerAdapter mAdapter = new TagRecyclerAdapter(mTagModelList, "start");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +32,7 @@ public class AddGridActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_grid);
         final EditText etName = findViewById(R.id.et_name);
         final ImageView ivColor = findViewById(R.id.iv_color);
-        final RecyclerView listItems = findViewById(R.id.recycler_view);
+        final RecyclerView recyclerTagList = findViewById(R.id.recycler_view);
 
 
         // Gestion couleurs
@@ -49,35 +48,39 @@ public class AddGridActivity extends AppCompatActivity {
         btnAleatory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //TODO: associer la recherche aléatoire à l'arrayList color
                 Random random = new Random();
                 int color = Color.argb(255, random.nextInt(256), random.nextInt(256), random.nextInt(256));
                 ivColor.setBackgroundColor(color);
-                finalcolor = color;
+                mfinalcolor = color;
             }
         });
 
-
-        // Elements du recycler
+// Elements du recycler
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(AddGridActivity.this, LinearLayoutManager.VERTICAL, false);
-        listItems.setLayoutManager(layoutManager);
-        listItems.setHasFixedSize(true);
-        listItems.setItemAnimator(new DefaultItemAnimator());
-        listItems.setAdapter(adapter);
+        recyclerTagList.setLayoutManager(layoutManager);
+        recyclerTagList.setHasFixedSize(true);
+        recyclerTagList.setItemAnimator(new DefaultItemAnimator());
+        recyclerTagList.setAdapter(mAdapter);
+
+        if(StartActivity.mChangeTag){
+            mTagModelList = getIntent().getExtras().getParcelableArrayList("change");
+        }
+
 
         Button btnAddEvenement = findViewById(R.id.btn_add);
         btnAddEvenement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String valueName = etName.getText().toString();
-                if (valueName.equals("") || finalcolor == 0) {
+                if (valueName.equals("") || mfinalcolor == 0) {
                     Toast.makeText(AddGridActivity.this, R.string.def_colot, Toast.LENGTH_SHORT).show();
                 } else {
                     mAddEvent = true;
-
-                    ObservationItemsModel observationItemsModel = new ObservationItemsModel(finalcolor, valueName);
-                    observationItemsModels.add(observationItemsModel);
-                    adapter.notifyDataSetChanged();
-                    finalcolor = 0;
+                    TagModel tagModel = new TagModel(mfinalcolor, valueName);
+                    mTagModelList.add(tagModel);
+                    mAdapter.notifyDataSetChanged();
+                    mfinalcolor = 0;
                     etName.setText("");
                     ivColor.setBackgroundColor(Color.parseColor("#ffaaaaaa"));
                 }
@@ -89,7 +92,7 @@ public class AddGridActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(AddGridActivity.this, StartActivity.class);
-                intent.putParcelableArrayListExtra("list", observationItemsModels);
+                intent.putParcelableArrayListExtra("list", mTagModelList);
                 startActivity(intent);
             }
         });
@@ -108,7 +111,7 @@ public class AddGridActivity extends AppCompatActivity {
                 Toast.makeText(AddGridActivity.this, R.string.delete, Toast.LENGTH_SHORT).show();
             }
         });
-        itemTouchHelper.attachToRecyclerView(listItems);
+        itemTouchHelper.attachToRecyclerView(recyclerTagList);
 
 
     }
@@ -116,7 +119,7 @@ public class AddGridActivity extends AppCompatActivity {
     public void openColorChoose() {
         final ColorPicker colorPicker = new ColorPicker(this);
         final ArrayList<String> colors = new ArrayList<>();
-        //les couleurs seront insérées dans values avec la charte graphique
+        //TODO: remplacer couleur par celle de la charte graph
         colors.add(("#bd000d"));
         colors.add(("#5a00c5"));
         colors.add(("#1e8900"));
@@ -145,8 +148,7 @@ public class AddGridActivity extends AppCompatActivity {
                     public void onChooseColor(int position, int color) {
                         ImageView ivColor = findViewById(R.id.iv_color);
                         ivColor.setBackgroundColor(color);
-                        finalcolor = color;
-
+                        mfinalcolor = color;
 
                     }
 
@@ -163,20 +165,19 @@ public class AddGridActivity extends AppCompatActivity {
 
         if (oldPos < newPos) {
             for (int i = oldPos; i < newPos; i++) {
-                Collections.swap(observationItemsModels, i, i + 1);
+                Collections.swap(mTagModelList, i, i + 1);
             }
         } else {
             for (int i = oldPos; i > newPos; i--) {
-                Collections.swap(observationItemsModels, i, i - 1);
+                Collections.swap(mTagModelList, i, i - 1);
             }
         }
-        adapter.notifyItemMoved(oldPos, newPos);
-
+        mAdapter.notifyItemMoved(oldPos, newPos);
     }
 
     void deleteItem(final int position) {
-        observationItemsModels.remove(position);
-        adapter.notifyItemRemoved(position);
+        mTagModelList.remove(position);
+        mAdapter.notifyItemRemoved(position);
 
     }
 

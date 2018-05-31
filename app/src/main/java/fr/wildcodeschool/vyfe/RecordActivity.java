@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 public class RecordActivity extends AppCompatActivity {
 
-    ArrayList<ObservationItemsModel> mObservationItemsModels = new ArrayList<>();
+    ArrayList<TagModel> mTagModels = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,15 +30,15 @@ public class RecordActivity extends AppCompatActivity {
         RecyclerView recyclerTags = findViewById(R.id.re_tags);
         RecyclerView recyclerTime = findViewById(R.id.re_time_lines);
 
-        mObservationItemsModels = getIntent().getExtras().getParcelableArrayList("list");
+        mTagModels = getIntent().getExtras().getParcelableArrayList("list");
 
         RecyclerView.LayoutManager layoutManagerTags = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         RecyclerView.LayoutManager layoutManagerTime = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerTags.setLayoutManager(layoutManagerTags);
         recyclerTime.setLayoutManager(layoutManagerTime);
 
-        final ObservationsRecyclerAdapter adapterTags = new ObservationsRecyclerAdapter(mObservationItemsModels, "record");
-        final ObservationsRecyclerAdapter adapterTime = new ObservationsRecyclerAdapter(mObservationItemsModels, "timelines");
+        final TagRecyclerAdapter adapterTags = new TagRecyclerAdapter(mTagModels, "record");
+        final TagRecyclerAdapter adapterTime = new TagRecyclerAdapter(mTagModels, "timelines");
         recyclerTags.setAdapter(adapterTags);
         recyclerTime.setAdapter(adapterTime);
 
