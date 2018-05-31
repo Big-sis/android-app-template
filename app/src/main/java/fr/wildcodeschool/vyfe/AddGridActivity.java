@@ -22,8 +22,8 @@ import petrov.kristiyan.colorpicker.ColorPicker;
 
 public class AddGridActivity extends AppCompatActivity {
     int mfinalcolor;
-    SingletonClass mSingletonClass = SingletonClass.getInstance();
-    ArrayList<TagModel> mTagModelList = mSingletonClass.getmTagsList();
+    SingletonTags mSingletonTags = SingletonTags.getInstance();
+    ArrayList<TagModel> mTagModelList = mSingletonTags.getmTagsList();
     final TagRecyclerAdapter mAdapter = new TagRecyclerAdapter(mTagModelList, "start");
 
     @Override
@@ -90,7 +90,7 @@ public class AddGridActivity extends AppCompatActivity {
         btnEnd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mSingletonClass.setmTagsList(mTagModelList);
+                mSingletonTags.setmTagsList(mTagModelList);
                 Intent intent = new Intent(AddGridActivity.this, StartActivity.class);
                 startActivity(intent);
             }

@@ -2,20 +2,20 @@ package fr.wildcodeschool.vyfe;
 
 import java.util.ArrayList;
 
-public class SingletonClass {
+public class SingletonTags {
 
 
-    public static SingletonClass sInstance = null;
+    public static SingletonTags sInstance = null;
 
 
     private ArrayList<TagModel> mTagsList = new ArrayList<>();
 
-    private SingletonClass() {
+    private SingletonTags() {
     }
 
-    public static SingletonClass getInstance() {
+    public static SingletonTags getInstance() {
         if (sInstance == null) {
-            sInstance = new SingletonClass();
+            sInstance = new SingletonTags();
         }
         return sInstance;
     }

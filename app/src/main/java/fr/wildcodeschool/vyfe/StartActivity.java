@@ -19,7 +19,7 @@ import java.util.ArrayList;
 
 public class StartActivity extends AppCompatActivity {
 
-    SingletonClass mSingletonTags = SingletonClass.getInstance();
+    SingletonTags mSingletonTags = SingletonTags.getInstance();
     ArrayList<TagModel> mTagModelList = mSingletonTags.getmTagsList();
 
 
