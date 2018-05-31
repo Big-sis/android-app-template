@@ -31,7 +31,8 @@
 
         <activity
             android:name=".ConnexionActivity"
-            android:screenOrientation="landscape">
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -46,7 +47,8 @@
             android:screenOrientation="landscape" />
         <activity
             android:name=".StartActivity"
-            android:screenOrientation="landscape">
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="stateHidden">
 
 
         </activity>
@@ -56,7 +58,8 @@
 
         <activity android:name=".AddGridActivity"
             android:screenOrientation="landscape"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:windowSoftInputMode="stateHidden">
 
 
         </activity>
