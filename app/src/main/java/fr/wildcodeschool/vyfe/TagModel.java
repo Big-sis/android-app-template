@@ -3,29 +3,29 @@ package fr.wildcodeschool.vyfe;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class ObservationItemsModel implements Parcelable {
+public class TagModel implements Parcelable {
     private int color;
     private String name;
 
-    public ObservationItemsModel(int color, String name) {
+    public TagModel(int color, String name) {
         this.color = color;
         this.name = name;
     }
 
-    protected ObservationItemsModel(Parcel in) {
+    protected TagModel(Parcel in) {
         color = in.readInt();
         name = in.readString();
     }
 
-    public static final Creator<ObservationItemsModel> CREATOR = new Creator<ObservationItemsModel>() {
+    public static final Creator<TagModel> CREATOR = new Creator<TagModel>() {
         @Override
-        public ObservationItemsModel createFromParcel(Parcel in) {
-            return new ObservationItemsModel(in);
+        public TagModel createFromParcel(Parcel in) {
+            return new TagModel(in);
         }
 
         @Override
-        public ObservationItemsModel[] newArray(int size) {
-            return new ObservationItemsModel[size];
+        public TagModel[] newArray(int size) {
+            return new TagModel[size];
         }
     };
 
