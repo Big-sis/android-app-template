@@ -42,6 +42,7 @@ public class StartActivity extends AppCompatActivity {
         final Spinner spinner=findViewById(R.id.spinner_session_infos);
         final ArrayAdapter<CharSequence> adapterSpinner=ArrayAdapter.createFromResource(this, R.array.select_folder, R.layout.item_spinner);
         adapterSpinner.setDropDownViewResource(R.layout.item_spinner);
+
         spinner.setAdapter(adapterSpinner);
         //TODO: recuperation données API pour afficher spinner + recyclerview
 
