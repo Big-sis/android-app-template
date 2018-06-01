@@ -30,8 +30,8 @@ public class RecordActivity extends AppCompatActivity {
         RecyclerView recyclerTags = findViewById(R.id.re_tags);
         RecyclerView recyclerTime = findViewById(R.id.re_time_lines);
 
-        //TODO : apl Singleton à la place du parcelable qui n'existe plus
-        //mTagModels = getIntent().getExtras().getParcelableArrayList("list");
+        SingletonTags singletonTags = SingletonTags.getInstance();
+        mTagModels = singletonTags.getmTagsList();
 
         RecyclerView.LayoutManager layoutManagerTags = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         RecyclerView.LayoutManager layoutManagerTime = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
