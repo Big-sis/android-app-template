@@ -39,8 +39,8 @@ public class StartActivity extends AppCompatActivity {
         final RadioButton radioButtonImport = findViewById(R.id.radio_button_insert);
         final RadioButton radioButtonNew = findViewById(R.id.radio_Button_new);
 
-        final Spinner spinner=findViewById(R.id.spinner_session_infos);
-        final ArrayAdapter<CharSequence> adapterSpinner=ArrayAdapter.createFromResource(this, R.array.select_folder, R.layout.item_spinner);
+        final Spinner spinner = findViewById(R.id.spinner_session_infos);
+        final ArrayAdapter<CharSequence> adapterSpinner = ArrayAdapter.createFromResource(this, R.array.select_folder, R.layout.item_spinner);
         adapterSpinner.setDropDownViewResource(R.layout.item_spinner);
 
         spinner.setAdapter(adapterSpinner);
@@ -49,7 +49,7 @@ public class StartActivity extends AppCompatActivity {
         radioButtonImport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(radioButtonImport.isChecked()){
+                if (radioButtonImport.isChecked()) {
                     radioButtonNew.setChecked(false);
                     //TODO: affichier l'accès aux elements: imports grilles
                 }
@@ -59,7 +59,7 @@ public class StartActivity extends AppCompatActivity {
         radioButtonNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(radioButtonNew.isChecked()){
+                if (radioButtonNew.isChecked()) {
                     radioButtonImport.setChecked(false);
                     //TODO: affichier l'accès aux elements: création grilles
                 }
@@ -88,25 +88,25 @@ public class StartActivity extends AppCompatActivity {
             }
         });
 
-            recyclerTagList.setVisibility(View.VISIBLE);
-            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-            recyclerTagList.setLayoutManager(layoutManager);
-            final TagRecyclerAdapter adapter = new TagRecyclerAdapter(mTagModelList, "start");
-            recyclerTagList.setAdapter(adapter);
+        recyclerTagList.setVisibility(View.VISIBLE);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        recyclerTagList.setLayoutManager(layoutManager);
+        final TagRecyclerAdapter adapter = new TagRecyclerAdapter(mTagModelList, "start");
+        recyclerTagList.setAdapter(adapter);
 
 
-            if (mTagModelList.size() != 0) {
+        if (mTagModelList.size() != 0) {
 
-                tvAddTag.setText(R.string.edit_tags);
+            tvAddTag.setText(R.string.edit_tags);
 
+        }
+        fabAddMoment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(StartActivity.this, AddGridActivity.class);
+                startActivity(intent);
             }
-            fabAddMoment.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent = new Intent(StartActivity.this, AddGridActivity.class);
-                    startActivity(intent);
-                }
-            });
+        });
     }
 
     @Override
