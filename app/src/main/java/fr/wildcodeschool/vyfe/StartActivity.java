@@ -1,7 +1,6 @@
 package fr.wildcodeschool.vyfe;
 
 import android.content.Intent;
-import android.provider.MediaStore;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -86,15 +85,27 @@ public class StartActivity extends AppCompatActivity {
         });
 
         Button buttonGo = findViewById(R.id.button_go);
-        buttonGo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent toRecord = new Intent(StartActivity.this, RecordActivity.class);
-                toRecord.putParcelableArrayListExtra("list", mObservationItemsModels);
-                startActivity(toRecord);
-            }
-        });
 
+
+        if (MainActivity.mMulti) {
+            buttonGo.setText(R.string.next);
+            buttonGo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(StartActivity.this, ShareUrlActivity.class);
+                    startActivity(intent);
+                }
+            });
+        } else {
+            buttonGo.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent toRecord = new Intent(StartActivity.this, RecordActivity.class);
+                    toRecord.putParcelableArrayListExtra("list", mObservationItemsModels);
+                    startActivity(toRecord);
+                }
+            });
+        }
 
     }
 

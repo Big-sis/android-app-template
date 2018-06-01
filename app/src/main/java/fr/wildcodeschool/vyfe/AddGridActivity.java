@@ -22,10 +22,10 @@ import java.util.Random;
 import petrov.kristiyan.colorpicker.ColorPicker;
 
 public class AddGridActivity extends AppCompatActivity {
-    int finalcolor;
-    static boolean mAddEvent = false;
-    final ArrayList<ObservationItemsModel> observationItemsModels = new ArrayList<>();
-    final ObservationsRecyclerAdapter adapter = new ObservationsRecyclerAdapter(observationItemsModels, "start");
+    private int finalcolor;
+    public static boolean mAddEvent = false;
+    private final ArrayList<ObservationItemsModel> observationItemsModels = new ArrayList<>();
+    private final ObservationsRecyclerAdapter adapter = new ObservationsRecyclerAdapter(observationItemsModels, "start");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -146,8 +146,6 @@ public class AddGridActivity extends AppCompatActivity {
                         ImageView ivColor = findViewById(R.id.iv_color);
                         ivColor.setBackgroundColor(color);
                         finalcolor = color;
-
-
                     }
 
                     @Override
