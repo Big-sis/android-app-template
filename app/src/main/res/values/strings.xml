@@ -10,6 +10,7 @@
     <string name="information">Informations sur la vidéo</string>
     <string name="delete_video">SUPPRIMER</string>
     <string-array name="select_folder">
+        <item>Importer votre grille</item>
         <item>Dossier 1</item>
         <item>Dossier 2</item>
         <item>Dossier 3</item>
