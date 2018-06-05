@@ -32,14 +32,6 @@ public class MyVideoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_video);
 
-        Button button = findViewById(R.id.button);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(MyVideoActivity.this, StartActivity.class);
-                startActivity(intent);
-            }
-        });
         final GridView gridView = findViewById(R.id.grid_videos);
         SearchView searchView = findViewById(R.id.search_video);
 
