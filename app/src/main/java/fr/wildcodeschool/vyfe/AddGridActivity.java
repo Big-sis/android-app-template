@@ -2,6 +2,7 @@ package fr.wildcodeschool.vyfe;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.support.annotation.ColorInt;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -119,27 +120,22 @@ public class AddGridActivity extends AppCompatActivity {
         final ColorPicker colorPicker = new ColorPicker(this);
         final ArrayList<String> colors = new ArrayList<>();
         //TODO: remplacer couleur par celle de la charte graph
-        colors.add(("#bd000d"));
-        colors.add(("#5a00c5"));
-        colors.add(("#1e8900"));
-        colors.add(("#b7bb00"));
-        colors.add(("#b664ba"));
-
-        colors.add(("#f91734"));
-        colors.add(("#932bf9"));
-        colors.add(("#5bba25"));
-        colors.add(("#eded42"));
-        colors.add(("#ea94ed"));
-
-        colors.add(("#ff5f5e"));
-        colors.add(("#ca62ff"));
-        colors.add(("#90ed59"));
-        colors.add(("#ffff77"));
-        colors.add(("#ffc6ff"));
+        colors.add("#F57A62");
+        colors.add("#F56290");
+        colors.add("#F562E5");
+        colors.add("#F5EE62");
+        colors.add("#62F5AB");
+        colors.add("#69E3E7");
+        colors.add("#3490E1");
+        colors.add("#6977E7");
+        colors.add("#3F51B5");
+        colors.add("#343F6D");
+        colors.add("#0D1725");
+        colors.add("#d8d8d8");
 
 
         colorPicker.setColors(colors)
-                .setColumns(5)
+                .setColumns(4)
                 .setRoundColorButton(true)
                 .setTitle(getString(R.string.choose_color))
                 .setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {

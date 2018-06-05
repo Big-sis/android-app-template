@@ -23,10 +23,19 @@ public class StartActivity extends AppCompatActivity {
     ArrayList<TagModel> mTagModelList = mSingletonTags.getmTagsList();
 
 
+    SingletonSessions mSingletonSessions = SingletonSessions.getInstance();
+    ArrayList<SessionsModel> mSessionsModelList =  mSingletonSessions.getmSessionsList();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
+        ArrayList<String> name = new ArrayList<>();
+//TODO a remplacer av Singleton des TagSets et non de la Sessions
+        for (int i = 0; i < mSessionsModelList.size(); i++){
+            name.add(mSessionsModelList.get(i).getName());
+        }
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -39,12 +48,20 @@ public class StartActivity extends AppCompatActivity {
         final RadioButton radioButtonImport = findViewById(R.id.radio_button_insert);
         final RadioButton radioButtonNew = findViewById(R.id.radio_Button_new);
 
-        final Spinner spinner = findViewById(R.id.spinner_session_infos);
+      /*  final Spinner spinner = findViewById(R.id.spinner_session_infos);
         final ArrayAdapter<CharSequence> adapterSpinner = ArrayAdapter.createFromResource(this, R.array.select_folder, R.layout.item_spinner);
         adapterSpinner.setDropDownViewResource(R.layout.item_spinner);
 
         spinner.setAdapter(adapterSpinner);
         //TODO: recuperation données API pour afficher spinner + recyclerview
+*/
+
+
+        final Spinner spinner = (Spinner) findViewById(R.id.spinner_session_infos);
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, name);
+        adapter2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter2);
 
         radioButtonImport.setOnClickListener(new View.OnClickListener() {
             @Override
