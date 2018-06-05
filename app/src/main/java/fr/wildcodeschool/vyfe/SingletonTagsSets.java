@@ -22,7 +22,9 @@ public class SingletonTagsSets {
         return mTagsSetsList;
     }
 
-    public void setmTagsList(ArrayList<TagSetsModel> mTagsSetsList) {
+    public void setmTagsSetsList(ArrayList<TagSetsModel> mTagsSetsList) {
         this.mTagsSetsList = mTagsSetsList;
     }
 }
+
+

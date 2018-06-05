@@ -32,19 +32,16 @@ public class ConnexionActivity extends AppCompatActivity {
         connexion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //TODO: verifier la présence des données une fois API corrigée
                 apiTagSetsRecover();
                 apiSessionsRecover();
                 Intent intent = new Intent(ConnexionActivity.this, MainActivity.class);
                 startActivity(intent);
-
             }
         });
-
     }
 
     public void apiTagSetsRecover() {
-        // Recuperation données API
-        // recuperation des grilles
 
         final SingletonTagsSets mSingletonTagsSets = SingletonTagsSets.getInstance();
         final ArrayList<TagSetsModel> mTagsSetsModelList = mSingletonTagsSets.getmTagsSetsList();
@@ -57,16 +54,16 @@ public class ConnexionActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
-                            JSONArray sessions = response.getJSONArray("tag_sets");
-                            for (int i = 0; i < sessions.length(); i++) {
-                                JSONObject sessionsInfos = (JSONObject) sessions.get(i);
-                                int idTagSet = sessionsInfos.getInt("id");
-                                String nameTagSet = sessionsInfos.getString("name");
+                            JSONArray tagSets = response.getJSONArray("tag_sets");
+                            for (int i = 0; i < 1; i++) {
+                                JSONObject tagSetsInfos = (JSONObject) tagSets.get(i);
+                                int idTagSet = tagSetsInfos.getInt("id");
+                                String nameTagSet = tagSetsInfos.getString("name");
                                 TagSetsModel tagSetsModel = new TagSetsModel(idTagSet, nameTagSet);
                                 mTagsSetsModelList.add(tagSetsModel);
 
                             }
-                            mSingletonTagsSets.setmTagsList(mTagsSetsModelList);
+                            mSingletonTagsSets.setmTagsSetsList(mTagsSetsModelList);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -84,14 +81,12 @@ public class ConnexionActivity extends AppCompatActivity {
         requestQueue.add(jsonObjectRequest);
     }
 
-    public void apiSessionsRecover(){
+    public void apiSessionsRecover() {
         final SingletonSessions mSingletonSessions = SingletonSessions.getInstance();
         final ArrayList<SessionsModel> mSessionsModelList = mSingletonSessions.getmSessionsList();
 
         RequestQueue requestQueue = Volley.newRequestQueue(ConnexionActivity.this);
-
         String urlApi = "http://ns347471.ip-5-39-76.eu/vyfe-api-stub/Sessions";
-
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.GET, urlApi, null,
                 new Response.Listener<JSONObject>() {
@@ -103,16 +98,14 @@ public class ConnexionActivity extends AppCompatActivity {
                             for (int i = 0; i < sessions.length(); i++) {
                                 JSONObject sessionsInfos = (JSONObject) sessions.get(i);
                                 int id = sessionsInfos.getInt("id");
-                                String name = sessionsInfos.getString("name");
-                                String author = sessionsInfos.getString("author");
-                                String fkGroup = sessionsInfos.getString("fk_group");
-                                String videoLink = sessionsInfos.getString("video_link");
-                                String date = sessionsInfos.getString("date");
-                                SessionsModel sessionsModel = new SessionsModel(id, name, author, fkGroup, videoLink, date);
+                                String nameSession = sessionsInfos.getString("name");
+                                String authorSession = sessionsInfos.getString("author");
+                                String fkGroupSession = sessionsInfos.getString("fk_group");
+                                String videoLinkSession = sessionsInfos.getString("video_link");
+                                String dateSession = sessionsInfos.getString("date");
 
+                                SessionsModel sessionsModel = new SessionsModel(id, nameSession, authorSession, fkGroupSession, videoLinkSession, dateSession);
                                 mSessionsModelList.add(sessionsModel);
-                              //  gridAdapter.notifyDataSetChanged();
-
                             }
                             mSingletonSessions.setmSessionsList(mSessionsModelList);
                         } catch (JSONException e) {

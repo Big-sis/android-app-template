@@ -57,7 +57,7 @@ public class AddGridActivity extends AppCompatActivity {
             }
         });
 
-// Elements du recycler
+        // Elements du recycler
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(AddGridActivity.this, LinearLayoutManager.VERTICAL, false);
         recyclerTagList.setLayoutManager(layoutManager);
         recyclerTagList.setHasFixedSize(true);
@@ -67,7 +67,6 @@ public class AddGridActivity extends AppCompatActivity {
             recyclerTagList.setAdapter(mAdapter);
 
         }
-
 
             Button btnAddEvenement = findViewById(R.id.btn_add);
             btnAddEvenement.setOnClickListener(new View.OnClickListener() {
@@ -156,7 +155,7 @@ public class AddGridActivity extends AppCompatActivity {
 
     }
 
-    void moveItem(int oldPos, int newPos) {
+    public void moveItem(int oldPos, int newPos) {
 
         if (oldPos < newPos) {
             for (int i = oldPos; i < newPos; i++) {
@@ -170,7 +169,7 @@ public class AddGridActivity extends AppCompatActivity {
         mAdapter.notifyItemMoved(oldPos, newPos);
     }
 
-    void deleteItem(final int position) {
+    public void deleteItem(final int position) {
         mTagModelList.remove(position);
         mAdapter.notifyItemRemoved(position);
 
