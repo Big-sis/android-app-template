@@ -19,9 +19,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 public class MyVideoActivity extends AppCompatActivity {
+    SingletonSessions mSingletonSessions = SingletonSessions.getInstance();
+    ArrayList<SessionsModel> mSessionsModelList = mSingletonSessions.getmSessionsList();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,7 +33,7 @@ public class MyVideoActivity extends AppCompatActivity {
         SearchView searchView = findViewById(R.id.search_video);
         final ArrayList<SessionsModel> sessionsModelsList = new ArrayList<>();
 
-        final GridAdapter gridAdapter = new GridAdapter(this, sessionsModelsList);
+        final GridAdapter gridAdapter = new GridAdapter(this, mSessionsModelList);
         gridView.setAdapter(gridAdapter);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -49,6 +50,7 @@ public class MyVideoActivity extends AppCompatActivity {
         });
 
 
+        // A voir si les données ne devraient pas être plutôt récuperées sur la page de connexion
         RequestQueue requestQueue = Volley.newRequestQueue(MyVideoActivity.this);
 
         String urlApi = "http://ns347471.ip-5-39-76.eu/vyfe-api-stub/GET/Sessions";
@@ -71,10 +73,11 @@ public class MyVideoActivity extends AppCompatActivity {
                                 String date = sessionsInfos.getString("date");
                                 SessionsModel sessionsModel = new SessionsModel(id, name, author, fkGroup, videoLink, date);
 
-                                sessionsModelsList.add(sessionsModel);
-                                Toast.makeText(MyVideoActivity.this, name, Toast.LENGTH_LONG).show();
+                                mSessionsModelList.add(sessionsModel);
                                 gridAdapter.notifyDataSetChanged();
+
                             }
+                            mSingletonSessions.setmSessionsList(mSessionsModelList);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -90,5 +93,8 @@ public class MyVideoActivity extends AppCompatActivity {
                 }
         );
         requestQueue.add(jsonObjectRequest);
+
     }
+
+
 }
