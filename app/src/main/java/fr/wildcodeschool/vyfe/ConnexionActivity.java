@@ -30,12 +30,6 @@ public class ConnexionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connexion);
 
-        // Write a message to the database
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("message");
-
-        myRef.setValue("Hello, World!");
-
         Button connexion = findViewById(R.id.btn_connected);
         connexion.setOnClickListener(new View.OnClickListener() {
             @Override
