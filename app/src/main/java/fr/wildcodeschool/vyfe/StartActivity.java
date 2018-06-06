@@ -22,10 +22,8 @@ public class StartActivity extends AppCompatActivity {
     SingletonTags mSingletonTags = SingletonTags.getInstance();
     ArrayList<TagModel> mTagModelList = mSingletonTags.getmTagsList();
 
-
     SingletonSessions mSingletonSessions = SingletonSessions.getInstance();
     ArrayList<SessionsModel> mSessionsModelList = mSingletonSessions.getmSessionsList();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
