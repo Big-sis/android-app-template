@@ -1,45 +1,57 @@
 package fr.wildcodeschool.vyfe;
 
-import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.net.Uri;
-import android.provider.MediaStore;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+import android.graphics.PixelFormat;
+import android.hardware.Camera;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.View;
-import android.widget.VideoView;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
-public class RecordActivity extends AppCompatActivity {
+public class RecordActivity extends AppCompatActivity implements SurfaceHolder.Callback {
 
     private ArrayList<TagModel> mTagModels = new ArrayList<>();
-    private boolean mPermission;
-    private VideoView mVideoView;
-
-    public static final int RECORD_VIDEO = 1;
-    public static final int PERMISSION_REQUEST = 2;
-
+    private Camera mCamera;
+    private SurfaceView mCamView;
+    private SurfaceHolder mSurfaceHolder;
+    private boolean mCamCondition = false;
+    private FloatingActionButton mCap;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
 
+        getWindow().setFormat(PixelFormat.UNKNOWN);
+        mCamView = findViewById(R.id.video_view);
+        mSurfaceHolder = mCamView.getHolder();
+        mSurfaceHolder.addCallback(this);
+        mSurfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_NORMAL);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.record_session);
+
+        mCap = findViewById(R.id.bt_record_stop);
+        mCap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCap.setBackgroundColor(getResources().getColor(R.color.colorRosyPink));
+                mCamera.takePicture(null, null, null, mPictureCallback);
+            }
+        });
 
         RecyclerView recyclerTags = findViewById(R.id.re_tags);
         RecyclerView recyclerTime = findViewById(R.id.re_time_lines);
@@ -57,46 +69,63 @@ public class RecordActivity extends AppCompatActivity {
         recyclerTags.setAdapter(adapterTags);
         recyclerTime.setAdapter(adapterTime);
 
-        final FloatingActionButton btnRecord = findViewById(R.id.bt_record_stop);
-        btnRecord.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                btnRecord.setBackgroundColor(getResources().getColor(R.color.colorRosyPink));
-                Intent intent = new Intent();
-                intent.setAction(MediaStore.ACTION_VIDEO_CAPTURE);
-                startActivityForResult(intent, RECORD_VIDEO);
-            }
-        });
-
         FloatingActionButton btFinish = findViewById(R.id.bt_finish);
         btFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent toSelectedVideo = new Intent (RecordActivity.this, SelectedVideoActivity.class);
-
+                Intent toSelectedVideo = new Intent(RecordActivity.this, SelectedVideoActivity.class);
                 startActivity(toSelectedVideo);
             }
         });
+    }
 
-        if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
-                Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-            mPermission = true;
-        } else {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.CAMERA}, PERMISSION_REQUEST);
+    Camera.PictureCallback mPictureCallback = new Camera.PictureCallback() {
+        public void onPictureTaken(byte[] data, Camera c) {
+            FileOutputStream outStream = null;
+            try {
+                outStream = new FileOutputStream("/video_" + System.currentTimeMillis() + ".jpg");
+                outStream.write(data);
+                outStream.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+
+            }
+        }
+    };
+
+    @Override
+    public void surfaceCreated(SurfaceHolder holder) {
+        mCamera = Camera.open();
+    }
+
+    @Override
+    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
+        if (mCamCondition) {
+            mCamera.stopPreview();
+            mCamCondition = false;
+        }
+
+        if (mCamera != null) {
+            try {
+                Camera.Parameters parameters = mCamera.getParameters();
+                mCamera.setParameters(parameters);
+                mCamera.setPreviewDisplay(mSurfaceHolder);
+                mCamera.startPreview();
+                mCamCondition = true;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.settings, menu);
-        return true;
-    }
-
-    protected void onActivityResult(int request, int result, Intent intent) {
-        if (request == RECORD_VIDEO && result == RESULT_OK) {
-            Uri videoUri = intent.getData();
-            mVideoView.setVideoURI(videoUri);
-        }
+    public void surfaceDestroyed(SurfaceHolder holder) {
+        mCamera.stopPreview();
+        mCamera.release();
+        mCamera = null;
+        mCamCondition = false;
     }
 }

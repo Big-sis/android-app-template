@@ -3,6 +3,17 @@
     package="fr.wildcodeschool.vyfe">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera.front"
+        android:required="false" />
 
     <application
         android:allowBackup="true"
@@ -13,21 +24,18 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="landscape">
+            android:screenOrientation="landscape"/>
 
-        </activity>
         <activity
             android:name=".RecordActivity"
             android:screenOrientation="landscape" />
+
         <activity
             android:name=".InfoVideoActivity"
-            android:screenOrientation="landscape" >
-        </activity>
+            android:screenOrientation="landscape"/>
         <activity
             android:name=".SelectedVideoActivity"
-            android:screenOrientation="landscape" >
-
-        </activity>
+            android:screenOrientation="landscape"/>
 
         <activity
             android:name=".ConnexionActivity"
@@ -39,30 +47,29 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".MyVideoActivity"
             android:screenOrientation="landscape" />
+
         <activity
             android:name=".ProfilActivity"
             android:screenOrientation="landscape" />
+
         <activity
             android:name=".StartActivity"
             android:screenOrientation="landscape"
-            android:windowSoftInputMode="stateHidden">
+            android:windowSoftInputMode="stateHidden"/>
 
-
-        </activity>
         <activity
             android:name=".ShareUrlActivity"
             android:screenOrientation="landscape" />
 
-        <activity android:name=".AddGridActivity"
+        <activity
+            android:name=".AddGridActivity"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden">
-
-
-        </activity>
+            android:windowSoftInputMode="stateHidden"/>
 
         <meta-data
             android:name="preloaded_fonts"
