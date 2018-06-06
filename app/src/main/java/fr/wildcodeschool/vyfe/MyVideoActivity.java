@@ -1,9 +1,12 @@
 package fr.wildcodeschool.vyfe;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.GridView;
 import android.widget.Toast;
 
@@ -31,7 +34,6 @@ public class MyVideoActivity extends AppCompatActivity {
 
         final GridView gridView = findViewById(R.id.grid_videos);
         SearchView searchView = findViewById(R.id.search_video);
-        final ArrayList<SessionsModel> sessionsModelsList = new ArrayList<>();
 
         final GridAdapter gridAdapter = new GridAdapter(this, mSessionsModelList);
         gridView.setAdapter(gridAdapter);
@@ -48,51 +50,9 @@ public class MyVideoActivity extends AppCompatActivity {
                 return false;
             }
         });
+        gridAdapter.notifyDataSetChanged();
 
 
-        // A voir si les données ne devraient pas être plutôt récuperées sur la page de connexion
-        RequestQueue requestQueue = Volley.newRequestQueue(MyVideoActivity.this);
-
-        String urlApi = "http://ns347471.ip-5-39-76.eu/vyfe-api-stub/GET/Sessions";
-
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
-                Request.Method.GET, urlApi, null,
-                new Response.Listener<JSONObject>() {
-
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            JSONArray sessions = response.getJSONArray("sessions");
-                            for (int i = 0; i < sessions.length(); i++) {
-                                JSONObject sessionsInfos = (JSONObject) sessions.get(i);
-                                int id = sessionsInfos.getInt("id");
-                                String name = sessionsInfos.getString("name");
-                                String author = sessionsInfos.getString("author");
-                                String fkGroup = sessionsInfos.getString("fk_group");
-                                String videoLink = sessionsInfos.getString("video_link");
-                                String date = sessionsInfos.getString("date");
-                                SessionsModel sessionsModel = new SessionsModel(id, name, author, fkGroup, videoLink, date);
-
-                                mSessionsModelList.add(sessionsModel);
-                                gridAdapter.notifyDataSetChanged();
-
-                            }
-                            mSingletonSessions.setmSessionsList(mSessionsModelList);
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // Afficher l'erreur
-                        Log.d("VOLLEY_ERROR", "onErrorResponse: " + error.getMessage());
-                    }
-                }
-        );
-        requestQueue.add(jsonObjectRequest);
 
     }
 
