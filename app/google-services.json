@@ -1,0 +1,59 @@
+{
+  "project_info": {
+    "project_number": "38414794079",
+    "firebase_url": "https://vyfe-project.firebaseio.com",
+    "project_id": "vyfe-project",
+    "storage_bucket": "vyfe-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:38414794079:android:56db472ed4c04535",
+        "android_client_info": {
+          "package_name": "fr.wildcodeschool.vyfe"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "38414794079-3jscc00v9ib2nrsl3ong73igblrs3cmn.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "fr.wildcodeschool.vyfe",
+            "certificate_hash": "46040a8bb689ef2213074a9811ccb77b0c44d490"
+          }
+        },
+        {
+          "client_id": "38414794079-4ojm9sue3hc36bl9a6alarseriftfkc8.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "38414794079-4ojm9sue3hc36bl9a6alarseriftfkc8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC7qJsyWA0C5HpoZmGmAPLrajpRl7jngbE"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "38414794079-4ojm9sue3hc36bl9a6alarseriftfkc8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
