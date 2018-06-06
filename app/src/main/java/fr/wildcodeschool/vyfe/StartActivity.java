@@ -103,7 +103,7 @@ public class StartActivity extends AppCompatActivity {
                     buttonBack.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            share.setVisibility(View.INVISIBLE);
+                            share.setVisibility(View.GONE);
                         }
                     });
                     buttonGoMulti.setOnClickListener(new View.OnClickListener() {
