@@ -62,5 +62,6 @@
     <string name="modif_tags">Ajouter ou modifier les événements</string>
     <string name="add_tags">Ajouter des événements</string>
     <string name="edit_tags">Modifier les événements</string>
+    <string name="next">Suivant</string>
 
 </resources>
