@@ -51,7 +51,7 @@
         <activity
             android:name=".MyVideoActivity"
             android:screenOrientation="landscape" />
-
+      
         <activity
             android:name=".ProfilActivity"
             android:screenOrientation="landscape" />
