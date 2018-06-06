@@ -1,9 +1,10 @@
 package fr.wildcodeschool.vyfe;
 
 import android.content.Intent;
+import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -29,25 +30,35 @@ public class StartActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
+
+        final Button buttonBack = findViewById(R.id.button_back);
+        Button buttonGo = findViewById(R.id.button_go);
+        final Button buttonGoMulti = findViewById(R.id.button_go_multi);
+        final ConstraintLayout share = findViewById(R.id.layout_share);
+        FloatingActionButton fabAddMoment = findViewById(R.id.fab_add_moment);
+        RecyclerView recyclerTagList = findViewById(R.id.recycler_view);
+        final RadioButton radioButtonImport = findViewById(R.id.radio_button_insert);
+        final RadioButton radioButtonNew = findViewById(R.id.radio_Button_new);
+        final Spinner spinner = (Spinner) findViewById(R.id.spinner_session_infos);
+        TextView tvAddTag = findViewById(R.id.tv_add_tag);
+        Toolbar toolbar = findViewById(R.id.toolbar);
+
+        if (MainActivity.mMulti) {
+            buttonGo.setText(R.string.next);
+        }
+
         ArrayList<String> name = new ArrayList<>();
+
         //TODO a remplacer av Singleton des TagSets et non de la Sessions
         for (int i = 0; i < mSessionsModelList.size(); i++) {
             name.add(mSessionsModelList.get(i).getName());
         }
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.start_session);
 
-        TextView tvAddTag = findViewById(R.id.tv_add_tag);
-        RecyclerView recyclerTagList = findViewById(R.id.recycler_view);
-        final RadioButton radioButtonImport = findViewById(R.id.radio_button_insert);
-        final RadioButton radioButtonNew = findViewById(R.id.radio_Button_new);
-
-
-        final Spinner spinner = (Spinner) findViewById(R.id.spinner_session_infos);
         ArrayAdapter<String> adapterSpinner = new ArrayAdapter<String>(this,
                 android.R.layout.simple_spinner_item, name);
         adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -76,8 +87,6 @@ public class StartActivity extends AppCompatActivity {
 
         //TODO: en fct du radio button selectionner envoyer telles ou telles arraylist
 
-
-        FloatingActionButton fabAddMoment = findViewById(R.id.fab_add_moment);
         fabAddMoment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,12 +95,29 @@ public class StartActivity extends AppCompatActivity {
             }
         });
 
-        Button buttonGo = findViewById(R.id.button_go);
         buttonGo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent toRecord = new Intent(StartActivity.this, RecordActivity.class);
-                startActivity(toRecord);
+                if (MainActivity.mMulti) {
+                    share.setVisibility(View.VISIBLE);
+                    buttonBack.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            share.setVisibility(View.INVISIBLE);
+                        }
+                    });
+                    buttonGoMulti.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent intent = new Intent(StartActivity.this, RecordActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+                    MainActivity.mMulti = false;
+                } else {
+                    Intent toRecord = new Intent(StartActivity.this, RecordActivity.class);
+                    startActivity(toRecord);
+                }
             }
         });
 
@@ -101,12 +127,10 @@ public class StartActivity extends AppCompatActivity {
         final TagRecyclerAdapter adapter = new TagRecyclerAdapter(mTagModelList, "start");
         recyclerTagList.setAdapter(adapter);
 
-
         if (mTagModelList.size() != 0) {
-
             tvAddTag.setText(R.string.edit_tags);
-
         }
+
         fabAddMoment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

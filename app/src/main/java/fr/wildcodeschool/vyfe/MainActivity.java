@@ -16,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
 
     private static final int PERMISSIONS_REQUEST = 1;
     private boolean mPermission;
+    public static boolean mMulti = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
         btnMultiSession.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mMulti = true;
                 Intent intent = new Intent(MainActivity.this, StartActivity.class);
                 startActivity(intent);
             }
