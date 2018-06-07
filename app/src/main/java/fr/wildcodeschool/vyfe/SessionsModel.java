@@ -1,7 +1,5 @@
 package fr.wildcodeschool.vyfe;
 
-import java.util.Date;
-
 public class SessionsModel {
     private int id;
     private String name;

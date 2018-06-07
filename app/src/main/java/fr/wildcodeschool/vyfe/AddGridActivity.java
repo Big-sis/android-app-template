@@ -2,9 +2,8 @@ package fr.wildcodeschool.vyfe;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.annotation.ColorInt;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -68,23 +67,23 @@ public class AddGridActivity extends AppCompatActivity {
 
         }
 
-            Button btnAddEvenement = findViewById(R.id.btn_add);
-            btnAddEvenement.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    String valueName = etName.getText().toString();
-                    if (valueName.equals("") || mfinalcolor == 0) {
-                        Toast.makeText(AddGridActivity.this, R.string.def_colot, Toast.LENGTH_SHORT).show();
-                    } else {
-                        TagModel tagModel = new TagModel(mfinalcolor, valueName);
-                        mTagModelList.add(tagModel);
-                        mAdapter.notifyDataSetChanged();
-                        mfinalcolor = 0;
-                        etName.setText("");
-                        ivColor.setBackgroundColor(Color.parseColor("#ffaaaaaa"));
-                    }
+        Button btnAddEvenement = findViewById(R.id.btn_add);
+        btnAddEvenement.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String valueName = etName.getText().toString();
+                if (valueName.equals("") || mfinalcolor == 0) {
+                    Toast.makeText(AddGridActivity.this, R.string.def_colot, Toast.LENGTH_SHORT).show();
+                } else {
+                    TagModel tagModel = new TagModel(mfinalcolor, valueName);
+                    mTagModelList.add(tagModel);
+                    mAdapter.notifyDataSetChanged();
+                    mfinalcolor = 0;
+                    etName.setText("");
+                    ivColor.setBackgroundColor(Color.parseColor("#ffaaaaaa"));
                 }
-            });
+            }
+        });
 
         Button btnEnd = findViewById(R.id.btn_end);
         btnEnd.setOnClickListener(new View.OnClickListener() {

@@ -5,6 +5,17 @@ import android.os.Parcelable;
 
 //TODO: enlever parcelable
 public class TagModel implements Parcelable {
+    public static final Creator<TagModel> CREATOR = new Creator<TagModel>() {
+        @Override
+        public TagModel createFromParcel(Parcel in) {
+            return new TagModel(in);
+        }
+
+        @Override
+        public TagModel[] newArray(int size) {
+            return new TagModel[size];
+        }
+    };
     private int color;
     private String name;
 
@@ -17,18 +28,6 @@ public class TagModel implements Parcelable {
         color = in.readInt();
         name = in.readString();
     }
-
-    public static final Creator<TagModel> CREATOR = new Creator<TagModel>() {
-        @Override
-        public TagModel createFromParcel(Parcel in) {
-            return new TagModel(in);
-        }
-
-        @Override
-        public TagModel[] newArray(int size) {
-            return new TagModel[size];
-        }
-    };
 
     public int getColor() {
         return color;

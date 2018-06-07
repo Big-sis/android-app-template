@@ -101,23 +101,6 @@ public class RecordActivity extends AppCompatActivity implements SurfaceHolder.C
         });
     }
 
-    Camera.PictureCallback mPictureCallback = new Camera.PictureCallback() {
-        public void onPictureTaken(byte[] data, Camera c) {
-            FileOutputStream outStream = null;
-            try {
-                outStream = new FileOutputStream("/video_" + System.currentTimeMillis() + ".jpg");
-                outStream.write(data);
-                outStream.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-
-            }
-        }
-    };
-
     @Override
     public void surfaceCreated(SurfaceHolder holder) {
         mCamera = Camera.open();
@@ -150,4 +133,21 @@ public class RecordActivity extends AppCompatActivity implements SurfaceHolder.C
         mCamera = null;
         mCamCondition = false;
     }
+
+    Camera.PictureCallback mPictureCallback = new Camera.PictureCallback() {
+        public void onPictureTaken(byte[] data, Camera c) {
+            FileOutputStream outStream = null;
+            try {
+                outStream = new FileOutputStream("/video_" + System.currentTimeMillis() + ".jpg");
+                outStream.write(data);
+                outStream.close();
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+
+            }
+        }
+    };
 }
