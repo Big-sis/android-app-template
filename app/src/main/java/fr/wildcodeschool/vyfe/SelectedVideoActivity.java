@@ -22,7 +22,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selected_video);
 
-        Button edit = findViewById(R.id.bt_edit);
+        Button edit = findViewById(R.id.btn_edit);
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
