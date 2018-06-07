@@ -63,5 +63,8 @@
     <string name="add_tags">Ajouter des événements</string>
     <string name="edit_tags">Modifier les événements</string>
     <string name="next">Suivant</string>
+    <string name="video_save">Session enregistrée dans vos vidéos</string>
+    <string name="back_to_main">Retour à l\'accueil</string>
+    <string name="show_video">Visionner</string>
 
 </resources>
