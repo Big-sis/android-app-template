@@ -62,10 +62,6 @@
             android:windowSoftInputMode="stateHidden"/>
 
         <activity
-            android:name=".ShareUrlActivity"
-            android:screenOrientation="landscape" />
-
-        <activity
             android:name=".AddGridActivity"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar"
