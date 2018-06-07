@@ -130,7 +130,7 @@
                 android:layout_marginStart="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:srcCompat="@drawable/icons8_coche_48" />
+                app:srcCompat="@drawable/icons8_coche_96" />
 
             <TextView
                 android:id="@+id/tv_video_save"

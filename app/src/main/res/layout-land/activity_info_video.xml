@@ -15,7 +15,9 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="395dp">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
@@ -146,7 +148,7 @@
                 android:layout_marginStart="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:srcCompat="@drawable/icons8_effacer_48" />
+                app:srcCompat="@drawable/icons8_effacer_96" />
 
             <TextView
                 android:id="@+id/tv_video_save"

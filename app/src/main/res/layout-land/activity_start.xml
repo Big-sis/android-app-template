@@ -260,7 +260,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/icons8_partager_48" />
+                app:srcCompat="@drawable/icons8_partager_96" />
 
 
             <TextView
