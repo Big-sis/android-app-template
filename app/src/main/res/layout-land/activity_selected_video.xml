@@ -40,6 +40,52 @@
                         android:id="@+id/vv_preview"
                         android:layout_width="match_parent"
                         android:layout_height="217dp" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                style="?android:attr/buttonBarStyle">
+
+                <Button
+                    android:id="@+id/bt_play"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_weight="0.33"
+                    android:background="@drawable/style_button"
+                    android:text="@string/play_video"
+                    android:textColor="@color/white"
+                    app:fontFamily="@font/roboto_bold"
+                    style="?android:attr/buttonBarButtonStyle"/>
+
+                <Button
+                    android:id="@+id/btn_edit"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_weight="0.33"
+                    android:background="@drawable/style_button_white"
+                    android:text="@string/edit"
+                    android:textColor="@color/colorBlack"
+                    app:fontFamily="@font/roboto_bold" />
+
+                <Button
+                    android:id="@+id/bt_upload"
+                    style="?android:attr/buttonBarButtonStyle"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:layout_weight="0.33"
+                    android:background="@drawable/style_button_white"
+                    android:text="@string/upload"
+                    android:textColor="@color/colorBlack"
+                    app:fontFamily="@font/roboto_bold" />
+            </LinearLayout>
+        </LinearLayout>
 
                     <TextView
                         android:id="@+id/tv_title"

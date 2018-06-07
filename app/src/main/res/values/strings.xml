@@ -4,11 +4,10 @@
     <string name="video_info">Informations sur la vidéo</string>
     <string name="folder">Dossier</string>
     <string name="description">Description</string>
-    <string name="play_video">VISIONNER</string>
-    <string name="edit">MODIFIER</string>
-    <string name="upload">UPLOADER</string>
+    <string name="play_video">Visionner</string>
+    <string name="edit">Modifier</string>
+    <string name="upload">Uploader</string>
     <string name="information">Informations sur la vidéo</string>
-    <string name="delete_video">SUPPRIMER</string>
     <string-array name="select_folder">
         <item>Importer votre grille</item>
         <item>Dossier 1</item>
@@ -28,14 +27,14 @@
     <string name="email">Email</string>
     <string name="password">Mot de passe</string>
     <string name="lost_password">Mot de passe oublié ?</string>
-    <string name="connected_maj">SE CONNECTER</string>
+    <string name="connected_maj">Se connecter</string>
     <string name="infor_session">Information sur la session</string>
     <string name="add_description">Ajouter une description</string>
     <string name="my_analyse">Mes grilles d\'analyses</string>
     <string name="title_grille">Titre de la grille</string>
     <string name="add_evenement">Ajouter un événement</string>
-    <string name="go">DEMARRER</string>
-    <string name="back">RETOUR</string>
+    <string name="go">Démarrer</string>
+    <string name="back">Retour</string>
     <string name="share_url">Partagez l\'adresse URL à vos apprenants</string>
     <string name="url">http://vyfe.co/live/356</string>
     <string name="category">Category</string>
@@ -55,7 +54,7 @@
     <string name="grid_import">Importer une grille d\'analyse</string>
     <string name="new_grid2">Créer une nouvelle grille d\'analyse</string>
     <string name="move">Événement déplacé</string>
-    <string name="delete">Événement supprimé</string>
+    <string name="delete_tag">Événement supprimé</string>
     <string name="infos_video">Informations sur la vidéo</string>
     <string name="video_name">Nom de la vidéo</string>
     <string name="record_session">Enregistrer une session</string>
@@ -66,5 +65,8 @@
     <string name="video_save">Session enregistrée dans vos vidéos</string>
     <string name="back_to_main">Retour à l\'accueil</string>
     <string name="show_video">Visionner</string>
+    <string name="confirm_delete_video">Voulez-vous vraiment supprimer cette vidéo ?</string>
+    <string name="cancel">Annuler</string>
+    <string name="delete">Supprimer</string>
 
 </resources>
