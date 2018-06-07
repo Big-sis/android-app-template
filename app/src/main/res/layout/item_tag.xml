@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="5dp"
-    android:background="@drawable/events"
+    android:background="@drawable/tag"
     tools:layout_editor_absoluteY="25dp">
 
 
@@ -39,7 +39,7 @@
         app:layout_constraintStart_toEndOf="@+id/iv_color"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!--Texte en dur ne va pas rester -->
+
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -54,7 +54,7 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="visible" />
 
-
+    <!--Texte en dur ne va pas rester -->
     <TextView
         android:id="@+id/tv_stats"
         android:layout_width="35dp"
