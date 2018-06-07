@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.hardware.Camera;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
+import android.widget.Button;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -32,8 +34,17 @@ public class RecordActivity extends AppCompatActivity implements SurfaceHolder.C
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
 
-        getWindow().setFormat(PixelFormat.UNKNOWN);
         mCamView = findViewById(R.id.video_view);
+        mCap = findViewById(R.id.bt_record_stop);
+
+        Button btnBackMain = findViewById(R.id.btn_back_main);
+        Button btnPlay = findViewById(R.id.btn_play);
+        final ConstraintLayout sessionRecord = findViewById(R.id.session_record);
+        FloatingActionButton btFinish = findViewById(R.id.bt_finish);
+        RecyclerView recyclerTags = findViewById(R.id.re_tags);
+        RecyclerView recyclerTime = findViewById(R.id.re_time_lines);
+
+        getWindow().setFormat(PixelFormat.UNKNOWN);
         mSurfaceHolder = mCamView.getHolder();
         mSurfaceHolder.addCallback(this);
         mSurfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_NORMAL);
@@ -44,7 +55,6 @@ public class RecordActivity extends AppCompatActivity implements SurfaceHolder.C
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.record_session);
 
-        mCap = findViewById(R.id.bt_record_stop);
         mCap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -52,9 +62,6 @@ public class RecordActivity extends AppCompatActivity implements SurfaceHolder.C
                 mCamera.takePicture(null, null, null, mPictureCallback);
             }
         });
-
-        RecyclerView recyclerTags = findViewById(R.id.re_tags);
-        RecyclerView recyclerTime = findViewById(R.id.re_time_lines);
 
         SingletonTags singletonTags = SingletonTags.getInstance();
         mTagModels = singletonTags.getmTagsList();
@@ -69,12 +76,27 @@ public class RecordActivity extends AppCompatActivity implements SurfaceHolder.C
         recyclerTags.setAdapter(adapterTags);
         recyclerTime.setAdapter(adapterTime);
 
-        FloatingActionButton btFinish = findViewById(R.id.bt_finish);
         btFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent toSelectedVideo = new Intent(RecordActivity.this, SelectedVideoActivity.class);
-                startActivity(toSelectedVideo);
+                sessionRecord.setVisibility(View.VISIBLE);
+            }
+        });
+
+        btnBackMain.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                sessionRecord.setVisibility(View.GONE);
+                Intent intent = new Intent(RecordActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btnPlay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(RecordActivity.this, SelectedVideoActivity.class);
+                startActivity(intent);
             }
         });
     }
