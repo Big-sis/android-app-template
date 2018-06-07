@@ -107,7 +107,7 @@ public class AddGridActivity extends AppCompatActivity {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 deleteItem(viewHolder.getAdapterPosition());
-                Toast.makeText(AddGridActivity.this, R.string.delete, Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddGridActivity.this, R.string.delete_tag, Toast.LENGTH_SHORT).show();
             }
         });
         itemTouchHelper.attachToRecyclerView(recyclerTagList);
