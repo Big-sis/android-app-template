@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RecordActivity"
-    android:background="@drawable/bg">
+    android:background="@drawable/bg"
+    tools:context=".RecordActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -14,7 +14,7 @@
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <include
                 android:id="@+id/appBar"
@@ -130,7 +130,7 @@
                 android:layout_marginStart="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:srcCompat="@drawable/icons8_coche_48" />
+                app:srcCompat="@drawable/icons8_coche_96" />
 
             <TextView
                 android:id="@+id/tv_video_save"

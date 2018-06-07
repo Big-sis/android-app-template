@@ -20,22 +20,6 @@ public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.
         mFrom = from;
     }
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
-
-        TextView tvName;
-        ImageView ivColor;
-        TextView tvNum;
-        ProgressBar bar;
-
-        public ViewHolder(View v) {
-            super(v);
-            this.tvName = v.findViewById(R.id.tv_name);
-            this.ivColor = v.findViewById(R.id.iv_color);
-            this.tvNum = v.findViewById(R.id.tv_stats);
-            this.bar = v.findViewById(R.id.progressBar);
-        }
-    }
-
     @Override
     public TagRecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
@@ -53,16 +37,13 @@ public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.
         if (mFrom.equals("start")) {
             holder.tvNum.setVisibility(View.GONE);
             holder.bar.setVisibility(View.GONE);
-        }
-        else if (mFrom.equals("record")) {
+        } else if (mFrom.equals("record")) {
             holder.tvNum.setVisibility(View.GONE);
             holder.bar.setVisibility(View.GONE);
-        }
-        else if (mFrom.equals("timelines")) {
+        } else if (mFrom.equals("timelines")) {
             holder.tvNum.setVisibility(View.GONE);
             holder.bar.setVisibility(View.VISIBLE);
-        }
-        else if (mFrom.equals("count")) {
+        } else if (mFrom.equals("count")) {
             holder.tvNum.setVisibility(View.VISIBLE);
             holder.bar.setVisibility(View.GONE);
             // Pour tester :
@@ -73,6 +54,22 @@ public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.
     @Override
     public int getItemCount() {
         return mTagModelList.size();
+    }
+
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+
+        TextView tvName;
+        ImageView ivColor;
+        TextView tvNum;
+        ProgressBar bar;
+
+        public ViewHolder(View v) {
+            super(v);
+            this.tvName = v.findViewById(R.id.tv_name);
+            this.ivColor = v.findViewById(R.id.iv_color);
+            this.tvNum = v.findViewById(R.id.tv_stats);
+            this.bar = v.findViewById(R.id.progressBar);
+        }
     }
 
 }

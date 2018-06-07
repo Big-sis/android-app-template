@@ -4,12 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SelectedVideoActivity"
-    android:background="@drawable/bg">
+    android:background="@drawable/bg"
+    tools:context=".SelectedVideoActivity">
 
-        <include
-            layout="@layout/toolbar"
-            android:id="@+id/appBar"/>
+    <include
+        android:id="@+id/appBar"
+        layout="@layout/toolbar" />
 
     <ScrollView
         android:layout_width="match_parent"
@@ -65,13 +65,14 @@
                     app:fontFamily="@font/roboto" />
 
                 <LinearLayout
+                    style="?android:attr/buttonBarStyle"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal"
-                    style="?android:attr/buttonBarStyle">
+                    android:orientation="horizontal">
 
                     <Button
                         android:id="@+id/bt_play"
+                        style="?android:attr/buttonBarButtonStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="30dp"
                         android:layout_marginLeft="20dp"
@@ -80,8 +81,7 @@
                         android:background="@drawable/style_button"
                         android:text="@string/play_video"
                         android:textColor="@color/white"
-                        app:fontFamily="@font/roboto_bold"
-                        style="?android:attr/buttonBarButtonStyle"/>
+                        app:fontFamily="@font/roboto_bold" />
 
                     <Button
                         android:id="@+id/btn_edit"

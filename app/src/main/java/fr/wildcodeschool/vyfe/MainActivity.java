@@ -15,8 +15,8 @@ import android.widget.LinearLayout;
 public class MainActivity extends AppCompatActivity {
 
     private static final int PERMISSIONS_REQUEST = 1;
-    private boolean mPermission;
     public static boolean mMulti = false;
+    private boolean mPermission;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

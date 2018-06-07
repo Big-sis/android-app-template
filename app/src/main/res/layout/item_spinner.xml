@@ -4,9 +4,4 @@
     android:layout_height="wrap_content"
     android:background="@drawable/style_input"
     android:padding="10dp"
-    android:textColor="@color/colorWhiteTwo"
-
-    />
-
-
-
+    android:textColor="@color/colorWhiteTwo"/>
