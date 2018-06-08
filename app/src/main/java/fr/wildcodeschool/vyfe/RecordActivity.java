@@ -14,6 +14,8 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -37,12 +39,15 @@ public class RecordActivity extends AppCompatActivity implements SurfaceHolder.C
         mCamView = findViewById(R.id.video_view);
         mCap = findViewById(R.id.bt_record_stop);
 
-        Button btnBackMain = findViewById(R.id.btn_back_main);
-        Button btnPlay = findViewById(R.id.btn_play);
+        final Button btnBackMain = findViewById(R.id.btn_back_main);
+        final Button btnPlay = findViewById(R.id.btn_play);
         final ConstraintLayout sessionRecord = findViewById(R.id.session_record);
         FloatingActionButton btFinish = findViewById(R.id.bt_finish);
+        final ImageView ivCheck = findViewById(R.id.iv_check);
         RecyclerView recyclerTags = findViewById(R.id.re_tags);
         RecyclerView recyclerTime = findViewById(R.id.re_time_lines);
+        final TextView tvVideoSave = findViewById(R.id.tv_video_save);
+        final TextView tvWait = findViewById(R.id.wait);
 
         getWindow().setFormat(PixelFormat.UNKNOWN);
         mSurfaceHolder = mCamView.getHolder();
@@ -80,6 +85,16 @@ public class RecordActivity extends AppCompatActivity implements SurfaceHolder.C
             @Override
             public void onClick(View v) {
                 sessionRecord.setVisibility(View.VISIBLE);
+                ivCheck.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ivCheck.setImageResource(R.drawable.icons8_coche_96);
+                        tvVideoSave.setText(R.string.video_save);
+                        tvWait.setVisibility(View.INVISIBLE);
+                        btnBackMain.setVisibility(View.VISIBLE);
+                        btnPlay.setVisibility(View.VISIBLE);
+                    }
+                });
             }
         });
 
