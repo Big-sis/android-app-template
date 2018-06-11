@@ -29,8 +29,9 @@ public class StartActivity extends AppCompatActivity {
     SingletonTags mSingletonTags = SingletonTags.getInstance();
     ArrayList<TagModel> mTagModelList = mSingletonTags.getmTagsList();
 
-    SingletonSessions mSingletonSessions = SingletonSessions.getInstance();
-    ArrayList<SessionsModel> mSessionsModelList = mSingletonSessions.getmSessionsList();
+    SingletonTagsSets mSingletonTagsSets = SingletonTagsSets.getInstance();
+    ArrayList<TagSetsModel> mTagsSetsList = mSingletonTagsSets.getmTagsSetsList();
+
     FirebaseDatabase mdatabase = FirebaseDatabase.getInstance();
 
     @Override
@@ -62,8 +63,8 @@ public class StartActivity extends AppCompatActivity {
         ArrayList<String> name = new ArrayList<>();
 
         //TODO a remplacer av Singleton des TagSets et non de la Sessions
-        for (int i = 0; i < mSessionsModelList.size(); i++) {
-            name.add(mSessionsModelList.get(i).getName());
+        for (int i = 0; i < mTagsSetsList.size(); i++) {
+            name.add(mTagsSetsList.get(i).getName());
         }
 
         setSupportActionBar(toolbar);
@@ -140,6 +141,9 @@ public class StartActivity extends AppCompatActivity {
 
                 DatabaseReference TagsSetRef = mdatabase.getReference(authUserId).child("tag_sets").child(idTagSet).child("name");
                 TagsSetRef.setValue(titleVideo);
+                //TODO: remplacer 0 par ref TagSet
+                mTagsSetsList.add(new TagSetsModel(0, titleVideo));
+                mSingletonTagsSets.setmTagsSetsList(mTagsSetsList);
 
 
                 for (int i = 0; i < mTagModelList.size(); i++) {
@@ -163,8 +167,6 @@ public class StartActivity extends AppCompatActivity {
                     tagsRefTagSet.setValue(idTagSet);
                 }
 
-
-                Toast.makeText(StartActivity.this, idTagSet, Toast.LENGTH_SHORT).show();
 
             }
         });
