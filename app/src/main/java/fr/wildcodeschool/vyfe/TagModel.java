@@ -3,30 +3,19 @@ package fr.wildcodeschool.vyfe;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-//TODO: enlever parcelable
-public class TagModel implements Parcelable {
-    public static final Creator<TagModel> CREATOR = new Creator<TagModel>() {
-        @Override
-        public TagModel createFromParcel(Parcel in) {
-            return new TagModel(in);
-        }
 
-        @Override
-        public TagModel[] newArray(int size) {
-            return new TagModel[size];
-        }
-    };
+public class TagModel {
+
     private int color;
     private String name;
+    private String fkTagSet;
+    private String rigthOffset;
 
-    public TagModel(int color, String name) {
+    public TagModel(int color, String name, String fkTagSet, String rigthOffset) {
         this.color = color;
         this.name = name;
-    }
-
-    protected TagModel(Parcel in) {
-        color = in.readInt();
-        name = in.readString();
+        this.fkTagSet = fkTagSet;
+        this.rigthOffset = rigthOffset;
     }
 
     public int getColor() {
@@ -45,14 +34,21 @@ public class TagModel implements Parcelable {
         this.name = name;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
+    public String getFkTagSet() {
+        return fkTagSet;
     }
 
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(color);
-        parcel.writeString(name);
+    public void setFkTagSet(String fkTagSet) {
+        this.fkTagSet = fkTagSet;
+    }
+
+    public String getRigthOffset() {
+        return rigthOffset;
+    }
+
+    public void setRigthOffset(String rigthOffset) {
+        this.rigthOffset = rigthOffset;
     }
 }
+
+

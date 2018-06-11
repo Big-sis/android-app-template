@@ -18,6 +18,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -50,6 +51,8 @@ public class StartActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
 
         final EditText etVideoTitle = findViewById(R.id.et_video_title);
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        final String authUserId = auth.getCurrentUser().getUid();
 
 
         if (MainActivity.mMulti) {
@@ -107,7 +110,7 @@ public class StartActivity extends AppCompatActivity {
         buttonGo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*
+                final Intent intent = new Intent(StartActivity.this, RecordActivity.class);
                 if (MainActivity.mMulti) {
                     share.setVisibility(View.VISIBLE);
                     buttonBack.setOnClickListener(new View.OnClickListener() {
@@ -119,25 +122,27 @@ public class StartActivity extends AppCompatActivity {
                     buttonGoMulti.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Intent intent = new Intent(StartActivity.this, RecordActivity.class);
+
                             startActivity(intent);
                         }
                     });
                     MainActivity.mMulti = false;
-                } else {
-                    Intent toRecord = new Intent(StartActivity.this, RecordActivity.class);
-                    startActivity(toRecord);
+                }else {
+
+                    startActivity(intent);
+
+                }
+                DatabaseReference idTagSetRef = mdatabase.getReference(authUserId).child("tag_sets").child("name");
+                String idTagSet = idTagSetRef.push().getKey();
+                String titleVideo = etVideoTitle.getText().toString();
+                DatabaseReference TagsSetRef = mdatabase.getReference(authUserId).child("tag_sets").child(idTagSet).child("name");
+                TagsSetRef.setValue(titleVideo);
 
 
-                }*/
-                DatabaseReference test = mdatabase.getReference("vyfe-project").child("tag_sets").child("name");
-                String idTagSet= test.push().getKey() ;
-                String titleVideo= etVideoTitle.getText().toString();
-                DatabaseReference tagsRef = mdatabase.getReference("vyfe-project").child("tag_sets").child(idTagSet).child("name");
-                tagsRef.setValue(titleVideo);
 
-
-
+                DatabaseReference TagsRef = mdatabase.getReference(authUserId).child("tags");
+                String idTag = TagsRef.push().getKey();
+                TagsRef.setValue(mSingletonTags);
 
                 Toast.makeText(StartActivity.this, idTagSet, Toast.LENGTH_SHORT).show();
 
