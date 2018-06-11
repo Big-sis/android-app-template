@@ -12,9 +12,14 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -25,6 +30,7 @@ public class StartActivity extends AppCompatActivity {
 
     SingletonSessions mSingletonSessions = SingletonSessions.getInstance();
     ArrayList<SessionsModel> mSessionsModelList = mSingletonSessions.getmSessionsList();
+    FirebaseDatabase mdatabase = FirebaseDatabase.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +48,9 @@ public class StartActivity extends AppCompatActivity {
         final Spinner spinner = (Spinner) findViewById(R.id.spinner_session_infos);
         TextView tvAddTag = findViewById(R.id.tv_add_tag);
         Toolbar toolbar = findViewById(R.id.toolbar);
+
+        final EditText etVideoTitle = findViewById(R.id.et_video_title);
+
 
         if (MainActivity.mMulti) {
             buttonGo.setText(R.string.next);
@@ -98,6 +107,7 @@ public class StartActivity extends AppCompatActivity {
         buttonGo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                /*
                 if (MainActivity.mMulti) {
                     share.setVisibility(View.VISIBLE);
                     buttonBack.setOnClickListener(new View.OnClickListener() {
@@ -117,7 +127,20 @@ public class StartActivity extends AppCompatActivity {
                 } else {
                     Intent toRecord = new Intent(StartActivity.this, RecordActivity.class);
                     startActivity(toRecord);
-                }
+
+
+                }*/
+                DatabaseReference test = mdatabase.getReference("vyfe-project").child("tag_sets").child("name");
+                String idTagSet= test.push().getKey() ;
+                String titleVideo= etVideoTitle.getText().toString();
+                DatabaseReference tagsRef = mdatabase.getReference("vyfe-project").child("tag_sets").child(idTagSet).child("name");
+                tagsRef.setValue(titleVideo);
+
+
+
+
+                Toast.makeText(StartActivity.this, idTagSet, Toast.LENGTH_SHORT).show();
+
             }
         });
 
