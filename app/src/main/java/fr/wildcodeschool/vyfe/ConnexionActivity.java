@@ -2,10 +2,13 @@ package fr.wildcodeschool.vyfe;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -28,10 +31,36 @@ public class ConnexionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connexion);
 
+        /*
+        final FirebaseAuth auth = FirebaseAuth.getInstance();
+        final EditText inputMail = findViewById(R.id.et_mail);
+        final EditText inputPass = findViewById(R.id.et_password);
+        */
         Button connexion = findViewById(R.id.btn_connected);
         connexion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                /* A utiliser lors de l'authentification
+                String mail = inputMail.getText().toString();
+                String pass = inputPass.getText().toString();
+
+                auth.signInWithEmailAndPassword(mail, pass)
+                        .addOnCompleteListener(ConnexionActivity.this, new OnCompleteListener<AuthResult>() {
+                            @Override
+                            public void onComplete(@NonNull Task<AuthResult> task) {
+                                if (!task.isSuccessful()) {
+                                    Toast.makeText(ConnexionActivity.this, "mauvaise identifiaction", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Intent intent = new Intent(ConnexionActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            }
+                        });
+                */
+
+
                 //TODO: verifier la présence des données une fois API corrigée
                 apiTagSetsRecover();
                 apiSessionsRecover();
@@ -39,6 +68,14 @@ public class ConnexionActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        /*a Utiliser lors de la mise en place de la connexion utilisateur
+        if (auth.getCurrentUser() != null) {
+            Intent intent = new Intent(ConnexionActivity.this, MainActivity.class);
+            startActivity(intent);
+            finish();
+        }
+        */
     }
 
     public void apiTagSetsRecover() {
