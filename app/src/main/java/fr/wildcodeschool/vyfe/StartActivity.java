@@ -60,22 +60,21 @@ public class StartActivity extends AppCompatActivity {
             buttonGo.setText(R.string.next);
         }
 
-        ArrayList<String> name = new ArrayList<>();
+        final ArrayList<String> nameTagSet = new ArrayList<>();
 
-        //TODO a remplacer av Singleton des TagSets et non de la Sessions
-        for (int i = 0; i < mTagsSetsList.size(); i++) {
-            name.add(mTagsSetsList.get(i).getName());
-        }
+        final ArrayAdapter<String> adapterSpinner = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, nameTagSet);
+        adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapterSpinner);
+
+
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.start_session);
 
-        ArrayAdapter<String> adapterSpinner = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, name);
-        adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapterSpinner);
+
 
         radioButtonImport.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -141,11 +140,16 @@ public class StartActivity extends AppCompatActivity {
 
                 DatabaseReference TagsSetRef = mdatabase.getReference(authUserId).child("tag_sets").child(idTagSet).child("name");
                 TagsSetRef.setValue(titleVideo);
-                //TODO: remplacer 0 par ref TagSet
-                mTagsSetsList.add(new TagSetsModel(0, titleVideo));
+
+                mTagsSetsList.add(new TagSetsModel(idTagSet, titleVideo));
                 mSingletonTagsSets.setmTagsSetsList(mTagsSetsList);
 
 
+                for (int i = 0; i < mTagsSetsList.size(); i++) {
+                    nameTagSet.add(mTagsSetsList.get(i).getName());
+                    adapterSpinner.notifyDataSetChanged();
+
+                }
                 for (int i = 0; i < mTagModelList.size(); i++) {
 
                     int colorTag = mTagModelList.get(i).getColor();

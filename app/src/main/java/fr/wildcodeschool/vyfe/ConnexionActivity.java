@@ -93,7 +93,7 @@ public class ConnexionActivity extends AppCompatActivity {
                             JSONArray tagSets = response.getJSONArray("tag_sets");
                             for (int i = 0; i < 1; i++) {
                                 JSONObject tagSetsInfos = (JSONObject) tagSets.get(i);
-                                int idTagSet = tagSetsInfos.getInt("id");
+                                String idTagSet = tagSetsInfos.getString("id");
                                 String nameTagSet = tagSetsInfos.getString("name");
                                 TagSetsModel tagSetsModel = new TagSetsModel(idTagSet, nameTagSet);
                                 mTagsSetsModelList.add(tagSetsModel);
