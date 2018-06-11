@@ -8,6 +8,7 @@ public class SingletonTagsSets {
 
     private ArrayList<TagSetsModel> mTagsSetsList = new ArrayList<>();
 
+
     private SingletonTagsSets() {
     }
 

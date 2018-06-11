@@ -51,6 +51,8 @@ public class StartActivity extends AppCompatActivity {
         TextView tvAddTag = findViewById(R.id.tv_add_tag);
         Toolbar toolbar = findViewById(R.id.toolbar);
 
+        final EditText etTagSet = findViewById(R.id.et_grid_title);
+
         final EditText etVideoTitle = findViewById(R.id.et_video_title);
         FirebaseAuth auth = FirebaseAuth.getInstance();
         final String authUserId = auth.getCurrentUser().getUid();
@@ -134,14 +136,14 @@ public class StartActivity extends AppCompatActivity {
 
                 }
 
+                //Firebase TAGSET
                 DatabaseReference idTagSetRef = mdatabase.getReference(authUserId).child("tag_sets").child("name");
                 final String idTagSet = idTagSetRef.push().getKey();
-                final String titleVideo = etVideoTitle.getText().toString();
+                String titleTagSet = etTagSet.getText().toString();
 
                 DatabaseReference TagsSetRef = mdatabase.getReference(authUserId).child("tag_sets").child(idTagSet).child("name");
-                TagsSetRef.setValue(titleVideo);
-
-                mTagsSetsList.add(new TagSetsModel(idTagSet, titleVideo));
+                TagsSetRef.setValue(titleTagSet);
+                mTagsSetsList.add(new TagSetsModel(idTagSet, titleTagSet));
                 mSingletonTagsSets.setmTagsSetsList(mTagsSetsList);
 
 
@@ -150,6 +152,7 @@ public class StartActivity extends AppCompatActivity {
                     adapterSpinner.notifyDataSetChanged();
 
                 }
+                //Firebase TAG
                 for (int i = 0; i < mTagModelList.size(); i++) {
 
                     int colorTag = mTagModelList.get(i).getColor();
@@ -170,6 +173,15 @@ public class StartActivity extends AppCompatActivity {
                     DatabaseReference tagsRefTagSet = mdatabase.getReference(authUserId).child("tags").child(idTag).child("fk_tag_set");
                     tagsRefTagSet.setValue(idTagSet);
                 }
+
+                //Firebase SESSION
+                DatabaseReference idSessionRef = mdatabase.getReference(authUserId).child("sessions").child("name");
+                //TODO envoit idSession sur Record pour completer firebase
+                String idSession = idSessionRef.push().getKey();
+                final String titleSession = etVideoTitle.getText().toString();
+
+                DatabaseReference SessionRef = mdatabase.getReference(authUserId).child("sessions").child(idSession).child("name");
+                SessionRef.setValue(titleSession);
 
 
             }

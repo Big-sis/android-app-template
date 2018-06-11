@@ -140,7 +140,7 @@ public class ConnexionActivity extends AppCompatActivity {
                                 String videoLinkSession = sessionsInfos.getString("video_link");
                                 String dateSession = sessionsInfos.getString("date");
 
-                                SessionsModel sessionsModel = new SessionsModel(id, nameSession, authorSession, fkGroupSession, videoLinkSession, dateSession);
+                                SessionsModel sessionsModel = new SessionsModel(nameSession, authorSession, fkGroupSession, videoLinkSession, dateSession);
                                 mSessionsModelList.add(sessionsModel);
                             }
                             mSingletonSessions.setmSessionsList(mSessionsModelList);
