@@ -107,6 +107,7 @@ public class StartActivity extends AppCompatActivity {
             }
         });
 
+
         buttonGo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -127,22 +128,41 @@ public class StartActivity extends AppCompatActivity {
                         }
                     });
                     MainActivity.mMulti = false;
-                }else {
+                } else {
 
                     startActivity(intent);
 
                 }
+
                 DatabaseReference idTagSetRef = mdatabase.getReference(authUserId).child("tag_sets").child("name");
-                String idTagSet = idTagSetRef.push().getKey();
-                String titleVideo = etVideoTitle.getText().toString();
+                final String idTagSet = idTagSetRef.push().getKey();
+                final String titleVideo = etVideoTitle.getText().toString();
+
                 DatabaseReference TagsSetRef = mdatabase.getReference(authUserId).child("tag_sets").child(idTagSet).child("name");
                 TagsSetRef.setValue(titleVideo);
 
 
+                for (int i = 0; i < mTagModelList.size(); i++) {
 
-                DatabaseReference TagsRef = mdatabase.getReference(authUserId).child("tags");
-                String idTag = TagsRef.push().getKey();
-                TagsRef.setValue(mSingletonTags);
+                    int colorTag = mTagModelList.get(i).getColor();
+                    String nameTag = mTagModelList.get(i).getName();
+                    String rigthOffset = " 3000";
+
+                    DatabaseReference idTagsRef = mdatabase.getReference(authUserId).child("tags");
+                    String idTag = idTagsRef.push().getKey();
+                    DatabaseReference tagsRefColor = mdatabase.getReference(authUserId).child("tags").child(idTag).child("color");
+                    tagsRefColor.setValue(colorTag);
+
+                    DatabaseReference tagsRefName = mdatabase.getReference(authUserId).child("tags").child(idTag).child("name");
+                    tagsRefName.setValue(nameTag);
+
+                    DatabaseReference tagsRefRigthOffset = mdatabase.getReference(authUserId).child("tags").child(idTag).child("rigth_offset");
+                    tagsRefRigthOffset.setValue(rigthOffset);
+
+                    DatabaseReference tagsRefTagSet = mdatabase.getReference(authUserId).child("tags").child(idTag).child("fk_tag_set");
+                    tagsRefTagSet.setValue(idTagSet);
+                }
+
 
                 Toast.makeText(StartActivity.this, idTagSet, Toast.LENGTH_SHORT).show();
 

@@ -33,6 +33,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
 
         RecyclerView recyclerTags = findViewById(R.id.re_tags);
 
+        /*
         mTagModels.add(new TagModel(Color.parseColor("#ca62ff"), "test1"));
         mTagModels.add(new TagModel(Color.parseColor("#f91734"), "test2"));
         mTagModels.add(new TagModel(Color.parseColor("#1e8900"), "test3"));
@@ -42,7 +43,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
 
         final TagRecyclerAdapter adapter = new TagRecyclerAdapter(mTagModels, "count");
         recyclerTags.setAdapter(adapter);
-
+*/
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);

@@ -14,6 +14,10 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
@@ -33,7 +37,6 @@ public class AddGridActivity extends AppCompatActivity {
         final EditText etName = findViewById(R.id.et_name);
         final ImageView ivColor = findViewById(R.id.iv_color);
         final RecyclerView recyclerTagList = findViewById(R.id.recycler_view);
-
 
         // Gestion couleurs
         Button btnChooseColor = findViewById(R.id.btn_chosse_color);
@@ -75,12 +78,13 @@ public class AddGridActivity extends AppCompatActivity {
                 if (valueName.equals("") || mfinalcolor == 0) {
                     Toast.makeText(AddGridActivity.this, R.string.def_colot, Toast.LENGTH_SHORT).show();
                 } else {
-                    TagModel tagModel = new TagModel(mfinalcolor, valueName);
+                    TagModel tagModel = new TagModel(mfinalcolor, valueName,null,null);
                     mTagModelList.add(tagModel);
                     mAdapter.notifyDataSetChanged();
                     mfinalcolor = 0;
                     etName.setText("");
                     ivColor.setBackgroundColor(Color.parseColor("#ffaaaaaa"));
+
                 }
             }
         });
@@ -90,6 +94,8 @@ public class AddGridActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 mSingletonTags.setmTagsList(mTagModelList);
+
+
                 Intent intent = new Intent(AddGridActivity.this, StartActivity.class);
                 startActivity(intent);
             }
