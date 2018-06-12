@@ -78,7 +78,7 @@ public class AddGridActivity extends AppCompatActivity {
                 if (valueName.equals("") || mfinalcolor == 0) {
                     Toast.makeText(AddGridActivity.this, R.string.def_colot, Toast.LENGTH_SHORT).show();
                 } else {
-                    TagModel tagModel = new TagModel(mfinalcolor, valueName,null,null);
+                    TagModel tagModel = new TagModel(mfinalcolor, valueName, null, null);
                     mTagModelList.add(tagModel);
                     mAdapter.notifyDataSetChanged();
                     mfinalcolor = 0;
