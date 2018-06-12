@@ -1,15 +1,14 @@
 package fr.wildcodeschool.vyfe;
 
 public class SessionsModel {
-    private int id;
     private String name;
     private String author;
     private String fkGroup;
     private String videoLink;
     private String date;
 
-    public SessionsModel(int id, String name, String author, String fkGroup, String videoLink, String date) {
-        this.id = id;
+    public SessionsModel( String name, String author, String fkGroup, String videoLink, String date) {
+
         this.name = name;
         this.author = author;
         this.fkGroup = fkGroup;
@@ -17,13 +16,6 @@ public class SessionsModel {
         this.date = date;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getName() {
         return name;

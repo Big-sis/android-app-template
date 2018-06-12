@@ -49,6 +49,8 @@ public class RecordActivity extends AppCompatActivity implements SurfaceHolder.C
         final TextView tvVideoSave = findViewById(R.id.tv_video_save);
         final TextView tvWait = findViewById(R.id.wait);
 
+        final String titleSession = getIntent().getStringExtra("titleSession");
+
         getWindow().setFormat(PixelFormat.UNKNOWN);
         mSurfaceHolder = mCamView.getHolder();
         mSurfaceHolder.addCallback(this);
@@ -111,6 +113,7 @@ public class RecordActivity extends AppCompatActivity implements SurfaceHolder.C
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(RecordActivity.this, SelectedVideoActivity.class);
+                intent.putExtra("titleSession", titleSession);
                 startActivity(intent);
             }
         });

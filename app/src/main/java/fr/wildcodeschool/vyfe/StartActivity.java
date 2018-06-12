@@ -12,9 +12,15 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -23,8 +29,10 @@ public class StartActivity extends AppCompatActivity {
     SingletonTags mSingletonTags = SingletonTags.getInstance();
     ArrayList<TagModel> mTagModelList = mSingletonTags.getmTagsList();
 
-    SingletonSessions mSingletonSessions = SingletonSessions.getInstance();
-    ArrayList<SessionsModel> mSessionsModelList = mSingletonSessions.getmSessionsList();
+    SingletonTagsSets mSingletonTagsSets = SingletonTagsSets.getInstance();
+    ArrayList<TagSetsModel> mTagsSetsList = mSingletonTagsSets.getmTagsSetsList();
+
+    FirebaseDatabase mdatabase = FirebaseDatabase.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,26 +51,30 @@ public class StartActivity extends AppCompatActivity {
         TextView tvAddTag = findViewById(R.id.tv_add_tag);
         Toolbar toolbar = findViewById(R.id.toolbar);
 
+        final EditText etTagSet = findViewById(R.id.et_grid_title);
+
+        final EditText etVideoTitle = findViewById(R.id.et_video_title);
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        final String authUserId = auth.getCurrentUser().getUid();
+
+
         if (MainActivity.mMulti) {
             buttonGo.setText(R.string.next);
         }
 
-        ArrayList<String> name = new ArrayList<>();
+        final ArrayList<String> nameTagSet = new ArrayList<>();
 
-        //TODO a remplacer av Singleton des TagSets et non de la Sessions
-        for (int i = 0; i < mSessionsModelList.size(); i++) {
-            name.add(mSessionsModelList.get(i).getName());
-        }
+        final ArrayAdapter<String> adapterSpinner = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, nameTagSet);
+        adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapterSpinner);
+
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.start_session);
 
-        ArrayAdapter<String> adapterSpinner = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, name);
-        adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapterSpinner);
 
         radioButtonImport.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,9 +107,44 @@ public class StartActivity extends AppCompatActivity {
             }
         });
 
+
         buttonGo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                final Intent intent = new Intent(StartActivity.this, RecordActivity.class);
+                final String titleSession = etVideoTitle.getText().toString();
+                intent.putExtra("titleSession", titleSession);
+
+                //Firebase TAGSET
+                DatabaseReference idTagSetRef = mdatabase.getReference(authUserId).child("tag_sets").child("name");
+                final String idTagSet = idTagSetRef.push().getKey();
+                String titleTagSet = etTagSet.getText().toString();
+
+                DatabaseReference TagsSetRef = mdatabase.getReference(authUserId).child("tag_sets").child(idTagSet).child("name");
+                TagsSetRef.setValue(titleTagSet);
+                mTagsSetsList.add(new TagSetsModel(idTagSet, titleTagSet));
+                mSingletonTagsSets.setmTagsSetsList(mTagsSetsList);
+
+                for (int i = 0; i < mTagsSetsList.size(); i++) {
+                    nameTagSet.add(mTagsSetsList.get(i).getName());
+                    adapterSpinner.notifyDataSetChanged();
+
+                }
+                //Firebase TAG
+                for (int i = 0; i < mTagModelList.size(); i++) {
+
+                    int colorTag = mTagModelList.get(i).getColor();
+                    String nameTag = mTagModelList.get(i).getName();
+                    String rigthOffset = "3000";
+
+                    DatabaseReference tagsRef = mdatabase.getReference(authUserId).child("tags");
+                    String idTag = tagsRef.push().getKey();
+                    tagsRef.child(idTag).child("color").setValue(colorTag);
+                    tagsRef.child(idTag).child("name").setValue(nameTag);
+                    tagsRef.child(idTag).child("rigth_offset").setValue(rigthOffset);
+                    tagsRef.child(idTag).child("fk_tag_set").setValue(idTagSet);
+                }
+
                 if (MainActivity.mMulti) {
                     share.setVisibility(View.VISIBLE);
                     buttonBack.setOnClickListener(new View.OnClickListener() {
@@ -109,15 +156,17 @@ public class StartActivity extends AppCompatActivity {
                     buttonGoMulti.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            Intent intent = new Intent(StartActivity.this, RecordActivity.class);
+
                             startActivity(intent);
                         }
                     });
                     MainActivity.mMulti = false;
                 } else {
-                    Intent toRecord = new Intent(StartActivity.this, RecordActivity.class);
-                    startActivity(toRecord);
+
+                    startActivity(intent);
+
                 }
+
             }
         });
 

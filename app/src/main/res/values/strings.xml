@@ -70,5 +70,6 @@
     <string name="delete">Supprimer</string>
     <string name="wait_few_minutes">Cela peut prendre plusieurs minutes...</string>
     <string name="save_in_progress">Sauvegarde en cours...</string>
+    <string name="bad_authentifiaction">Mauvaise identifiaction</string>
 
 </resources>
