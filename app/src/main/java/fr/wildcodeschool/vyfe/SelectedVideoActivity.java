@@ -15,7 +15,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class SelectedVideoActivity extends AppCompatActivity {
 
@@ -45,15 +47,18 @@ public class SelectedVideoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                Date date = new Date();
+                Date newDate = new Date(date.getTime() + (604800000L * 2) + (24 * 60 * 60));
+                SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd");
+                String stringdate = dt.format(newDate);
+
                 //Firebase SESSION
                 DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions");
                 String idSession = sessionRef.push().getKey();
-
                 sessionRef.child(idSession).child("name").setValue(titleSession);
-
                 sessionRef.child(idSession).child("author").setValue(mAuthUserId);
                 sessionRef.child(idSession).child("video_link").setValue("https://youtu.be/sFukyIIM1XI");
-                sessionRef.child(idSession).child("date").setValue("Aujourd'hui");
+                sessionRef.child(idSession).child("date").setValue(stringdate);
 
 
             }
