@@ -113,7 +113,7 @@ public class RecordActivity extends AppCompatActivity implements SurfaceHolder.C
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(RecordActivity.this, SelectedVideoActivity.class);
-                intent.putExtra("titleSession",titleSession);
+                intent.putExtra("titleSession", titleSession);
                 startActivity(intent);
             }
         });

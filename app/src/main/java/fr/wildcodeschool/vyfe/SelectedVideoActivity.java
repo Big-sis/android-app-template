@@ -33,7 +33,6 @@ public class SelectedVideoActivity extends AppCompatActivity {
         Button edit = findViewById(R.id.btn_edit);
         final String titleSession = getIntent().getStringExtra("titleSession");
 
-
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
