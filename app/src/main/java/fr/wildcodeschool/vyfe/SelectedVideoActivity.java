@@ -11,23 +11,52 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 
 public class SelectedVideoActivity extends AppCompatActivity {
 
     ArrayList<TagModel> mTagModels = new ArrayList<>();
+    FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    final String mAuthUserId = mAuth.getCurrentUser().getUid();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selected_video);
 
+        Button btnUpload = findViewById(R.id.bt_upload);
         Button edit = findViewById(R.id.btn_edit);
+        final String titleSession = getIntent().getStringExtra("titleSession");
+
+
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(SelectedVideoActivity.this, InfoVideoActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        btnUpload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                //Firebase SESSION
+                DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions");
+                String idSession = sessionRef.push().getKey();
+
+                sessionRef.child(idSession).child("name").setValue(titleSession);
+
+                sessionRef.child(idSession).child("author").setValue(mAuthUserId);
+                sessionRef.child(idSession).child("video_link").setValue("https://youtu.be/sFukyIIM1XI");
+                sessionRef.child(idSession).child("date").setValue("Aujourd'hui");
+
+
             }
         });
 

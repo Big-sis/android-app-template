@@ -70,12 +70,10 @@ public class StartActivity extends AppCompatActivity {
         spinner.setAdapter(adapterSpinner);
 
 
-
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.start_session);
-
 
 
         radioButtonImport.setOnClickListener(new View.OnClickListener() {
@@ -114,27 +112,8 @@ public class StartActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final Intent intent = new Intent(StartActivity.this, RecordActivity.class);
-                if (MainActivity.mMulti) {
-                    share.setVisibility(View.VISIBLE);
-                    buttonBack.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            share.setVisibility(View.GONE);
-                        }
-                    });
-                    buttonGoMulti.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-
-                            startActivity(intent);
-                        }
-                    });
-                    MainActivity.mMulti = false;
-                } else {
-
-                    startActivity(intent);
-
-                }
+                final String titleSession = etVideoTitle.getText().toString();
+                intent.putExtra("titleSession", titleSession);
 
                 //Firebase TAGSET
                 DatabaseReference idTagSetRef = mdatabase.getReference(authUserId).child("tag_sets").child("name");
@@ -145,7 +124,6 @@ public class StartActivity extends AppCompatActivity {
                 TagsSetRef.setValue(titleTagSet);
                 mTagsSetsList.add(new TagSetsModel(idTagSet, titleTagSet));
                 mSingletonTagsSets.setmTagsSetsList(mTagsSetsList);
-
 
                 for (int i = 0; i < mTagsSetsList.size(); i++) {
                     nameTagSet.add(mTagsSetsList.get(i).getName());
@@ -167,15 +145,27 @@ public class StartActivity extends AppCompatActivity {
                     tagsRef.child(idTag).child("fk_tag_set").setValue(idTagSet);
                 }
 
-                //Firebase SESSION
-                DatabaseReference idSessionRef = mdatabase.getReference(authUserId).child("sessions").child("name");
-                //TODO envoit idSession sur Record pour completer firebase
-                String idSession = idSessionRef.push().getKey();
-                final String titleSession = etVideoTitle.getText().toString();
+                if (MainActivity.mMulti) {
+                    share.setVisibility(View.VISIBLE);
+                    buttonBack.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            share.setVisibility(View.GONE);
+                        }
+                    });
+                    buttonGoMulti.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
 
-                DatabaseReference SessionRef = mdatabase.getReference(authUserId).child("sessions").child(idSession).child("name");
-                SessionRef.setValue(titleSession);
+                            startActivity(intent);
+                        }
+                    });
+                    MainActivity.mMulti = false;
+                } else {
 
+                    startActivity(intent);
+
+                }
 
             }
         });
