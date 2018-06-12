@@ -157,21 +157,14 @@ public class StartActivity extends AppCompatActivity {
 
                     int colorTag = mTagModelList.get(i).getColor();
                     String nameTag = mTagModelList.get(i).getName();
-                    String rigthOffset = " 3000";
+                    String rigthOffset = "3000";
 
-                    DatabaseReference idTagsRef = mdatabase.getReference(authUserId).child("tags");
-                    String idTag = idTagsRef.push().getKey();
-                    DatabaseReference tagsRefColor = mdatabase.getReference(authUserId).child("tags").child(idTag).child("color");
-                    tagsRefColor.setValue(colorTag);
-
-                    DatabaseReference tagsRefName = mdatabase.getReference(authUserId).child("tags").child(idTag).child("name");
-                    tagsRefName.setValue(nameTag);
-
-                    DatabaseReference tagsRefRigthOffset = mdatabase.getReference(authUserId).child("tags").child(idTag).child("rigth_offset");
-                    tagsRefRigthOffset.setValue(rigthOffset);
-
-                    DatabaseReference tagsRefTagSet = mdatabase.getReference(authUserId).child("tags").child(idTag).child("fk_tag_set");
-                    tagsRefTagSet.setValue(idTagSet);
+                    DatabaseReference tagsRef = mdatabase.getReference(authUserId).child("tags");
+                    String idTag = tagsRef.push().getKey();
+                    tagsRef.child(idTag).child("color").setValue(colorTag);
+                    tagsRef.child(idTag).child("name").setValue(nameTag);
+                    tagsRef.child(idTag).child("rigth_offset").setValue(rigthOffset);
+                    tagsRef.child(idTag).child("fk_tag_set").setValue(idTagSet);
                 }
 
                 //Firebase SESSION
