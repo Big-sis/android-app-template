@@ -10,12 +10,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -30,6 +34,7 @@ public class RecordActivity extends AppCompatActivity implements SurfaceHolder.C
     private SurfaceHolder mSurfaceHolder;
     private boolean mCamCondition = false;
     private FloatingActionButton mCap;
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -168,4 +173,22 @@ public class RecordActivity extends AppCompatActivity implements SurfaceHolder.C
             }
         }
     };
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.settings, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.logout:
+                Intent intent = new Intent(RecordActivity.this, ConnexionActivity.class);
+                startActivity(intent);
+                mAuth.signOut();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 }
