@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -47,6 +48,16 @@ public class ConnexionActivity extends AppCompatActivity {
 
                 String mail = inputMail.getText().toString();
                 String pass = inputPass.getText().toString();
+
+                if (TextUtils.isEmpty(mail)) {
+                    Toast.makeText(ConnexionActivity.this, R.string.enter_email, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if (TextUtils.isEmpty(pass)) {
+                    Toast.makeText(ConnexionActivity.this, R.string.enter_password, Toast.LENGTH_SHORT).show();
+                    return;
+                }
 
                 auth.signInWithEmailAndPassword(mail, pass)
                         .addOnCompleteListener(ConnexionActivity.this, new OnCompleteListener<AuthResult>() {

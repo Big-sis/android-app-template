@@ -71,5 +71,8 @@
     <string name="wait_few_minutes">Cela peut prendre plusieurs minutes...</string>
     <string name="save_in_progress">Sauvegarde en cours...</string>
     <string name="bad_authentifiaction">Mauvaise identifiaction</string>
+    <string name="logout">Déconnection</string>
+    <string name="enter_email">Entrez une adresse mail</string>
+    <string name="enter_password">Entrer un mot de passe</string>
 
 </resources>
