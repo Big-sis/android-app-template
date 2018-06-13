@@ -57,7 +57,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
                 String idSession = sessionRef.push().getKey();
                 sessionRef.child(idSession).child("name").setValue(titleSession);
                 sessionRef.child(idSession).child("author").setValue(mAuthUserId);
-                sessionRef.child(idSession).child("video_link").setValue("https://youtu.be/sFukyIIM1XI");
+                sessionRef.child(idSession).child("videoLink").setValue("https://youtu.be/sFukyIIM1XI");
                 sessionRef.child(idSession).child("date").setValue(stringdate);
 
 
