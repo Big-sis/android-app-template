@@ -34,8 +34,7 @@ public class MyVideoActivity extends AppCompatActivity {
 
         final GridView gridView = findViewById(R.id.grid_videos);
         SearchView searchView = findViewById(R.id.search_video);
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        String authUserId = auth.getCurrentUser().getUid();
+        String authUserId = mAuth.getCurrentUser().getUid();
 
         DatabaseReference myRef = mdatabase.getReference(authUserId).child("sessions");
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
