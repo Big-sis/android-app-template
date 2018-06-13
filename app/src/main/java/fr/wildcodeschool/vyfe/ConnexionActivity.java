@@ -30,22 +30,20 @@ import java.util.ArrayList;
 
 public class ConnexionActivity extends AppCompatActivity {
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_connexion);
 
-
         final FirebaseAuth auth = FirebaseAuth.getInstance();
         final EditText inputMail = findViewById(R.id.et_mail);
         final EditText inputPass = findViewById(R.id.et_password);
+        Button forgotPassword = findViewById(R.id.tv_lost_password);
 
         Button connexion = findViewById(R.id.btn_connected);
         connexion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 String mail = inputMail.getText().toString();
                 String pass = inputPass.getText().toString();
 
@@ -72,12 +70,10 @@ public class ConnexionActivity extends AppCompatActivity {
                                 }
                             }
                         });
-
                 Intent intent = new Intent(ConnexionActivity.this, MainActivity.class);
                 startActivity(intent);
             }
         });
-
 
         if (auth.getCurrentUser() != null) {
             Intent intent = new Intent(ConnexionActivity.this, MainActivity.class);
@@ -85,6 +81,12 @@ public class ConnexionActivity extends AppCompatActivity {
             finish();
         }
 
+        forgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ConnexionActivity.this, ForgotPassword.class);
+                startActivity(intent);
+            }
+        });
     }
-
 }
