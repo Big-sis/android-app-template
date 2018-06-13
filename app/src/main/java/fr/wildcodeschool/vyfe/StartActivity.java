@@ -9,6 +9,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -33,6 +34,7 @@ public class StartActivity extends AppCompatActivity {
     ArrayList<TagSetsModel> mTagsSetsList = mSingletonTagsSets.getmTagsSetsList();
 
     FirebaseDatabase mdatabase = FirebaseDatabase.getInstance();
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -193,5 +195,17 @@ public class StartActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.settings, menu);
         return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.logout:
+                Intent intent = new Intent(StartActivity.this, ConnexionActivity.class);
+                startActivity(intent);
+                mAuth.signOut();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }
