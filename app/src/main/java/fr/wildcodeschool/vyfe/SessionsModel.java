@@ -15,6 +15,7 @@ public class SessionsModel {
         this.videoLink = videoLink;
         this.date = date;
     }
+    public SessionsModel(){}
 
 
     public String getName() {

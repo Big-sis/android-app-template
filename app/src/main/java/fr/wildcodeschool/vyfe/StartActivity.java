@@ -143,8 +143,8 @@ public class StartActivity extends AppCompatActivity {
                     String idTag = tagsRef.push().getKey();
                     tagsRef.child(idTag).child("color").setValue(colorTag);
                     tagsRef.child(idTag).child("name").setValue(nameTag);
-                    tagsRef.child(idTag).child("rigth_offset").setValue(rigthOffset);
-                    tagsRef.child(idTag).child("fk_tag_set").setValue(idTagSet);
+                    tagsRef.child(idTag).child("rigthOffset").setValue(rigthOffset);
+                    tagsRef.child(idTag).child("fkTagSet").setValue(idTagSet);
                 }
 
                 if (MainActivity.mMulti) {
