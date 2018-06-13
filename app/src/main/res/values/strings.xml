@@ -76,5 +76,5 @@
     <string name="enter_password">Entrer un mot de passe</string>
     <string name="mail_send">Email envoyé</string>
     <string name="mail_unkown">Email inconnu</string>
-
+    <string name="send">Envoyer</string>
 </resources>
