@@ -3,6 +3,7 @@ package fr.wildcodeschool.vyfe;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.RequiresPermission;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -50,7 +51,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
 
                 Date date = new Date();
                 Date newDate = new Date(date.getTime() + (604800000L * 2) + (24 * 60 * 60));
-                SimpleDateFormat dt = new SimpleDateFormat("yyyy-MM-dd");
+                SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yy:HH:mm:SS Z");
                 String stringdate = dt.format(newDate);
 
                 //Firebase SESSION
