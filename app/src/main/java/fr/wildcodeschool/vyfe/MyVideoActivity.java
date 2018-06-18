@@ -22,6 +22,11 @@ public class MyVideoActivity extends AppCompatActivity {
         final GridAdapter gridAdapter = new GridAdapter(this, mSessionsModelList);
         gridView.setAdapter(gridAdapter);
 
+        String urlTest = "http://clips.vorwaerts-gmbh.de/VfE_html5.mp4";
+
+        SessionsModel testSession = new SessionsModel("nameTest", "autorTest", "fkGroupTest", urlTest, "Aujourd'hui");
+        mSessionsModelList.add(testSession);
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String s) {

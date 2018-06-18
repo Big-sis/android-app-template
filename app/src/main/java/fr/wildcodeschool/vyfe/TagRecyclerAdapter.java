@@ -1,12 +1,15 @@
 package fr.wildcodeschool.vyfe;
 
+import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import java.util.ArrayList;
 
@@ -14,6 +17,8 @@ public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.
 
     private ArrayList<TagModel> mTagModelList;
     private String mFrom;
+    private VideoView mVideoView;
+    private SeekBar seekBar;
 
     public TagRecyclerAdapter(ArrayList<TagModel> observations, String from) {
         mTagModelList = observations;
@@ -30,9 +35,9 @@ public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.
 
     @Override
     public void onBindViewHolder(TagRecyclerAdapter.ViewHolder holder, int position) {
-        TagModel itineraryModel = mTagModelList.get(position);
-        holder.tvName.setText(itineraryModel.getName());
-        holder.ivColor.setBackgroundColor(itineraryModel.getColor());
+        TagModel tagModel = mTagModelList.get(position);
+        holder.tvName.setText(tagModel.getName());
+        holder.ivColor.setBackgroundColor(tagModel.getColor());
 
         if (mFrom.equals("start")) {
             holder.tvNum.setVisibility(View.GONE);
@@ -43,6 +48,8 @@ public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.
         } else if (mFrom.equals("timelines")) {
             holder.tvNum.setVisibility(View.GONE);
             holder.bar.setVisibility(View.VISIBLE);
+
+
         } else if (mFrom.equals("count")) {
             holder.tvNum.setVisibility(View.VISIBLE);
             holder.bar.setVisibility(View.GONE);
@@ -50,6 +57,7 @@ public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.
             holder.tvNum.setText("10");
         }
     }
+
 
     @Override
     public int getItemCount() {
@@ -61,14 +69,14 @@ public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.
         TextView tvName;
         ImageView ivColor;
         TextView tvNum;
-        ProgressBar bar;
+        SeekBar bar;
 
         public ViewHolder(View v) {
             super(v);
             this.tvName = v.findViewById(R.id.tv_name);
             this.ivColor = v.findViewById(R.id.iv_color);
             this.tvNum = v.findViewById(R.id.tv_stats);
-            this.bar = v.findViewById(R.id.progressBar);
+            this.bar = v.findViewById(R.id.seek_bar_marker);
         }
     }
 

@@ -13,12 +13,10 @@
         android:id="@+id/iv_color"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginBottom="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="@android:color/holo_blue_light"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -26,43 +24,34 @@
         android:id="@+id/tv_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginLeft="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="16dp"
         android:maxLength="30"
         android:text="@string/nom_observation"
         android:textColor="@color/white"
         android:textSize="18sp"
         app:fontFamily="@font/roboto_bold"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/iv_color"
         app:layout_constraintTop_toTopOf="parent" />
 
-
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="166dp"
-        android:layout_height="15dp"
-        android:layout_marginEnd="236dp"
-        android:layout_marginRight="236dp"
-        android:layout_marginTop="28dp"
-        android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="visible" />
 
     <!--Texte en dur ne va pas rester -->
     <TextView
         android:id="@+id/tv_stats"
         android:layout_width="35dp"
         android:layout_height="23dp"
+        android:layout_marginEnd="42dp"
+        android:layout_marginLeft="272dp"
+        android:layout_marginRight="42dp"
+        android:layout_marginStart="272dp"
+        android:layout_marginTop="8dp"
         android:text="Stats"
         android:visibility="gone"
         app:fontFamily="@font/roboto_bold"
+        app:layout_constraintEnd_toStartOf="@+id/btn_delete"
+        app:layout_constraintStart_toEndOf="@+id/tv_name"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="235dp"
         tools:visibility="visible" />
 
     <Button
@@ -77,6 +66,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="visible" />
+
+    <SeekBar
+        android:id="@+id/seek_bar_marker"
+        android:layout_width="584dp"
+        android:layout_height="14dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:background="@color/color1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iv_color" />
 
 
 </android.support.constraint.ConstraintLayout>
