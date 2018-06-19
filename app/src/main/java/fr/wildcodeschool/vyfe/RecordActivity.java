@@ -64,7 +64,6 @@ public class RecordActivity extends AppCompatActivity {
         FloatingActionButton btFinish = findViewById(R.id.bt_finish);
         final ImageView ivCheck = findViewById(R.id.iv_check);
         final RecyclerView recyclerTags = findViewById(R.id.re_tags);
-        // RecyclerView recyclerTime = findViewById(R.id.re_time_lines);
         final TextView tvVideoSave = findViewById(R.id.tv_video_save);
         final TextView tvWait = findViewById(R.id.wait);
 
@@ -206,7 +205,7 @@ public class RecordActivity extends AppCompatActivity {
 
 
     private void initTimeline(final ArrayList<TagModel> listTag, RecyclerView rv) {
-        LinearLayout principal = findViewById(R.id.principal);
+        LinearLayout llMain = findViewById(R.id.ll_main);
 
         for (TagModel tagModel : listTag) {
             //TODO: empecher la repetition de nom pour les tags
@@ -214,7 +213,7 @@ public class RecordActivity extends AppCompatActivity {
             //Ajout d'un Linear pour un tag
             final LinearLayout timeline = new LinearLayout(RecordActivity.this);
             timeline.setBackgroundResource(R.drawable.style_input);
-            principal.addView(timeline);
+            llMain.addView(timeline);
             mTimelines.put(name, timeline);
 
         }
