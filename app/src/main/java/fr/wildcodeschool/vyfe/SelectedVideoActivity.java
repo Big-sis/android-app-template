@@ -23,15 +23,19 @@ public class SelectedVideoActivity extends AppCompatActivity {
     FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     final String mAuthUserId = mAuth.getCurrentUser().getUid();
+    private String mIdSession = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selected_video);
 
+        Button play = findViewById(R.id.bt_play);
         Button btnUpload = findViewById(R.id.bt_upload);
         Button edit = findViewById(R.id.btn_edit);
         final String titleSession = getIntent().getStringExtra("titleSession");
+
+
 
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,15 +51,24 @@ public class SelectedVideoActivity extends AppCompatActivity {
 
                 //Firebase SESSION
                 DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions");
-                String idSession = sessionRef.push().getKey();
+                mIdSession = sessionRef.push().getKey();
 
-                sessionRef.child(idSession).child("name").setValue(titleSession);
+                sessionRef.child(mIdSession).child("name").setValue(titleSession);
+                sessionRef.child(mIdSession).child("author").setValue(mAuthUserId);
+                sessionRef.child(mIdSession).child("videoLink").setValue("https://youtu.be/sFukyIIM1XI");
+                sessionRef.child(mIdSession).child("date").setValue("Aujourd'hui");
 
-                sessionRef.child(idSession).child("author").setValue(mAuthUserId);
-                sessionRef.child(idSession).child("video_link").setValue("https://youtu.be/sFukyIIM1XI");
-                sessionRef.child(idSession).child("date").setValue("Aujourd'hui");
+
+            }
+        });
 
 
+        play.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SelectedVideoActivity.this, PlaySelectedVideo.class);
+                intent.putExtra("idSession",mIdSession);
+                startActivity(intent);
             }
         });
 

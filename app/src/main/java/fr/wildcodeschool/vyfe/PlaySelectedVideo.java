@@ -8,9 +8,17 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.SurfaceView;
 import android.view.View;
 import android.widget.SeekBar;
 import android.widget.VideoView;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -20,9 +28,14 @@ public class PlaySelectedVideo extends AppCompatActivity {
     private ArrayList<TagModel> mTagModels;
     private VideoView mVideoSelected;
     private SeekBar mSeekBar;
-    private SeekBar mSeekBarTest;
     private boolean isPlayed = false;
     private boolean firstPlay = true;
+    private String mIdSession;
+    private String mVideoLink;
+    private SessionsModel mSessionModel;
+    FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    final String mAuthUserId = mAuth.getCurrentUser().getUid();
 
 
     @Override
@@ -31,13 +44,33 @@ public class PlaySelectedVideo extends AppCompatActivity {
         setContentView(R.layout.activity_play_selected_video);
 
 
+        // mIdSession = getIntent().getStringExtra("idSession");
+
+        // Test de récupération du lien avec données en dur :
+        mIdSession = "-LEsI0aNri8kcIgF6bgF";
+        final DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions").child(mIdSession).child("videoLink");
+        sessionRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                mVideoLink = dataSnapshot.getValue().toString();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
 
         SingletonTags singletonTags = SingletonTags.getInstance();
         mTagModels = singletonTags.getmTagsList();
         mTagModels.add(new TagModel(-3318101, "nameTest1", null, null));
+        mTagModels.add(new TagModel(-3318101, "nameTest2", null, null));
+        mTagModels.add(new TagModel(-3318101, "nameTest3", null, null));
+        mTagModels.add(new TagModel(-3318101, "nameTest4", null, null));
 
-        RecyclerView rvTags = findViewById(R.id.rv_tags);
-        RecyclerView rvTimeLines = findViewById(R.id.rv_time_lines);
+        RecyclerView rvTags = findViewById(R.id.re_tags_selected);
+        RecyclerView rvTimeLines = findViewById(R.id.re_time_lines_selected);
 
         RecyclerView.LayoutManager layoutManagerTags = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         RecyclerView.LayoutManager layoutManagerTime = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -50,20 +83,16 @@ public class PlaySelectedVideo extends AppCompatActivity {
         rvTags.setAdapter(adapterTags);
         rvTimeLines.setAdapter(adapterTime);
 
-        mSeekBar = findViewById(R.id.seekBar);
+        mSeekBar = findViewById(R.id.seek_bar_selected);
+        mVideoSelected = findViewById(R.id.video_view_selected);
 
 
-        View inflatedView = getLayoutInflater().inflate(R.layout.item_tag, null);
-         mSeekBarTest = inflatedView.findViewById(R.id.seek_bar_marker);
-
-
-
-        mVideoSelected = findViewById(R.id.vv_selected_video);
+        //Test lecture video avec lien en dur :
         String URL = "http://clips.vorwaerts-gmbh.de/VfE_html5.mp4";
         mVideoSelected.setVideoPath(URL);
-        final FloatingActionButton fbPlay = findViewById(R.id.fb_play);
+        final FloatingActionButton fbPlay = findViewById(R.id.bt_play_selected);
 
-        final MyAnsync async = new MyAnsync();
+        final SeekbarAsync async = new SeekbarAsync(mSeekBar, mVideoSelected);
 
         fbPlay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -83,35 +112,7 @@ public class PlaySelectedVideo extends AppCompatActivity {
                 }
             }
         });
-
-    }
-
-    private class MyAnsync extends AsyncTask<Void, Integer, Void> {
-        int duration = 0;
-        int current = 0;
-        @Override
-        protected Void doInBackground(Void... voids) {
-            mVideoSelected.start();
-            duration = mVideoSelected.getDuration();
-            do {
-                current = mVideoSelected.getCurrentPosition();
-                try {
-                    publishProgress((int) (current * 100 / duration));
-                    if(mSeekBar.getProgress() >= 100 || mSeekBarTest.getProgress() >= 100){
-
-                        break;
-                    }
-                } catch (Exception e) {
-                }
-            } while (mSeekBar.getProgress() <= 100 || mSeekBarTest.getProgress() <= 100);
-
-            return null;
-        }
-        @Override
-        protected void onProgressUpdate(Integer... values) {
-            super.onProgressUpdate(values);
-            mSeekBar.setProgress(values[0]);
-            mSeekBarTest.setProgress(values[0]);
-        }
     }
 }
+
+
