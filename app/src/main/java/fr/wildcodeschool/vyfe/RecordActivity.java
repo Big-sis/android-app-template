@@ -73,7 +73,7 @@ public class RecordActivity extends AppCompatActivity {
         final RecyclerView recyclerTags = findViewById(R.id.re_tags);
         final TextView tvVideoSave = findViewById(R.id.tv_video_save);
         final TextView tvWait = findViewById(R.id.wait);
-
+        timerTextView = (TextView) findViewById(R.id.timerTextView);
         final String titleSession = getIntent().getStringExtra("titleSession");
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -85,6 +85,10 @@ public class RecordActivity extends AppCompatActivity {
         mRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                mStartTime = System.currentTimeMillis();
+               timerHandler.postDelayed(timerRunnable, 0);
+                /*
                 mPreview = new CameraPreview(RecordActivity.this, mCamera,
                         new CameraPreview.SurfaceCallback() {
                             @Override
@@ -99,10 +103,15 @@ public class RecordActivity extends AppCompatActivity {
                         });
                 FrameLayout preview = findViewById(R.id.video_view);
                 preview.addView(mPreview);
+
+                */
                 mRecord.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        stopRecording();
+                        timerHandler.removeCallbacks(timerRunnable);
+
+                       // stopRecording();
+
                     }
                 });
             }
@@ -159,10 +168,11 @@ public class RecordActivity extends AppCompatActivity {
         initTimeline(mTagModels, recyclerTags);
 
 
-        timerTextView = (TextView) findViewById(R.id.timerTextView);
 
+ /*
         Button b = (Button) findViewById(R.id.button);
         b.setText("start");
+
         b.setOnClickListener(new View.OnClickListener() {
 
             @Override
@@ -177,7 +187,7 @@ public class RecordActivity extends AppCompatActivity {
                     b.setText("stop");
                 }
             }
-        });
+        });*/
 
     }
 
@@ -261,7 +271,7 @@ public class RecordActivity extends AppCompatActivity {
                 iv.setBackgroundResource(R.drawable.ico);
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                layoutParams.setMargins(mMarge[0], 0, 0, 0);
+                layoutParams.setMargins((int) mStartTime/1000000, 0, 0, 0);
                 LinearLayout timeline = mTimelines.get(listTag.get(position).getName());
                 timeline.addView(iv, layoutParams);
                 mMarge[0] += 55;
@@ -287,7 +297,7 @@ public class RecordActivity extends AppCompatActivity {
             seconds = seconds % 60;
 
             timerTextView.setText(String.format("%d:%02d", minutes, seconds));
-            timerHandler.postDelayed(this, 5000);
+            timerHandler.postDelayed(this, 500);
         }
     };
 
@@ -295,7 +305,7 @@ public class RecordActivity extends AppCompatActivity {
     public void onPause() {
         super.onPause();
         timerHandler.removeCallbacks(timerRunnable);
-        Button b = (Button)findViewById(R.id.button);
-        b.setText("start");
+       // Button b = (Button)findViewById(R.id.button);
+        //b.setText("start");
     }
 }
