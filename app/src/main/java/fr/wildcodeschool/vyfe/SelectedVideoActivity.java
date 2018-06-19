@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.VideoView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -36,6 +37,17 @@ public class SelectedVideoActivity extends AppCompatActivity {
         Button btnUpload = findViewById(R.id.bt_upload);
         Button edit = findViewById(R.id.btn_edit);
         final String titleSession = getIntent().getStringExtra("titleSession");
+        final String fileName = getIntent().getStringExtra("fileName");
+
+        Button play = findViewById(R.id.bt_play);
+        play.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                VideoView videoView = findViewById(R.id.vv_preview);
+                videoView.setVideoPath(fileName);
+                videoView.start();
+            }
+        });
 
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -59,7 +71,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
                 String idSession = sessionRef.push().getKey();
                 sessionRef.child(idSession).child("name").setValue(titleSession);
                 sessionRef.child(idSession).child("author").setValue(mAuthUserId);
-                sessionRef.child(idSession).child("videoLink").setValue("https://youtu.be/sFukyIIM1XI");
+                sessionRef.child(idSession).child("videoLink").setValue(fileName);
                 sessionRef.child(idSession).child("date").setValue(stringdate);
 
 
@@ -84,6 +96,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.video_name);
+
     }
 
     @Override
