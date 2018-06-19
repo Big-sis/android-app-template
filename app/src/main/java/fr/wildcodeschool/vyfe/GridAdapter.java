@@ -65,7 +65,11 @@ public class GridAdapter extends BaseAdapter implements Filterable {
 
         ImageView videoStatus = convertView.findViewById(R.id.img_upload_video);
 
-        if ()
+        String lRegex = "^(https?)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
+
+        if (video.getVideoLink().equals(lRegex)) {
+            videoStatus.setImageResource(R.drawable.icons8_cloud_v_rifi__96);
+        }
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
