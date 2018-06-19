@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -35,7 +36,10 @@ public class SelectedVideoActivity extends AppCompatActivity {
 
         Button btnUpload = findViewById(R.id.bt_upload);
         Button edit = findViewById(R.id.btn_edit);
+        TextView tvTitle = findViewById(R.id.tv_title);
+
         final String titleSession = getIntent().getStringExtra("titleSession");
+        tvTitle.setText(titleSession);
 
         edit.setOnClickListener(new View.OnClickListener() {
             @Override

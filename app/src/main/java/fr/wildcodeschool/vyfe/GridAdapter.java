@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import java.util.ArrayList;
 
@@ -65,7 +66,7 @@ public class GridAdapter extends BaseAdapter implements Filterable {
 
 
                 Intent intent = new Intent(mContext, SelectedVideoActivity.class);
-
+                intent.putExtra("titleSession", video.getName());
                 mContext.startActivity(intent);
             }
         });

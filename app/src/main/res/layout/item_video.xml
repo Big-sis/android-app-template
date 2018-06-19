@@ -6,7 +6,7 @@
     android:background="@color/colorSlateGrey"
     android:orientation="vertical">
 
-    <ImageView
+    <VideoView
         android:id="@+id/img_item_video"
         android:layout_width="150dp"
         android:layout_height="100dp"
