@@ -38,7 +38,6 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
-    <!--Texte en dur ne va pas rester -->
     <TextView
         android:id="@+id/tv_stats"
         android:layout_width="35dp"
@@ -48,7 +47,6 @@
         android:layout_marginRight="42dp"
         android:layout_marginStart="272dp"
         android:layout_marginTop="8dp"
-        android:text="Stats"
         android:visibility="gone"
         app:fontFamily="@font/roboto_bold"
         app:layout_constraintEnd_toStartOf="@+id/btn_delete"
