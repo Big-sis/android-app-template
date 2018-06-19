@@ -9,9 +9,7 @@
 
     <include
         android:id="@+id/appBar"
-        layout="@layout/toolbar"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="340dp" />
+        layout="@layout/toolbar" />
 
     <ScrollView
         android:layout_width="match_parent"

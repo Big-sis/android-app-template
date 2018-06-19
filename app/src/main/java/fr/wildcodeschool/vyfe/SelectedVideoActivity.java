@@ -45,7 +45,6 @@ public class SelectedVideoActivity extends AppCompatActivity {
         tvTitle.setText(titleSession);
         final String fileName = getIntent().getStringExtra("fileName");
 
-        Button play = findViewById(R.id.bt_play);
         play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -79,8 +78,8 @@ public class SelectedVideoActivity extends AppCompatActivity {
                 mIdSession = sessionRef.push().getKey();
                 sessionRef.child(mIdSession).child("name").setValue(titleSession);
                 sessionRef.child(mIdSession).child("author").setValue(mAuthUserId);
-                sessionRef.child(idSession).child("videoLink").setValue(fileName);
-                sessionRef.child(idSession).child("date").setValue(stringdate);
+                sessionRef.child(mIdSession).child("videoLink").setValue(fileName);
+                sessionRef.child(mIdSession).child("date").setValue(stringdate);
 
 
             }

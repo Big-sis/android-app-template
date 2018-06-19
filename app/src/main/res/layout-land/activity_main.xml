@@ -18,9 +18,7 @@
 
             <include
                 android:id="@+id/appBar"
-                layout="@layout/toolbar"
-                tools:layout_editor_absoluteX="0dp"
-                tools:layout_editor_absoluteY="129dp" />
+                layout="@layout/toolbar"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
