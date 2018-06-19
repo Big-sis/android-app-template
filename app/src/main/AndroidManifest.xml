@@ -27,7 +27,13 @@
             android:screenOrientation="landscape" />
         <activity
             android:name=".RecordActivity"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="landscape" >
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
         <activity
             android:name=".InfoVideoActivity"
             android:screenOrientation="landscape"
@@ -39,11 +45,7 @@
             android:name=".ConnexionActivity"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateHidden">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".MyVideoActivity"
