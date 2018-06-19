@@ -29,12 +29,14 @@ public class SelectedVideoActivity extends AppCompatActivity {
     FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     final String mAuthUserId = mAuth.getCurrentUser().getUid();
+    private String mIdSession = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selected_video);
 
+        Button play = findViewById(R.id.bt_play);
         Button btnUpload = findViewById(R.id.bt_upload);
         Button edit = findViewById(R.id.btn_edit);
         TextView tvTitle = findViewById(R.id.tv_title);
@@ -52,6 +54,8 @@ public class SelectedVideoActivity extends AppCompatActivity {
                 videoView.start();
             }
         });
+
+
 
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,13 +76,22 @@ public class SelectedVideoActivity extends AppCompatActivity {
 
                 //Firebase SESSION
                 DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions");
-                String idSession = sessionRef.push().getKey();
-                sessionRef.child(idSession).child("name").setValue(titleSession);
-                sessionRef.child(idSession).child("author").setValue(mAuthUserId);
+                mIdSession = sessionRef.push().getKey();
+                sessionRef.child(mIdSession).child("name").setValue(titleSession);
+                sessionRef.child(mIdSession).child("author").setValue(mAuthUserId);
                 sessionRef.child(idSession).child("videoLink").setValue(fileName);
                 sessionRef.child(idSession).child("date").setValue(stringdate);
 
 
+            }
+        });
+
+        play.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SelectedVideoActivity.this, PlaySelectedVideo.class);
+                intent.putExtra("idSession",mIdSession);
+                startActivity(intent);
             }
         });
 
