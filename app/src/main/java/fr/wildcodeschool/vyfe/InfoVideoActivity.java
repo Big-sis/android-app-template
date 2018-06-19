@@ -27,15 +27,7 @@ public class InfoVideoActivity extends AppCompatActivity {
         Button btnConfirmDelete = findViewById(R.id.btn_confirm_delete);
         Button btnDelete = findViewById(R.id.btn_delete);
         final ConstraintLayout confirmDelete = findViewById(R.id.confirm_delete);
-        final Spinner spinner = findViewById(R.id.spin_folder);
         Toolbar toolbar = findViewById(R.id.toolbar);
-
-        //creer array utiliser un adapterSpinner pour rentrer les donner du spinner arrays
-        final ArrayAdapter<CharSequence> adapterSpinner = ArrayAdapter.createFromResource(this, R.array.select_folder, android.R.layout.simple_spinner_item);
-        //specifier le layout a utiliser lors affichage donné
-        adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        //appliquer ladapter au spinner
-        spinner.setAdapter(adapterSpinner);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);

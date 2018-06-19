@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -28,15 +29,20 @@ public class SelectedVideoActivity extends AppCompatActivity {
     FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     final String mAuthUserId = mAuth.getCurrentUser().getUid();
+    private String mIdSession = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selected_video);
 
+        Button play = findViewById(R.id.bt_play);
         Button btnUpload = findViewById(R.id.bt_upload);
         Button edit = findViewById(R.id.btn_edit);
+        TextView tvTitle = findViewById(R.id.tv_title);
+
         final String titleSession = getIntent().getStringExtra("titleSession");
+        tvTitle.setText(titleSession);
         final String fileName = getIntent().getStringExtra("fileName");
 
         Button play = findViewById(R.id.bt_play);
@@ -48,6 +54,8 @@ public class SelectedVideoActivity extends AppCompatActivity {
                 videoView.start();
             }
         });
+
+
 
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,19 +70,28 @@ public class SelectedVideoActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 Date date = new Date();
-                Date newDate = new Date(date.getTime() + (604800000L * 2) + (24 * 60 * 60));
-                SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yy:HH:mm:SS Z");
+                Date newDate = new Date(date.getTime());
+                SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yy HH:mm:SS Z");
                 String stringdate = dt.format(newDate);
 
                 //Firebase SESSION
                 DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions");
-                String idSession = sessionRef.push().getKey();
-                sessionRef.child(idSession).child("name").setValue(titleSession);
-                sessionRef.child(idSession).child("author").setValue(mAuthUserId);
+                mIdSession = sessionRef.push().getKey();
+                sessionRef.child(mIdSession).child("name").setValue(titleSession);
+                sessionRef.child(mIdSession).child("author").setValue(mAuthUserId);
                 sessionRef.child(idSession).child("videoLink").setValue(fileName);
                 sessionRef.child(idSession).child("date").setValue(stringdate);
 
 
+            }
+        });
+
+        play.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SelectedVideoActivity.this, PlaySelectedVideo.class);
+                intent.putExtra("idSession",mIdSession);
+                startActivity(intent);
             }
         });
 

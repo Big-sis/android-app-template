@@ -2,12 +2,13 @@
     <string name="app_name">Vyfe</string>
     <string name="video_tittle">Titre de la vidéo</string>
     <string name="video_info">Informations sur la vidéo</string>
-    <string name="folder">Dossier</string>
-    <string name="description">Description</string>
+    <string name="description">Pas de description</string>
     <string name="play_video">Visionner</string>
     <string name="edit">Modifier</string>
     <string name="upload">Uploader</string>
     <string name="information">Informations sur la vidéo</string>
+
+
     <string-array name="select_folder">
         <item>Importer votre grille</item>
         <item>Dossier 1</item>
@@ -15,12 +16,11 @@
         <item>Dossier 3</item>
     </string-array>
 
+
     <string name="title_video">Titre de la vidéo</string>
-    <string name="settings">settings</string>
     <string name="start_session">Lancer une session</string>
     <string name="start_multi_session">Lancer une session collaborative</string>
     <string name="my_videos">Mes vidéos</string>
-    <string name="user_name">User Name</string>
     <string name="search">Rechercher</string>
     <string name="hello_user">Bonjour</string>
     <string name="connected">Connection</string>
@@ -28,17 +28,17 @@
     <string name="password">Mot de passe</string>
     <string name="lost_password">Mot de passe oublié ?</string>
     <string name="connected_maj">Se connecter</string>
-    <string name="infor_session">Information sur la session</string>
+    <string name="info_session">Information sur la session</string>
     <string name="add_description">Ajouter une description</string>
     <string name="my_analyse">Mes grilles d\'analyses</string>
-    <string name="title_grille">Titre de la grille</string>
+    <string name="grid_title">Titre de la grille</string>
     <string name="add_evenement">Ajouter un événement</string>
     <string name="go">Démarrer</string>
     <string name="back">Retour</string>
     <string name="share_url">Partagez l\'adresse URL à vos apprenants</string>
     <string name="url">http://vyfe.co/live/356</string>
     <string name="category">Category</string>
-    <string name="nom_observation">Nom observation</string>
+    <string name="name_observation">Nom observation</string>
     <string name="avatar">avatar</string>
     <string name="new_grid">Nouvelle grille d\'analyse</string>
     <string name="choose_color">Choisir votre couleur</string>
@@ -78,4 +78,5 @@
     <string name="mail_send">Email envoyé</string>
     <string name="mail_unkown">Email inconnu</string>
     <string name="send">Envoyer</string>
+    <string name="date">Date</string>
 </resources>

@@ -6,6 +6,7 @@ public class TagModel {
     private String name;
     private String fkTagSet;
     private String rigthOffset;
+    private int time = 0;
 
     public TagModel(int color, String name, String fkTagSet, String rigthOffset) {
         this.color = color;
