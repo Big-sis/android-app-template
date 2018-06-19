@@ -86,17 +86,19 @@
                         android:id="@+id/horizontalScrollView"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:scrollbarThumbHorizontal="@color/colorDarkBlueGrey"
-                        android:scrollbarTrackHorizontal="@android:color/background_light"
+                        android:scrollbarThumbHorizontal="@android:color/background_light"
+                        android:scrollbarTrackHorizontal="@color/colorDarkBlueGrey"
                         android:scrollbars="horizontal"
                         app:layout_constraintEnd_toEndOf="@id/video_view"
-                        tools:layout_editor_absoluteY="188dp">
+                        tools:layout_editor_absoluteY="188dp"
+                       >
 
                         <LinearLayout
                             android:id="@+id/ll_main"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:orientation="vertical"></LinearLayout>
+                            android:orientation="vertical"
+                            ></LinearLayout>
 
                     </HorizontalScrollView>
 

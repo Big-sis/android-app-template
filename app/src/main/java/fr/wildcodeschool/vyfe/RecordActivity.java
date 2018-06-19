@@ -4,8 +4,10 @@ import android.content.Intent;
 import android.hardware.Camera;
 import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.RequiresApi;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -19,8 +21,10 @@ import android.view.SurfaceHolder;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.VideoView;
 
@@ -263,9 +267,10 @@ public class RecordActivity extends AppCompatActivity {
 
         rv.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(),
                 rv, new RecyclerTouchListener.ClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View view, int position) {
-
+                final HorizontalScrollView scrollView = findViewById(R.id.horizontalScrollView);
                 ImageView iv = new ImageView(RecordActivity.this);
                 //TODO: associer à l'image la couleur du tag
                 iv.setBackgroundResource(R.drawable.ico);
@@ -275,6 +280,11 @@ public class RecordActivity extends AppCompatActivity {
                 LinearLayout timeline = mTimelines.get(listTag.get(position).getName());
                 timeline.addView(iv, layoutParams);
                 mMarge[0] += 55;
+
+                scrollView.post(new Runnable() { public void run() { scrollView.fullScroll(View.FOCUS_RIGHT); } });
+
+
+
             }
 
             @Override
