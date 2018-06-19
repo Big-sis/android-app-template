@@ -67,7 +67,6 @@ public class RecordActivity extends AppCompatActivity {
         FloatingActionButton btFinish = findViewById(R.id.bt_finish);
         final ImageView ivCheck = findViewById(R.id.iv_check);
         final RecyclerView recyclerTags = findViewById(R.id.re_tags);
-        // RecyclerView recyclerTime = findViewById(R.id.re_time_lines);
         final TextView tvVideoSave = findViewById(R.id.tv_video_save);
         final TextView tvWait = findViewById(R.id.wait);
 
@@ -111,12 +110,10 @@ public class RecordActivity extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManagerTags = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         RecyclerView.LayoutManager layoutManagerTime = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerTags.setLayoutManager(layoutManagerTags);
-        // recyclerTime.setLayoutManager(layoutManagerTime);
 
         final TagRecyclerAdapter adapterTags = new TagRecyclerAdapter(mTagModels, "record");
         final TagRecyclerAdapter adapterTime = new TagRecyclerAdapter(mTagModels, "timelines");
         recyclerTags.setAdapter(adapterTags);
-        // recyclerTime.setAdapter(adapterTime);
 
 
         btFinish.setOnClickListener(new View.OnClickListener() {
