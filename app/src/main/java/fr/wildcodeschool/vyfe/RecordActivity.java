@@ -213,7 +213,7 @@ public class RecordActivity extends AppCompatActivity {
 
 
     private void initTimeline(final ArrayList<TagModel> listTag, RecyclerView rv) {
-        LinearLayout principal = findViewById(R.id.principal);
+        LinearLayout principal = findViewById(R.id.main);
 
         for (TagModel tagModel : listTag) {
             //TODO: empecher la repetition de nom pour les tags
