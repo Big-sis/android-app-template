@@ -27,6 +27,9 @@ public class MyVideoActivity extends AppCompatActivity {
     GridAdapter mGridAdapter = new GridAdapter(this, mSessionsModelList);
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
+
+    private static ArrayList<String> mFilesName = null;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -77,6 +80,8 @@ public class MyVideoActivity extends AppCompatActivity {
             }
         });
         mGridAdapter.notifyDataSetChanged();
+
+
     }
 
     @Override
