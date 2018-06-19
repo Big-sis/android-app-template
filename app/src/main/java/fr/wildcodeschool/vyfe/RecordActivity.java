@@ -5,6 +5,7 @@ import android.hardware.Camera;
 import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -46,6 +47,9 @@ public class RecordActivity extends AppCompatActivity {
     HashMap<String, LinearLayout> mTimelines = new HashMap<>();
     //TODO : remplacer marge par timer
     final int[] mMarge = {0};
+
+    TextView timerTextView;
+    long mStartTime = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,6 +158,27 @@ public class RecordActivity extends AppCompatActivity {
 
         initTimeline(mTagModels, recyclerTags);
 
+
+        timerTextView = (TextView) findViewById(R.id.timerTextView);
+
+        Button b = (Button) findViewById(R.id.button);
+        b.setText("start");
+        b.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                Button b = (Button) v;
+                if (b.getText().equals("stop")) {
+                    timerHandler.removeCallbacks(timerRunnable);
+                    b.setText("start");
+                } else {
+                    mStartTime = System.currentTimeMillis();
+                    timerHandler.postDelayed(timerRunnable, 0);
+                    b.setText("stop");
+                }
+            }
+        });
+
     }
 
     @Override
@@ -249,5 +274,28 @@ public class RecordActivity extends AppCompatActivity {
         }));
 
 
+    }
+
+    Handler timerHandler = new Handler();
+    Runnable timerRunnable = new Runnable() {
+
+        @Override
+        public void run() {
+            long millis = System.currentTimeMillis() - mStartTime;
+            int seconds = (int) (millis / 1000);
+            int minutes = seconds / 60;
+            seconds = seconds % 60;
+
+            timerTextView.setText(String.format("%d:%02d", minutes, seconds));
+            timerHandler.postDelayed(this, 5000);
+        }
+    };
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        timerHandler.removeCallbacks(timerRunnable);
+        Button b = (Button)findViewById(R.id.button);
+        b.setText("start");
     }
 }
