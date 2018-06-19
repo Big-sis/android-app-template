@@ -41,17 +41,10 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/video_tittle"
+                    android:layout_marginTop="8dp"
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     app:fontFamily="@font/roboto_bold" />
-
-                <TextView
-                    android:id="@+id/tv_folder"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/folder"
-                    android:textColor="@color/white"
-                    app:fontFamily="@font/roboto" />
 
                 <TextView
                     android:id="@+id/tv_description"

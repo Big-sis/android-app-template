@@ -8,9 +8,12 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import java.util.ArrayList;
+import java.util.regex.*;
 
 public class GridAdapter extends BaseAdapter implements Filterable {
 
@@ -55,16 +58,24 @@ public class GridAdapter extends BaseAdapter implements Filterable {
 
         //Test avec seulement le nom
         final TextView tvName = convertView.findViewById(R.id.title_video);
-
         tvName.setText(video.getName());
 
+        TextView date = convertView.findViewById(R.id.video_date);
+        date.setText(video.getDate());
+
+        ImageView videoStatus = convertView.findViewById(R.id.img_upload_video);
+
+        String lRegex = "^(https?)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
+
+        if (video.getVideoLink().equals(lRegex)) {
+            videoStatus.setImageResource(R.drawable.icons8_cloud_v_rifi__96);
+        }
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-            Intent intent = new Intent(mContext, SelectedVideoActivity.class);
-
+                Intent intent = new Intent(mContext, SelectedVideoActivity.class);
+                intent.putExtra("titleSession", video.getName());
                 mContext.startActivity(intent);
             }
         });

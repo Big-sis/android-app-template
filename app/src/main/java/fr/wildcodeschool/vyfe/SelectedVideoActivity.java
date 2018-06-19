@@ -12,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -38,7 +39,10 @@ public class SelectedVideoActivity extends AppCompatActivity {
         Button play = findViewById(R.id.bt_play);
         Button btnUpload = findViewById(R.id.bt_upload);
         Button edit = findViewById(R.id.btn_edit);
+        TextView tvTitle = findViewById(R.id.tv_title);
+
         final String titleSession = getIntent().getStringExtra("titleSession");
+        tvTitle.setText(titleSession);
         final String fileName = getIntent().getStringExtra("fileName");
 
         Button play = findViewById(R.id.bt_play);
@@ -66,8 +70,8 @@ public class SelectedVideoActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 Date date = new Date();
-                Date newDate = new Date(date.getTime() + (604800000L * 2) + (24 * 60 * 60));
-                SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yy:HH:mm:SS Z");
+                Date newDate = new Date(date.getTime());
+                SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yy HH:mm:SS Z");
                 String stringdate = dt.format(newDate);
 
                 //Firebase SESSION
