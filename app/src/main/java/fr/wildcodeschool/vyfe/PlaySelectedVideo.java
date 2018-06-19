@@ -28,8 +28,8 @@ public class PlaySelectedVideo extends AppCompatActivity {
     private ArrayList<TagModel> mTagModels;
     private VideoView mVideoSelected;
     private SeekBar mSeekBar;
-    private boolean isPlayed = false;
-    private boolean firstPlay = true;
+    private boolean mIsPlayed = false;
+    private boolean mFirstPlay = true;
     private String mIdSession;
     private String mVideoLink;
     private SessionsModel mSessionModel;
@@ -97,18 +97,18 @@ public class PlaySelectedVideo extends AppCompatActivity {
         fbPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (isPlayed) {
+                if (mIsPlayed) {
                     mVideoSelected.pause();
-                    isPlayed = false;
+                    mIsPlayed = false;
 
-                } else if (firstPlay) {
+                } else if (mFirstPlay) {
                     async.execute();
-                    firstPlay = false;
-                    isPlayed = true;
+                    mFirstPlay = false;
+                    mIsPlayed = true;
 
                 } else {
                     mVideoSelected.start();
-                    isPlayed = true;
+                    mIsPlayed = true;
                 }
             }
         });
