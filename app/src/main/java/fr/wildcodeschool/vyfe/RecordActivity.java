@@ -208,7 +208,7 @@ public class RecordActivity extends AppCompatActivity {
     private void initTimeline(final ArrayList<TagModel> listTag, RecyclerView rv) {
         LinearLayout principal = findViewById(R.id.principal);
 
-        for (TagModel tagModel : listTag){
+        for (TagModel tagModel : listTag) {
             //TODO: empecher la repetition de nom pour les tags
             String name = tagModel.getName();
             //Ajout d'un Linear pour un tag
