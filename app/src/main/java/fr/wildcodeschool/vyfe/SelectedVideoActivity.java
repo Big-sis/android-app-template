@@ -54,8 +54,8 @@ public class SelectedVideoActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 Date date = new Date();
-                Date newDate = new Date(date.getTime() + (604800000L * 2) + (24 * 60 * 60));
-                SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yy:HH:mm:SS Z");
+                Date newDate = new Date(date.getTime());
+                SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yy HH:mm:SS Z");
                 String stringdate = dt.format(newDate);
 
                 //Firebase SESSION

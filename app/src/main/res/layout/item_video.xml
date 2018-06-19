@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@color/colorSlateGrey"
+    android:layout_margin="8dp"
     android:orientation="vertical">
 
     <VideoView
@@ -22,8 +22,7 @@
         <ImageView
             android:id="@+id/img_upload_video"
             android:layout_width="20dp"
-            android:layout_height="20dp"
-            app:srcCompat="@android:color/darker_gray" />
+            android:layout_height="20dp" />
 
         <TextView
             android:id="@+id/title_video"
@@ -36,6 +35,14 @@
             app:fontFamily="@font/roboto" />
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/video_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/date"
+        android:textColor="@color/white"
+        app:fontFamily="@font/roboto" />
 
 
 </LinearLayout>

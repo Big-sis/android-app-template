@@ -8,10 +8,12 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.VideoView;
 
 import java.util.ArrayList;
+import java.util.regex.*;
 
 public class GridAdapter extends BaseAdapter implements Filterable {
 
@@ -56,9 +58,14 @@ public class GridAdapter extends BaseAdapter implements Filterable {
 
         //Test avec seulement le nom
         final TextView tvName = convertView.findViewById(R.id.title_video);
-
         tvName.setText(video.getName());
 
+        TextView date = convertView.findViewById(R.id.video_date);
+        date.setText(video.getDate());
+
+        ImageView videoStatus = convertView.findViewById(R.id.img_upload_video);
+
+        if ()
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -31,7 +31,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:maxLength="30"
-        android:text="@string/nom_observation"
+        android:text="@string/name_observation"
         android:textColor="@color/white"
         android:textSize="18sp"
         app:fontFamily="@font/roboto_bold"
