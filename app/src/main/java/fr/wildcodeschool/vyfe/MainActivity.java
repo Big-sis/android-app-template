@@ -9,14 +9,25 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final int PERMISSIONS_REQUEST = 1;
+    private String[] permissions = {
+            Manifest.permission.RECORD_AUDIO,
+            Manifest.permission.CAMERA,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_EXTERNAL_STORAGE
+    };
+
     public static boolean mMulti = false;
     private boolean mPermission;
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,14 +66,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        ActivityCompat.requestPermissions(this, permissions, PERMISSIONS_REQUEST);
 
-        if (ContextCompat.checkSelfPermission(this.getApplicationContext(),
-                Manifest.permission.CAMERA)
-                == PackageManager.PERMISSION_GRANTED) {
-            mPermission = true;
-        } else {
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+
             ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.CAMERA},
+                    permissions,
                     PERMISSIONS_REQUEST);
         }
     }
@@ -73,4 +84,17 @@ public class MainActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.settings, menu);
         return true;
     }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.logout:
+                Intent intent = new Intent(MainActivity.this, ConnexionActivity.class);
+                startActivity(intent);
+                mAuth.signOut();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 }

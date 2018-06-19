@@ -1,9 +1,5 @@
 package fr.wildcodeschool.vyfe;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
-
 public class TagModel {
 
     private int color;
@@ -17,6 +13,9 @@ public class TagModel {
         this.name = name;
         this.fkTagSet = fkTagSet;
         this.rigthOffset = rigthOffset;
+    }
+
+    public TagModel() {
     }
 
     public int getColor() {

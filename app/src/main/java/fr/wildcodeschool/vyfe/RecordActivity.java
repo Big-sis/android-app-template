@@ -1,8 +1,9 @@
 package fr.wildcodeschool.vyfe;
 
 import android.content.Intent;
-import android.graphics.PixelFormat;
 import android.hardware.Camera;
+import android.media.CamcorderProfile;
+import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -10,34 +11,47 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 
-public class RecordActivity extends AppCompatActivity implements SurfaceHolder.Callback {
+public class RecordActivity extends AppCompatActivity {
 
     private ArrayList<TagModel> mTagModels = new ArrayList<>();
     private Camera mCamera;
-    private SurfaceView mCamView;
-    private SurfaceHolder mSurfaceHolder;
     private boolean mCamCondition = false;
-    private FloatingActionButton mCap;
+    private FloatingActionButton mRecord;
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private static String mFileName = null;
+    private MediaRecorder mRecorder = null;
+    private CameraPreview mPreview;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
 
-        mCamView = findViewById(R.id.video_view);
-        mCap = findViewById(R.id.bt_record_stop);
+        Date d = new Date();
+        mFileName = getExternalCacheDir().getAbsolutePath();
+        mFileName += "/" + d.getTime() +  ".mp4";
+
+        int currentCameraId = Camera.CameraInfo.CAMERA_FACING_BACK;
+        mCamera = getCameraInstance(currentCameraId);
+
+        mRecord = findViewById(R.id.bt_record);
 
         final Button btnBackMain = findViewById(R.id.btn_back_main);
         final Button btnPlay = findViewById(R.id.btn_play);
@@ -51,22 +65,35 @@ public class RecordActivity extends AppCompatActivity implements SurfaceHolder.C
 
         final String titleSession = getIntent().getStringExtra("titleSession");
 
-        getWindow().setFormat(PixelFormat.UNKNOWN);
-        mSurfaceHolder = mCamView.getHolder();
-        mSurfaceHolder.addCallback(this);
-        mSurfaceHolder.setType(SurfaceHolder.SURFACE_TYPE_NORMAL);
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.record_session);
 
-        mCap.setOnClickListener(new View.OnClickListener() {
+        mRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mCap.setBackgroundColor(getResources().getColor(R.color.colorRosyPink));
-                mCamera.takePicture(null, null, null, mPictureCallback);
+                mPreview = new CameraPreview(RecordActivity.this, mCamera,
+                        new CameraPreview.SurfaceCallback() {
+                            @Override
+                            public void onSurfaceCreated() {
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        startRecording();
+                                    }
+                                }).start();
+                            }
+                        });
+                FrameLayout preview = findViewById(R.id.video_view);
+                preview.addView(mPreview);
+                mRecord.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        stopRecording();
+                    }
+                });
             }
         });
 
@@ -114,58 +141,64 @@ public class RecordActivity extends AppCompatActivity implements SurfaceHolder.C
             public void onClick(View v) {
                 Intent intent = new Intent(RecordActivity.this, SelectedVideoActivity.class);
                 intent.putExtra("titleSession", titleSession);
+                intent.putExtra("fileName", mFileName);
                 startActivity(intent);
             }
         });
     }
 
     @Override
-    public void surfaceCreated(SurfaceHolder holder) {
-        mCamera = Camera.open();
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.settings, menu);
+        return true;
     }
 
-    @Override
-    public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
-        if (mCamCondition) {
-            mCamera.stopPreview();
-            mCamCondition = false;
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.logout:
+                Intent intent = new Intent(RecordActivity.this, ConnexionActivity.class);
+                startActivity(intent);
+                mAuth.signOut();
+                return true;
         }
 
-        if (mCamera != null) {
-            try {
-                Camera.Parameters parameters = mCamera.getParameters();
-                mCamera.setParameters(parameters);
-                mCamera.setPreviewDisplay(mSurfaceHolder);
-                mCamera.startPreview();
-                mCamCondition = true;
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void surfaceDestroyed(SurfaceHolder holder) {
-        mCamera.stopPreview();
-        mCamera.release();
-        mCamera = null;
-        mCamCondition = false;
+    // Pour obtenir une instance de la caméra
+    public static Camera getCameraInstance(int currentCameraId) {
+        Camera c = null;
+        try {
+            c = Camera.open(currentCameraId);
+        } catch (Exception e) {
+            e.getMessage();
+        }
+        return c;
     }
 
-    Camera.PictureCallback mPictureCallback = new Camera.PictureCallback() {
-        public void onPictureTaken(byte[] data, Camera c) {
-            FileOutputStream outStream = null;
-            try {
-                outStream = new FileOutputStream("/video_" + System.currentTimeMillis() + ".jpg");
-                outStream.write(data);
-                outStream.close();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
+    private void startRecording() {
+        mRecorder = new MediaRecorder();
+        mCamera.unlock();
 
-            }
+        mRecorder.setCamera(mCamera);
+        mRecorder.setAudioSource(MediaRecorder.AudioSource.CAMCORDER);
+        mRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
+
+        mRecorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_1080P));
+        mRecorder.setOutputFile(mFileName);
+
+        try {
+            mRecorder.prepare();
+        } catch (IOException e) {
+            e.getMessage();
         }
-    };
+
+        mRecorder.start();
+    }
+
+    private void stopRecording() {
+        mRecorder.stop();
+        mRecorder.release();
+        mRecorder = null;
+    }
 }

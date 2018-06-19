@@ -65,7 +65,7 @@
                     android:ems="10"
                     android:hint="@string/email"
                     android:includeFontPadding="false"
-                    android:inputType="textPersonName"
+                    android:inputType="textEmailAddress"
                     android:textColor="@color/white"
                     android:textColorHint="@color/white"
                     android:textSize="16sp"
@@ -98,7 +98,7 @@
                     <Button
                         android:id="@+id/tv_lost_password"
                         android:layout_width="wrap_content"
-                        android:layout_height="27dp"
+                        android:layout_height="30dp"
                         android:layout_gravity="right"
                         android:background="@null"
                         android:fontFamily="@font/roboto"

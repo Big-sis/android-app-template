@@ -179,5 +179,4 @@ public class AddGridActivity extends AppCompatActivity {
         mAdapter.notifyItemRemoved(position);
 
     }
-
 }
