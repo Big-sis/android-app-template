@@ -34,7 +34,6 @@
         <activity
             android:name=".RecordActivity"
             android:screenOrientation="landscape" />
-
         <activity
             android:name=".InfoVideoActivity"
             android:screenOrientation="landscape"
@@ -59,7 +58,13 @@
         <activity
             android:name=".StartActivity"
             android:screenOrientation="landscape"
-            android:windowSoftInputMode="stateHidden" />
+            android:windowSoftInputMode="stateHidden" >
+        <intent-filter>
+            <action android:name="android.intent.action.MAIN" />
+
+            <category android:name="android.intent.category.LAUNCHER" />
+        </intent-filter>
+        </activity>
         <activity
             android:name=".AddGridActivity"
             android:screenOrientation="landscape"

@@ -13,12 +13,15 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -26,7 +29,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Date;
+
 
 public class RecordActivity extends AppCompatActivity {
 
@@ -38,6 +43,9 @@ public class RecordActivity extends AppCompatActivity {
     private static String mFileName = null;
     private MediaRecorder mRecorder = null;
     private CameraPreview mPreview;
+    HashMap<String, LinearLayout> mTimelines = new HashMap<>();
+    //TODO : remplacer marge par timer
+    final int[] mMarge = {0};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,8 +66,7 @@ public class RecordActivity extends AppCompatActivity {
         final ConstraintLayout sessionRecord = findViewById(R.id.session_record);
         FloatingActionButton btFinish = findViewById(R.id.bt_finish);
         final ImageView ivCheck = findViewById(R.id.iv_check);
-        RecyclerView recyclerTags = findViewById(R.id.re_tags);
-        RecyclerView recyclerTime = findViewById(R.id.re_time_lines);
+        final RecyclerView recyclerTags = findViewById(R.id.re_tags);
         final TextView tvVideoSave = findViewById(R.id.tv_video_save);
         final TextView tvWait = findViewById(R.id.wait);
 
@@ -103,12 +110,11 @@ public class RecordActivity extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManagerTags = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         RecyclerView.LayoutManager layoutManagerTime = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerTags.setLayoutManager(layoutManagerTags);
-        recyclerTime.setLayoutManager(layoutManagerTime);
 
         final TagRecyclerAdapter adapterTags = new TagRecyclerAdapter(mTagModels, "record");
         final TagRecyclerAdapter adapterTime = new TagRecyclerAdapter(mTagModels, "timelines");
         recyclerTags.setAdapter(adapterTags);
-        recyclerTime.setAdapter(adapterTime);
+
 
         btFinish.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -145,6 +151,9 @@ public class RecordActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        initTimeline(mTagModels, recyclerTags);
+
     }
 
     @Override
@@ -154,7 +163,7 @@ public class RecordActivity extends AppCompatActivity {
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.logout:
                 Intent intent = new Intent(RecordActivity.this, ConnexionActivity.class);
                 startActivity(intent);
@@ -200,5 +209,45 @@ public class RecordActivity extends AppCompatActivity {
         mRecorder.stop();
         mRecorder.release();
         mRecorder = null;
+    }
+
+
+    private void initTimeline(final ArrayList<TagModel> listTag, RecyclerView rv) {
+
+        LinearLayout llMain = findViewById(R.id.ll_main);
+        for (TagModel tagModel : listTag) {
+            //TODO: empecher la repetition de nom pour les tags
+            String name = tagModel.getName();
+            //Ajout d'un Linear pour un tag
+            final LinearLayout timeline = new LinearLayout(RecordActivity.this);
+            timeline.setBackgroundResource(R.drawable.style_input);
+            llMain.addView(timeline);
+            mTimelines.put(name, timeline);
+
+        }
+
+        rv.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(),
+                rv, new RecyclerTouchListener.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+
+                ImageView iv = new ImageView(RecordActivity.this);
+                //TODO: associer à l'image la couleur du tag
+                iv.setBackgroundResource(R.drawable.ico);
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                layoutParams.setMargins(mMarge[0], 0, 0, 0);
+                LinearLayout timeline = mTimelines.get(listTag.get(position).getName());
+                timeline.addView(iv, layoutParams);
+                mMarge[0] += 55;
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
+
+
     }
 }

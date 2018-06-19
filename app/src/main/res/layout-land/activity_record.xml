@@ -35,7 +35,7 @@
 
                     <android.support.constraint.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="wrap_content">
 
                         <android.support.design.widget.FloatingActionButton
                             android:id="@+id/bt_record"
@@ -65,28 +65,37 @@
                             android:id="@+id/video_view"
                             android:layout_width="match_parent"
                             android:layout_height="297dp"
+                            android:layout_marginTop="8dp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
+                            />
 
-                        <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-                            xmlns:tools="http://schemas.android.com/tools"
-                            android:id="@+id/re_time_lines"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/video_view" />
+
 
                     </android.support.constraint.ConstraintLayout>
+
+                    <HorizontalScrollView
+                        android:id="@+id/horizontalScrollView"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:scrollbars="horizontal"
+                        app:layout_constraintEnd_toEndOf="@id/video_view"
+                        tools:layout_editor_absoluteY="188dp">
+
+                        <LinearLayout
+                            android:id="@+id/ll_main"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical"></LinearLayout>
+
+                    </HorizontalScrollView>
 
                 </LinearLayout>
 
                 <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
                     xmlns:tools="http://schemas.android.com/tools"
                     android:id="@+id/re_tags"
-                    android:layout_width="wrap_content"
+                    android:layout_width="150dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.2"
                     android:padding="8dp"
@@ -102,7 +111,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone">
-
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -111,7 +119,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@color/colorDarkBlueGrey" />
-
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -119,7 +126,6 @@
             android:layout_marginTop="8dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent">
-
             <ImageView
                 android:id="@+id/iv_check"
                 android:layout_width="90dp"
@@ -131,7 +137,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:srcCompat="@drawable/vyfe_logo" />
-
             <TextView
                 android:id="@+id/tv_video_save"
                 android:layout_width="wrap_content"
@@ -148,20 +153,18 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/iv_check" />
-
             <TextView
                 android:id="@+id/wait"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
-                android:text="@string/wait_few_minutes"
-                android:fontFamily="@font/roboto"
                 android:layout_marginTop="8dp"
-                app:layout_constraintTop_toBottomOf="@+id/tv_video_save"
+                android:fontFamily="@font/roboto"
+                android:text="@string/wait_few_minutes"
+                android:textAllCaps="true"
+                android:textColor="@color/white"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                android:textAllCaps="true"/>
-
+                app:layout_constraintTop_toBottomOf="@+id/tv_video_save" />
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -173,7 +176,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_video_save">
-
                 <Button
                     android:id="@+id/btn_back_main"
                     android:layout_width="wrap_content"
@@ -181,9 +183,8 @@
                     android:background="@null"
                     android:text="@string/back_to_main"
                     android:textColor="@color/white"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:visibility="gone"/>
-
+                    android:visibility="gone"
+                    app:layout_constraintStart_toStartOf="parent" />
                 <Button
                     android:id="@+id/btn_play"
                     android:layout_width="wrap_content"
@@ -192,11 +193,9 @@
                     android:background="@drawable/style_button"
                     android:text="@string/show_video"
                     android:textColor="@color/white"
-                    android:visibility="gone"/>
-
+                    android:visibility="gone" />
             </LinearLayout>
         </android.support.constraint.ConstraintLayout>
-
     </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>
