@@ -40,6 +40,17 @@ public class SelectedVideoActivity extends AppCompatActivity {
 
         final String titleSession = getIntent().getStringExtra("titleSession");
         tvTitle.setText(titleSession);
+        final String fileName = getIntent().getStringExtra("fileName");
+
+        Button play = findViewById(R.id.bt_play);
+        play.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                VideoView videoView = findViewById(R.id.vv_preview);
+                videoView.setVideoPath(fileName);
+                videoView.start();
+            }
+        });
 
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -63,7 +74,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
                 String idSession = sessionRef.push().getKey();
                 sessionRef.child(idSession).child("name").setValue(titleSession);
                 sessionRef.child(idSession).child("author").setValue(mAuthUserId);
-                sessionRef.child(idSession).child("videoLink").setValue("https://youtu.be/sFukyIIM1XI");
+                sessionRef.child(idSession).child("videoLink").setValue(fileName);
                 sessionRef.child(idSession).child("date").setValue(stringdate);
 
 
@@ -88,6 +99,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.video_name);
+
     }
 
     @Override

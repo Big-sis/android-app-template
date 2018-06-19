@@ -26,6 +26,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class RecordActivity extends AppCompatActivity {
 
@@ -43,8 +44,9 @@ public class RecordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
 
+        Date d = new Date();
         mFileName = getExternalCacheDir().getAbsolutePath();
-        mFileName += "/videorecord.mp4";
+        mFileName += "/" + d.getTime() +  ".mp4";
 
         int currentCameraId = Camera.CameraInfo.CAMERA_FACING_BACK;
         mCamera = getCameraInstance(currentCameraId);
@@ -86,6 +88,12 @@ public class RecordActivity extends AppCompatActivity {
                         });
                 FrameLayout preview = findViewById(R.id.video_view);
                 preview.addView(mPreview);
+                mRecord.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        stopRecording();
+                    }
+                });
             }
         });
 
@@ -133,6 +141,7 @@ public class RecordActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(RecordActivity.this, SelectedVideoActivity.class);
                 intent.putExtra("titleSession", titleSession);
+                intent.putExtra("fileName", mFileName);
                 startActivity(intent);
             }
         });
