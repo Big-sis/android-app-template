@@ -46,7 +46,7 @@ public class RecordActivity extends AppCompatActivity {
 
         Date d = new Date();
         mFileName = getExternalCacheDir().getAbsolutePath();
-        mFileName += "/video/" + d.getTime() +  ".mp4";
+        mFileName += "/" + d.getTime() +  ".mp4";
 
         int currentCameraId = Camera.CameraInfo.CAMERA_FACING_BACK;
         mCamera = getCameraInstance(currentCameraId);
@@ -88,6 +88,12 @@ public class RecordActivity extends AppCompatActivity {
                         });
                 FrameLayout preview = findViewById(R.id.video_view);
                 preview.addView(mPreview);
+                mRecord.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        stopRecording();
+                    }
+                });
             }
         });
 
@@ -135,6 +141,7 @@ public class RecordActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(RecordActivity.this, SelectedVideoActivity.class);
                 intent.putExtra("titleSession", titleSession);
+                intent.putExtra("fileName", mFileName);
                 startActivity(intent);
             }
         });
