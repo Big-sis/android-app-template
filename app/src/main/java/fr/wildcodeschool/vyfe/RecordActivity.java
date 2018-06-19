@@ -30,6 +30,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Date;
+
 
 public class RecordActivity extends AppCompatActivity {
 
@@ -50,8 +52,9 @@ public class RecordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
 
+        Date d = new Date();
         mFileName = getExternalCacheDir().getAbsolutePath();
-        mFileName += "/videorecord.mp4";
+        mFileName += "/" + d.getTime() +  ".mp4";
 
         int currentCameraId = Camera.CameraInfo.CAMERA_FACING_BACK;
         mCamera = getCameraInstance(currentCameraId);
@@ -92,6 +95,12 @@ public class RecordActivity extends AppCompatActivity {
                         });
                 FrameLayout preview = findViewById(R.id.video_view);
                 preview.addView(mPreview);
+                mRecord.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        stopRecording();
+                    }
+                });
             }
         });
 
@@ -101,12 +110,10 @@ public class RecordActivity extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManagerTags = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         RecyclerView.LayoutManager layoutManagerTime = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerTags.setLayoutManager(layoutManagerTags);
-        // recyclerTime.setLayoutManager(layoutManagerTime);
 
         final TagRecyclerAdapter adapterTags = new TagRecyclerAdapter(mTagModels, "record");
         final TagRecyclerAdapter adapterTime = new TagRecyclerAdapter(mTagModels, "timelines");
         recyclerTags.setAdapter(adapterTags);
-        // recyclerTime.setAdapter(adapterTime);
 
 
         btFinish.setOnClickListener(new View.OnClickListener() {
@@ -140,6 +147,7 @@ public class RecordActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(RecordActivity.this, SelectedVideoActivity.class);
                 intent.putExtra("titleSession", titleSession);
+                intent.putExtra("fileName", mFileName);
                 startActivity(intent);
             }
         });
@@ -205,8 +213,8 @@ public class RecordActivity extends AppCompatActivity {
 
 
     private void initTimeline(final ArrayList<TagModel> listTag, RecyclerView rv) {
-        LinearLayout llMain = findViewById(R.id.ll_main);
 
+        LinearLayout llMain = findViewById(R.id.ll_main);
         for (TagModel tagModel : listTag) {
             //TODO: empecher la repetition de nom pour les tags
             String name = tagModel.getName();
