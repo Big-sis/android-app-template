@@ -26,6 +26,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class RecordActivity extends AppCompatActivity {
 
@@ -43,8 +44,9 @@ public class RecordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
 
+        Date d = new Date();
         mFileName = getExternalCacheDir().getAbsolutePath();
-        mFileName += "/videorecord.mp4";
+        mFileName += "/video/" + d.getTime() +  ".mp4";
 
         int currentCameraId = Camera.CameraInfo.CAMERA_FACING_BACK;
         mCamera = getCameraInstance(currentCameraId);
