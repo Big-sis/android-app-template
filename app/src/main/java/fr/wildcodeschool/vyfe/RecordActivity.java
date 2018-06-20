@@ -266,7 +266,7 @@ public class RecordActivity extends AppCompatActivity {
                 }
                 //init image Tag
                 ImageView iv = new ImageView(RecordActivity.this);
-                iv.setMinimumWidth(10);
+                iv.setMinimumWidth(100);
                 iv.setMinimumHeight(10);
                 iv.setBackgroundColor(listTag.get(position).getColor());
 
