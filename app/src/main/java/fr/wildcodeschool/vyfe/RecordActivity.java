@@ -7,6 +7,7 @@ import android.media.MediaRecorder;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
 import android.support.annotation.RequiresApi;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -20,6 +21,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
@@ -59,6 +61,8 @@ public class RecordActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
+        final Chronometer chronometer = findViewById(R.id.chronometer);
+
 
         Date d = new Date();
         mFileName = getExternalCacheDir().getAbsolutePath();
@@ -89,9 +93,10 @@ public class RecordActivity extends AppCompatActivity {
         mRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                chronometer.start();
 
-                mStartTime = System.currentTimeMillis();
-               timerHandler.postDelayed(timerRunnable, 0);
+             //   mStartTime = System.currentTimeMillis();
+              // timerHandler.postDelayed(timerRunnable, 0);
                 /*
                 mPreview = new CameraPreview(RecordActivity.this, mCamera,
                         new CameraPreview.SurfaceCallback() {
@@ -265,21 +270,27 @@ public class RecordActivity extends AppCompatActivity {
 
         }
 
+        final int[] chrono = {0};
         rv.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(),
                 rv, new RecyclerTouchListener.ClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View view, int position) {
+                final Chronometer chronometer = findViewById(R.id.chronometer);
+                long chronoTime = (SystemClock.elapsedRealtime() - chronometer.getBase())/1000;
+                chrono[0] += (int)chronoTime;
+
                 final HorizontalScrollView scrollView = findViewById(R.id.horizontalScrollView);
                 ImageView iv = new ImageView(RecordActivity.this);
                 //TODO: associer à l'image la couleur du tag
                 iv.setBackgroundResource(R.drawable.ico);
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                layoutParams.setMargins((int) mStartTime/1000000, 0, 0, 0);
+                layoutParams.setMargins(chrono[0], 0, 0, 0);
                 LinearLayout timeline = mTimelines.get(listTag.get(position).getName());
                 timeline.addView(iv, layoutParams);
                 mMarge[0] += 55;
+
+                timerTextView.setText(String.valueOf(chrono[0]));
 
                 scrollView.post(new Runnable() { public void run() { scrollView.fullScroll(View.FOCUS_RIGHT); } });
 

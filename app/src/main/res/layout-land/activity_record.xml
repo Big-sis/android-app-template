@@ -11,6 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -69,7 +70,18 @@
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
                             >
-
+                            <Chronometer
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/chronometer"
+                                android:layout_alignParentTop="true"
+                                android:layout_centerHorizontal="true"
+                                android:background="#000000"
+                                android:gravity="center"
+                                android:padding="10dp"
+                                android:textColor="#1aff00"
+                                android:textStyle="bold"
+                                android:layout_marginTop="102dp" />
                             <TextView
                                 android:id="@+id/timerTextView"
                                 android:layout_width="wrap_content"
