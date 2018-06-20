@@ -264,7 +264,7 @@ public class RecordActivity extends AppCompatActivity {
 
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                layoutParams.setMargins(chronoTime + 200, 40, 0, 40);
+                layoutParams.setMargins(chronoTime , 40, 0, 40);
                 LinearLayout timeline = mTimelines.get(listTag.get(position).getName());
                 timeline.addView(iv, layoutParams);
 
@@ -273,6 +273,10 @@ public class RecordActivity extends AppCompatActivity {
 
                 if (titleTimeline[position]) {
                     tvName.setText(listTag.get(position).getName());
+                    LinearLayout.LayoutParams layoutParamsTv= new LinearLayout.LayoutParams(
+                            200, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    layoutParamsTv.setMargins(5,25,0,25);
+                    tvName.setLayoutParams(layoutParamsTv);
                 }
 
                 titleTimeline[position] = false;
