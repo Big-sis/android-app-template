@@ -1,6 +1,7 @@
 package fr.wildcodeschool.vyfe;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.hardware.Camera;
 import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
@@ -8,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.support.annotation.ColorInt;
 import android.support.annotation.RequiresApi;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -66,7 +68,7 @@ public class RecordActivity extends AppCompatActivity {
 
         Date d = new Date();
         mFileName = getExternalCacheDir().getAbsolutePath();
-        mFileName += "/" + d.getTime() +  ".mp4";
+        mFileName += "/" + d.getTime() + ".mp4";
 
         int currentCameraId = Camera.CameraInfo.CAMERA_FACING_BACK;
         mCamera = getCameraInstance(currentCameraId);
@@ -95,8 +97,6 @@ public class RecordActivity extends AppCompatActivity {
             public void onClick(View v) {
                 chronometer.start();
 
-             //   mStartTime = System.currentTimeMillis();
-              // timerHandler.postDelayed(timerRunnable, 0);
                 /*
                 mPreview = new CameraPreview(RecordActivity.this, mCamera,
                         new CameraPreview.SurfaceCallback() {
@@ -117,9 +117,8 @@ public class RecordActivity extends AppCompatActivity {
                 mRecord.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        timerHandler.removeCallbacks(timerRunnable);
-
-                       // stopRecording();
+                        chronometer.stop();
+                        // stopRecording();
 
                     }
                 });
@@ -176,27 +175,6 @@ public class RecordActivity extends AppCompatActivity {
 
         initTimeline(mTagModels, recyclerTags);
 
-
-
- /*
-        Button b = (Button) findViewById(R.id.button);
-        b.setText("start");
-
-        b.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                Button b = (Button) v;
-                if (b.getText().equals("stop")) {
-                    timerHandler.removeCallbacks(timerRunnable);
-                    b.setText("start");
-                } else {
-                    mStartTime = System.currentTimeMillis();
-                    timerHandler.postDelayed(timerRunnable, 0);
-                    b.setText("stop");
-                }
-            }
-        });*/
 
     }
 
@@ -265,36 +243,44 @@ public class RecordActivity extends AppCompatActivity {
             //Ajout d'un Linear pour un tag
             final LinearLayout timeline = new LinearLayout(RecordActivity.this);
             timeline.setBackgroundResource(R.drawable.style_input);
+
+
             llMain.addView(timeline);
             mTimelines.put(name, timeline);
 
         }
+        final Chronometer chronometer = findViewById(R.id.chronometer);
 
-        final int[] chrono = {0};
+
         rv.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(),
                 rv, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                final Chronometer chronometer = findViewById(R.id.chronometer);
-                long chronoTime = (SystemClock.elapsedRealtime() - chronometer.getBase())/1000;
-                chrono[0] += (int)chronoTime;
 
-                final HorizontalScrollView scrollView = findViewById(R.id.horizontalScrollView);
+                final long chronoTime = (SystemClock.elapsedRealtime() - chronometer.getBase()) / 1000;
+                int chrono = (int) chronoTime;
+
                 ImageView iv = new ImageView(RecordActivity.this);
-                //TODO: associer à l'image la couleur du tag
-                iv.setBackgroundResource(R.drawable.ico);
+                iv.setMinimumWidth(100);
+                iv.setMinimumHeight(10);
+                iv.setBackgroundColor(listTag.get(position).getColor());
+
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                layoutParams.setMargins(chrono[0], 0, 0, 0);
+                layoutParams.setMargins(chrono+10, 40, 0, 40);
                 LinearLayout timeline = mTimelines.get(listTag.get(position).getName());
                 timeline.addView(iv, layoutParams);
                 mMarge[0] += 55;
 
-                timerTextView.setText(String.valueOf(chrono[0]));
+                timerTextView.setText(String.valueOf(chrono));
+                chronometer.setBase(SystemClock.elapsedRealtime());
 
-                scrollView.post(new Runnable() { public void run() { scrollView.fullScroll(View.FOCUS_RIGHT); } });
-
-
+                final HorizontalScrollView scrollView = findViewById(R.id.horizontalScrollView);
+                scrollView.post(new Runnable() {
+                    public void run() {
+                        scrollView.fullScroll(View.FOCUS_RIGHT);
+                    }
+                });
 
             }
 
@@ -307,26 +293,4 @@ public class RecordActivity extends AppCompatActivity {
 
     }
 
-    Handler timerHandler = new Handler();
-    Runnable timerRunnable = new Runnable() {
-
-        @Override
-        public void run() {
-            long millis = System.currentTimeMillis() - mStartTime;
-            int seconds = (int) (millis / 1000);
-            int minutes = seconds / 60;
-            seconds = seconds % 60;
-
-            timerTextView.setText(String.format("%d:%02d", minutes, seconds));
-            timerHandler.postDelayed(this, 500);
-        }
-    };
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        timerHandler.removeCallbacks(timerRunnable);
-       // Button b = (Button)findViewById(R.id.button);
-        //b.setText("start");
-    }
 }
