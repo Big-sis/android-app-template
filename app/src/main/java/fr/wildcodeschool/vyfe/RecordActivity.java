@@ -53,11 +53,8 @@ public class RecordActivity extends AppCompatActivity {
     private MediaRecorder mRecorder = null;
     private CameraPreview mPreview;
     HashMap<String, LinearLayout> mTimelines = new HashMap<>();
-    //TODO : remplacer marge par timer
-    final int[] mMarge = {0};
-
     TextView timerTextView;
-    long mStartTime = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -243,13 +240,13 @@ public class RecordActivity extends AppCompatActivity {
             //Ajout d'un Linear pour un tag
             final LinearLayout timeline = new LinearLayout(RecordActivity.this);
             timeline.setBackgroundResource(R.drawable.style_input);
-
-
             llMain.addView(timeline);
             mTimelines.put(name, timeline);
 
         }
         final Chronometer chronometer = findViewById(R.id.chronometer);
+        final boolean[] titleTimeline = new boolean[listTag.size()];
+        for (int i = 0 ;  i < titleTimeline.length ; i++){ titleTimeline [i] = true; }
 
 
         rv.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(),
@@ -257,8 +254,8 @@ public class RecordActivity extends AppCompatActivity {
             @Override
             public void onClick(View view, int position) {
 
-                final long chronoTime = (SystemClock.elapsedRealtime() - chronometer.getBase()) / 1000;
-                int chrono = (int) chronoTime;
+                int chronoTime = (int) (SystemClock.elapsedRealtime() - chronometer.getBase()) / 1000;
+
 
                 ImageView iv = new ImageView(RecordActivity.this);
                 iv.setMinimumWidth(100);
@@ -267,15 +264,26 @@ public class RecordActivity extends AppCompatActivity {
 
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                layoutParams.setMargins(chrono+10, 40, 0, 40);
+                layoutParams.setMargins(chronoTime + 200, 40, 0, 40);
                 LinearLayout timeline = mTimelines.get(listTag.get(position).getName());
                 timeline.addView(iv, layoutParams);
-                mMarge[0] += 55;
 
-                timerTextView.setText(String.valueOf(chrono));
-                chronometer.setBase(SystemClock.elapsedRealtime());
+                TextView tvName = new TextView(RecordActivity.this);
+                tvName.setTextColor(Color.WHITE);
+
+                if (titleTimeline[position]) {
+                    tvName.setText(listTag.get(position).getName());
+                }
+
+                titleTimeline[position] = false;
+                timeline.addView(tvName, 0);
+
+                //test chrono
+                timerTextView.setText(String.valueOf(chronoTime));
+
 
                 final HorizontalScrollView scrollView = findViewById(R.id.horizontalScrollView);
+
                 scrollView.post(new Runnable() {
                     public void run() {
                         scrollView.fullScroll(View.FOCUS_RIGHT);
