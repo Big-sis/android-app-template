@@ -78,29 +78,58 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/video_view_selected">
 
-                            <SeekBar
-                                android:id="@+id/seek_bar_selected"
+                            <ScrollView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:clickable="false"
-                                android:focusable="false"
-                                android:progressDrawable="@android:color/transparent"
-                                android:thumb="@drawable/thumb"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
                                 app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
+                                app:layout_constraintTop_toTopOf="parent">
 
-                            <HorizontalScrollView
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
-
-                                <LinearLayout
-                                    android:id="@+id/ll_main_playvideo"
-                                    android:layout_width="wrap_content"
+                                <HorizontalScrollView
+                                    android:layout_width="match_parent"
                                     android:layout_height="match_parent"
-                                    android:orientation="vertical" />
-                            </HorizontalScrollView>
+                                    app:layout_constraintBottom_toBottomOf="parent"
+                                    app:layout_constraintEnd_toEndOf="parent"
+                                    app:layout_constraintHorizontal_weight="0.8"
+                                    app:layout_constraintStart_toStartOf="parent"
+                                    app:layout_constraintTop_toTopOf="parent">
+
+
+                                    <android.support.constraint.ConstraintLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent">
+
+                                        <LinearLayout
+                                            android:id="@+id/ll_main_playvideo"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="wrap_content"
+                                            android:orientation="vertical"
+                                            app:layout_constraintBottom_toBottomOf="parent"
+                                            app:layout_constraintEnd_toEndOf="parent"
+                                            app:layout_constraintStart_toStartOf="parent"
+                                            app:layout_constraintTop_toTopOf="parent" />
+
+                                        <SeekBar
+                                            android:id="@+id/seek_bar_selected"
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:clickable="false"
+                                            android:focusable="false"
+                                            android:progressDrawable="@android:color/transparent"
+                                            android:thumb="@drawable/thumb"
+                                            app:layout_constraintBottom_toBottomOf="parent"
+                                            app:layout_constraintEnd_toEndOf="parent"
+                                            app:layout_constraintHorizontal_bias="0.085"
+                                            app:layout_constraintStart_toStartOf="parent"
+                                            app:layout_constraintTop_toTopOf="parent"
+                                            app:layout_constraintVertical_bias="0.0" />
+
+                                    </android.support.constraint.ConstraintLayout>
+
+
+                                </HorizontalScrollView>
+                            </ScrollView>
 
                         </android.support.constraint.ConstraintLayout>
 

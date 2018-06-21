@@ -69,6 +69,8 @@ public class PlayVideoActivity extends AppCompatActivity {
         mTagModels.add(new TagModel(-3318101, "nameTest2", null, null));
         mTagModels.add(new TagModel(-3318101, "nameTest3", null, null));
         mTagModels.add(new TagModel(-3318101, "nameTest4", null, null));
+        mTagModels.add(new TagModel(-3318101, "nameTest5", null, null));
+        mTagModels.add(new TagModel(-3318101, "nameTest6", null, null));
 
         RecyclerView rvTags = findViewById(R.id.re_tags_selected);
 
@@ -121,7 +123,6 @@ public class PlayVideoActivity extends AppCompatActivity {
         });
 
         initTimeline(mTagModels ,rvTags);
-
     }
 
     private void initTimeline(final ArrayList<TagModel> listTag, RecyclerView rv) {
@@ -151,7 +152,7 @@ public class PlayVideoActivity extends AppCompatActivity {
                 layoutParams.setMargins(mMarge[0], 0, 0, 0);
                 LinearLayout timeline = mTimelines.get(listTag.get(position).getName());
                 timeline.addView(iv, layoutParams);
-                mMarge[0] += 55;
+                mMarge[0] += 30;
             }
 
             @Override
