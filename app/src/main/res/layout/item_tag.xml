@@ -2,8 +2,8 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_width="wrap_content"
+    android:layout_height="35dp"
     android:layout_marginBottom="5dp"
     android:background="@drawable/tag"
     tools:layout_editor_absoluteY="25dp">
@@ -11,12 +11,8 @@
 
     <ImageView
         android:id="@+id/iv_color"
-        android:layout_width="40dp"
+        android:layout_width="5dp"
         android:layout_height="40dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:background="@android:color/holo_blue_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,16 +20,16 @@
 
     <TextView
         android:id="@+id/tv_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="300dp"
+        android:layout_height="35dp"
         android:layout_marginLeft="12dp"
         android:layout_marginStart="12dp"
-        android:layout_marginTop="16dp"
+        android:gravity="center_vertical"
         android:maxLength="30"
         android:text="@string/name_observation"
         android:textColor="@color/white"
         android:textSize="18sp"
-        app:fontFamily="@font/roboto_bold"
+        app:fontFamily="@font/roboto"
         app:layout_constraintStart_toEndOf="@+id/iv_color"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -41,30 +37,12 @@
     <TextView
         android:id="@+id/tv_stats"
         android:layout_width="35dp"
-        android:layout_height="23dp"
-        android:layout_marginEnd="42dp"
-        android:layout_marginLeft="272dp"
-        android:layout_marginRight="42dp"
-        android:layout_marginStart="272dp"
-        android:layout_marginTop="8dp"
-        android:visibility="gone"
-        app:fontFamily="@font/roboto_bold"
-        app:layout_constraintEnd_toStartOf="@+id/btn_delete"
-        app:layout_constraintStart_toEndOf="@+id/tv_name"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="visible" />
-
-    <Button
-        android:id="@+id/btn_delete"
-        android:layout_width="49dp"
-        android:layout_height="40dp"
-        android:layout_marginBottom="8dp"
+        android:layout_height="35dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
-        android:background="@android:drawable/ic_delete"
+        android:gravity="center_vertical"
         android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:fontFamily="@font/roboto"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:visibility="visible" />
