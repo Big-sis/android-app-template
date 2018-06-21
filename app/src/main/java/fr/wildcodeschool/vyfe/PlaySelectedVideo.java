@@ -26,7 +26,7 @@ import java.util.Random;
 public class PlaySelectedVideo extends AppCompatActivity {
 
     private ArrayList<TagModel> mTagModels;
-    private VideoView mVideoSelected;
+    private VideoView videoView;
     private SeekBar mSeekBar;
     private boolean mIsPlayed = false;
     private boolean mFirstPlay = true;
@@ -46,15 +46,11 @@ public class PlaySelectedVideo extends AppCompatActivity {
 
         final String fileName = getIntent().getStringExtra(FILE_NAME);
 
-        final VideoView videoView = findViewById(R.id.video_view_selected);
+        videoView = findViewById(R.id.video_view_selected);
 
-        videoView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                videoView.setVideoPath(fileName);
-                videoView.start();
-            }
-        });
+
+        videoView.setVideoPath(fileName);
+
 
         SingletonTags singletonTags = SingletonTags.getInstance();
         mTagModels = singletonTags.getmTagsList();
@@ -78,21 +74,21 @@ public class PlaySelectedVideo extends AppCompatActivity {
         rvTimeLines.setAdapter(adapterTime);
 
         mSeekBar = findViewById(R.id.seek_bar_selected);
-        mVideoSelected = findViewById(R.id.video_view_selected);
+        //mVideoSelected = findViewById(R.id.video_view_selected);
 
 
         //Test lecture video avec lien en dur :
-        String URL = "http://clips.vorwaerts-gmbh.de/VfE_html5.mp4";
-        mVideoSelected.setVideoPath(URL);
+        //String URL = "http://clips.vorwaerts-gmbh.de/VfE_html5.mp4";
+        //videoView.setVideoPath(URL);
         final FloatingActionButton fbPlay = findViewById(R.id.bt_play_selected);
 
-        final SeekbarAsync async = new SeekbarAsync(mSeekBar, mVideoSelected);
+        final SeekbarAsync async = new SeekbarAsync(mSeekBar, videoView);
 
         fbPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mIsPlayed) {
-                    mVideoSelected.pause();
+                    videoView.pause();
                     mIsPlayed = false;
 
                 } else if (mFirstPlay) {
@@ -101,7 +97,7 @@ public class PlaySelectedVideo extends AppCompatActivity {
                     mIsPlayed = true;
 
                 } else {
-                    mVideoSelected.start();
+                    videoView.start();
                     mIsPlayed = true;
                 }
             }
