@@ -1,14 +1,11 @@
 package fr.wildcodeschool.vyfe;
 
-import android.graphics.Color;
-import android.os.AsyncTask;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.view.SurfaceView;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.SeekBar;
 import android.widget.VideoView;
@@ -21,9 +18,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
-import java.util.Random;
 
-public class PlaySelectedVideo extends AppCompatActivity {
+public class PlayVideoActivity extends AppCompatActivity {
 
     private ArrayList<TagModel> mTagModels;
     private VideoView mVideoSelected;
@@ -41,13 +37,13 @@ public class PlaySelectedVideo extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_play_selected_video);
+        setContentView(R.layout.activity_play_video);
 
 
         // mIdSession = getIntent().getStringExtra("idSession");
 
         // Test de récupération du lien avec données en dur :
-        mIdSession = "-LEsI0aNri8kcIgF6bgF";
+        mIdSession = "-LFRtUEoDalCtBKJq-l0";
         final DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions").child(mIdSession).child("videoLink");
         sessionRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -84,6 +80,15 @@ public class PlaySelectedVideo extends AppCompatActivity {
         rvTimeLines.setAdapter(adapterTime);
 
         mSeekBar = findViewById(R.id.seek_bar_selected);
+
+        // Rend la seekbar indéplaceable au click
+        mSeekBar.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return true;
+            }
+        });
+
         mVideoSelected = findViewById(R.id.video_view_selected);
 
 
