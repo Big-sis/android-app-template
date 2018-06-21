@@ -70,7 +70,7 @@ public class AddGridActivity extends AppCompatActivity {
 
         }
 
-        Button btnAddEvenement = findViewById(R.id.btn_add);
+        ImageView btnAddEvenement = findViewById(R.id.btn_add);
         btnAddEvenement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
