@@ -280,7 +280,7 @@ public class RecordActivity extends AppCompatActivity {
                     tvName.setText(listTag.get(position).getName());
                     LinearLayout.LayoutParams layoutParamsTv = new LinearLayout.LayoutParams(
                             200, LinearLayout.LayoutParams.WRAP_CONTENT);
-                    layoutParamsTv.setMargins(5, 25, 0, 25);
+                    layoutParamsTv.setMargins(0, 25, 0, 25);
                     tvName.setLayoutParams(layoutParamsTv);
 
                 }else {
