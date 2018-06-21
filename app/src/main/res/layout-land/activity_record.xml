@@ -63,6 +63,21 @@
                             app:srcCompat="@android:drawable/checkbox_on_background" />
 
                         <Chronometer
+                            android:id="@+id/chronometerMain"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="40dp"
+                            android:layout_marginRight="40dp"
+                            android:layout_marginTop="70dp"
+                            android:background="@color/colorCharcoal"
+                            android:gravity="center"
+                            android:padding="10dp"
+                            android:textColor="@color/color12"
+                            android:textStyle="bold"
+                            app:layout_constraintEnd_toEndOf="@+id/video_view"
+                            app:layout_constraintTop_toBottomOf="@+id/bt_finish" />
+
+                        <Chronometer
                             android:id="@+id/chronometer"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"

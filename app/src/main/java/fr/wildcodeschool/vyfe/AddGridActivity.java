@@ -1,5 +1,6 @@
 package fr.wildcodeschool.vyfe;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -9,6 +10,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -70,7 +74,7 @@ public class AddGridActivity extends AppCompatActivity {
 
         }
 
-        Button btnAddEvenement = findViewById(R.id.btn_add);
+        final Button btnAddEvenement = findViewById(R.id.btn_add);
         btnAddEvenement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -85,7 +89,14 @@ public class AddGridActivity extends AppCompatActivity {
                     etName.setText("");
                     ivColor.setBackgroundColor(Color.parseColor("#ffaaaaaa"));
 
+
+
                 }
+
+                InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(btnAddEvenement.getWindowToken(), 0);
+
+
             }
         });
 

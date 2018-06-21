@@ -55,14 +55,13 @@ public class RecordActivity extends AppCompatActivity {
     HashMap<String, LinearLayout> mTimelines = new HashMap<>();
     TextView timerTextView;
 
-    final int[] time = new int[mTagModels.size()];
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
         final Chronometer chronometer = findViewById(R.id.chronometer);
+        final Chronometer chronometerMain = findViewById(R.id.chronometerMain);
 
 
         Date d = new Date();
@@ -101,6 +100,10 @@ public class RecordActivity extends AppCompatActivity {
                 chronometer.start();
 
 
+                chronometerMain.setBase(SystemClock.elapsedRealtime());
+                chronometerMain.start();
+
+
                 /*
                 mPreview = new CameraPreview(RecordActivity.this, mCamera,
                         new CameraPreview.SurfaceCallback() {
@@ -128,7 +131,6 @@ public class RecordActivity extends AppCompatActivity {
                 });
             }
         });
-
 
 
         RecyclerView.LayoutManager layoutManagerTags = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -241,10 +243,17 @@ public class RecordActivity extends AppCompatActivity {
 
         //init variable
         final Chronometer chronometer = findViewById(R.id.chronometer);
+        Chronometer chronometerMain = findViewById(R.id.chronometerMain);
+
+        final int[] tag = new int[listTag.size()];
+
         final boolean[] titleTimeline = new boolean[listTag.size()];
-        final int[] time = new int[listTag.size()];
+        final int[] marge = new int[listTag.size()];
+        final int[] timeMoins1 = new int[listTag.size()];
         for (int i = 0; i < titleTimeline.length; i++) {
             titleTimeline[i] = true;
+            tag[i] = 0;
+            marge[i] = 0;
 
         }
 
@@ -262,13 +271,13 @@ public class RecordActivity extends AppCompatActivity {
 
         }
 
+
         //ajout des tags à la timeline associée
         rv.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(),
                 rv, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                time[position] = (int) (SystemClock.elapsedRealtime() - chronometer.getBase()) / 100;
-
+/*
                 //init image Tag
                 ImageView iv = new ImageView(RecordActivity.this);
                 iv.setMinimumWidth(100);
@@ -287,6 +296,7 @@ public class RecordActivity extends AppCompatActivity {
                             200, LinearLayout.LayoutParams.WRAP_CONTENT);
                     layoutParamsTv.setMargins(5, 25, 0, 25);
                     tvName.setLayoutParams(layoutParamsTv);
+                    time[position] = (int) (SystemClock.elapsedRealtime() - chronometer.getBase()) / 100;
 
                 }
 
@@ -307,9 +317,54 @@ public class RecordActivity extends AppCompatActivity {
                 timerTextView.setText(String.valueOf(time[position]));
 
                 chronometer.stop();
-                time[position] = 0;
-                chronometer.setBase((SystemClock.elapsedRealtime()));
-                chronometer.start();
+                //time[position] = 0;
+                chronometer.setBase(SystemClock.elapsedRealtime());
+                //time[position] = (int) (SystemClock.elapsedRealtime() - chronometer.getBase()) / 100;
+
+                chronometer.start(); */
+
+                /** Test **/
+                //init image Tag
+                ImageView iv = new ImageView(RecordActivity.this);
+                iv.setMinimumWidth(30);
+                iv.setMinimumHeight(10);
+                iv.setBackgroundColor(listTag.get(position).getColor());
+
+                int timeActuel = (int) ((SystemClock.elapsedRealtime() - chronometer.getBase()) / 100);
+
+                //init name Tag
+                TextView tvName = new TextView(RecordActivity.this);
+                tvName.setTextColor(Color.WHITE);
+
+                //1er click :Apparition  du nom  tag
+                if (titleTimeline[position]) {
+                    //titre tag pour le 1er click du tag
+                    tvName.setText(listTag.get(position).getName());
+                    LinearLayout.LayoutParams layoutParamsTv = new LinearLayout.LayoutParams(
+                            200, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    layoutParamsTv.setMargins(5, 25, 0, 25);
+                    tvName.setLayoutParams(layoutParamsTv);
+
+
+                }
+
+                marge[position] = timeActuel - timeMoins1[position] - 30;
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                layoutParams.setMargins(marge[position], 40, 0, 40);
+                LinearLayout timeline = mTimelines.get(listTag.get(position).getName());
+
+                timeline.addView(iv, layoutParams);
+                timeline.addView(tvName, 0);
+
+
+                timeMoins1[position] = timeActuel;
+                nombreTag[position]+=1;
+
+                titleTimeline[position] = false;
+
+                timerTextView.setText(String.valueOf(timeActuel));
+
 
                 //Scrool automatiquement suit l'ajout des tags
                 final HorizontalScrollView scrollView = findViewById(R.id.horizontalScrollView);
