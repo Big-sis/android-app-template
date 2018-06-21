@@ -50,20 +50,12 @@
         <activity
             android:name=".MyVideoActivity"
             android:screenOrientation="landscape" />
-      
-        <activity
-            android:name=".ProfilActivity"
-            android:screenOrientation="landscape" />
 
         <activity
             android:name=".StartActivity"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateHidden" >
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
         </activity>
         <activity
             android:name=".AddGridActivity"
@@ -75,7 +67,8 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <activity android:name=".PlaySelectedVideo"/>
+        <activity android:name=".PlayVideoActivity">
+        </activity>
          
         <activity android:name=".ForgotPassword"
             android:screenOrientation="landscape"

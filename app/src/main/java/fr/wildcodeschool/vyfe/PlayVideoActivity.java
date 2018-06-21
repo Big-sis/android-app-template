@@ -23,7 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class PlaySelectedVideo extends AppCompatActivity {
+public class PlayVideoActivity extends AppCompatActivity {
 
     private ArrayList<TagModel> mTagModels;
     private VideoView mVideoSelected;
@@ -47,7 +47,7 @@ public class PlaySelectedVideo extends AppCompatActivity {
         // mIdSession = getIntent().getStringExtra("idSession");
 
         // Test de récupération du lien avec données en dur :
-        mIdSession = "-LEsI0aNri8kcIgF6bgF";
+        mIdSession = "-LFRtUEoDalCtBKJq-l0";
         final DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions").child(mIdSession).child("videoLink");
         sessionRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

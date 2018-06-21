@@ -1,11 +1,8 @@
 package fr.wildcodeschool.vyfe;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.RequiresPermission;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -88,7 +85,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
         play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SelectedVideoActivity.this, PlaySelectedVideo.class);
+                Intent intent = new Intent(SelectedVideoActivity.this, PlayVideoActivity.class);
                 intent.putExtra("idSession",mIdSession);
                 startActivity(intent);
             }
