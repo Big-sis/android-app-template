@@ -55,17 +55,13 @@
             android:windowSoftInputMode="stateHidden" >
 
         </activity>
-        <activity
-            android:name=".StartActivity"
-            android:screenOrientation="landscape"
-            android:windowSoftInputMode="stateHidden" />
+
         <activity
             android:name=".AddGridActivity"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".PlaySelectedVideo"
-            android:screenOrientation="landscape"/>
+
         <activity android:name=".ForgotPassword"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar"
@@ -77,11 +73,6 @@
 
         <activity android:name=".PlayVideoActivity">
         </activity>
-         
-        <activity android:name=".ForgotPassword"
-            android:screenOrientation="landscape"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden"/>
 
     </application>
 
