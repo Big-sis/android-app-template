@@ -47,6 +47,9 @@ public class RecordActivity extends AppCompatActivity {
     //TODO : remplacer marge par timer
     final int[] mMarge = {0};
 
+    public final static String TITLE_SESSION = "titleSession";
+    public final static String FILE_NAME = "fileName";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,7 +73,7 @@ public class RecordActivity extends AppCompatActivity {
         final TextView tvVideoSave = findViewById(R.id.tv_video_save);
         final TextView tvWait = findViewById(R.id.wait);
 
-        final String titleSession = getIntent().getStringExtra("titleSession");
+        final String titleSession = getIntent().getStringExtra(TITLE_SESSION);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -146,8 +149,8 @@ public class RecordActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(RecordActivity.this, SelectedVideoActivity.class);
-                intent.putExtra("titleSession", titleSession);
-                intent.putExtra("fileName", mFileName);
+                intent.putExtra(TITLE_SESSION, titleSession);
+                intent.putExtra(FILE_NAME, mFileName);
                 startActivity(intent);
             }
         });

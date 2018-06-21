@@ -31,6 +31,9 @@ public class SelectedVideoActivity extends AppCompatActivity {
     final String mAuthUserId = mAuth.getCurrentUser().getUid();
     private String mIdSession = "";
 
+    public final static String TITLE_SESSION = "titleSession";
+    public final static String FILE_NAME = "fileName";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,20 +44,9 @@ public class SelectedVideoActivity extends AppCompatActivity {
         Button edit = findViewById(R.id.btn_edit);
         TextView tvTitle = findViewById(R.id.tv_title);
 
-        final String titleSession = getIntent().getStringExtra("titleSession");
+        final String titleSession = getIntent().getStringExtra(TITLE_SESSION);
         tvTitle.setText(titleSession);
-        final String fileName = getIntent().getStringExtra("fileName");
-
-        play.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                VideoView videoView = findViewById(R.id.vv_preview);
-                videoView.setVideoPath(fileName);
-                videoView.start();
-            }
-        });
-
-
+        final String fileName = getIntent().getStringExtra(FILE_NAME);
 
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,7 +81,8 @@ public class SelectedVideoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(SelectedVideoActivity.this, PlaySelectedVideo.class);
-                intent.putExtra("idSession",mIdSession);
+                intent.putExtra(TITLE_SESSION, titleSession);
+                intent.putExtra(FILE_NAME, fileName);
                 startActivity(intent);
             }
         });

@@ -37,30 +37,24 @@ public class PlaySelectedVideo extends AppCompatActivity {
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     final String mAuthUserId = mAuth.getCurrentUser().getUid();
 
+    public final static String FILE_NAME = "fileName";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_selected_video);
 
+        final String fileName = getIntent().getStringExtra(FILE_NAME);
 
-        // mIdSession = getIntent().getStringExtra("idSession");
+        final VideoView videoView = findViewById(R.id.video_view_selected);
 
-        // Test de récupération du lien avec données en dur :
-        mIdSession = "-LEsI0aNri8kcIgF6bgF";
-        final DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions").child(mIdSession).child("videoLink");
-        sessionRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        videoView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                mVideoLink = dataSnapshot.getValue().toString();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
+            public void onClick(View v) {
+                videoView.setVideoPath(fileName);
+                videoView.start();
             }
         });
-
 
         SingletonTags singletonTags = SingletonTags.getInstance();
         mTagModels = singletonTags.getmTagsList();
