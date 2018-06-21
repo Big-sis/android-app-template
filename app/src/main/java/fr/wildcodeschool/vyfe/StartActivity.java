@@ -57,8 +57,8 @@ public class StartActivity extends AppCompatActivity {
 
         final EditText etVideoTitle = findViewById(R.id.et_video_title);
         FirebaseAuth auth = FirebaseAuth.getInstance();
-        final String authUserId = auth.getCurrentUser().getUid();
 
+        final String authUserId = auth.getCurrentUser().getUid();
 
         if (MainActivity.mMulti) {
             buttonGo.setText(R.string.next);
