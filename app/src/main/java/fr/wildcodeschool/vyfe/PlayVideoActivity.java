@@ -7,6 +7,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.VideoView;
 
@@ -18,6 +20,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class PlayVideoActivity extends AppCompatActivity {
 
@@ -32,6 +35,8 @@ public class PlayVideoActivity extends AppCompatActivity {
     FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     final String mAuthUserId = mAuth.getCurrentUser().getUid();
+    HashMap<String, LinearLayout> mTimelines = new HashMap<>();
+    final int[] mMarge = {0};
 
 
     @Override
@@ -117,6 +122,48 @@ public class PlayVideoActivity extends AppCompatActivity {
                 }
             }
         });
+
+        initTimeline(mTagModels ,rvTags);
+
+    }
+
+    private void initTimeline(final ArrayList<TagModel> listTag, RecyclerView rv) {
+
+        LinearLayout llMain = findViewById(R.id.ll_main_playvideo);
+        for (TagModel tagModel : listTag) {
+            //TODO: empecher la repetition de nom pour les tags
+            String name = tagModel.getName();
+            //Ajout d'un Linear pour un tag
+            final LinearLayout timeline = new LinearLayout(PlayVideoActivity.this);
+            timeline.setBackgroundResource(R.drawable.style_input);
+            llMain.addView(timeline);
+            mTimelines.put(name, timeline);
+
+        }
+
+        rv.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(),
+                rv, new RecyclerTouchListener.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+
+                ImageView iv = new ImageView(PlayVideoActivity.this);
+                //TODO: associer à l'image la couleur du tag
+                iv.setBackgroundResource(R.drawable.ico);
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                layoutParams.setMargins(mMarge[0], 0, 0, 0);
+                LinearLayout timeline = mTimelines.get(listTag.get(position).getName());
+                timeline.addView(iv, layoutParams);
+                mMarge[0] += 55;
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
+
+
     }
 }
 
