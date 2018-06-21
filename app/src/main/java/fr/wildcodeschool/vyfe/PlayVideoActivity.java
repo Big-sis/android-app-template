@@ -71,18 +71,14 @@ public class PlayVideoActivity extends AppCompatActivity {
         mTagModels.add(new TagModel(-3318101, "nameTest4", null, null));
 
         RecyclerView rvTags = findViewById(R.id.re_tags_selected);
-        RecyclerView rvTimeLines = findViewById(R.id.re_time_lines_selected);
 
         RecyclerView.LayoutManager layoutManagerTags = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        RecyclerView.LayoutManager layoutManagerTime = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
 
         rvTags.setLayoutManager(layoutManagerTags);
-        rvTimeLines.setLayoutManager(layoutManagerTime);
+
 
         final TagRecyclerAdapter adapterTags = new TagRecyclerAdapter(mTagModels, "record");
-        final TagRecyclerAdapter adapterTime = new TagRecyclerAdapter(mTagModels, "timelines");
         rvTags.setAdapter(adapterTags);
-        rvTimeLines.setAdapter(adapterTime);
 
         mSeekBar = findViewById(R.id.seek_bar_selected);
 
@@ -163,8 +159,6 @@ public class PlayVideoActivity extends AppCompatActivity {
 
             }
         }));
-
-
     }
 }
 
