@@ -94,6 +94,7 @@ public class PlayVideoActivity extends AppCompatActivity {
 
         //Test lecture video avec lien en dur :
         String URL = "http://clips.vorwaerts-gmbh.de/VfE_html5.mp4";
+        String URL2 = "/storage/emulated/0/Android/data/fr.wildcodeschool.vyfe/cache/1529497646453.mp4";
         mVideoSelected.setVideoPath(URL);
         final FloatingActionButton fbPlay = findViewById(R.id.bt_play_selected);
 
