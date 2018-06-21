@@ -24,63 +24,58 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="landscape">
+            android:screenOrientation="landscape"/>
+
+        <activity
+            android:name=".RecordActivity"
+            android:screenOrientation="landscape" />
+
+        <activity
+            android:name=".InfoVideoActivity"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="stateHidden" />
+
+        <activity
+            android:name=".SelectedVideoActivity"
+            android:screenOrientation="landscape" />
+
+        <activity
+            android:name=".ConnexionActivity"
+            android:screenOrientation="landscape"
+            android:windowSoftInputMode="stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-          </activity>
-        <activity
-            android:name=".RecordActivity"
-            android:screenOrientation="landscape" />
-        <activity
-            android:name=".InfoVideoActivity"
-            android:screenOrientation="landscape"
-            android:windowSoftInputMode="stateHidden" />
-        <activity
-            android:name=".SelectedVideoActivity"
-            android:screenOrientation="landscape" />
-        <activity
-            android:name=".ConnexionActivity"
-            android:screenOrientation="landscape"
-            android:windowSoftInputMode="stateHidden">
-
         </activity>
+
         <activity
             android:name=".MyVideoActivity"
-            android:screenOrientation="landscape" />
-      
-        <activity
-            android:name=".ProfilActivity"
             android:screenOrientation="landscape" />
 
         <activity
             android:name=".StartActivity"
             android:screenOrientation="landscape"
-            android:windowSoftInputMode="stateHidden" >
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+            android:windowSoftInputMode="stateHidden" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-        </activity>
         <activity
             android:name=".AddGridActivity"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
 
-        <meta-data
-            android:name="preloaded_fonts"
-            android:resource="@array/preloaded_fonts" />
+        <activity android:name=".PlayVideoActivity"
+            android:screenOrientation="landscape"/>
 
-        <activity android:name=".PlaySelectedVideo"/>
-         
         <activity android:name=".ForgotPassword"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden"/>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

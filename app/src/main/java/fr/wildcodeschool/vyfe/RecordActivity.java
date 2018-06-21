@@ -55,6 +55,8 @@ public class RecordActivity extends AppCompatActivity {
     HashMap<String, LinearLayout> mTimelines = new HashMap<>();
     TextView timerTextView;
 
+    final int[] time = new int[mTagModels.size()];
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,10 +91,15 @@ public class RecordActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.record_session);
 
+        SingletonTags singletonTags = SingletonTags.getInstance();
+        mTagModels = singletonTags.getmTagsList();
+
         mRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                chronometer.setBase(SystemClock.elapsedRealtime());
                 chronometer.start();
+
 
                 /*
                 mPreview = new CameraPreview(RecordActivity.this, mCamera,
@@ -122,8 +129,7 @@ public class RecordActivity extends AppCompatActivity {
             }
         });
 
-        SingletonTags singletonTags = SingletonTags.getInstance();
-        mTagModels = singletonTags.getmTagsList();
+
 
         RecyclerView.LayoutManager layoutManagerTags = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         RecyclerView.LayoutManager layoutManagerTime = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -261,9 +267,8 @@ public class RecordActivity extends AppCompatActivity {
                 rv, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                for (int i = 0; i < titleTimeline.length; i++) {
-                    time[i] = (int) (SystemClock.elapsedRealtime() - chronometer.getBase()) / 1000;
-                }
+                time[position] = (int) (SystemClock.elapsedRealtime() - chronometer.getBase()) / 100;
+
                 //init image Tag
                 ImageView iv = new ImageView(RecordActivity.this);
                 iv.setMinimumWidth(100);
@@ -274,19 +279,16 @@ public class RecordActivity extends AppCompatActivity {
                 TextView tvName = new TextView(RecordActivity.this);
                 tvName.setTextColor(Color.WHITE);
 
-                //1er click :Apparition  du nom et marge du tag
+                //1er click :Apparition  du nom  tag
                 if (titleTimeline[position]) {
                     //titre tag pour le 1er click du tag
                     tvName.setText(listTag.get(position).getName());
                     LinearLayout.LayoutParams layoutParamsTv = new LinearLayout.LayoutParams(
                             200, LinearLayout.LayoutParams.WRAP_CONTENT);
-                    layoutParamsTv.setMargins(0, 25, 0, 25);
+                    layoutParamsTv.setMargins(5, 25, 0, 25);
                     tvName.setLayoutParams(layoutParamsTv);
 
-                }else {
-                    //TODO: trouver algo pour le 2eme espacement
                 }
-
 
                 //init LinearLayout timeline
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
@@ -298,12 +300,16 @@ public class RecordActivity extends AppCompatActivity {
                 timeline.addView(iv, layoutParams);
                 timeline.addView(tvName, 0);
 
-
                 //annule ajout titre si deja inscrit
                 titleTimeline[position] = false;
 
                 //test chrono
                 timerTextView.setText(String.valueOf(time[position]));
+
+                chronometer.stop();
+                time[position] = 0;
+                chronometer.setBase((SystemClock.elapsedRealtime()));
+                chronometer.start();
 
                 //Scrool automatiquement suit l'ajout des tags
                 final HorizontalScrollView scrollView = findViewById(R.id.horizontalScrollView);
