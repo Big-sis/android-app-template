@@ -1,10 +1,16 @@
 package fr.wildcodeschool.vyfe;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.hardware.Camera;
 import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.SystemClock;
+import android.support.annotation.ColorInt;
+import android.support.annotation.RequiresApi;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -17,9 +23,12 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Chronometer;
 import android.widget.FrameLayout;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.VideoView;
 
@@ -44,17 +53,19 @@ public class RecordActivity extends AppCompatActivity {
     private MediaRecorder mRecorder = null;
     private CameraPreview mPreview;
     HashMap<String, LinearLayout> mTimelines = new HashMap<>();
-    //TODO : remplacer marge par timer
-    final int[] mMarge = {0};
+    TextView timerTextView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
+        final Chronometer chronometer = findViewById(R.id.chronometer);
+
 
         Date d = new Date();
         mFileName = getExternalCacheDir().getAbsolutePath();
-        mFileName += "/" + d.getTime() +  ".mp4";
+        mFileName += "/" + d.getTime() + ".mp4";
 
         int currentCameraId = Camera.CameraInfo.CAMERA_FACING_BACK;
         mCamera = getCameraInstance(currentCameraId);
@@ -69,7 +80,7 @@ public class RecordActivity extends AppCompatActivity {
         final RecyclerView recyclerTags = findViewById(R.id.re_tags);
         final TextView tvVideoSave = findViewById(R.id.tv_video_save);
         final TextView tvWait = findViewById(R.id.wait);
-
+        timerTextView = (TextView) findViewById(R.id.timerTextView);
         final String titleSession = getIntent().getStringExtra("titleSession");
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -81,6 +92,9 @@ public class RecordActivity extends AppCompatActivity {
         mRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                chronometer.start();
+
+                /*
                 mPreview = new CameraPreview(RecordActivity.this, mCamera,
                         new CameraPreview.SurfaceCallback() {
                             @Override
@@ -95,10 +109,14 @@ public class RecordActivity extends AppCompatActivity {
                         });
                 FrameLayout preview = findViewById(R.id.video_view);
                 preview.addView(mPreview);
+
+                */
                 mRecord.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        stopRecording();
+                        chronometer.stop();
+                        // stopRecording();
+
                     }
                 });
             }
@@ -153,6 +171,7 @@ public class RecordActivity extends AppCompatActivity {
         });
 
         initTimeline(mTagModels, recyclerTags);
+
 
     }
 
@@ -214,6 +233,17 @@ public class RecordActivity extends AppCompatActivity {
 
     private void initTimeline(final ArrayList<TagModel> listTag, RecyclerView rv) {
 
+        //init variable
+        final Chronometer chronometer = findViewById(R.id.chronometer);
+        final boolean[] titleTimeline = new boolean[listTag.size()];
+        final int[] time = new int[listTag.size()];
+        for (int i = 0; i < titleTimeline.length; i++) {
+            titleTimeline[i] = true;
+
+        }
+
+
+        //ajout des differentes timelines au conteneur principal
         LinearLayout llMain = findViewById(R.id.ll_main);
         for (TagModel tagModel : listTag) {
             //TODO: empecher la repetition de nom pour les tags
@@ -226,20 +256,63 @@ public class RecordActivity extends AppCompatActivity {
 
         }
 
+        //ajout des tags à la timeline associée
         rv.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(),
                 rv, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-
+                for (int i = 0; i < titleTimeline.length; i++) {
+                    time[i] = (int) (SystemClock.elapsedRealtime() - chronometer.getBase()) / 1000;
+                }
+                //init image Tag
                 ImageView iv = new ImageView(RecordActivity.this);
-                //TODO: associer à l'image la couleur du tag
-                iv.setBackgroundResource(R.drawable.ico);
+                iv.setMinimumWidth(100);
+                iv.setMinimumHeight(10);
+                iv.setBackgroundColor(listTag.get(position).getColor());
+
+                //init name Tag
+                TextView tvName = new TextView(RecordActivity.this);
+                tvName.setTextColor(Color.WHITE);
+
+                //1er click :Apparition  du nom et marge du tag
+                if (titleTimeline[position]) {
+                    //titre tag pour le 1er click du tag
+                    tvName.setText(listTag.get(position).getName());
+                    LinearLayout.LayoutParams layoutParamsTv = new LinearLayout.LayoutParams(
+                            200, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    layoutParamsTv.setMargins(0, 25, 0, 25);
+                    tvName.setLayoutParams(layoutParamsTv);
+
+                }else {
+                    //TODO: trouver algo pour le 2eme espacement
+                }
+
+
+                //init LinearLayout timeline
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                layoutParams.setMargins(mMarge[0], 0, 0, 0);
+                layoutParams.setMargins(time[position], 40, 0, 40);
                 LinearLayout timeline = mTimelines.get(listTag.get(position).getName());
+
+                //ajout des differents elements timeline
                 timeline.addView(iv, layoutParams);
-                mMarge[0] += 55;
+                timeline.addView(tvName, 0);
+
+
+                //annule ajout titre si deja inscrit
+                titleTimeline[position] = false;
+
+                //test chrono
+                timerTextView.setText(String.valueOf(time[position]));
+
+                //Scrool automatiquement suit l'ajout des tags
+                final HorizontalScrollView scrollView = findViewById(R.id.horizontalScrollView);
+                scrollView.post(new Runnable() {
+                    public void run() {
+                        scrollView.fullScroll(View.FOCUS_RIGHT);
+                    }
+                });
+
             }
 
             @Override
@@ -250,4 +323,5 @@ public class RecordActivity extends AppCompatActivity {
 
 
     }
+
 }
