@@ -46,7 +46,7 @@
                             android:layout_marginRight="40dp"
                             android:layout_marginTop="92dp"
                             android:clickable="true"
-                            app:backgroundTint="@android:color/holo_red_dark"
+                            app:backgroundTint="@android:color/holo_red_light"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -58,37 +58,27 @@
                             android:layout_marginRight="40dp"
                             android:layout_marginTop="16dp"
                             android:clickable="true"
+                            android:visibility="gone"
+                            app:backgroundTint="@color/colorRosyPink"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/bt_record"
-                            app:srcCompat="@android:drawable/checkbox_on_background" />
+                            app:srcCompat="@drawable/icons8_coche_96" />
 
                         <Chronometer
                             android:id="@+id/chronometer"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
 
+                            android:layout_marginBottom="32dp"
                             android:layout_marginEnd="40dp"
                             android:layout_marginRight="40dp"
-                            android:layout_marginTop="16dp"
                             android:background="@color/colorCharcoal"
                             android:gravity="center"
                             android:padding="10dp"
                             android:textColor="@color/color9"
                             android:textStyle="bold"
-                            app:layout_constraintEnd_toEndOf="@+id/video_view"
-                            app:layout_constraintTop_toBottomOf="@+id/bt_finish" />
-
-                        <TextView
-                            android:id="@+id/timerTextView"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="24dp"
-                            android:layout_marginRight="24dp"
-                            android:layout_marginTop="8dp"
-                            android:text="TextView"
-                            android:textColor="@android:color/background_light"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/chronometer" />
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="@+id/video_view" />
 
                         <FrameLayout
                             android:id="@+id/video_view"
