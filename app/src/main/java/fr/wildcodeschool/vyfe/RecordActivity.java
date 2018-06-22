@@ -73,10 +73,7 @@ public class RecordActivity extends AppCompatActivity {
         final Button btnPlay = findViewById(R.id.btn_play);
         final ConstraintLayout sessionRecord = findViewById(R.id.session_record);
         FloatingActionButton btFinish = findViewById(R.id.bt_finish);
-        final ImageView ivCheck = findViewById(R.id.iv_check);
         final RecyclerView recyclerTags = findViewById(R.id.re_tags);
-        final TextView tvVideoSave = findViewById(R.id.tv_video_save);
-        final TextView tvWait = findViewById(R.id.wait);
 
         final String titleSession = getIntent().getStringExtra(TITLE_VIDEO);
 
@@ -128,16 +125,6 @@ public class RecordActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 sessionRecord.setVisibility(View.VISIBLE);
-                ivCheck.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        ivCheck.setImageResource(R.drawable.icons8_coche_96);
-                        tvVideoSave.setText(R.string.video_save);
-                        tvWait.setVisibility(View.INVISIBLE);
-                        btnBackMain.setVisibility(View.VISIBLE);
-                        btnPlay.setVisibility(View.VISIBLE);
-                    }
-                });
                 Date date = new Date();
                 Date newDate = new Date(date.getTime());
                 SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yy HH:mm:SS Z");
