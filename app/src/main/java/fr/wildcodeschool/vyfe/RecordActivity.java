@@ -48,6 +48,7 @@ public class RecordActivity extends AppCompatActivity {
     private Camera mCamera;
     private boolean mCamCondition = false;
     private FloatingActionButton mRecord;
+    private boolean isPlay = false;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private static String mFileName = null;
     private MediaRecorder mRecorder = null;
@@ -88,12 +89,15 @@ public class RecordActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.record_session);
 
+        recyclerTags.setAlpha(0.5f);
+
         mRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 chronometer.start();
                 mRecord.setImageResource(R.drawable.icons8_arr_ter_96);
-
+                isPlay = true;
+                recyclerTags.setAlpha(1);
                 mPreview = new CameraPreview(RecordActivity.this, mCamera,
                         new CameraPreview.SurfaceCallback() {
                             @Override
@@ -115,6 +119,7 @@ public class RecordActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         chronometer.stop();
                         stopRecording();
+                        recyclerTags.setAlpha(0.5f);
                         mRecord.setClickable(false);
                         btFinish.setVisibility(View.VISIBLE);
                         mRecord.setAlpha(0.5f);
@@ -257,7 +262,6 @@ public class RecordActivity extends AppCompatActivity {
             mTimelines.put(name, timeline);
 
         }
-
         //ajout des tags à la timeline associée
         rv.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(),
                 rv, new RecyclerTouchListener.ClickListener() {
@@ -285,7 +289,7 @@ public class RecordActivity extends AppCompatActivity {
                     layoutParamsTv.setMargins(0, 25, 0, 25);
                     tvName.setLayoutParams(layoutParamsTv);
 
-                }else {
+                } else {
                     //TODO: trouver algo pour le 2eme espacement
                 }
 
@@ -322,7 +326,6 @@ public class RecordActivity extends AppCompatActivity {
 
             }
         }));
-
 
     }
 
