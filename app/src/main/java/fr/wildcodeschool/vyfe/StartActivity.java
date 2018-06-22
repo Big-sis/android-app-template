@@ -1,5 +1,6 @@
 package fr.wildcodeschool.vyfe;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -101,15 +102,6 @@ public class StartActivity extends AppCompatActivity {
 
         //TODO: en fct du radio button selectionner envoyer telles ou telles arraylist
 
-        fabAddMoment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(StartActivity.this, AddGridActivity.class);
-                startActivity(intent);
-            }
-        });
-
-
         buttonGo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -184,9 +176,8 @@ public class StartActivity extends AppCompatActivity {
 
         fabAddMoment.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(StartActivity.this, AddGridActivity.class);
-                startActivity(intent);
+            public void onClick(View v) {
+                AddGridDialog.openCreateTags(StartActivity.this);
             }
         });
     }
