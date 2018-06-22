@@ -28,6 +28,9 @@ public class SelectedVideoActivity extends AppCompatActivity {
     final String mAuthUserId = mAuth.getCurrentUser().getUid();
     private String mIdSession = "";
 
+    public static final String TITLE_VIDEO = "titleVideo";
+    public static final String FILE_NAME = "filename";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,9 +41,9 @@ public class SelectedVideoActivity extends AppCompatActivity {
         Button edit = findViewById(R.id.btn_edit);
         TextView tvTitle = findViewById(R.id.tv_title);
 
-        final String titleSession = getIntent().getStringExtra("titleSession");
+        final String titleSession = getIntent().getStringExtra(TITLE_VIDEO);
         tvTitle.setText(titleSession);
-        final String fileName = getIntent().getStringExtra("fileName");
+        final String fileName = getIntent().getStringExtra(FILE_NAME);
 
         play.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,29 +90,18 @@ public class SelectedVideoActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(SelectedVideoActivity.this, PlayVideoActivity.class);
                 intent.putExtra("idSession",mIdSession);
-                intent.putExtra("fileName", fileName);
+                intent.putExtra(FILE_NAME, fileName);
                 startActivity(intent);
             }
         });
 
         RecyclerView recyclerTags = findViewById(R.id.re_tags);
 
-        /*
-        mTagModels.add(new TagModel(Color.parseColor("#ca62ff"), "test1"));
-        mTagModels.add(new TagModel(Color.parseColor("#f91734"), "test2"));
-        mTagModels.add(new TagModel(Color.parseColor("#1e8900"), "test3"));
-
-        RecyclerView.LayoutManager layoutManagerTags = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        recyclerTags.setLayoutManager(layoutManagerTags);
-
-        final TagRecyclerAdapter adapter = new TagRecyclerAdapter(mTagModels, "count");
-        recyclerTags.setAdapter(adapter);
-*/
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(R.string.video_name);
+        getSupportActionBar().setTitle(titleSession);
 
     }
 

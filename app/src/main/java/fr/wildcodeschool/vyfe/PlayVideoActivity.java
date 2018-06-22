@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -40,37 +41,24 @@ public class PlayVideoActivity extends AppCompatActivity {
     HashMap<String, LinearLayout> mTimelines = new HashMap<>();
     final int[] mMarge = {0};
 
+    public static final String TITLE_VIDEO = "titleVideo";
+    public static final String FILE_NAME = "filename";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_video);
 
+        final String titleSession = getIntent().getStringExtra(TITLE_VIDEO);
 
-        // mIdSession = getIntent().getStringExtra("idSession");
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(titleSession);
 
-        // Test de récupération du lien avec données en dur :
-        mIdSession = "-LFRtUEoDalCtBKJq-l0";
-        final DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions").child(mIdSession).child("videoLink");
-        sessionRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                mVideoLink = dataSnapshot.getValue().toString();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-
-        SingletonTags singletonTags = SingletonTags.getInstance();
+          SingletonTags singletonTags = SingletonTags.getInstance();
         mTagModels = singletonTags.getmTagsList();
-        mTagModels.add(new TagModel(-3318101, "nameTest1", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest2", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest3", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest4", null, null));
 
         RecyclerView rvTags = findViewById(R.id.re_tags_selected);
         RecyclerView rvTimeLines = findViewById(R.id.re_time_lines_selected);
@@ -99,21 +87,14 @@ public class PlayVideoActivity extends AppCompatActivity {
         mVideoSelected = findViewById(R.id.video_view_selected);
 
 
-        final String fileName = getIntent().getStringExtra("fileName");
+        final String fileName = getIntent().getStringExtra(FILE_NAME);
 
-        //Test lecture video avec lien en dur :
-        String URL = "http://clips.vorwaerts-gmbh.de/VfE_html5.mp4";
-
-        String mFileName = getExternalCacheDir().getAbsolutePath();
-        mFileName += "/1529650960046.mp4";
-
-        String URL2 = mFileName;
-
+/*
         File file = new File(fileName);
         if(file.exists()) {
             Toast.makeText(this, "exist", Toast.LENGTH_SHORT).show();
         }
-
+*/
         mVideoSelected.setVideoPath(fileName);
         final FloatingActionButton fbPlay = findViewById(R.id.bt_play_selected);
 
