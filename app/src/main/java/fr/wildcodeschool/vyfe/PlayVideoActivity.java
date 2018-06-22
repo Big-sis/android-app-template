@@ -1,17 +1,23 @@
 package fr.wildcodeschool.vyfe;
 
+import android.support.annotation.DrawableRes;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.VideoView;
 
+import com.bumptech.glide.load.engine.Resource;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -53,7 +59,7 @@ public class PlayVideoActivity extends AppCompatActivity {
         sessionRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                mVideoLink = dataSnapshot.getValue().toString();
+//                mVideoLink = dataSnapshot.getValue().toString();
             }
 
             @Override
@@ -109,18 +115,31 @@ public class PlayVideoActivity extends AppCompatActivity {
                 if (mIsPlayed) {
                     mVideoSelected.pause();
                     mIsPlayed = false;
+                    fbPlay.setImageResource(android.R.drawable.ic_media_play);
 
                 } else if (mFirstPlay) {
                     async.execute();
                     mFirstPlay = false;
                     mIsPlayed = true;
+                    fbPlay.setImageResource(android.R.drawable.ic_media_pause);
 
                 } else {
                     mVideoSelected.start();
                     mIsPlayed = true;
+                    fbPlay.setImageResource(android.R.drawable.ic_media_pause);
                 }
             }
         });
+
+        //TODO : mettre valeur calculée
+        Display display = getWindowManager().getDefaultDisplay();
+        int width = display.getWidth();
+        double ratio = ((float) (width))/300.0;
+        int height = (int)(ratio*50);
+        RelativeLayout timeLines = findViewById(R.id.time_lines_container);
+
+        timeLines.setLayoutParams(new FrameLayout.LayoutParams(width, LinearLayout.LayoutParams.WRAP_CONTENT));
+        mSeekBar.setLayoutParams(new RelativeLayout.LayoutParams(width, LinearLayout.LayoutParams.MATCH_PARENT));
 
         initTimeline(mTagModels ,rvTags);
     }
