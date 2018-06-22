@@ -30,6 +30,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -98,10 +99,6 @@ public class RecordActivity extends AppCompatActivity {
             public void onClick(View v) {
                 chronometer.setBase(SystemClock.elapsedRealtime());
                 chronometer.start();
-
-
-                chronometerMain.setBase(SystemClock.elapsedRealtime());
-                chronometerMain.start();
 
 
                 /*
@@ -243,19 +240,15 @@ public class RecordActivity extends AppCompatActivity {
 
         //init variable
         final Chronometer chronometer = findViewById(R.id.chronometer);
-        Chronometer chronometerMain = findViewById(R.id.chronometerMain);
-
-        final int[] tag = new int[listTag.size()];
-
         final boolean[] titleTimeline = new boolean[listTag.size()];
-        final int[] marge = new int[listTag.size()];
-        final int[] timeMoins1 = new int[listTag.size()];
+        final int[] margeTag = new int[listTag.size()];
+        final int[] previousTime = new int[listTag.size()];
+        final boolean[] shortTagBefore = new boolean[listTag.size()];
         for (int i = 0; i < titleTimeline.length; i++) {
             titleTimeline[i] = true;
-            tag[i] = 0;
-            marge[i] = 0;
-
+            margeTag[i] = 0;
         }
+
 
 
         //ajout des differentes timelines au conteneur principal
@@ -323,48 +316,172 @@ public class RecordActivity extends AppCompatActivity {
 
                 chronometer.start(); */
 
-                /** Test **/
+                /** Test 1
+                //Ici on pourras changer les caracteristique des tag. Pour appli = constant
+                //Attention rapport de 10 ex durée = 5s =>50
+                int durationTag = 30;
+                int beforeTimeTag = 60;
+
+
                 //init image Tag
                 ImageView iv = new ImageView(RecordActivity.this);
-                iv.setMinimumWidth(30);
+                iv.setMinimumWidth(beforeTimeTag+durationTag);
                 iv.setMinimumHeight(10);
                 iv.setBackgroundColor(listTag.get(position).getColor());
 
-                int timeActuel = (int) ((SystemClock.elapsedRealtime() - chronometer.getBase()) / 100);
+                //init chrono
+                int timeActuel = (int) ((SystemClock.elapsedRealtime() - chronometer.getBase()) / 100)-beforeTimeTag;
 
                 //init name Tag
-                TextView tvName = new TextView(RecordActivity.this);
-                tvName.setTextColor(Color.WHITE);
+                TextView tvNameTimeline = new TextView(RecordActivity.this);
+                tvNameTimeline.setTextColor(Color.WHITE);
 
-                //1er click :Apparition  du nom  tag
+                //1er click :Apparition  du nom  timeline
                 if (titleTimeline[position]) {
-                    //titre tag pour le 1er click du tag
-                    tvName.setText(listTag.get(position).getName());
+                    tvNameTimeline.setText(listTag.get(position).getName());
                     LinearLayout.LayoutParams layoutParamsTv = new LinearLayout.LayoutParams(
                             200, LinearLayout.LayoutParams.WRAP_CONTENT);
                     layoutParamsTv.setMargins(5, 25, 0, 25);
-                    tvName.setLayoutParams(layoutParamsTv);
+                    tvNameTimeline.setLayoutParams(layoutParamsTv);
+                }
 
+                //Rajout tag si nest pas deja en cours
+                if(timeActuel >0) {
+                    //init param tag sur timeline
+                    LinearLayout timeline = mTimelines.get(listTag.get(position).getName());
+                    margeTag[position] = timeActuel - previousTime[position] - durationTag ;
+                    if(shortTagBefore[position]){
+                        margeTag[position] = timeActuel - previousTime[position] - durationTag +beforeTimeTag;
+                    }
+                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    layoutParams.setMargins(margeTag[position], 40, 0, 40);
+
+                    timeline.addView(iv, layoutParams);
+                    timeline.addView(tvNameTimeline, 0);
+                    shortTagBefore[position] = false;
+                    titleTimeline[position] = false;
+                }
+
+                //si Tag est fait avant la fin d'un tag ou au début
+                else{
+
+                    Toast.makeText(RecordActivity.this, "avant 0", Toast.LENGTH_SHORT).show();
+                    margeTag[position]=(int) timeActuel +beforeTimeTag ;
+                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    layoutParams.setMargins(0, 40, 0, 40);
+                    iv.setMinimumWidth(durationTag);
+                    LinearLayout timeline = mTimelines.get(listTag.get(position).getName());
+                    timeline.addView(iv, layoutParams);
+                    timeline.addView(tvNameTimeline, 0);
+                    shortTagBefore[position] =true;
+                    titleTimeline[position] = false;
+                }
+
+                previousTime[position] = timeActuel;
+
+                timerTextView.setText(String.valueOf(margeTag[position]));**/
+                //Ici on pourras changer les caracteristique des tag. Pour appli = constant
+                //Attention rapport de 10 ex durée = 5s =>50
+                int durationTag = 30;
+                int beforeTimeTag = 60;
+
+
+                //init image Tag
+                ImageView iv = new ImageView(RecordActivity.this);
+                iv.setMinimumWidth(beforeTimeTag+durationTag);
+                iv.setMinimumHeight(10);
+                iv.setBackgroundColor(listTag.get(position).getColor());
+
+                //init chrono
+                int timeActuel = (int) ((SystemClock.elapsedRealtime() - chronometer.getBase()) / 100);
+
+                //init name Tag
+                TextView tvNameTimeline = new TextView(RecordActivity.this);
+                tvNameTimeline.setTextColor(Color.WHITE);
+
+
+                /**1er Tag **/
+                if (titleTimeline[position]) {
+                    //Ajout titre
+                    tvNameTimeline.setText(listTag.get(position).getName());
+                    LinearLayout.LayoutParams layoutParamsTv = new LinearLayout.LayoutParams(
+                            200, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    layoutParamsTv.setMargins(5, 25, 0, 25);
+                    tvNameTimeline.setLayoutParams(layoutParamsTv);
+
+                    //param tag
+
+                    /** le temps total du tag ne peut pas être créer car pas assez de temps entre click et les 2tag**/
+                    if ((timeActuel <beforeTimeTag)) {
+                        timeActuel = timeActuel;
+                        iv.setMinimumWidth(durationTag);
+                        margeTag[position] = timeActuel;
+                        shortTagBefore[position] = true;
+                    } else {
+                        //init param si 1er tag
+                        timeActuel = timeActuel - beforeTimeTag;
+                        iv.setMinimumWidth(beforeTimeTag + durationTag);
+                        margeTag[position] = timeActuel;
+                        shortTagBefore[position] = false;
+                    }
+
+                    //ajout tag
+                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    layoutParams.setMargins(margeTag[position], 40, 0, 40);
+                    LinearLayout timeline = mTimelines.get(listTag.get(position).getName());
+                    timeline.addView(iv, layoutParams);
+                    timeline.addView(tvNameTimeline, 0);
+
+                    //caract suivante
+                    titleTimeline[position] = false;
+
+
+                }else{
+                    /** Nbr tag >1**/
+
+                    /**Si il ne peut pas être creer avec le temps avant le tag**/
+                    if(((timeActuel-previousTime[position])<beforeTimeTag)){
+                        timeActuel = timeActuel;
+                        iv.setMinimumWidth(durationTag);
+                        if(!shortTagBefore[position]){
+                            margeTag[position] = timeActuel - previousTime[position]-durationTag-beforeTimeTag;}
+                        else{
+                            margeTag[position] = timeActuel - previousTime[position]-durationTag;
+                        }
+                        shortTagBefore[position] = true;
+                    }else{
+                        /**creation du tag +tps avant **/
+                        timeActuel = timeActuel - beforeTimeTag;
+                        iv.setMinimumWidth(beforeTimeTag + durationTag);
+                        if(!shortTagBefore[position]){
+                            margeTag[position] = timeActuel - previousTime[position]-durationTag-beforeTimeTag;}
+                        else{
+                            margeTag[position] = timeActuel - previousTime[position]-durationTag;
+                        }
+                        shortTagBefore[position] = false;
+                    }
+
+
+                    //ajout tag
+                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    layoutParams.setMargins(margeTag[position], 40, 0, 40);
+                    LinearLayout timeline = mTimelines.get(listTag.get(position).getName());
+                    timeline.addView(iv, layoutParams);
+                    timeline.addView(tvNameTimeline, 0);
 
                 }
 
-                marge[position] = timeActuel - timeMoins1[position] - 30;
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                layoutParams.setMargins(marge[position], 40, 0, 40);
-                LinearLayout timeline = mTimelines.get(listTag.get(position).getName());
 
-                timeline.addView(iv, layoutParams);
-                timeline.addView(tvName, 0);
+                previousTime[position] = timeActuel;
 
 
-                timeMoins1[position] = timeActuel;
-                nombreTag[position]+=1;
 
-                titleTimeline[position] = false;
 
-                timerTextView.setText(String.valueOf(timeActuel));
-
+                timerTextView.setText(String.valueOf(margeTag[position]));
 
                 //Scrool automatiquement suit l'ajout des tags
                 final HorizontalScrollView scrollView = findViewById(R.id.horizontalScrollView);
