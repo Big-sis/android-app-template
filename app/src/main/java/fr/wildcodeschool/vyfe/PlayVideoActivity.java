@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -19,6 +20,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -97,10 +99,22 @@ public class PlayVideoActivity extends AppCompatActivity {
         mVideoSelected = findViewById(R.id.video_view_selected);
 
 
+        final String fileName = getIntent().getStringExtra("fileName");
+
         //Test lecture video avec lien en dur :
         String URL = "http://clips.vorwaerts-gmbh.de/VfE_html5.mp4";
-        String URL2 = "/storage/emulated/0/Android/data/fr.wildcodeschool.vyfe/cache/1529497646453.mp4";
-        mVideoSelected.setVideoPath(URL);
+
+        String mFileName = getExternalCacheDir().getAbsolutePath();
+        mFileName += "/1529650960046.mp4";
+
+        String URL2 = mFileName;
+
+        File file = new File(fileName);
+        if(file.exists()) {
+            Toast.makeText(this, "exist", Toast.LENGTH_SHORT).show();
+        }
+
+        mVideoSelected.setVideoPath(fileName);
         final FloatingActionButton fbPlay = findViewById(R.id.bt_play_selected);
 
         final SeekbarAsync async = new SeekbarAsync(mSeekBar, mVideoSelected);

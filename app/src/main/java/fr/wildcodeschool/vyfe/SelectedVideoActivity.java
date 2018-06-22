@@ -87,6 +87,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(SelectedVideoActivity.this, PlayVideoActivity.class);
                 intent.putExtra("idSession",mIdSession);
+                intent.putExtra("fileName", fileName);
                 startActivity(intent);
             }
         });

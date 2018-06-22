@@ -76,6 +76,7 @@ public class GridAdapter extends BaseAdapter implements Filterable {
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, SelectedVideoActivity.class);
                 intent.putExtra("titleSession", video.getName());
+                intent.putExtra("fileName", video.getVideoLink());
                 mContext.startActivity(intent);
             }
         });
