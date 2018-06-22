@@ -262,70 +262,74 @@ public class RecordActivity extends AppCompatActivity {
             mTimelines.put(name, timeline);
 
         }
-        //ajout des tags à la timeline associée
-        rv.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(),
-                rv, new RecyclerTouchListener.ClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                for (int i = 0; i < titleTimeline.length; i++) {
-                    time[i] = (int) (SystemClock.elapsedRealtime() - chronometer.getBase()) / 1000;
-                }
-                //init image Tag
-                ImageView iv = new ImageView(RecordActivity.this);
-                iv.setMinimumWidth(100);
-                iv.setMinimumHeight(10);
-                iv.setBackgroundColor(listTag.get(position).getColor());
 
-                //init name Tag
-                TextView tvName = new TextView(RecordActivity.this);
-                tvName.setTextColor(Color.WHITE);
-
-                //1er click :Apparition  du nom et marge du tag
-                if (titleTimeline[position]) {
-                    //titre tag pour le 1er click du tag
-                    tvName.setText(listTag.get(position).getName());
-                    LinearLayout.LayoutParams layoutParamsTv = new LinearLayout.LayoutParams(
-                            200, LinearLayout.LayoutParams.WRAP_CONTENT);
-                    layoutParamsTv.setMargins(0, 25, 0, 25);
-                    tvName.setLayoutParams(layoutParamsTv);
-
-                } else {
-                    //TODO: trouver algo pour le 2eme espacement
-                }
-
-
-                //init LinearLayout timeline
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                layoutParams.setMargins(time[position], 40, 0, 40);
-                LinearLayout timeline = mTimelines.get(listTag.get(position).getName());
-
-                //ajout des differents elements timeline
-                timeline.addView(iv, layoutParams);
-                timeline.addView(tvName, 0);
-
-
-                //annule ajout titre si deja inscrit
-                titleTimeline[position] = false;
-
-                //test chrono
-                timerTextView.setText(String.valueOf(time[position]));
-
-                //Scrool automatiquement suit l'ajout des tags
-                final HorizontalScrollView scrollView = findViewById(R.id.horizontalScrollView);
-                scrollView.post(new Runnable() {
-                    public void run() {
-                        scrollView.fullScroll(View.FOCUS_RIGHT);
+        if (isPlay) {
+            //ajout des tags à la timeline associée
+            rv.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(),
+                    rv, new RecyclerTouchListener.ClickListener() {
+                @Override
+                public void onClick(View view, int position) {
+                    for (int i = 0; i < titleTimeline.length; i++) {
+                        time[i] = (int) (SystemClock.elapsedRealtime() - chronometer.getBase()) / 1000;
                     }
-                });
+                    //init image Tag
+                    ImageView iv = new ImageView(RecordActivity.this);
+                    iv.setMinimumWidth(100);
+                    iv.setMinimumHeight(10);
+                    iv.setBackgroundColor(listTag.get(position).getColor());
 
-            }
+                    //init name Tag
+                    TextView tvName = new TextView(RecordActivity.this);
+                    tvName.setTextColor(Color.WHITE);
 
-            @Override
-            public void onLongClick(View view, int position) {
+                    //1er click :Apparition  du nom et marge du tag
+                    if (titleTimeline[position]) {
+                        //titre tag pour le 1er click du tag
+                        tvName.setText(listTag.get(position).getName());
+                        LinearLayout.LayoutParams layoutParamsTv = new LinearLayout.LayoutParams(
+                                200, LinearLayout.LayoutParams.WRAP_CONTENT);
+                        layoutParamsTv.setMargins(0, 25, 0, 25);
+                        tvName.setLayoutParams(layoutParamsTv);
 
-            }
-        }));
+                    } else {
+                        //TODO: trouver algo pour le 2eme espacement
+                    }
+
+
+                    //init LinearLayout timeline
+                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    layoutParams.setMargins(time[position], 40, 0, 40);
+                    LinearLayout timeline = mTimelines.get(listTag.get(position).getName());
+
+                    //ajout des differents elements timeline
+                    timeline.addView(iv, layoutParams);
+                    timeline.addView(tvName, 0);
+
+
+                    //annule ajout titre si deja inscrit
+                    titleTimeline[position] = false;
+
+                    //test chrono
+                    timerTextView.setText(String.valueOf(time[position]));
+
+                    //Scrool automatiquement suit l'ajout des tags
+                    final HorizontalScrollView scrollView = findViewById(R.id.horizontalScrollView);
+                    scrollView.post(new Runnable() {
+                        public void run() {
+                            scrollView.fullScroll(View.FOCUS_RIGHT);
+                        }
+                    });
+
+                }
+
+                @Override
+                public void onLongClick(View view, int position) {
+
+                }
+            }));
+
+        }
 
     }
 
