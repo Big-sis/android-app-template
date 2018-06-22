@@ -77,6 +77,18 @@ public class PlayVideoActivity extends AppCompatActivity {
         mTagModels.add(new TagModel(-3318101, "nameTest4", null, null));
         mTagModels.add(new TagModel(-3318101, "nameTest5", null, null));
         mTagModels.add(new TagModel(-3318101, "nameTest6", null, null));
+        mTagModels.add(new TagModel(-3318101, "nameTest7", null, null));
+        mTagModels.add(new TagModel(-3318101, "nameTest8", null, null));
+        mTagModels.add(new TagModel(-3318101, "nameTest9", null, null));
+        mTagModels.add(new TagModel(-3318101, "nameTest10", null, null));
+        mTagModels.add(new TagModel(-3318101, "nameTest11", null, null));
+        mTagModels.add(new TagModel(-3318101, "nameTest12", null, null));
+        mTagModels.add(new TagModel(-3318101, "nameTest13", null, null));
+        mTagModels.add(new TagModel(-3318101, "nameTest14", null, null));
+        mTagModels.add(new TagModel(-3318101, "nameTest15", null, null));
+        mTagModels.add(new TagModel(-3318101, "nameTest16", null, null));
+        mTagModels.add(new TagModel(-3318101, "nameTest17", null, null));
+        mTagModels.add(new TagModel(-3318101, "nameTest18", null, null));
 
         RecyclerView rvTags = findViewById(R.id.re_tags_selected);
 
