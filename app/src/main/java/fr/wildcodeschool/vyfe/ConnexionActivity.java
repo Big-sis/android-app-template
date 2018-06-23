@@ -39,6 +39,7 @@ public class ConnexionActivity extends AppCompatActivity {
         final EditText inputMail = findViewById(R.id.et_mail);
         final EditText inputPass = findViewById(R.id.et_password);
         Button forgotPassword = findViewById(R.id.tv_lost_password);
+        Button btnCreateAccount = findViewById(R.id.btn_create_account);
 
         Button connexion = findViewById(R.id.btn_connected);
         connexion.setOnClickListener(new View.OnClickListener() {
@@ -88,5 +89,13 @@ public class ConnexionActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        btnCreateAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(ConnexionActivity.this, R.string.contact, Toast.LENGTH_LONG).show();
+            }
+        });
+
     }
 }

@@ -53,8 +53,6 @@ public class StartActivity extends AppCompatActivity {
         final Spinner spinner = (Spinner) findViewById(R.id.spinner_session_infos);
         TextView tvAddTag = findViewById(R.id.tv_add_tag);
         Toolbar toolbar = findViewById(R.id.toolbar);
-        final LinearLayout llImportGrid = findViewById(R.id.ll_import_grid);
-        final LinearLayout llCreateGrid = findViewById(R.id.ll_create_grid);
         final EditText etTagSet = findViewById(R.id.et_grid_title);
         final EditText etVideoTitle = findViewById(R.id.et_video_title);
 
@@ -80,33 +78,25 @@ public class StartActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(R.string.start_session);
 
 
-
         radioButtonImport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (radioButtonImport.isChecked()) {
                     radioButtonNew.setChecked(false);
-                    //TODO: affichier l'accès aux elements: imports grilles
                     spinner.setClickable(true);
-                    importGrid(etTagSet,fabAddMoment,false);
+                    importGrid(etTagSet, fabAddMoment, false);
                 }
             }
         });
-
 
         radioButtonNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (radioButtonNew.isChecked()) {
                     radioButtonImport.setChecked(false);
-                    //TODO: affichier l'accès aux elements: création grilles
                     spinner.setClickable(false);
-                    importGrid(etTagSet,fabAddMoment,true);
-
-
-
+                    importGrid(etTagSet, fabAddMoment, true);
                 }
-
             }
         });
 
@@ -175,11 +165,8 @@ public class StartActivity extends AppCompatActivity {
                     });
                     MainActivity.mMulti = false;
                 } else {
-
                     startActivity(intent);
-
                 }
-
             }
         });
 
@@ -209,7 +196,7 @@ public class StartActivity extends AppCompatActivity {
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.logout:
                 Intent intent = new Intent(StartActivity.this, ConnexionActivity.class);
                 startActivity(intent);
@@ -219,13 +206,8 @@ public class StartActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-   public void clickableImport(Spinner spinner, RadioButton radioButton){
-        radioButton.setChecked(false);
-        spinner.setClickable(false);
 
-   }
-
-    public void importGrid(EditText titleGrid, FloatingActionButton fabAdd, Boolean bolean){
+    public void importGrid(EditText titleGrid, FloatingActionButton fabAdd, Boolean bolean) {
         titleGrid.setClickable(bolean);
         titleGrid.setLongClickable(bolean);
         titleGrid.setEnabled(bolean);
