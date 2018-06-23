@@ -14,6 +14,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -45,17 +46,18 @@ public class StartActivity extends AppCompatActivity {
         Button buttonGo = findViewById(R.id.button_go);
         final Button buttonGoMulti = findViewById(R.id.button_go_multi);
         final ConstraintLayout share = findViewById(R.id.layout_share);
-        FloatingActionButton fabAddMoment = findViewById(R.id.fab_add_moment);
+        final FloatingActionButton fabAddMoment = findViewById(R.id.fab_add_moment);
         RecyclerView recyclerTagList = findViewById(R.id.recycler_view);
         final RadioButton radioButtonImport = findViewById(R.id.radio_button_insert);
         final RadioButton radioButtonNew = findViewById(R.id.radio_Button_new);
         final Spinner spinner = (Spinner) findViewById(R.id.spinner_session_infos);
         TextView tvAddTag = findViewById(R.id.tv_add_tag);
         Toolbar toolbar = findViewById(R.id.toolbar);
-
+        final LinearLayout llImportGrid = findViewById(R.id.ll_import_grid);
+        final LinearLayout llCreateGrid = findViewById(R.id.ll_create_grid);
         final EditText etTagSet = findViewById(R.id.et_grid_title);
-
         final EditText etVideoTitle = findViewById(R.id.et_video_title);
+
         FirebaseAuth auth = FirebaseAuth.getInstance();
 
         final String authUserId = auth.getCurrentUser().getUid();
@@ -78,15 +80,19 @@ public class StartActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(R.string.start_session);
 
 
+
         radioButtonImport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (radioButtonImport.isChecked()) {
                     radioButtonNew.setChecked(false);
                     //TODO: affichier l'accès aux elements: imports grilles
+                    spinner.setClickable(true);
+                    importGrid(etTagSet,fabAddMoment,false);
                 }
             }
         });
+
 
         radioButtonNew.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,6 +100,11 @@ public class StartActivity extends AppCompatActivity {
                 if (radioButtonNew.isChecked()) {
                     radioButtonImport.setChecked(false);
                     //TODO: affichier l'accès aux elements: création grilles
+                    spinner.setClickable(false);
+                    importGrid(etTagSet,fabAddMoment,true);
+
+
+
                 }
 
             }
@@ -207,5 +218,19 @@ public class StartActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+   public void clickableImport(Spinner spinner, RadioButton radioButton){
+        radioButton.setChecked(false);
+        spinner.setClickable(false);
+
+   }
+
+    public void importGrid(EditText titleGrid, FloatingActionButton fabAdd, Boolean bolean){
+        titleGrid.setClickable(bolean);
+        titleGrid.setLongClickable(bolean);
+        titleGrid.setEnabled(bolean);
+        fabAdd.setClickable(bolean);
+        fabAdd.setLongClickable(bolean);
+        fabAdd.setFocusable(bolean);
     }
 }
