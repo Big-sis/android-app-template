@@ -5,12 +5,8 @@ import android.graphics.Color;
 import android.hardware.Camera;
 import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.SystemClock;
-import android.support.annotation.ColorInt;
-import android.support.annotation.RequiresApi;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -19,24 +15,16 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.SurfaceHolder;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
-import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.Toast;
-import android.widget.VideoView;
 
 import com.google.firebase.auth.FirebaseAuth;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -54,7 +42,8 @@ public class RecordActivity extends AppCompatActivity {
     private MediaRecorder mRecorder = null;
     private CameraPreview mPreview;
     HashMap<String, LinearLayout> mTimelines = new HashMap<>();
-    TextView timerTextView;
+    HashMap<String, ArrayList<Integer>> mPositionAllTagHashMap = new HashMap<>();
+
 
 
     @Override
@@ -340,7 +329,17 @@ public class RecordActivity extends AppCompatActivity {
                 timeline.addView(tvNameTimeline, 0);
 
                 previousTime[position] = timeActuel;
-                //TODO : recuperer previousTime à chaque tag pour envoyer sur firebase
+                //Pour envoit sur firebase
+                for (TagModel tagModel : listTag) {
+                    String name = tagModel.getName();
+                    //Ajout d'une arrayList pour tous tag
+                    ArrayList<Integer> mPositionTagList = new ArrayList<>();
+                    mPositionAllTagHashMap.put(name,mPositionTagList);
+
+                }
+                ArrayList<Integer> mPositionTagList = mPositionAllTagHashMap.get(listTag.get(position).getName());
+                mPositionTagList.add(previousTime[position]);
+                //TODO: envoyer Hasmap sur firebase
 
                 //Scrool automatiquement suit l'ajout des tags
                 final HorizontalScrollView scrollView = findViewById(R.id.horizontalScrollView);
@@ -349,6 +348,7 @@ public class RecordActivity extends AppCompatActivity {
                         scrollView.fullScroll(View.FOCUS_RIGHT);
                     }
                 });
+
             }
 
             @Override
