@@ -79,4 +79,6 @@
     <string name="mail_unkown">Email inconnu</string>
     <string name="send">Envoyer</string>
     <string name="date">Date</string>
+    <string name="contact">Vous pouvez nous contacter sur : www.vyfe.com</string>
+    <string name="create_account">Créer un compte</string>
 </resources>

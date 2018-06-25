@@ -5,12 +5,8 @@ import android.graphics.Color;
 import android.hardware.Camera;
 import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.SystemClock;
-import android.support.annotation.ColorInt;
-import android.support.annotation.RequiresApi;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -19,8 +15,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.view.SurfaceHolder;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
@@ -28,16 +22,12 @@ import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
-import android.widget.VideoView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -58,7 +48,6 @@ public class RecordActivity extends AppCompatActivity {
     private MediaRecorder mRecorder = null;
     private CameraPreview mPreview;
     HashMap<String, LinearLayout> mTimelines = new HashMap<>();
-    TextView timerTextView;
 
     public static final String TITLE_VIDEO = "titleVideo";
     public static final String FILE_NAME = "filename";
@@ -68,7 +57,6 @@ public class RecordActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
         final Chronometer chronometer = findViewById(R.id.chronometer);
-
 
         Date d = new Date();
         mFileName = getExternalCacheDir().getAbsolutePath();
@@ -83,11 +71,9 @@ public class RecordActivity extends AppCompatActivity {
         final Button btnPlay = findViewById(R.id.btn_play);
         final ConstraintLayout sessionRecord = findViewById(R.id.session_record);
         final FloatingActionButton btFinish = findViewById(R.id.bt_finish);
-        final ImageView ivCheck = findViewById(R.id.iv_check);
         final RecyclerView recyclerTags = findViewById(R.id.re_tags);
         final String titleSession = getIntent().getStringExtra(TITLE_VIDEO);
-        final TextView tvVideoSave = findViewById(R.id.tv_video_save);
-        final TextView tvWait = findViewById(R.id.wait);
+
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -95,14 +81,20 @@ public class RecordActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.record_session);
 
+
+        SingletonTags singletonTags = SingletonTags.getInstance();
+        mTagModels = singletonTags.getmTagsList();
+
         recyclerTags.setAlpha(0.5f);
 
         mRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                chronometer.setBase(SystemClock.elapsedRealtime());
                 chronometer.start();
                 mRecord.setImageResource(R.drawable.icons8_arr_ter_96);
                 recyclerTags.setAlpha(1);
+
                 mPreview = new CameraPreview(RecordActivity.this, mCamera,
                         new CameraPreview.SurfaceCallback() {
                             @Override
@@ -128,13 +120,12 @@ public class RecordActivity extends AppCompatActivity {
                         mRecord.setClickable(false);
                         btFinish.setVisibility(View.VISIBLE);
                         mRecord.setAlpha(0.5f);
+
                     }
                 });
             }
         });
 
-        SingletonTags singletonTags = SingletonTags.getInstance();
-        mTagModels = singletonTags.getmTagsList();
 
         RecyclerView.LayoutManager layoutManagerTags = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         RecyclerView.LayoutManager layoutManagerTime = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -184,7 +175,6 @@ public class RecordActivity extends AppCompatActivity {
         });
 
         initTimeline(mTagModels, recyclerTags);
-
 
     }
 
@@ -245,18 +235,18 @@ public class RecordActivity extends AppCompatActivity {
 
 
     private void initTimeline(final ArrayList<TagModel> listTag, RecyclerView rv) {
-
-        //init variable
+        //Init variable
         final Chronometer chronometer = findViewById(R.id.chronometer);
         final boolean[] titleTimeline = new boolean[listTag.size()];
-        final int[] time = new int[listTag.size()];
+        final int[] margeTag = new int[listTag.size()];
+        final int[] previousTime = new int[listTag.size()];
+        final boolean[] shortTagBefore = new boolean[listTag.size()];
         for (int i = 0; i < titleTimeline.length; i++) {
             titleTimeline[i] = true;
-
+            margeTag[i] = 0;
         }
 
-
-        //ajout des differentes timelines au conteneur principal
+        //Ajout des differentes timelines au conteneur principal
         LinearLayout llMain = findViewById(R.id.ll_main);
         for (TagModel tagModel : listTag) {
             //TODO: empecher la repetition de nom pour les tags
@@ -266,56 +256,99 @@ public class RecordActivity extends AppCompatActivity {
             timeline.setBackgroundResource(R.drawable.style_input);
             llMain.addView(timeline);
             mTimelines.put(name, timeline);
-
         }
+        //pour envoit sur firebase
+        final int[] totalTime = {0};
 
-        //ajout des tags à la timeline associée
+        //Ajout des tags à la timeline associée
         rv.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(),
                 rv, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                for (int i = 0; i < titleTimeline.length; i++) {
-                    time[i] = (int) (SystemClock.elapsedRealtime() - chronometer.getBase()) / 1000;
-                }
+                //Accrocher vous pour la suite
+
+                //Ici on pourras changer les caracteristique des tags pour la V2. Pour l'instant carac = constantes
+                //Attention rapport de 10 ex durée = 5s =>50
+                int leftOffsetTag = 30;
+                int rigthOffsetTag = 60;
+
                 //init image Tag
                 ImageView iv = new ImageView(RecordActivity.this);
-                iv.setMinimumWidth(100);
                 iv.setMinimumHeight(10);
                 iv.setBackgroundColor(listTag.get(position).getColor());
 
-                //init name Tag
-                TextView tvName = new TextView(RecordActivity.this);
-                tvName.setTextColor(Color.WHITE);
+                //init chrono
+                int timeActuel = (int) ((SystemClock.elapsedRealtime() - chronometer.getBase()) / 100);
 
-                //1er click :Apparition  du nom et marge du tag
+                //init name Tag
+                TextView tvNameTimeline = new TextView(RecordActivity.this);
+                tvNameTimeline.setTextColor(Color.WHITE);
+
+                /**Si 1er Tag **/
                 if (titleTimeline[position]) {
-                    //titre tag pour le 1er click du tag
-                    tvName.setText(listTag.get(position).getName());
+                    //Ajout titre à la timeline
+                    tvNameTimeline.setText(listTag.get(position).getName());
                     LinearLayout.LayoutParams layoutParamsTv = new LinearLayout.LayoutParams(
                             200, LinearLayout.LayoutParams.WRAP_CONTENT);
-                    layoutParamsTv.setMargins(0, 25, 0, 25);
-                    tvName.setLayoutParams(layoutParamsTv);
+                    layoutParamsTv.setMargins(5, 25, 0, 25);
+                    tvNameTimeline.setLayoutParams(layoutParamsTv);
+
+                    //param 1er tag
+                    /** le temps total du tag ne peut pas être créer car pas assez de temps entre click et les 2tag**/
+                    if ((timeActuel < rigthOffsetTag)) {
+                        iv.setMinimumWidth(leftOffsetTag);
+                        shortTagBefore[position] = true;
+                        //TODO: voir si besoin de créer une taille spécifique au tag qui donnerait: taille tag = timeActuel et margeTag = 0;
+                    } else {
+                        timeActuel = timeActuel - rigthOffsetTag;
+                        iv.setMinimumWidth(rigthOffsetTag + leftOffsetTag);
+                        shortTagBefore[position] = false;
+                    }
+                    margeTag[position] = timeActuel;
+                    titleTimeline[position] = false;
                 } else {
-                 //TODO: trouver algo pour le 2eme espacement
+                    /** Si Nbr tag > 1 **/
+
+                    /**Si pas place : Création du tag av seulement sa durée**/
+                    if (((timeActuel - previousTime[position]) < rigthOffsetTag)) {
+                        iv.setMinimumWidth(leftOffsetTag);
+
+                        //Calcul de la marge en fonction du tag precedent
+                        if (!shortTagBefore[position]) {
+                            margeTag[position] = timeActuel - previousTime[position] - leftOffsetTag - rigthOffsetTag;
+                        } else {
+                            margeTag[position] = timeActuel - previousTime[position] - leftOffsetTag;
+                        }
+                        shortTagBefore[position] = true;
+                    } else {
+                        /**Si place creation du tag av duration + beforeTime**/
+                        timeActuel = timeActuel - rigthOffsetTag;
+                        iv.setMinimumWidth(rigthOffsetTag + leftOffsetTag);
+
+                        //Calcul de la marge en fonction du tag precedent
+                        if (!shortTagBefore[position]) {
+                            margeTag[position] = timeActuel - previousTime[position] - leftOffsetTag - rigthOffsetTag;
+                        } else {
+                            margeTag[position] = timeActuel - previousTime[position] - leftOffsetTag;
+                        }
+                        shortTagBefore[position] = false;
+                    }
                 }
 
 
-                //init LinearLayout timeline
+                //Ajout du tag et titre à la timeline
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                layoutParams.setMargins(time[position], 40, 0, 40);
+                layoutParams.setMargins(margeTag[position], 40, 0, 40);
                 LinearLayout timeline = mTimelines.get(listTag.get(position).getName());
-
-                //ajout des differents elements timeline
                 timeline.addView(iv, layoutParams);
-                timeline.addView(tvName, 0);
+                timeline.addView(tvNameTimeline, 0);
 
+                previousTime[position] = timeActuel;
+                //Pour envoit sur firebase
+                totalTime[0] += previousTime[position];
 
-                //annule ajout titre si deja inscrit
-                titleTimeline[position] = false;
-
-                //test chrono
-                timerTextView.setText(String.valueOf(time[position]));
+                //TODO: envoyer sur firebase
 
                 //Scrool automatiquement suit l'ajout des tags
                 final HorizontalScrollView scrollView = findViewById(R.id.horizontalScrollView);
