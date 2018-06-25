@@ -36,6 +36,8 @@ public class StartActivity extends AppCompatActivity {
     FirebaseDatabase mdatabase = FirebaseDatabase.getInstance();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
+    public static final String TITLE_VIDEO = "titleVideo";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,7 +117,7 @@ public class StartActivity extends AppCompatActivity {
             public void onClick(View v) {
                 final Intent intent = new Intent(StartActivity.this, RecordActivity.class);
                 final String titleSession = etVideoTitle.getText().toString();
-                intent.putExtra("titleSession", titleSession);
+                intent.putExtra(TITLE_VIDEO, titleSession);
 
                 //Firebase TAGSET
                 DatabaseReference idTagSetRef = mdatabase.getReference(authUserId).child("tag_sets").child("name");

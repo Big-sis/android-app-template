@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
@@ -15,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
+import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.bumptech.glide.load.engine.Resource;
@@ -25,6 +27,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -44,22 +47,33 @@ public class PlayVideoActivity extends AppCompatActivity {
     HashMap<String, LinearLayout> mTimelines = new HashMap<>();
     final int[] mMarge = {0};
 
+    public static final String TITLE_VIDEO = "titleVideo";
+    public static final String FILE_NAME = "filename";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_video);
 
+        final String titleSession = getIntent().getStringExtra(TITLE_VIDEO);
 
-        // mIdSession = getIntent().getStringExtra("idSession");
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(titleSession);
 
-        // Test de récupération du lien avec données en dur :
+        SingletonTags singletonTags = SingletonTags.getInstance();
+        mTagModels = singletonTags.getmTagsList();
+
+        // NE PAS SUPPRIMER POUR LE MOMENT
+        /* Test de récupération du lien avec données en dur :
         mIdSession = "-LFRtUEoDalCtBKJq-l0";
         final DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions").child(mIdSession).child("videoLink");
         sessionRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-//                mVideoLink = dataSnapshot.getValue().toString();
+                mVideoLink = dataSnapshot.getValue().toString();
             }
 
             @Override
@@ -89,6 +103,7 @@ public class PlayVideoActivity extends AppCompatActivity {
         mTagModels.add(new TagModel(-3318101, "nameTest16", null, null));
         mTagModels.add(new TagModel(-3318101, "nameTest17", null, null));
         mTagModels.add(new TagModel(-3318101, "nameTest18", null, null));
+        */
 
         RecyclerView rvTags = findViewById(R.id.re_tags_selected);
 
@@ -113,10 +128,15 @@ public class PlayVideoActivity extends AppCompatActivity {
         mVideoSelected = findViewById(R.id.video_view_selected);
 
 
-        //Test lecture video avec lien en dur :
-        String URL = "http://clips.vorwaerts-gmbh.de/VfE_html5.mp4";
-        String URL2 = "/storage/emulated/0/Android/data/fr.wildcodeschool.vyfe/cache/1529497646453.mp4";
-        mVideoSelected.setVideoPath(URL);
+        final String fileName = getIntent().getStringExtra(FILE_NAME);
+
+/*
+        File file = new File(fileName);
+        if(file.exists()) {
+            Toast.makeText(this, "exist", Toast.LENGTH_SHORT).show();
+        }
+*/
+        mVideoSelected.setVideoPath(fileName);
         final FloatingActionButton fbPlay = findViewById(R.id.bt_play_selected);
 
         final SeekbarAsync async = new SeekbarAsync(mSeekBar, mVideoSelected);

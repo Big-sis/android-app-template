@@ -33,10 +33,13 @@ import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Date;
@@ -48,13 +51,18 @@ public class RecordActivity extends AppCompatActivity {
     private Camera mCamera;
     private boolean mCamCondition = false;
     private FloatingActionButton mRecord;
-    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    final String mAuthUserId = mAuth.getCurrentUser().getUid();
     private static String mFileName = null;
     private MediaRecorder mRecorder = null;
     private CameraPreview mPreview;
     HashMap<String, LinearLayout> mTimelines = new HashMap<>();
     TextView timerTextView;
 
+
+    public static final String TITLE_VIDEO = "titleVideo";
+    public static final String FILE_NAME = "filename";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,11 +84,10 @@ public class RecordActivity extends AppCompatActivity {
         final Button btnPlay = findViewById(R.id.btn_play);
         final ConstraintLayout sessionRecord = findViewById(R.id.session_record);
         FloatingActionButton btFinish = findViewById(R.id.bt_finish);
-        final ImageView ivCheck = findViewById(R.id.iv_check);
         final RecyclerView recyclerTags = findViewById(R.id.re_tags);
+        final String titleSession = getIntent().getStringExtra(TITLE_VIDEO);
         final TextView tvVideoSave = findViewById(R.id.tv_video_save);
         final TextView tvWait = findViewById(R.id.wait);
-        final String titleSession = getIntent().getStringExtra("titleSession");
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -136,16 +143,18 @@ public class RecordActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 sessionRecord.setVisibility(View.VISIBLE);
-                ivCheck.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        ivCheck.setImageResource(R.drawable.icons8_coche_96);
-                        tvVideoSave.setText(R.string.video_save);
-                        tvWait.setVisibility(View.INVISIBLE);
-                        btnBackMain.setVisibility(View.VISIBLE);
-                        btnPlay.setVisibility(View.VISIBLE);
-                    }
-                });
+                Date date = new Date();
+                Date newDate = new Date(date.getTime());
+                SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yy HH:mm:SS Z");
+                String stringdate = dt.format(newDate);
+
+                //Firebase SESSION
+                DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions");
+                String mIdSession = sessionRef.push().getKey();
+                sessionRef.child(mIdSession).child("name").setValue(titleSession);
+                sessionRef.child(mIdSession).child("author").setValue(mAuthUserId);
+                sessionRef.child(mIdSession).child("videoLink").setValue(mFileName);
+                sessionRef.child(mIdSession).child("date").setValue(stringdate);
             }
         });
 
@@ -162,8 +171,8 @@ public class RecordActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(RecordActivity.this, SelectedVideoActivity.class);
-                intent.putExtra("titleSession", titleSession);
-                intent.putExtra("fileName", mFileName);
+                intent.putExtra(TITLE_VIDEO, titleSession);
+                intent.putExtra(FILE_NAME, mFileName);
                 startActivity(intent);
             }
         });
