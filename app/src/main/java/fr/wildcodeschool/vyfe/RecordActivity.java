@@ -18,12 +18,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
+import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -42,8 +45,6 @@ public class RecordActivity extends AppCompatActivity {
     private MediaRecorder mRecorder = null;
     private CameraPreview mPreview;
     HashMap<String, LinearLayout> mTimelines = new HashMap<>();
-    HashMap<String, ArrayList<Integer>> mPositionAllTagHashMap = new HashMap<>();
-
 
 
     @Override
@@ -87,7 +88,6 @@ public class RecordActivity extends AppCompatActivity {
                 chronometer.start();
 
 
-                /*
                 mPreview = new CameraPreview(RecordActivity.this, mCamera,
                         new CameraPreview.SurfaceCallback() {
                             @Override
@@ -103,12 +103,13 @@ public class RecordActivity extends AppCompatActivity {
                 FrameLayout preview = findViewById(R.id.video_view);
                 preview.addView(mPreview);
 
-                */
+
                 mRecord.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         chronometer.stop();
-                        // stopRecording();
+                        stopRecording();
+
 
                     }
                 });
@@ -244,6 +245,8 @@ public class RecordActivity extends AppCompatActivity {
             llMain.addView(timeline);
             mTimelines.put(name, timeline);
         }
+        //pour envoit sur firebase
+        final int[] totalTime = {0};
 
         //Ajout des tags à la timeline associée
         rv.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(),
@@ -254,8 +257,8 @@ public class RecordActivity extends AppCompatActivity {
 
                 //Ici on pourras changer les caracteristique des tags pour la V2. Pour l'instant carac = constantes
                 //Attention rapport de 10 ex durée = 5s =>50
-                int durationTag = 30;
-                int beforeTimeTag = 60;
+                int leftOffsetTag = 30;
+                int rigthOffsetTag = 60;
 
                 //init image Tag
                 ImageView iv = new ImageView(RecordActivity.this);
@@ -280,13 +283,13 @@ public class RecordActivity extends AppCompatActivity {
 
                     //param 1er tag
                     /** le temps total du tag ne peut pas être créer car pas assez de temps entre click et les 2tag**/
-                    if ((timeActuel < beforeTimeTag)) {
-                        iv.setMinimumWidth(durationTag);
+                    if ((timeActuel < rigthOffsetTag)) {
+                        iv.setMinimumWidth(leftOffsetTag);
                         shortTagBefore[position] = true;
                         //TODO: voir si besoin de créer une taille spécifique au tag qui donnerait: taille tag = timeActuel et margeTag = 0;
                     } else {
-                        timeActuel = timeActuel - beforeTimeTag;
-                        iv.setMinimumWidth(beforeTimeTag + durationTag);
+                        timeActuel = timeActuel - rigthOffsetTag;
+                        iv.setMinimumWidth(rigthOffsetTag + leftOffsetTag);
                         shortTagBefore[position] = false;
                     }
                     margeTag[position] = timeActuel;
@@ -295,26 +298,26 @@ public class RecordActivity extends AppCompatActivity {
                     /** Si Nbr tag > 1 **/
 
                     /**Si pas place : Création du tag av seulement sa durée**/
-                    if (((timeActuel - previousTime[position]) < beforeTimeTag)) {
-                        iv.setMinimumWidth(durationTag);
+                    if (((timeActuel - previousTime[position]) < rigthOffsetTag)) {
+                        iv.setMinimumWidth(leftOffsetTag);
 
                         //Calcul de la marge en fonction du tag precedent
                         if (!shortTagBefore[position]) {
-                            margeTag[position] = timeActuel - previousTime[position] - durationTag - beforeTimeTag;
+                            margeTag[position] = timeActuel - previousTime[position] - leftOffsetTag - rigthOffsetTag;
                         } else {
-                            margeTag[position] = timeActuel - previousTime[position] - durationTag;
+                            margeTag[position] = timeActuel - previousTime[position] - leftOffsetTag;
                         }
                         shortTagBefore[position] = true;
                     } else {
                         /**Si place creation du tag av duration + beforeTime**/
-                        timeActuel = timeActuel - beforeTimeTag;
-                        iv.setMinimumWidth(beforeTimeTag + durationTag);
+                        timeActuel = timeActuel - rigthOffsetTag;
+                        iv.setMinimumWidth(rigthOffsetTag + leftOffsetTag);
 
                         //Calcul de la marge en fonction du tag precedent
                         if (!shortTagBefore[position]) {
-                            margeTag[position] = timeActuel - previousTime[position] - durationTag - beforeTimeTag;
+                            margeTag[position] = timeActuel - previousTime[position] - leftOffsetTag - rigthOffsetTag;
                         } else {
-                            margeTag[position] = timeActuel - previousTime[position] - durationTag;
+                            margeTag[position] = timeActuel - previousTime[position] - leftOffsetTag;
                         }
                         shortTagBefore[position] = false;
                     }
@@ -330,16 +333,9 @@ public class RecordActivity extends AppCompatActivity {
 
                 previousTime[position] = timeActuel;
                 //Pour envoit sur firebase
-                for (TagModel tagModel : listTag) {
-                    String name = tagModel.getName();
-                    //Ajout d'une arrayList pour tous tag
-                    ArrayList<Integer> mPositionTagList = new ArrayList<>();
-                    mPositionAllTagHashMap.put(name,mPositionTagList);
+                totalTime[0] += previousTime[position];
 
-                }
-                ArrayList<Integer> mPositionTagList = mPositionAllTagHashMap.get(listTag.get(position).getName());
-                mPositionTagList.add(previousTime[position]);
-                //TODO: envoyer Hasmap sur firebase
+                //TODO: envoyer sur firebase
 
                 //Scrool automatiquement suit l'ajout des tags
                 final HorizontalScrollView scrollView = findViewById(R.id.horizontalScrollView);

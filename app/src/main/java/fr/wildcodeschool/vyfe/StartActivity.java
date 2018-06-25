@@ -138,12 +138,15 @@ public class StartActivity extends AppCompatActivity {
 
                     int colorTag = mTagModelList.get(i).getColor();
                     String nameTag = mTagModelList.get(i).getName();
-                    String rigthOffset = "3000";
+                    //V2 : choisir le temps
+                    String rigthOffset = "30";
+                    String leftOffset = "60";
 
                     DatabaseReference tagsRef = mdatabase.getReference(authUserId).child("tags");
                     String idTag = tagsRef.push().getKey();
                     tagsRef.child(idTag).child("color").setValue(colorTag);
                     tagsRef.child(idTag).child("name").setValue(nameTag);
+                    tagsRef.child(idTag).child("leftOffset").setValue(leftOffset);
                     tagsRef.child(idTag).child("rigthOffset").setValue(rigthOffset);
                     tagsRef.child(idTag).child("fkTagSet").setValue(idTagSet);
                 }
