@@ -23,13 +23,14 @@ public class GridAdapter extends BaseAdapter implements Filterable {
     private ArrayList<SessionsModel> filterList;
     private CustomFilterVideo filter;
 
+    public static final String TITLE_VIDEO = "titleVideo";
+    public static final String FILE_NAME = "filename";
 
     public GridAdapter(Context context, ArrayList<SessionsModel> video) {
         this.mContext = context;
         this.video = video;
         this.filterList = video;
     }
-
 
     @Override
     public int getCount() {
@@ -75,7 +76,8 @@ public class GridAdapter extends BaseAdapter implements Filterable {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, SelectedVideoActivity.class);
-                intent.putExtra("titleSession", video.getName());
+                intent.putExtra(TITLE_VIDEO, video.getName());
+                intent.putExtra(FILE_NAME, video.getVideoLink());
                 mContext.startActivity(intent);
             }
         });

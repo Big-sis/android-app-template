@@ -1,5 +1,6 @@
 package fr.wildcodeschool.vyfe;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -35,6 +36,8 @@ public class StartActivity extends AppCompatActivity {
 
     FirebaseDatabase mdatabase = FirebaseDatabase.getInstance();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
+    public static final String TITLE_VIDEO = "titleVideo";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,21 +103,12 @@ public class StartActivity extends AppCompatActivity {
 
         //TODO: en fct du radio button selectionner envoyer telles ou telles arraylist
 
-        fabAddMoment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(StartActivity.this, AddGridActivity.class);
-                startActivity(intent);
-            }
-        });
-
-
         buttonGo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final Intent intent = new Intent(StartActivity.this, RecordActivity.class);
                 final String titleSession = etVideoTitle.getText().toString();
-                intent.putExtra("titleSession", titleSession);
+                intent.putExtra(TITLE_VIDEO, titleSession);
 
                 //Firebase TAGSET
                 DatabaseReference idTagSetRef = mdatabase.getReference(authUserId).child("tag_sets").child("name");
@@ -183,9 +177,8 @@ public class StartActivity extends AppCompatActivity {
 
         fabAddMoment.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(StartActivity.this, AddGridActivity.class);
-                startActivity(intent);
+            public void onClick(View v) {
+                AddGridDialog.openCreateTags(StartActivity.this);
             }
         });
     }

@@ -7,130 +7,163 @@
     android:background="@drawable/bg"
     tools:context=".PlayVideoActivity">
 
-    <ScrollView
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-        <android.support.constraint.ConstraintLayout
+        <include
+            android:id="@+id/appBar"
+            layout="@layout/toolbar" />
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <include
-                android:id="@+id/appBar"
-                layout="@layout/toolbar" />
+            android:layout_height="match_parent"
+            android:layout_marginTop="65dp"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_marginTop="65dp"
-                android:orientation="horizontal"
-                app:layout_constraintTop_toTopOf="parent">
+                android:orientation="vertical">
 
-                <LinearLayout
+                <android.support.constraint.ConstraintLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.8"
-                    android:orientation="vertical">
+                    android:layout_height="match_parent">
+
+                    <android.support.design.widget.FloatingActionButton
+                        android:id="@+id/bt_play_selected"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="40dp"
+                        android:layout_marginRight="40dp"
+                        android:layout_marginTop="92dp"
+                        android:clickable="true"
+                        android:src="@android:drawable/ic_media_play"
+                        app:backgroundTint="@android:color/holo_red_light"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <android.support.design.widget.FloatingActionButton
+                        android:id="@+id/bt_finish_selected"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="40dp"
+                        android:layout_marginRight="40dp"
+                        android:layout_marginTop="16dp"
+                        android:clickable="true"
+                        android:longClickable="false"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/bt_play_selected"
+                        app:srcCompat="@android:drawable/checkbox_on_background" />
+
+                    <VideoView
+                        android:id="@+id/video_view_selected"
+                        android:layout_width="700dp"
+                        android:layout_height="500dp"
+                        app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
                     <android.support.constraint.ConstraintLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:id="@+id/constraintLayout"
+                        android:layout_width="700dp"
+                        android:layout_height="164dp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/video_view_selected"
+                        app:layout_constraintVertical_bias="0.0">
 
-                        <android.support.design.widget.FloatingActionButton
-                            android:id="@+id/bt_play_selected"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="40dp"
-                            android:layout_marginRight="40dp"
-                            android:layout_marginTop="92dp"
-                            android:clickable="true"
-                            app:backgroundTint="@android:color/holo_red_dark"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <android.support.design.widget.FloatingActionButton
-                            android:id="@+id/bt_finish_selected"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="40dp"
-                            android:layout_marginRight="40dp"
-                            android:layout_marginTop="16dp"
-                            android:clickable="true"
-                            android:longClickable="false"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/bt_play_selected"
-                            app:srcCompat="@android:drawable/checkbox_on_background" />
-
-                        <VideoView
-                            android:id="@+id/video_view_selected"
+                        <ScrollView
+                            android:id="@+id/scroll_view_time_lines"
                             android:layout_width="match_parent"
-                            android:layout_height="297dp"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <android.support.constraint.ConstraintLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="164dp"
+                            android:layout_height="wrap_content"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/video_view_selected">
+                            app:layout_constraintTop_toTopOf="parent">
 
-                            <android.support.v7.widget.RecyclerView
-                                android:id="@+id/re_time_lines_selected"
-                                android:layout_width="0dp"
+                            <HorizontalScrollView
+                                android:id="@+id/horizontal_scroll_view"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 app:layout_constraintBottom_toBottomOf="parent"
                                 app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintHorizontal_weight="0.8"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toTopOf="parent">
 
-                            </android.support.v7.widget.RecyclerView>
 
-                            <SeekBar
-                                android:id="@+id/seek_bar_selected"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:clickable="false"
-                                android:focusable="false"
-                                android:progressDrawable="@android:color/transparent"
-                                android:thumb="@drawable/thumb"
-                                app:layout_constraintBottom_toBottomOf="parent"
-                                app:layout_constraintEnd_toEndOf="parent"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toTopOf="parent" />
-
-                            <HorizontalScrollView
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent">
-
-                                <LinearLayout
-                                    android:id="@+id/ll_main_playvideo"
+                                <RelativeLayout
+                                    android:id="@+id/time_lines_container"
                                     android:layout_width="wrap_content"
-                                    android:layout_height="match_parent"
-                                    android:orientation="vertical" />
+                                    android:layout_height="match_parent">
+
+                                    <LinearLayout
+                                        android:id="@+id/ll_main_playvideo"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="vertical"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent" />
+
+                                    <SeekBar
+                                        android:id="@+id/seek_bar_selected"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:clickable="false"
+                                        android:focusable="false"
+                                        android:progressDrawable="@android:color/transparent"
+                                        android:thumb="@drawable/thumb"
+                                        app:layout_constraintBottom_toBottomOf="parent"
+                                        app:layout_constraintEnd_toEndOf="parent"
+                                        app:layout_constraintHorizontal_bias="0.085"
+                                        app:layout_constraintStart_toStartOf="parent"
+                                        app:layout_constraintTop_toTopOf="parent"
+                                        app:layout_constraintVertical_bias="0.0" />
+
+                                </RelativeLayout>
+
                             </HorizontalScrollView>
 
-                        </android.support.constraint.ConstraintLayout>
+                        </ScrollView>
+
 
                     </android.support.constraint.ConstraintLayout>
 
-                </LinearLayout>
-
-                <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:tools="http://schemas.android.com/tools"
-                    android:id="@+id/re_tags_selected"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.2"
-                    android:padding="8dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                </android.support.constraint.ConstraintLayout>
 
             </LinearLayout>
-        </android.support.constraint.ConstraintLayout>
-    </ScrollView>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/re_tags_selected"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:padding="8dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </LinearLayout>
+            </ScrollView>
+
+        </LinearLayout>
+    </android.support.constraint.ConstraintLayout>
 
 </android.support.constraint.ConstraintLayout>
