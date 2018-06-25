@@ -14,11 +14,10 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -56,9 +55,8 @@ public class StartActivity extends AppCompatActivity {
         final EditText etTagSet = findViewById(R.id.et_grid_title);
         final EditText etVideoTitle = findViewById(R.id.et_video_title);
 
-        FirebaseAuth auth = FirebaseAuth.getInstance();
 
-        final String authUserId = auth.getCurrentUser().getUid();
+        final String authUserId = mAuth.getCurrentUser().getUid();
 
         if (MainActivity.mMulti) {
             buttonGo.setText(R.string.next);
