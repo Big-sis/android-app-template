@@ -80,7 +80,6 @@ public class RecordActivity extends AppCompatActivity {
         final RecyclerView recyclerTags = findViewById(R.id.re_tags);
         final TextView tvVideoSave = findViewById(R.id.tv_video_save);
         final TextView tvWait = findViewById(R.id.wait);
-        timerTextView = (TextView) findViewById(R.id.timerTextView);
         final String titleSession = getIntent().getStringExtra("titleSession");
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -94,7 +93,6 @@ public class RecordActivity extends AppCompatActivity {
             public void onClick(View v) {
                 chronometer.start();
 
-                /*
                 mPreview = new CameraPreview(RecordActivity.this, mCamera,
                         new CameraPreview.SurfaceCallback() {
                             @Override
@@ -110,12 +108,12 @@ public class RecordActivity extends AppCompatActivity {
                 FrameLayout preview = findViewById(R.id.video_view);
                 preview.addView(mPreview);
 
-                */
+
                 mRecord.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         chronometer.stop();
-                        // stopRecording();
+                        stopRecording();
 
                     }
                 });
