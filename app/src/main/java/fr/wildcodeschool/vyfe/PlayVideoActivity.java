@@ -12,6 +12,7 @@ import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -204,6 +205,13 @@ public class PlayVideoActivity extends AppCompatActivity {
                 LinearLayout timeline = mTimelines.get(listTag.get(position).getName());
                 timeline.addView(iv, layoutParams);
                 mMarge[0] += 30;
+
+                final HorizontalScrollView scrollView = findViewById(R.id.horizontalScrollView);
+                scrollView.post(new Runnable() {
+                    public void run() {
+                        scrollView.fullScroll(View.FOCUS_RIGHT);
+                    }
+                });
             }
 
             @Override
