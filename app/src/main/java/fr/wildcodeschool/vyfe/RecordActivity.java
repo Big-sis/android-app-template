@@ -60,7 +60,6 @@ public class RecordActivity extends AppCompatActivity {
     HashMap<String, LinearLayout> mTimelines = new HashMap<>();
     TextView timerTextView;
 
-
     public static final String TITLE_VIDEO = "titleVideo";
     public static final String FILE_NAME = "filename";
 
@@ -83,7 +82,8 @@ public class RecordActivity extends AppCompatActivity {
         final Button btnBackMain = findViewById(R.id.btn_back_main);
         final Button btnPlay = findViewById(R.id.btn_play);
         final ConstraintLayout sessionRecord = findViewById(R.id.session_record);
-        FloatingActionButton btFinish = findViewById(R.id.bt_finish);
+        final FloatingActionButton btFinish = findViewById(R.id.bt_finish);
+        final ImageView ivCheck = findViewById(R.id.iv_check);
         final RecyclerView recyclerTags = findViewById(R.id.re_tags);
         final String titleSession = getIntent().getStringExtra(TITLE_VIDEO);
         final TextView tvVideoSave = findViewById(R.id.tv_video_save);
@@ -95,11 +95,14 @@ public class RecordActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.record_session);
 
+        recyclerTags.setAlpha(0.5f);
+
         mRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 chronometer.start();
-
+                mRecord.setImageResource(R.drawable.icons8_arr_ter_96);
+                recyclerTags.setAlpha(1);
                 mPreview = new CameraPreview(RecordActivity.this, mCamera,
                         new CameraPreview.SurfaceCallback() {
                             @Override
@@ -121,7 +124,10 @@ public class RecordActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         chronometer.stop();
                         stopRecording();
-
+                        recyclerTags.setAlpha(0.5f);
+                        mRecord.setClickable(false);
+                        btFinish.setVisibility(View.VISIBLE);
+                        mRecord.setAlpha(0.5f);
                     }
                 });
             }
@@ -289,9 +295,8 @@ public class RecordActivity extends AppCompatActivity {
                             200, LinearLayout.LayoutParams.WRAP_CONTENT);
                     layoutParamsTv.setMargins(0, 25, 0, 25);
                     tvName.setLayoutParams(layoutParamsTv);
-
-                }else {
-                    //TODO: trouver algo pour le 2eme espacement
+                } else {
+                 //TODO: trouver algo pour le 2eme espacement
                 }
 
 
@@ -327,6 +332,7 @@ public class RecordActivity extends AppCompatActivity {
 
             }
         }));
+
 
 
     }
