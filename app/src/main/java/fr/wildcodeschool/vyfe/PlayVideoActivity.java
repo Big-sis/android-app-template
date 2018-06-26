@@ -187,7 +187,6 @@ public class PlayVideoActivity extends AppCompatActivity {
             timeline.setBackgroundResource(R.drawable.style_input);
             llMain.addView(timeline);
             mTimelines.put(name, timeline);
-
         }
 
         rv.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(),
