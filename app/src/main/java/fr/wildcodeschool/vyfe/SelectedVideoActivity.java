@@ -1,11 +1,8 @@
 package fr.wildcodeschool.vyfe;
 
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
-import android.support.annotation.RequiresPermission;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -31,8 +28,8 @@ public class SelectedVideoActivity extends AppCompatActivity {
     final String mAuthUserId = mAuth.getCurrentUser().getUid();
     private String mIdSession = "";
 
-    public final static String TITLE_SESSION = "titleSession";
-    public final static String FILE_NAME = "fileName";
+    public static final String TITLE_VIDEO = "titleVideo";
+    public static final String FILE_NAME = "filename";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,9 +41,20 @@ public class SelectedVideoActivity extends AppCompatActivity {
         Button edit = findViewById(R.id.btn_edit);
         TextView tvTitle = findViewById(R.id.tv_title);
 
-        final String titleSession = getIntent().getStringExtra(TITLE_SESSION);
+        final String titleSession = getIntent().getStringExtra(TITLE_VIDEO);
         tvTitle.setText(titleSession);
         final String fileName = getIntent().getStringExtra(FILE_NAME);
+
+        play.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                VideoView videoView = findViewById(R.id.vv_preview);
+                videoView.setVideoPath(fileName);
+                videoView.start();
+            }
+        });
+
+
 
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,7 +68,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Date date = new Date();
+                /*Date date = new Date();
                 Date newDate = new Date(date.getTime());
                 SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yy HH:mm:SS Z");
                 String stringdate = dt.format(newDate);
@@ -71,7 +79,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
                 sessionRef.child(mIdSession).child("name").setValue(titleSession);
                 sessionRef.child(mIdSession).child("author").setValue(mAuthUserId);
                 sessionRef.child(mIdSession).child("videoLink").setValue(fileName);
-                sessionRef.child(mIdSession).child("date").setValue(stringdate);
+                sessionRef.child(mIdSession).child("date").setValue(stringdate);*/
 
 
             }
@@ -81,7 +89,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(SelectedVideoActivity.this, PlaySelectedVideo.class);
-                intent.putExtra(TITLE_SESSION, titleSession);
+                intent.putExtra(TITLE_VIDEO, titleSession);
                 intent.putExtra(FILE_NAME, fileName);
                 startActivity(intent);
             }
@@ -89,22 +97,11 @@ public class SelectedVideoActivity extends AppCompatActivity {
 
         RecyclerView recyclerTags = findViewById(R.id.re_tags);
 
-        /*
-        mTagModels.add(new TagModel(Color.parseColor("#ca62ff"), "test1"));
-        mTagModels.add(new TagModel(Color.parseColor("#f91734"), "test2"));
-        mTagModels.add(new TagModel(Color.parseColor("#1e8900"), "test3"));
-
-        RecyclerView.LayoutManager layoutManagerTags = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        recyclerTags.setLayoutManager(layoutManagerTags);
-
-        final TagRecyclerAdapter adapter = new TagRecyclerAdapter(mTagModels, "count");
-        recyclerTags.setAdapter(adapter);
-*/
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(R.string.video_name);
+        getSupportActionBar().setTitle(titleSession);
 
     }
 

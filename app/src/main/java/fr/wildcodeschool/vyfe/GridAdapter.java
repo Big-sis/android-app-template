@@ -32,7 +32,6 @@ public class GridAdapter extends BaseAdapter implements Filterable {
         this.filterList = video;
     }
 
-
     @Override
     public int getCount() {
         return video.size();

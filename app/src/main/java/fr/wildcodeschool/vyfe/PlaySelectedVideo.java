@@ -23,7 +23,7 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class PlaySelectedVideo extends AppCompatActivity {
+public class PlayVideoActivity extends AppCompatActivity {
 
     private ArrayList<TagModel> mTagModels;
     private VideoView videoView;
@@ -42,7 +42,7 @@ public class PlaySelectedVideo extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_play_selected_video);
+        setContentView(R.layout.activity_play_video);
 
         final String fileName = getIntent().getStringExtra(FILE_NAME);
 
@@ -60,18 +60,18 @@ public class PlaySelectedVideo extends AppCompatActivity {
         mTagModels.add(new TagModel(-3318101, "nameTest4", null, null));
 
         RecyclerView rvTags = findViewById(R.id.re_tags_selected);
-        RecyclerView rvTimeLines = findViewById(R.id.re_time_lines_selected);
+        //RecyclerView rvTimeLines = findViewById(R.id.re_time_lines_selected);
 
         RecyclerView.LayoutManager layoutManagerTags = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        RecyclerView.LayoutManager layoutManagerTime = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        //RecyclerView.LayoutManager layoutManagerTime = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
 
         rvTags.setLayoutManager(layoutManagerTags);
-        rvTimeLines.setLayoutManager(layoutManagerTime);
+        //rvTimeLines.setLayoutManager(layoutManagerTime);
 
         final TagRecyclerAdapter adapterTags = new TagRecyclerAdapter(mTagModels, "record");
         final TagRecyclerAdapter adapterTime = new TagRecyclerAdapter(mTagModels, "timelines");
         rvTags.setAdapter(adapterTags);
-        rvTimeLines.setAdapter(adapterTime);
+        //rvTimeLines.setAdapter(adapterTime);
 
         mSeekBar = findViewById(R.id.seek_bar_selected);
         //mVideoSelected = findViewById(R.id.video_view_selected);

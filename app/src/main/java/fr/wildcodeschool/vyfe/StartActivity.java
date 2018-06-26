@@ -1,5 +1,6 @@
 package fr.wildcodeschool.vyfe;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -17,7 +18,7 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
+
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -36,7 +37,7 @@ public class StartActivity extends AppCompatActivity {
     FirebaseDatabase mdatabase = FirebaseDatabase.getInstance();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-    public final static String TITLE_SESSION = "titleSession";
+    public static final String TITLE_VIDEO = "titleVideo";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,20 +48,18 @@ public class StartActivity extends AppCompatActivity {
         Button buttonGo = findViewById(R.id.button_go);
         final Button buttonGoMulti = findViewById(R.id.button_go_multi);
         final ConstraintLayout share = findViewById(R.id.layout_share);
-        FloatingActionButton fabAddMoment = findViewById(R.id.fab_add_moment);
+        final FloatingActionButton fabAddMoment = findViewById(R.id.fab_add_moment);
         RecyclerView recyclerTagList = findViewById(R.id.recycler_view);
         final RadioButton radioButtonImport = findViewById(R.id.radio_button_insert);
         final RadioButton radioButtonNew = findViewById(R.id.radio_Button_new);
         final Spinner spinner = (Spinner) findViewById(R.id.spinner_session_infos);
         TextView tvAddTag = findViewById(R.id.tv_add_tag);
         Toolbar toolbar = findViewById(R.id.toolbar);
-
         final EditText etTagSet = findViewById(R.id.et_grid_title);
-
         final EditText etVideoTitle = findViewById(R.id.et_video_title);
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-        final String authUserId = auth.getCurrentUser().getUid();
 
+
+        final String authUserId = mAuth.getCurrentUser().getUid();
 
         if (MainActivity.mMulti) {
             buttonGo.setText(R.string.next);
@@ -85,7 +84,8 @@ public class StartActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (radioButtonImport.isChecked()) {
                     radioButtonNew.setChecked(false);
-                    //TODO: affichier l'accès aux elements: imports grilles
+                    spinner.setClickable(true);
+                    importGrid(etTagSet, fabAddMoment, false);
                 }
             }
         });
@@ -95,29 +95,20 @@ public class StartActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (radioButtonNew.isChecked()) {
                     radioButtonImport.setChecked(false);
-                    //TODO: affichier l'accès aux elements: création grilles
+                    spinner.setClickable(false);
+                    importGrid(etTagSet, fabAddMoment, true);
                 }
-
             }
         });
 
         //TODO: en fct du radio button selectionner envoyer telles ou telles arraylist
-
-        fabAddMoment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(StartActivity.this, AddGridActivity.class);
-                startActivity(intent);
-            }
-        });
-
 
         buttonGo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final Intent intent = new Intent(StartActivity.this, RecordActivity.class);
                 final String titleSession = etVideoTitle.getText().toString();
-                intent.putExtra(TITLE_SESSION, titleSession);
+                intent.putExtra(TITLE_VIDEO, titleSession);
 
                 //Firebase TAGSET
                 DatabaseReference idTagSetRef = mdatabase.getReference(authUserId).child("tag_sets").child("name");
@@ -139,12 +130,15 @@ public class StartActivity extends AppCompatActivity {
 
                     int colorTag = mTagModelList.get(i).getColor();
                     String nameTag = mTagModelList.get(i).getName();
-                    String rigthOffset = "3000";
+                    //V2 : choisir le temps
+                    String rigthOffset = "30";
+                    String leftOffset = "60";
 
                     DatabaseReference tagsRef = mdatabase.getReference(authUserId).child("tags");
                     String idTag = tagsRef.push().getKey();
                     tagsRef.child(idTag).child("color").setValue(colorTag);
                     tagsRef.child(idTag).child("name").setValue(nameTag);
+                    tagsRef.child(idTag).child("leftOffset").setValue(leftOffset);
                     tagsRef.child(idTag).child("rigthOffset").setValue(rigthOffset);
                     tagsRef.child(idTag).child("fkTagSet").setValue(idTagSet);
                 }
@@ -166,11 +160,8 @@ public class StartActivity extends AppCompatActivity {
                     });
                     MainActivity.mMulti = false;
                 } else {
-
                     startActivity(intent);
-
                 }
-
             }
         });
 
@@ -186,9 +177,8 @@ public class StartActivity extends AppCompatActivity {
 
         fabAddMoment.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(StartActivity.this, AddGridActivity.class);
-                startActivity(intent);
+            public void onClick(View v) {
+                AddGridDialog.openCreateTags(StartActivity.this);
             }
         });
     }
@@ -200,7 +190,7 @@ public class StartActivity extends AppCompatActivity {
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.logout:
                 Intent intent = new Intent(StartActivity.this, ConnexionActivity.class);
                 startActivity(intent);
@@ -209,5 +199,14 @@ public class StartActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void importGrid(EditText titleGrid, FloatingActionButton fabAdd, Boolean bolean) {
+        titleGrid.setClickable(bolean);
+        titleGrid.setLongClickable(bolean);
+        titleGrid.setEnabled(bolean);
+        fabAdd.setClickable(bolean);
+        fabAdd.setLongClickable(bolean);
+        fabAdd.setFocusable(bolean);
     }
 }
