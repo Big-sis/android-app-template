@@ -76,14 +76,10 @@ public class PlayVideoActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mVideoLink = dataSnapshot.getValue().toString();
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
         });
-
-
         SingletonTags singletonTags = SingletonTags.getInstance();
         mTagModels = singletonTags.getmTagsList();
         mTagModels.add(new TagModel(-3318101, "nameTest1", null, null));
@@ -221,5 +217,3 @@ public class PlayVideoActivity extends AppCompatActivity {
         }));
     }
 }
-
-

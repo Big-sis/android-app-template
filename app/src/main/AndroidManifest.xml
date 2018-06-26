@@ -54,6 +54,7 @@
             android:name=".MyVideoActivity"
             android:screenOrientation="landscape" />
 
+
         <activity
             android:name=".StartActivity"
             android:screenOrientation="landscape"
@@ -65,7 +66,7 @@
         <activity android:name=".ForgotPassword"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar"
-            android:windowSoftInputMode="stateHidden"/>
+            android:windowSoftInputMode="stateHidden" />
 
         <meta-data
             android:name="preloaded_fonts"
