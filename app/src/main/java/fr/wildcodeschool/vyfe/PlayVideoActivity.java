@@ -76,14 +76,11 @@ public class PlayVideoActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mVideoLink = dataSnapshot.getValue().toString();
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
-        });*/
-
-
+        });
+        SingletonTags singletonTags = SingletonTags.getInstance();
         mTagModels = singletonTags.getmTagsList();
         mTagModels.add(new TagModel(-3318101, "nameTest1", null, null));
         mTagModels.add(new TagModel(-3318101, "nameTest2", null, null));
@@ -103,7 +100,7 @@ public class PlayVideoActivity extends AppCompatActivity {
         mTagModels.add(new TagModel(-3318101, "nameTest16", null, null));
         mTagModels.add(new TagModel(-3318101, "nameTest17", null, null));
         mTagModels.add(new TagModel(-3318101, "nameTest18", null, null));
-
+        */
 
         RecyclerView rvTags = findViewById(R.id.re_tags_selected);
 
@@ -208,11 +205,17 @@ public class PlayVideoActivity extends AppCompatActivity {
                 timeline.addView(iv, layoutParams);
                 mMarge[0] += 30;
 
-
+                final HorizontalScrollView scrollView = findViewById(R.id.horizontalScrollView);
+                scrollView.post(new Runnable() {
+                    public void run() {
+                        scrollView.fullScroll(View.FOCUS_RIGHT);
+                    }
+                });
             }
 
             @Override
             public void onLongClick(View view, int position) {
+
             }
         }));
     }

@@ -72,7 +72,6 @@ public class SelectedVideoActivity extends AppCompatActivity {
                 Date newDate = new Date(date.getTime());
                 SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yy HH:mm:SS Z");
                 String stringdate = dt.format(newDate);
-
                 //Firebase SESSION
                 DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions");
                 mIdSession = sessionRef.push().getKey();

@@ -10,10 +10,8 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.VideoView;
 
 import java.util.ArrayList;
-import java.util.regex.*;
 
 public class GridAdapter extends BaseAdapter implements Filterable {
 
@@ -23,8 +21,8 @@ public class GridAdapter extends BaseAdapter implements Filterable {
     private ArrayList<SessionsModel> filterList;
     private CustomFilterVideo filter;
 
-    public static final String TITLE_VIDEO = "titleVideo";
-    public static final String FILE_NAME = "filename";
+    public final static String TITLE_VIDEO = "titleSession";
+    public final static String FILE_NAME = "filename";
 
     public GridAdapter(Context context, ArrayList<SessionsModel> video) {
         this.mContext = context;
