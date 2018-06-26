@@ -52,7 +52,7 @@ public class RecordActivity extends AppCompatActivity {
     final int[] mMarge = {0};
 
     public static final String TITLE_VIDEO = "titleVideo";
-    public final static String FILE_NAME = "fileName";
+    public final static String FILE_NAME = "filename";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
