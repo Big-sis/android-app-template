@@ -53,8 +53,9 @@ public class RecordActivity extends AppCompatActivity {
     HashMap<String, RelativeLayout> mTimelines = new HashMap<>();
     HashMap<String, ArrayList<Pair<Integer, Integer>>> newTagList = new HashMap<>();
 
+
     public static final String TITLE_VIDEO = "titleVideo";
-    public static final String FILE_NAME = "filename";
+    public final static String FILE_NAME = "filename";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +65,7 @@ public class RecordActivity extends AppCompatActivity {
 
         Date d = new Date();
         mFileName = getExternalCacheDir().getAbsolutePath();
-        mFileName += "/" + d.getTime() + ".mp4";
+        mFileName += "/" + d.getTime() +  ".mp4";
 
         int currentCameraId = Camera.CameraInfo.CAMERA_FACING_BACK;
         mCamera = getCameraInstance(currentCameraId);

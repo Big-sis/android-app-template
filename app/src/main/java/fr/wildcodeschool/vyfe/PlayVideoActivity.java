@@ -12,6 +12,7 @@ import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -75,14 +76,10 @@ public class PlayVideoActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mVideoLink = dataSnapshot.getValue().toString();
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
         });
-
-
         SingletonTags singletonTags = SingletonTags.getInstance();
         mTagModels = singletonTags.getmTagsList();
         mTagModels.add(new TagModel(-3318101, "nameTest1", null, null));
@@ -204,6 +201,13 @@ public class PlayVideoActivity extends AppCompatActivity {
                 LinearLayout timeline = mTimelines.get(listTag.get(position).getName());
                 timeline.addView(iv, layoutParams);
                 mMarge[0] += 30;
+
+                final HorizontalScrollView scrollView = findViewById(R.id.horizontalScrollView);
+                scrollView.post(new Runnable() {
+                    public void run() {
+                        scrollView.fullScroll(View.FOCUS_RIGHT);
+                    }
+                });
             }
 
             @Override
@@ -213,5 +217,3 @@ public class PlayVideoActivity extends AppCompatActivity {
         }));
     }
 }
-
-
