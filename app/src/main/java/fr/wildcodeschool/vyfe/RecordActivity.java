@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -49,8 +50,20 @@ public class RecordActivity extends AppCompatActivity {
     private CameraPreview mPreview;
     HashMap<String, LinearLayout> mTimelines = new HashMap<>();
 
+    ArrayList<Integer> mPositionTagListEnd  = new ArrayList<>();
+    ArrayList<Integer>  mPositionTagListStart = new ArrayList<>();
+    Pair<ArrayList<Integer>, ArrayList<Integer>> positionTag = new Pair<>(mPositionTagListStart,mPositionTagListEnd);
+    HashMap<String, Pair> mPositionAllTagHashMap = new HashMap<>();
+    ArrayList<Integer> mPositionTagList;
+
+
+
+    HashMap<String, ArrayList<Pair<Integer,Integer>>> newTagList = new HashMap<>();
+
     public static final String TITLE_VIDEO = "titleVideo";
     public static final String FILE_NAME = "filename";
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +105,7 @@ public class RecordActivity extends AppCompatActivity {
             public void onClick(View v) {
                 chronometer.setBase(SystemClock.elapsedRealtime());
                 chronometer.start();
+                /*
                 mRecord.setImageResource(R.drawable.icons8_arr_ter_96);
                 recyclerTags.setAlpha(1);
 
@@ -109,17 +123,19 @@ public class RecordActivity extends AppCompatActivity {
                         });
                 FrameLayout preview = findViewById(R.id.video_view);
                 preview.addView(mPreview);
-
+*/
 
                 mRecord.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         chronometer.stop();
-                        stopRecording();
-                        recyclerTags.setAlpha(0.5f);
+                       // stopRecording();
+                       /* recyclerTags.setAlpha(0.5f);
                         mRecord.setClickable(false);
                         btFinish.setVisibility(View.VISIBLE);
                         mRecord.setAlpha(0.5f);
+*/
+
 
                     }
                 });
@@ -152,6 +168,15 @@ public class RecordActivity extends AppCompatActivity {
                 sessionRef.child(mIdSession).child("author").setValue(mAuthUserId);
                 sessionRef.child(mIdSession).child("videoLink").setValue(mFileName);
                 sessionRef.child(mIdSession).child("date").setValue(stringdate);
+
+
+                DatabaseReference tagsRef = mDatabase.getReference(mAuthUserId).child("tagsSession");
+                String idTag = tagsRef.push().getKey();
+                tagsRef.child(idTag).child("fkSession").setValue(newTagList);
+                tagsRef.child(idTag).child("fkSet").setValue(newTagList);
+
+
+
             }
         });
 
@@ -256,15 +281,36 @@ public class RecordActivity extends AppCompatActivity {
             timeline.setBackgroundResource(R.drawable.style_input);
             llMain.addView(timeline);
             mTimelines.put(name, timeline);
+
+            // envoit temps
+           // ArrayList<Integer> mPositionTagListEnd = new ArrayList<>();
+           // ArrayList<Integer>  mPositionTagListStart = new ArrayList<>();
+
+            Pair<ArrayList<Integer>, ArrayList<Integer>> positionTag = new Pair<>(mPositionTagListStart,mPositionTagListEnd);
+            mPositionAllTagHashMap.put(name,positionTag);
+
+
+
+
         }
+        final int[] endTag = {0};
+
+
+
         //pour envoit sur firebase
-        final int[] totalTime = {0};
+        final int[] totalTimeStart = {0};
 
         //Ajout des tags à la timeline associée
         rv.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(),
                 rv, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
+                String nameTag = listTag.get(position).getName();
+                if(!newTagList.containsKey(nameTag)){
+                    ArrayList<Pair<Integer,Integer>> rTagList = new ArrayList<>();
+                    newTagList.put(nameTag, rTagList);
+                }
+
                 //Accrocher vous pour la suite
 
                 //Ici on pourras changer les caracteristique des tags pour la V2. Pour l'instant carac = constantes
@@ -346,9 +392,28 @@ public class RecordActivity extends AppCompatActivity {
 
                 previousTime[position] = timeActuel;
                 //Pour envoit sur firebase
-                totalTime[0] += previousTime[position];
+                totalTimeStart[0] += previousTime[position];
+                //
+                
 
+                if(shortTagBefore[position]){
+                    endTag[0] = totalTimeStart[0]+rigthOffsetTag;
+
+                }else{
+                   endTag[0] = totalTimeStart[0]+leftOffsetTag+rigthOffsetTag;
+                }
+
+                Pair <Integer,Integer> rTag = new Pair<>(totalTimeStart[0],endTag[0]);
+                newTagList.get(nameTag).add(rTag);
+
+
+                /*
                 //TODO: envoyer sur firebase
+                mPositionTagList = mPositionAllTagHashMap.get(listTag.get(position).getName());
+                //TODO a chaque fois penser a rajouter le temps precedents
+                mPositionTagList.add(totalTimeStart[0]);
+                //TODO: envoyer Hasmap sur firebase
+// Utiliser un Pair <Ingteger, Integer> nom = new Pair(entre valeur)*/
 
                 //Scrool automatiquement suit l'ajout des tags
                 final HorizontalScrollView scrollView = findViewById(R.id.horizontalScrollView);
