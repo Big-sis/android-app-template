@@ -86,6 +86,7 @@ public class RecordActivity extends AppCompatActivity {
         final FloatingActionButton btFinish = findViewById(R.id.bt_finish);
         final RecyclerView recyclerTags = findViewById(R.id.re_tags);
         final String titleSession = getIntent().getStringExtra(TITLE_VIDEO);
+        //String
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -172,7 +173,7 @@ public class RecordActivity extends AppCompatActivity {
 
                 DatabaseReference tagsRef = mDatabase.getReference(mAuthUserId).child("tagsSession");
                 String idTag = tagsRef.push().getKey();
-                tagsRef.child(idTag).child("fkSession").setValue(newTagList);
+                tagsRef.child(idTag).child("fkSession").setValue(mIdSession);
                 tagsRef.child(idTag).child("fkSet").setValue(newTagList);
 
 
