@@ -72,7 +72,6 @@ public class SelectedVideoActivity extends AppCompatActivity {
                 Date newDate = new Date(date.getTime());
                 SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yy HH:mm:SS Z");
                 String stringdate = dt.format(newDate);
-
                 //Firebase SESSION
                 DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions");
                 mIdSession = sessionRef.push().getKey();
@@ -89,7 +88,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(SelectedVideoActivity.this, PlayVideoActivity.class);
-                intent.putExtra(TITLE_VIDEO, titleSession);
+                intent.putExtra("idSession",mIdSession);
                 intent.putExtra(FILE_NAME, fileName);
                 startActivity(intent);
             }
