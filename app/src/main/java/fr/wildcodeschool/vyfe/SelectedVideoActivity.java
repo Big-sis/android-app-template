@@ -88,7 +88,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
         play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(SelectedVideoActivity.this, PlaySelectedVideo.class);
+                Intent intent = new Intent(SelectedVideoActivity.this, PlayVideoActivity.class);
                 intent.putExtra(TITLE_VIDEO, titleSession);
                 intent.putExtra(FILE_NAME, fileName);
                 startActivity(intent);
