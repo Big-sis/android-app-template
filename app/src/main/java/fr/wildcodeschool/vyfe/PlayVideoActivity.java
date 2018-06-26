@@ -68,8 +68,8 @@ public class PlayVideoActivity extends AppCompatActivity {
         mTagModels = singletonTags.getmTagsList();
 
         // NE PAS SUPPRIMER POUR LE MOMENT
-        /* Test de récupération du lien avec données en dur :
-        mIdSession = "-LFRtUEoDalCtBKJq-l0";
+        // Test de récupération du lien avec données en dur :
+        /*mIdSession = "-LFRtUEoDalCtBKJq-l0";
         final DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions").child(mIdSession).child("videoLink");
         sessionRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -81,10 +81,9 @@ public class PlayVideoActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
 
             }
-        });
+        });*/
 
 
-        SingletonTags singletonTags = SingletonTags.getInstance();
         mTagModels = singletonTags.getmTagsList();
         mTagModels.add(new TagModel(-3318101, "nameTest1", null, null));
         mTagModels.add(new TagModel(-3318101, "nameTest2", null, null));
@@ -104,7 +103,7 @@ public class PlayVideoActivity extends AppCompatActivity {
         mTagModels.add(new TagModel(-3318101, "nameTest16", null, null));
         mTagModels.add(new TagModel(-3318101, "nameTest17", null, null));
         mTagModels.add(new TagModel(-3318101, "nameTest18", null, null));
-        */
+
 
         RecyclerView rvTags = findViewById(R.id.re_tags_selected);
 
@@ -126,7 +125,10 @@ public class PlayVideoActivity extends AppCompatActivity {
             }
         });
 
+        // Lien video en dur pour tester
+        String URL = "http://clips.vorwaerts-gmbh.de/VfE_html5.mp4";
         mVideoSelected = findViewById(R.id.video_view_selected);
+        mVideoSelected.setVideoPath(URL);
 
 
         final String fileName = getIntent().getStringExtra(FILE_NAME);
@@ -137,7 +139,7 @@ public class PlayVideoActivity extends AppCompatActivity {
             Toast.makeText(this, "exist", Toast.LENGTH_SHORT).show();
         }
 */
-        mVideoSelected.setVideoPath(fileName);
+       // mVideoSelected.setVideoPath(fileName);
         final FloatingActionButton fbPlay = findViewById(R.id.bt_play_selected);
 
         final SeekbarAsync async = new SeekbarAsync(mSeekBar, mVideoSelected);
@@ -206,17 +208,11 @@ public class PlayVideoActivity extends AppCompatActivity {
                 timeline.addView(iv, layoutParams);
                 mMarge[0] += 30;
 
-                final HorizontalScrollView scrollView = findViewById(R.id.horizontalScrollView);
-                scrollView.post(new Runnable() {
-                    public void run() {
-                        scrollView.fullScroll(View.FOCUS_RIGHT);
-                    }
-                });
+
             }
 
             @Override
             public void onLongClick(View view, int position) {
-
             }
         }));
     }
