@@ -146,7 +146,7 @@ public class RecordActivity extends AppCompatActivity {
                 sessionRecord.setVisibility(View.VISIBLE);
                 Date date = new Date();
                 Date newDate = new Date(date.getTime());
-                SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yy HH:mm:SS Z");
+                SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yy HH:mm");
                 String stringdate = dt.format(newDate);
 
                 //TODO: obliger l'utilisateur a arreter l'enregistreement avant d'envoyer sur firebase

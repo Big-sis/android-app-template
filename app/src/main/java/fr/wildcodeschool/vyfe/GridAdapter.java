@@ -11,7 +11,10 @@ import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class GridAdapter extends BaseAdapter implements Filterable {
 
@@ -58,9 +61,6 @@ public class GridAdapter extends BaseAdapter implements Filterable {
         //Test avec seulement le nom
         final TextView tvName = convertView.findViewById(R.id.title_video);
         tvName.setText(video.getName());
-
-        TextView date = convertView.findViewById(R.id.video_date);
-        date.setText(video.getDate());
 
         ImageView videoStatus = convertView.findViewById(R.id.img_upload_video);
 
