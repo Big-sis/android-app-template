@@ -1,6 +1,5 @@
 package fr.wildcodeschool.vyfe;
 
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -12,19 +11,25 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class StartActivity extends AppCompatActivity {
 
@@ -36,6 +41,9 @@ public class StartActivity extends AppCompatActivity {
 
     FirebaseDatabase mdatabase = FirebaseDatabase.getInstance();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
+
+    String mIdGridImport;
+
 
     public static final String TITLE_VIDEO = "titleVideo";
 
@@ -49,7 +57,8 @@ public class StartActivity extends AppCompatActivity {
         final Button buttonGoMulti = findViewById(R.id.button_go_multi);
         final ConstraintLayout share = findViewById(R.id.layout_share);
         final FloatingActionButton fabAddMoment = findViewById(R.id.fab_add_moment);
-        RecyclerView recyclerTagList = findViewById(R.id.recycler_view);
+        final RecyclerView recyclerTagList = findViewById(R.id.recycler_view);
+        final RecyclerView recyclerViewImport = findViewById(R.id.recycler_view_import);
         final RadioButton radioButtonImport = findViewById(R.id.radio_button_insert);
         final RadioButton radioButtonNew = findViewById(R.id.radio_Button_new);
         final Spinner spinner = (Spinner) findViewById(R.id.spinner_session_infos);
@@ -58,12 +67,15 @@ public class StartActivity extends AppCompatActivity {
         final EditText etTagSet = findViewById(R.id.et_grid_title);
         final EditText etVideoTitle = findViewById(R.id.et_video_title);
 
+        final HashMap<String, String> hashMapTitleIdGrid = new HashMap<>();
+
 
         final String authUserId = mAuth.getCurrentUser().getUid();
 
         if (MainActivity.mMulti) {
             buttonGo.setText(R.string.next);
         }
+
 
         final ArrayList<String> nameTagSet = new ArrayList<>();
 
@@ -87,8 +99,92 @@ public class StartActivity extends AppCompatActivity {
                     spinner.setClickable(true);
                     importGrid(etTagSet, fabAddMoment, false);
                 }
+                //recup données pour mettre spinner
+                DatabaseReference myRef = mdatabase.getReference(authUserId).child("tag_sets");
+                myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if (dataSnapshot.getChildrenCount() == 0) {
+                            nameTagSet.add("Vous n'avez pas encore de grille");
+                        } else {
+                            nameTagSet.clear();
+                        }
+
+                        nameTagSet.add("Importer une grille");
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            String nameGrid = (String) snapshot.child("name").getValue().toString();
+                            String idGrid = (String) snapshot.getKey().toString();
+                            hashMapTitleIdGrid.put(nameGrid, idGrid);
+                            nameTagSet.add(nameGrid);
+                        }
+                        adapterSpinner.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
+
+                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                        String titlenameTagSetImport = nameTagSet.get(i);
+                        mIdGridImport = hashMapTitleIdGrid.get(titlenameTagSetImport);
+                        //  Toast.makeText(StartActivity.this, titlenameTagSetImport + "cle: " + mIdGridImport, Toast.LENGTH_SHORT).show();
+
+                        RecyclerView.LayoutManager layoutManagerImport = new LinearLayoutManager(StartActivity.this, LinearLayoutManager.VERTICAL, false);
+                        recyclerViewImport.setLayoutManager(layoutManagerImport);
+                        final TagRecyclerAdapter adapterImport = new TagRecyclerAdapter(mTagModelList, "start");
+                        recyclerViewImport.setAdapter(adapterImport);
+
+                        if (mIdGridImport != null && !mIdGridImport.equals("Importer une grille")) {
+                            //recup des tags
+                            DatabaseReference myRefTag = mdatabase.getReference(authUserId).child("tags");
+                            myRefTag.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    if (dataSnapshot.getChildrenCount() == 0) {
+                                        Toast.makeText(StartActivity.this, "Pas de tags", Toast.LENGTH_SHORT).show();
+                                    }
+                                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                        //String idTag = snapshot.getKey().toString();
+
+                                        if (snapshot.child("fkTagSet").getValue().toString() != null && snapshot.child("fkTagSet").getValue().toString().equals(mIdGridImport)) {
+                                           String name = (String) snapshot.child("name").getValue();
+                                           int color =   Integer.parseInt(snapshot.child("color").getValue().toString());
+                                           String leftOffset = (String) snapshot.child("leftOffset").getValue();
+                                           String rightOffset = (String) snapshot.child("rightOffset").getValue();
+                                            Toast.makeText(StartActivity.this, name, Toast.LENGTH_SHORT).show();
+                                           mTagModelList.add(new TagModel(color, name,null,null));
+                                            mSingletonTags.setmTagsList(mTagModelList);
+                                        }
+
+                                    }
+                                    adapterImport.notifyDataSetChanged();
+
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+
+                        }
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                    }
+                });
+
+
             }
         });
+
 
         radioButtonNew.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,6 +196,7 @@ public class StartActivity extends AppCompatActivity {
                 }
             }
         });
+
 
         //TODO: en fct du radio button selectionner envoyer telles ou telles arraylist
 
