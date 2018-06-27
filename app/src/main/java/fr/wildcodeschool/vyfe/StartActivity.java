@@ -74,8 +74,6 @@ public class StartActivity extends AppCompatActivity {
 
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.start_session);
 
 

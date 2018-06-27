@@ -1,5 +1,6 @@
 package fr.wildcodeschool.vyfe;
 
+import android.content.Intent;
 import android.support.annotation.DrawableRes;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -9,6 +10,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Display;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -60,8 +63,6 @@ public class PlayVideoActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(titleSession);
 
         SingletonTags singletonTags = SingletonTags.getInstance();
@@ -215,5 +216,23 @@ public class PlayVideoActivity extends AppCompatActivity {
 
             }
         }));
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.settings, menu);
+        return true;
+    }
+
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.logout:
+                Intent intent = new Intent(PlayVideoActivity.this, ConnexionActivity.class);
+                startActivity(intent);
+                mAuth.signOut();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 }

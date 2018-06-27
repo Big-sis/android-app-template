@@ -82,6 +82,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
                 Intent intent = new Intent(SelectedVideoActivity.this, PlayVideoActivity.class);
                 intent.putExtra(ID_SESSION,mIdSession);
                 intent.putExtra(FILE_NAME, fileName);
+                intent.putExtra(TITLE_VIDEO, titleSession);
                 startActivity(intent);
             }
         });
@@ -92,6 +93,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
                 Intent intent = new Intent(SelectedVideoActivity.this, PlayVideoActivity.class);
                 intent.putExtra(ID_SESSION,mIdSession);
                 intent.putExtra(FILE_NAME, fileName);
+                intent.putExtra(TITLE_VIDEO, titleSession);
                 startActivity(intent);
             }
         });
@@ -100,8 +102,6 @@ public class SelectedVideoActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(titleSession);
 
     }
