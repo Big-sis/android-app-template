@@ -36,6 +36,7 @@ public class AddGridDialog {
 
     public static Dialog openCreateTags(final Context context) {
 
+
         final LayoutInflater inflater = LayoutInflater.from(context);
         final View subView = inflater.inflate(R.layout.activity_add_grid, null);
 
@@ -114,7 +115,7 @@ public class AddGridDialog {
         }
 
 
-        ImageView btnAddEvenement = subView.findViewById(R.id.btn_add);
+        final ImageView btnAddEvenement = subView.findViewById(R.id.btn_add);
         btnAddEvenement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -129,13 +130,11 @@ public class AddGridDialog {
                     etName.setText("");
                     ivColor.setBackgroundColor(Color.parseColor("#ffaaaaaa"));
 
-
+                    //Fermer clavier après avoir rentré un tag
+                    InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(btnAddEvenement.getWindowToken(), 0);
 
                 }
-
-               // InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-               // imm.hideSoftInputFromWindow(btnAddEvenement.getWindowToken(), 0);
-
 
             }
         });
