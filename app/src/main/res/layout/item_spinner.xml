@@ -4,5 +4,4 @@
     android:layout_height="wrap_content"
     android:background="@drawable/style_input"
     android:padding="10dp"
-    android:text="Importer"
     android:textColor="@color/colorWhiteTwo" />
