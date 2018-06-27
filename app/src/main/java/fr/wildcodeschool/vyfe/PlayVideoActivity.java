@@ -64,12 +64,16 @@ public class PlayVideoActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(titleSession);
 
-        SingletonTags singletonTags = SingletonTags.getInstance();
-        mTagModels = singletonTags.getmTagsList();
+
+        mIdSession = getIntent().getStringExtra("idSession");
+
 
         // NE PAS SUPPRIMER POUR LE MOMENT
         // Test de récupération du lien avec données en dur :
-        /*mIdSession = "-LFRtUEoDalCtBKJq-l0";
+        mIdSession = "-LFRtUEoDalCtBKJq-l0";
+
+
+
         final DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions").child(mIdSession).child("videoLink");
         sessionRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -80,8 +84,7 @@ public class PlayVideoActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
             }
         });
-        SingletonTags singletonTags = SingletonTags.getInstance();
-        mTagModels = singletonTags.getmTagsList();
+
         mTagModels.add(new TagModel(-3318101, "nameTest1", null, null));
         mTagModels.add(new TagModel(-3318101, "nameTest2", null, null));
         mTagModels.add(new TagModel(-3318101, "nameTest3", null, null));
@@ -100,7 +103,36 @@ public class PlayVideoActivity extends AppCompatActivity {
         mTagModels.add(new TagModel(-3318101, "nameTest16", null, null));
         mTagModels.add(new TagModel(-3318101, "nameTest17", null, null));
         mTagModels.add(new TagModel(-3318101, "nameTest18", null, null));
-        */
+
+
+        final DatabaseReference tagsSessionRef = mDatabase.getReference(mAuthUserId).child("tagsSession");
+        tagsSessionRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                String idTagsSession = dataSnapshot.getKey();
+                DatabaseReference idTagsSessionRef = mDatabase.getReference(mAuthUserId).child("tagsSession").child(idTagsSession);
+                idTagsSessionRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        String fkSession = dataSnapshot.child("fkSession").getValue().toString();
+                        if (fkSession.equals(mIdSession)) {
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
 
         RecyclerView rvTags = findViewById(R.id.re_tags_selected);
 

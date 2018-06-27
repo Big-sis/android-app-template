@@ -50,6 +50,7 @@ public class RecordActivity extends AppCompatActivity {
     HashMap<String, LinearLayout> mTimelines = new HashMap<>();
     //TODO : remplacer marge par timer
     final int[] mMarge = {0};
+    private String mIdSession;
 
     public static final String TITLE_VIDEO = "titleVideo";
     public final static String FILE_NAME = "filename";
@@ -149,11 +150,12 @@ public class RecordActivity extends AppCompatActivity {
 
                 //Firebase SESSION
                 DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions");
-                String mIdSession = sessionRef.push().getKey();
+                mIdSession = sessionRef.push().getKey();
                 sessionRef.child(mIdSession).child("name").setValue(titleSession);
                 sessionRef.child(mIdSession).child("author").setValue(mAuthUserId);
                 sessionRef.child(mIdSession).child("videoLink").setValue(mFileName);
                 sessionRef.child(mIdSession).child("date").setValue(stringdate);
+                sessionRef.child(mIdSession).child("idSession").setValue(mIdSession);
             }
         });
 
@@ -367,9 +369,5 @@ public class RecordActivity extends AppCompatActivity {
 
             }
         }));
-
-
-
     }
-
 }
