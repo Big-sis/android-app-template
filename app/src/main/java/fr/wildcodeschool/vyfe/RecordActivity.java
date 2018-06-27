@@ -13,6 +13,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +23,7 @@ import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -47,9 +49,10 @@ public class RecordActivity extends AppCompatActivity {
     private static String mFileName = null;
     private MediaRecorder mRecorder = null;
     private CameraPreview mPreview;
-    HashMap<String, LinearLayout> mTimelines = new HashMap<>();
-    //TODO : remplacer marge par timer
-    final int[] mMarge = {0};
+
+    HashMap<String, RelativeLayout> mTimelines = new HashMap<>();
+    HashMap<String, ArrayList<Pair<Integer, Integer>>> newTagList = new HashMap<>();
+
 
     public static final String TITLE_VIDEO = "titleVideo";
     public final static String FILE_NAME = "filename";
@@ -75,6 +78,7 @@ public class RecordActivity extends AppCompatActivity {
         final FloatingActionButton btFinish = findViewById(R.id.bt_finish);
         final RecyclerView recyclerTags = findViewById(R.id.re_tags);
         final String titleSession = getIntent().getStringExtra(TITLE_VIDEO);
+        final String idTagSet = getIntent().getStringExtra("idTagSet");
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -94,6 +98,7 @@ public class RecordActivity extends AppCompatActivity {
             public void onClick(View v) {
                 chronometer.setBase(SystemClock.elapsedRealtime());
                 chronometer.start();
+
                 mRecord.setImageResource(R.drawable.icons8_arr_ter_96);
                 recyclerTags.setAlpha(1);
 
@@ -112,7 +117,6 @@ public class RecordActivity extends AppCompatActivity {
                 FrameLayout preview = findViewById(R.id.video_view);
                 preview.addView(mPreview);
 
-
                 mRecord.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -122,7 +126,6 @@ public class RecordActivity extends AppCompatActivity {
                         mRecord.setClickable(false);
                         btFinish.setVisibility(View.VISIBLE);
                         mRecord.setAlpha(0.5f);
-
                     }
                 });
             }
@@ -147,6 +150,8 @@ public class RecordActivity extends AppCompatActivity {
                 SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yy HH:mm:SS Z");
                 String stringdate = dt.format(newDate);
 
+                //TODO: obliger l'utilisateur a arreter l'enregistreement avant d'envoyer sur firebase
+
                 //Firebase SESSION
                 DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions");
                 String mIdSession = sessionRef.push().getKey();
@@ -154,6 +159,15 @@ public class RecordActivity extends AppCompatActivity {
                 sessionRef.child(mIdSession).child("author").setValue(mAuthUserId);
                 sessionRef.child(mIdSession).child("videoLink").setValue(mFileName);
                 sessionRef.child(mIdSession).child("date").setValue(stringdate);
+
+                //FIREBASE TAGSSESSION
+                DatabaseReference tagsRef = mDatabase.getReference(mAuthUserId).child("tagsSession");
+                String idTag = tagsRef.push().getKey();
+                tagsRef.child(idTag).child("fkSession").setValue(mIdSession);
+                tagsRef.child(idTag).child("fkTagSet").setValue(idTagSet);
+                tagsRef.child(idTag).child("fkTagSet").child(idTagSet).setValue(newTagList);
+
+
             }
         });
 
@@ -239,40 +253,43 @@ public class RecordActivity extends AppCompatActivity {
     private void initTimeline(final ArrayList<TagModel> listTag, RecyclerView rv) {
         //Init variable
         final Chronometer chronometer = findViewById(R.id.chronometer);
-        final boolean[] titleTimeline = new boolean[listTag.size()];
-        final int[] margeTag = new int[listTag.size()];
-        final int[] previousTime = new int[listTag.size()];
-        final boolean[] shortTagBefore = new boolean[listTag.size()];
-        for (int i = 0; i < titleTimeline.length; i++) {
-            titleTimeline[i] = true;
-            margeTag[i] = 0;
-        }
 
         //Ajout des differentes timelines au conteneur principal
         LinearLayout llMain = findViewById(R.id.ll_main);
         for (TagModel tagModel : listTag) {
-            //TODO: empecher la repetition de nom pour les tags
             String name = tagModel.getName();
             //Ajout d'un Linear pour un tag
-            final LinearLayout timeline = new LinearLayout(RecordActivity.this);
-            timeline.setBackgroundResource(R.drawable.style_input);
+            final RelativeLayout timeline = new RelativeLayout(RecordActivity.this);
+            timeline.setBackgroundColor(getResources().getColor(R.color.colorCharcoal));
             llMain.addView(timeline);
             mTimelines.put(name, timeline);
         }
-        //pour envoit sur firebase
-        final int[] totalTime = {0};
 
-        //Ajout des tags à la timeline associée
         rv.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(),
                 rv, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                //Accrocher vous pour la suite
+                String nameTag = listTag.get(position).getName();
+                //init name Tag
+                TextView tvNameTimeline = new TextView(RecordActivity.this);
+                tvNameTimeline.setTextColor(Color.WHITE);
+
+                boolean isFirstTitle = false;
+
+                if (!newTagList.containsKey(nameTag)) {
+                    ArrayList<Pair<Integer, Integer>> rTagList = new ArrayList<>();
+                    newTagList.put(nameTag, rTagList);
+
+                    isFirstTitle = true;
+                }
+
+                //rapport pour la presentation
+                int rapport = 10;
 
                 //Ici on pourras changer les caracteristique des tags pour la V2. Pour l'instant carac = constantes
-                //Attention rapport de 10 ex durée = 5s =>50
-                int leftOffsetTag = 30;
-                int rigthOffsetTag = 60;
+                int timeTag = 3 * rapport;
+                int beforeTag = 6 * rapport;
+                int titleLength = 200;
 
                 //init image Tag
                 ImageView iv = new ImageView(RecordActivity.this);
@@ -280,77 +297,30 @@ public class RecordActivity extends AppCompatActivity {
                 iv.setBackgroundColor(listTag.get(position).getColor());
 
                 //init chrono
-                int timeActuel = (int) ((SystemClock.elapsedRealtime() - chronometer.getBase()) / 100);
+                int timeActuel = (int) ((SystemClock.elapsedRealtime() - chronometer.getBase()) / (1000 / rapport));
 
-                //init name Tag
-                TextView tvNameTimeline = new TextView(RecordActivity.this);
-                tvNameTimeline.setTextColor(Color.WHITE);
+                int startTime = Math.max(0, timeActuel - beforeTag);
+                int endTime = timeActuel + timeTag;
+                iv.setMinimumWidth(endTime - startTime);
 
-                /**Si 1er Tag **/
-                if (titleTimeline[position]) {
-                    //Ajout titre à la timeline
-                    tvNameTimeline.setText(listTag.get(position).getName());
-                    LinearLayout.LayoutParams layoutParamsTv = new LinearLayout.LayoutParams(
-                            200, LinearLayout.LayoutParams.WRAP_CONTENT);
-                    layoutParamsTv.setMargins(5, 25, 0, 25);
-                    tvNameTimeline.setLayoutParams(layoutParamsTv);
-
-                    //param 1er tag
-                    /** le temps total du tag ne peut pas être créer car pas assez de temps entre click et les 2tag**/
-                    if ((timeActuel < rigthOffsetTag)) {
-                        iv.setMinimumWidth(leftOffsetTag);
-                        shortTagBefore[position] = true;
-                        //TODO: voir si besoin de créer une taille spécifique au tag qui donnerait: taille tag = timeActuel et margeTag = 0;
-                    } else {
-                        timeActuel = timeActuel - rigthOffsetTag;
-                        iv.setMinimumWidth(rigthOffsetTag + leftOffsetTag);
-                        shortTagBefore[position] = false;
-                    }
-                    margeTag[position] = timeActuel;
-                    titleTimeline[position] = false;
-                } else {
-                    /** Si Nbr tag > 1 **/
-
-                    /**Si pas place : Création du tag av seulement sa durée**/
-                    if (((timeActuel - previousTime[position]) < rigthOffsetTag)) {
-                        iv.setMinimumWidth(leftOffsetTag);
-
-                        //Calcul de la marge en fonction du tag precedent
-                        if (!shortTagBefore[position]) {
-                            margeTag[position] = timeActuel - previousTime[position] - leftOffsetTag - rigthOffsetTag;
-                        } else {
-                            margeTag[position] = timeActuel - previousTime[position] - leftOffsetTag;
-                        }
-                        shortTagBefore[position] = true;
-                    } else {
-                        /**Si place creation du tag av duration + beforeTime**/
-                        timeActuel = timeActuel - rigthOffsetTag;
-                        iv.setMinimumWidth(rigthOffsetTag + leftOffsetTag);
-
-                        //Calcul de la marge en fonction du tag precedent
-                        if (!shortTagBefore[position]) {
-                            margeTag[position] = timeActuel - previousTime[position] - leftOffsetTag - rigthOffsetTag;
-                        } else {
-                            margeTag[position] = timeActuel - previousTime[position] - leftOffsetTag;
-                        }
-                        shortTagBefore[position] = false;
-                    }
-                }
-
-
-                //Ajout du tag et titre à la timeline
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                layoutParams.setMargins(margeTag[position], 40, 0, 40);
-                LinearLayout timeline = mTimelines.get(listTag.get(position).getName());
+                layoutParams.setMargins(titleLength + startTime, 20, 0, 20);
+                RelativeLayout timeline = mTimelines.get(nameTag);
+
+                if (isFirstTitle) {
+                    tvNameTimeline.setText(listTag.get(position).getName());
+                    LinearLayout.LayoutParams layoutParamsTv = new LinearLayout.LayoutParams(
+                            titleLength, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    layoutParamsTv.setMargins(5, 5, 0, 5);
+                    tvNameTimeline.setLayoutParams(layoutParamsTv);
+                    timeline.addView(tvNameTimeline, layoutParamsTv);
+                }
                 timeline.addView(iv, layoutParams);
-                timeline.addView(tvNameTimeline, 0);
 
-                previousTime[position] = timeActuel;
                 //Pour envoit sur firebase
-                totalTime[0] += previousTime[position];
-
-                //TODO: envoyer sur firebase
+                Pair<Integer, Integer> timePair = new Pair<>(startTime / rapport, endTime / rapport);
+                newTagList.get(nameTag).add(timePair);
 
                 //Scrool automatiquement suit l'ajout des tags
                 final HorizontalScrollView scrollView = findViewById(R.id.horizontalScrollView);
@@ -367,9 +337,6 @@ public class RecordActivity extends AppCompatActivity {
 
             }
         }));
-
-
-
     }
 
 }

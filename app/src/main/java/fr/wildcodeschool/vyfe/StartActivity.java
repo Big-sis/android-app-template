@@ -114,6 +114,7 @@ public class StartActivity extends AppCompatActivity {
                 DatabaseReference idTagSetRef = mdatabase.getReference(authUserId).child("tag_sets").child("name");
                 final String idTagSet = idTagSetRef.push().getKey();
                 String titleTagSet = etTagSet.getText().toString();
+                intent.putExtra("idTagSet", idTagSet);
 
                 DatabaseReference TagsSetRef = mdatabase.getReference(authUserId).child("tag_sets").child(idTagSet).child("name");
                 TagsSetRef.setValue(titleTagSet);
