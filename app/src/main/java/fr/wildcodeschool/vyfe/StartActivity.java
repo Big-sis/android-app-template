@@ -38,6 +38,7 @@ public class StartActivity extends AppCompatActivity {
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     public static final String TITLE_VIDEO = "titleVideo";
+    public static final String ID_TAG_SET = "idTagSet";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,8 +75,6 @@ public class StartActivity extends AppCompatActivity {
 
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.start_session);
 
 
@@ -114,7 +113,7 @@ public class StartActivity extends AppCompatActivity {
                 DatabaseReference idTagSetRef = mdatabase.getReference(authUserId).child("tag_sets").child("name");
                 final String idTagSet = idTagSetRef.push().getKey();
                 String titleTagSet = etTagSet.getText().toString();
-                intent.putExtra("idTagSet", idTagSet);
+                intent.putExtra(ID_TAG_SET, idTagSet);
 
                 DatabaseReference TagsSetRef = mdatabase.getReference(authUserId).child("tag_sets").child(idTagSet).child("name");
                 TagsSetRef.setValue(titleTagSet);

@@ -62,10 +62,7 @@ public class MyVideoActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Mes vidéos");
+        getSupportActionBar().setTitle(R.string.my_videos);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

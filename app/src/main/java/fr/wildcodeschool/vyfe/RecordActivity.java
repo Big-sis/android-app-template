@@ -56,6 +56,7 @@ public class RecordActivity extends AppCompatActivity {
 
     public static final String TITLE_VIDEO = "titleVideo";
     public final static String FILE_NAME = "filename";
+    public static final String ID_TAG_SET = "idTagSet";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,13 +79,11 @@ public class RecordActivity extends AppCompatActivity {
         final FloatingActionButton btFinish = findViewById(R.id.bt_finish);
         final RecyclerView recyclerTags = findViewById(R.id.re_tags);
         final String titleSession = getIntent().getStringExtra(TITLE_VIDEO);
-        final String idTagSet = getIntent().getStringExtra("idTagSet");
+        final String idTagSet = getIntent().getStringExtra(ID_TAG_SET);
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.record_session);
 
 

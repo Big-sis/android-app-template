@@ -21,7 +21,7 @@ public class GridAdapter extends BaseAdapter implements Filterable {
     private ArrayList<SessionsModel> filterList;
     private CustomFilterVideo filter;
 
-    public final static String TITLE_VIDEO = "titleSession";
+    public static final String TITLE_VIDEO = "titleVideo";
     public final static String FILE_NAME = "filename";
 
     public GridAdapter(Context context, ArrayList<SessionsModel> video) {
