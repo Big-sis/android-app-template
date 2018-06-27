@@ -99,6 +99,7 @@ public class RecordActivity extends AppCompatActivity {
                 chronometer.setBase(SystemClock.elapsedRealtime());
                 chronometer.start();
 
+                /*
                 mRecord.setImageResource(R.drawable.icons8_arr_ter_96);
                 recyclerTags.setAlpha(1);
 
@@ -115,17 +116,17 @@ public class RecordActivity extends AppCompatActivity {
                             }
                         });
                 FrameLayout preview = findViewById(R.id.video_view);
-                preview.addView(mPreview);
+                preview.addView(mPreview);*/
 
                 mRecord.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         chronometer.stop();
-                        stopRecording();
+                      /*  stopRecording();
                         recyclerTags.setAlpha(0.5f);
                         mRecord.setClickable(false);
                         btFinish.setVisibility(View.VISIBLE);
-                        mRecord.setAlpha(0.5f);
+                        mRecord.setAlpha(0.5f);*/
                     }
                 });
             }
@@ -286,7 +287,7 @@ public class RecordActivity extends AppCompatActivity {
                 //rapport pour la presentation
                 int rapport = 10;
 
-                //Ici on pourras changer les caracteristique des tags pour la V2. Pour l'instant carac = constantes
+                //Ici on pourra changer les caracteristiques des tags pour la V2. Pour l'instant carac = constantes
                 int timeTag = 3 * rapport;
                 int beforeTag = 6 * rapport;
                 int titleLength = 200;

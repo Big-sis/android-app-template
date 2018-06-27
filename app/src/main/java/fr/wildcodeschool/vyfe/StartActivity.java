@@ -69,7 +69,6 @@ public class StartActivity extends AppCompatActivity {
 
         final HashMap<String, String> hashMapTitleIdGrid = new HashMap<>();
 
-
         final String authUserId = mAuth.getCurrentUser().getUid();
 
         if (MainActivity.mMulti) {
@@ -84,13 +83,12 @@ public class StartActivity extends AppCompatActivity {
         adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapterSpinner);
 
-
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.start_session);
 
-
+        //TODO gerer lapparition des recyclers
         radioButtonImport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -105,19 +103,19 @@ public class StartActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if (dataSnapshot.getChildrenCount() == 0) {
-                            nameTagSet.add("Vous n'avez pas encore de grille");
+                            nameTagSet.add(getString(R.string.havent_grid));
                         } else {
                             nameTagSet.clear();
-                        }
+                            nameTagSet.add(getString(R.string.import_grid));
 
-                        nameTagSet.add("Importer une grille");
-                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            String nameGrid = (String) snapshot.child("name").getValue().toString();
-                            String idGrid = (String) snapshot.getKey().toString();
-                            hashMapTitleIdGrid.put(nameGrid, idGrid);
-                            nameTagSet.add(nameGrid);
+                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                                String nameGrid = (String) snapshot.child("name").getValue().toString();
+                                String idGrid = (String) snapshot.getKey().toString();
+                                hashMapTitleIdGrid.put(nameGrid, idGrid);
+                                nameTagSet.add(nameGrid);
+                            }
+                            adapterSpinner.notifyDataSetChanged();
                         }
-                        adapterSpinner.notifyDataSetChanged();
                     }
 
                     @Override
@@ -132,38 +130,31 @@ public class StartActivity extends AppCompatActivity {
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                         String titlenameTagSetImport = nameTagSet.get(i);
                         mIdGridImport = hashMapTitleIdGrid.get(titlenameTagSetImport);
-                        //  Toast.makeText(StartActivity.this, titlenameTagSetImport + "cle: " + mIdGridImport, Toast.LENGTH_SHORT).show();
 
                         RecyclerView.LayoutManager layoutManagerImport = new LinearLayoutManager(StartActivity.this, LinearLayoutManager.VERTICAL, false);
                         recyclerViewImport.setLayoutManager(layoutManagerImport);
                         final TagRecyclerAdapter adapterImport = new TagRecyclerAdapter(mTagModelList, "start");
                         recyclerViewImport.setAdapter(adapterImport);
 
-                        if (mIdGridImport != null && !mIdGridImport.equals("Importer une grille")) {
+                        if (mIdGridImport != null && !mIdGridImport.equals(R.string.import_grid)) {
                             //recup des tags
                             DatabaseReference myRefTag = mdatabase.getReference(authUserId).child("tags");
                             myRefTag.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     if (dataSnapshot.getChildrenCount() == 0) {
-                                        Toast.makeText(StartActivity.this, "Pas de tags", Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(StartActivity.this, R.string.havent_tag, Toast.LENGTH_SHORT).show();
                                     }
                                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                        //String idTag = snapshot.getKey().toString();
 
                                         if (snapshot.child("fkTagSet").getValue().toString() != null && snapshot.child("fkTagSet").getValue().toString().equals(mIdGridImport)) {
-                                           String name = (String) snapshot.child("name").getValue();
-                                           int color =   Integer.parseInt(snapshot.child("color").getValue().toString());
-                                           String leftOffset = (String) snapshot.child("leftOffset").getValue();
-                                           String rightOffset = (String) snapshot.child("rightOffset").getValue();
-                                            Toast.makeText(StartActivity.this, name, Toast.LENGTH_SHORT).show();
-                                           mTagModelList.add(new TagModel(color, name,null,null));
+                                            String name = (String) snapshot.child("name").getValue();
+                                            int color = Integer.parseInt(snapshot.child("color").getValue().toString());
+                                            mTagModelList.add(new TagModel(color, name, null, null));
                                             mSingletonTags.setmTagsList(mTagModelList);
                                         }
-
                                     }
                                     adapterImport.notifyDataSetChanged();
-
                                 }
 
                                 @Override
@@ -192,6 +183,7 @@ public class StartActivity extends AppCompatActivity {
                 if (radioButtonNew.isChecked()) {
                     radioButtonImport.setChecked(false);
                     spinner.setClickable(false);
+                    spinner.setLongClickable(false);
                     importGrid(etTagSet, fabAddMoment, true);
                 }
             }
