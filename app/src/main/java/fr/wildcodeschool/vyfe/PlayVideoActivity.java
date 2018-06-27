@@ -1,5 +1,6 @@
 package fr.wildcodeschool.vyfe;
 
+import android.provider.ContactsContract;
 import android.support.annotation.DrawableRes;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -8,6 +9,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.util.Pair;
 import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
@@ -31,10 +34,11 @@ import com.google.firebase.database.ValueEventListener;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 public class PlayVideoActivity extends AppCompatActivity {
 
-    private ArrayList<TagModel> mTagModels;
+    private ArrayList<TagModel> mTagModels = new ArrayList<>();
     private VideoView mVideoSelected;
     private SeekBar mSeekBar;
     private boolean mIsPlayed = false;
@@ -46,6 +50,8 @@ public class PlayVideoActivity extends AppCompatActivity {
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     final String mAuthUserId = mAuth.getCurrentUser().getUid();
     HashMap<String, LinearLayout> mTimelines = new HashMap<>();
+    HashMap<String, ArrayList<Pair<Integer, Integer>>> mTagList = new HashMap<>();
+
     final int[] mMarge = {0};
 
     public static final String TITLE_VIDEO = "titleVideo";
@@ -65,17 +71,16 @@ public class PlayVideoActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(titleSession);
 
 
-        mIdSession = getIntent().getStringExtra("idSession");
+        // mIdSession = getIntent().getStringExtra("idSession");
 
 
         // NE PAS SUPPRIMER POUR LE MOMENT
         // Test de récupération du lien avec données en dur :
-        mIdSession = "-LFRtUEoDalCtBKJq-l0";
-
+        mIdSession = "-LFw9OH4TpHhciKB2wRi";
 
 
         final DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions").child(mIdSession).child("videoLink");
-        sessionRef.addListenerForSingleValueEvent(new ValueEventListener() {
+   /*     sessionRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mVideoLink = dataSnapshot.getValue().toString();
@@ -83,7 +88,12 @@ public class PlayVideoActivity extends AppCompatActivity {
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
-        });
+        });*/
+
+        // Lien video en dur pour tester
+        String URL = "http://clips.vorwaerts-gmbh.de/VfE_html5.mp4";
+        mVideoSelected = findViewById(R.id.video_view_selected);
+        mVideoSelected.setVideoPath(URL);
 
         mTagModels.add(new TagModel(-3318101, "nameTest1", null, null));
         mTagModels.add(new TagModel(-3318101, "nameTest2", null, null));
@@ -109,22 +119,31 @@ public class PlayVideoActivity extends AppCompatActivity {
         tagsSessionRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String idTagsSession = dataSnapshot.getKey();
-                DatabaseReference idTagsSessionRef = mDatabase.getReference(mAuthUserId).child("tagsSession").child(idTagsSession);
-                idTagsSessionRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        String fkSession = dataSnapshot.child("fkSession").getValue().toString();
-                        if (fkSession.equals(mIdSession)) {
+                if (dataSnapshot.getChildrenCount() == 0) {
+                    Toast.makeText(PlayVideoActivity.this, "Vous n'avez pas de tags enregistrés", Toast.LENGTH_SHORT).show();
+                }
+                for (DataSnapshot tagsSessionSnapshot : dataSnapshot.getChildren()) {
 
-                        }
+                    String fkSession = tagsSessionSnapshot.child("fkSession").getValue().toString();
+                    if (fkSession.equals(mIdSession)) {
+                        String idTagSession = tagsSessionSnapshot.getKey();
+                        final DatabaseReference fkTagSet = mDatabase.getReference(mAuthUserId).child("tagsSession").child(idTagSession).child("fkTagSet");
+                        fkTagSet.addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                for (DataSnapshot fkTagSetSnapshot : dataSnapshot.getChildren()) {
+                                    mTagList = (HashMap<String, ArrayList<Pair<Integer, Integer>>>) fkTagSetSnapshot.getValue();
+                                    Log.e("TAG", mTagList.toString());
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
                     }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
+                }
             }
 
             @Override
@@ -154,11 +173,6 @@ public class PlayVideoActivity extends AppCompatActivity {
             }
         });
 
-        // Lien video en dur pour tester
-        String URL = "http://clips.vorwaerts-gmbh.de/VfE_html5.mp4";
-        mVideoSelected = findViewById(R.id.video_view_selected);
-        mVideoSelected.setVideoPath(URL);
-
 
         final String fileName = getIntent().getStringExtra(FILE_NAME);
 
@@ -168,7 +182,7 @@ public class PlayVideoActivity extends AppCompatActivity {
             Toast.makeText(this, "exist", Toast.LENGTH_SHORT).show();
         }
 */
-       // mVideoSelected.setVideoPath(fileName);
+        // mVideoSelected.setVideoPath(fileName);
         final FloatingActionButton fbPlay = findViewById(R.id.bt_play_selected);
 
         final SeekbarAsync async = new SeekbarAsync(mSeekBar, mVideoSelected);
@@ -198,14 +212,14 @@ public class PlayVideoActivity extends AppCompatActivity {
         //TODO : mettre valeur calculée
         Display display = getWindowManager().getDefaultDisplay();
         int width = display.getWidth();
-        double ratio = ((float) (width))/300.0;
-        int height = (int)(ratio*50);
+        double ratio = ((float) (width)) / 300.0;
+        int height = (int) (ratio * 50);
         RelativeLayout timeLines = findViewById(R.id.time_lines_container);
 
         timeLines.setLayoutParams(new FrameLayout.LayoutParams(width, LinearLayout.LayoutParams.WRAP_CONTENT));
         mSeekBar.setLayoutParams(new RelativeLayout.LayoutParams(width, LinearLayout.LayoutParams.MATCH_PARENT));
 
-        initTimeline(mTagModels ,rvTags);
+        initTimeline(mTagModels, rvTags);
     }
 
     private void initTimeline(final ArrayList<TagModel> listTag, RecyclerView rv) {
@@ -236,12 +250,12 @@ public class PlayVideoActivity extends AppCompatActivity {
                 timeline.addView(iv, layoutParams);
                 mMarge[0] += 30;
 
-                final HorizontalScrollView scrollView = findViewById(R.id.horizontalScrollView);
+               /* final HorizontalScrollView scrollView = findViewById(R.id.horizontalScrollView);
                 scrollView.post(new Runnable() {
                     public void run() {
                         scrollView.fullScroll(View.FOCUS_RIGHT);
                     }
-                });
+                });*/
             }
 
             @Override
