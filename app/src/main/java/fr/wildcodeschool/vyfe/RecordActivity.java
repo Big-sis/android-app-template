@@ -56,6 +56,7 @@ public class RecordActivity extends AppCompatActivity {
 
     public static final String TITLE_VIDEO = "titleVideo";
     public final static String FILE_NAME = "filename";
+    public static final String ID_TAG_SET = "idTagSet";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,13 +79,11 @@ public class RecordActivity extends AppCompatActivity {
         final FloatingActionButton btFinish = findViewById(R.id.bt_finish);
         final RecyclerView recyclerTags = findViewById(R.id.re_tags);
         final String titleSession = getIntent().getStringExtra(TITLE_VIDEO);
-        final String idTagSet = getIntent().getStringExtra("idTagSet");
+        final String idTagSet = getIntent().getStringExtra(ID_TAG_SET);
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.record_session);
 
 
@@ -99,6 +98,7 @@ public class RecordActivity extends AppCompatActivity {
                 chronometer.setBase(SystemClock.elapsedRealtime());
                 chronometer.start();
 
+                /*
                 mRecord.setImageResource(R.drawable.icons8_arr_ter_96);
                 recyclerTags.setAlpha(1);
 
@@ -115,17 +115,17 @@ public class RecordActivity extends AppCompatActivity {
                             }
                         });
                 FrameLayout preview = findViewById(R.id.video_view);
-                preview.addView(mPreview);
+                preview.addView(mPreview);*/
 
                 mRecord.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         chronometer.stop();
-                        stopRecording();
+                      /*  stopRecording();
                         recyclerTags.setAlpha(0.5f);
                         mRecord.setClickable(false);
                         btFinish.setVisibility(View.VISIBLE);
-                        mRecord.setAlpha(0.5f);
+                        mRecord.setAlpha(0.5f);*/
                     }
                 });
             }
@@ -286,7 +286,7 @@ public class RecordActivity extends AppCompatActivity {
                 //rapport pour la presentation
                 int rapport = 10;
 
-                //Ici on pourras changer les caracteristique des tags pour la V2. Pour l'instant carac = constantes
+                //Ici on pourra changer les caracteristiques des tags pour la V2. Pour l'instant carac = constantes
                 int timeTag = 3 * rapport;
                 int beforeTag = 6 * rapport;
                 int titleLength = 200;
