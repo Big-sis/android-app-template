@@ -56,7 +56,9 @@ public class RecordActivity extends AppCompatActivity {
 
     public static final String TITLE_VIDEO = "titleVideo";
     public final static String FILE_NAME = "filename";
+    public final static String ID_SESSION = "idSession";
     public static final String ID_TAG_SET = "idTagSet";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -265,7 +267,6 @@ public class RecordActivity extends AppCompatActivity {
                 if (!newTagList.containsKey(nameTag)) {
                     ArrayList<Pair<Integer, Integer>> rTagList = new ArrayList<>();
                     newTagList.put(nameTag, rTagList);
-
                     isFirstTitle = true;
                 }
 
@@ -315,7 +316,6 @@ public class RecordActivity extends AppCompatActivity {
                         scrollView.fullScroll(View.FOCUS_RIGHT);
                     }
                 });
-
             }
 
             @Override
@@ -324,5 +324,4 @@ public class RecordActivity extends AppCompatActivity {
             }
         }));
     }
-
 }

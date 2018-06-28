@@ -28,6 +28,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     final String mAuthUserId = mAuth.getCurrentUser().getUid();
     private String mIdSession = "";
+    private SessionsModel sessionsModel;
 
     public static final String TITLE_VIDEO = "titleVideo";
     public static final String FILE_NAME = "filename";
@@ -38,6 +39,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selected_video);
 
+        mIdSession = getIntent().getStringExtra("idSession");
         Button play = findViewById(R.id.bt_play);
         Button btnUpload = findViewById(R.id.bt_upload);
         Button edit = findViewById(R.id.btn_edit);
