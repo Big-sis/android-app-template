@@ -14,6 +14,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Pair;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -289,7 +290,7 @@ public class RecordActivity extends AppCompatActivity {
                 //Ici on pourra changer les caracteristiques des tags pour la V2. Pour l'instant carac = constantes
                 int timeTag = 3 * rapport;
                 int beforeTag = 6 * rapport;
-                int titleLength = 200;
+                int titleLength = 100;
 
                 //init image Tag
                 ImageView iv = new ImageView(RecordActivity.this);
@@ -303,16 +304,18 @@ public class RecordActivity extends AppCompatActivity {
                 int endTime = timeActuel + timeTag;
                 iv.setMinimumWidth(endTime - startTime);
 
+
+
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                layoutParams.setMargins(titleLength + startTime, 20, 0, 20);
+                layoutParams.setMargins(convertToDp(titleLength + startTime), convertToDp(20), 0, convertToDp(20));
                 RelativeLayout timeline = mTimelines.get(nameTag);
 
                 if (isFirstTitle) {
                     tvNameTimeline.setText(listTag.get(position).getName());
                     LinearLayout.LayoutParams layoutParamsTv = new LinearLayout.LayoutParams(
-                            titleLength, LinearLayout.LayoutParams.WRAP_CONTENT);
-                    layoutParamsTv.setMargins(5, 5, 0, 5);
+                            convertToDp(titleLength), LinearLayout.LayoutParams.WRAP_CONTENT);
+                    layoutParamsTv.setMargins(convertToDp(5), convertToDp(5), 0, convertToDp(5));
                     tvNameTimeline.setLayoutParams(layoutParamsTv);
                     timeline.addView(tvNameTimeline, layoutParamsTv);
                 }
@@ -337,6 +340,10 @@ public class RecordActivity extends AppCompatActivity {
 
             }
         }));
+    }
+
+    private int convertToDp(int size){
+         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, size, getResources().getDisplayMetrics());
     }
 
 }
