@@ -45,9 +45,9 @@ public class PlayVideoActivity extends AppCompatActivity {
     private String mIdSession;
     private String mVideoLink;
     private SessionsModel mSessionModel;
-    FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+    FirebaseDatabase mDatabase;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    final String mAuthUserId = mAuth.getCurrentUser().getUid();
+    final String mAuthUserId = SingletonFirebase.getInstance().getUid();
     HashMap<String, LinearLayout> mTimelines = new HashMap<>();
     final int[] mMarge = {0};
 
@@ -58,6 +58,8 @@ public class PlayVideoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_video);
+
+        mDatabase = SingletonFirebase.getInstance().getDatabase();
 
         final String titleSession = getIntent().getStringExtra(TITLE_VIDEO);
 

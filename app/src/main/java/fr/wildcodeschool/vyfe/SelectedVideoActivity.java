@@ -24,9 +24,9 @@ import java.util.Date;
 public class SelectedVideoActivity extends AppCompatActivity {
 
     ArrayList<TagModel> mTagModels = new ArrayList<>();
-    FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+    FirebaseDatabase mDatabase;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    final String mAuthUserId = mAuth.getCurrentUser().getUid();
+    final String mAuthUserId = SingletonFirebase.getInstance().getUid();
     private String mIdSession = "";
 
     public static final String TITLE_VIDEO = "titleVideo";
@@ -37,6 +37,8 @@ public class SelectedVideoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selected_video);
+
+        mDatabase = SingletonFirebase.getInstance().getDatabase();
 
         Button play = findViewById(R.id.bt_play);
         Button btnUpload = findViewById(R.id.bt_upload);

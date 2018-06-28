@@ -43,9 +43,9 @@ public class RecordActivity extends AppCompatActivity {
     private Camera mCamera;
     private boolean mCamCondition = false;
     private FloatingActionButton mRecord;
-    FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+    FirebaseDatabase mDatabase;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    final String mAuthUserId = mAuth.getCurrentUser().getUid();
+    final String mAuthUserId = SingletonFirebase.getInstance().getUid();
     private static String mFileName = null;
     private MediaRecorder mRecorder = null;
     private CameraPreview mPreview;
@@ -64,7 +64,7 @@ public class RecordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_record);
         final Chronometer chronometer = findViewById(R.id.chronometer);
 
-        mDatabase.setPersistenceEnabled(true);
+        mDatabase = SingletonFirebase.getInstance().getDatabase();
 
         Date d = new Date();
         mFileName = getExternalCacheDir().getAbsolutePath();
@@ -165,6 +165,7 @@ public class RecordActivity extends AppCompatActivity {
 
                 //FIREBASE TAGSSESSION
                 DatabaseReference tagsRef = mDatabase.getReference(mAuthUserId).child("tagsSession");
+                tagsRef.keepSynced(true);
                 String idTag = tagsRef.push().getKey();
                 tagsRef.child(idTag).child("fkSession").setValue(mIdSession);
                 tagsRef.child(idTag).child("fkTagSet").setValue(idTagSet);

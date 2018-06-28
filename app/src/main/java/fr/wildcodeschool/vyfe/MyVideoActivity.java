@@ -16,17 +16,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
 public class MyVideoActivity extends AppCompatActivity {
     SingletonSessions mSingletonSessions = SingletonSessions.getInstance();
     ArrayList<SessionsModel> mSessionsModelList = mSingletonSessions.getmSessionsList();
-    FirebaseDatabase mdatabase = FirebaseDatabase.getInstance();
+    FirebaseDatabase mDatabase;
     GridAdapter mGridAdapter = new GridAdapter(this, mSessionsModelList);
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
-
 
     private static ArrayList<String> mFilesName = null;
 
@@ -35,12 +33,13 @@ public class MyVideoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_video);
 
+        mDatabase = SingletonFirebase.getInstance().getDatabase();
+
         final GridView gridView = findViewById(R.id.grid_videos);
         SearchView searchView = findViewById(R.id.search_video);
-        String authUserId = mAuth.getCurrentUser().getUid();
-        mdatabase.setPersistenceEnabled(true);
+        String authUserId = SingletonFirebase.getInstance().getUid();
 
-        DatabaseReference myRef = mdatabase.getReference(authUserId).child("sessions");
+        DatabaseReference myRef = mDatabase.getReference(authUserId).child("sessions");
         myRef.keepSynced(true);
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -79,8 +78,6 @@ public class MyVideoActivity extends AppCompatActivity {
             }
         });
         mGridAdapter.notifyDataSetChanged();
-
-
     }
 
     @Override
