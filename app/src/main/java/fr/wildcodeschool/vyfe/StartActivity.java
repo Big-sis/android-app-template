@@ -250,7 +250,12 @@ public class StartActivity extends AppCompatActivity {
                     });
                     MainActivity.mMulti = false;
                 } else {
-                    startActivity(intent);
+                    if (titleSession.isEmpty()) {
+                        Toast.makeText(StartActivity.this, "Veuillez renseigner un titre de vidéo", Toast.LENGTH_SHORT).show();
+                    } else {
+                        startActivity(intent);
+
+                    }
                 }
             }
         });
