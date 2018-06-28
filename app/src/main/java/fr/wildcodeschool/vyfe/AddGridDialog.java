@@ -91,17 +91,10 @@ public class AddGridDialog {
 
         });
 
-        final Button btnAleatory = subView.findViewById(R.id.btn_aleatory);
-        btnAleatory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //TODO: associer la recherche aléatoire à l'arrayList color
-                Random random = new Random();
-                int color = Color.argb(255, random.nextInt(256), random.nextInt(256), random.nextInt(256));
-                ivColor.setBackgroundColor(color);
-                mfinalcolor = color;
-            }
-        });
+        Random random = new Random();
+        int color = Color.argb(255, random.nextInt(256), random.nextInt(256), random.nextInt(256));
+        ivColor.setBackgroundColor(color);
+        mfinalcolor = color;
 
         // Elements du recycler
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
@@ -133,6 +126,11 @@ public class AddGridDialog {
                     //Fermer clavier après avoir rentré un tag
                     InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(btnAddEvenement.getWindowToken(), 0);
+
+                    Random random = new Random();
+                    int color = Color.argb(255, random.nextInt(256), random.nextInt(256), random.nextInt(256));
+                    ivColor.setBackgroundColor(color);
+                    mfinalcolor = color;
 
                 }
 
