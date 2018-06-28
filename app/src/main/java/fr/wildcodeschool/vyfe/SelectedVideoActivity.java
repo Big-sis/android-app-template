@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.VideoView;
 
@@ -31,6 +32,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
 
     public static final String TITLE_VIDEO = "titleVideo";
     public static final String FILE_NAME = "filename";
+    public static final String ID_SESSION = "idSession";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +43,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
         Button play = findViewById(R.id.bt_play);
         Button btnUpload = findViewById(R.id.bt_upload);
         Button edit = findViewById(R.id.btn_edit);
+        ImageView video = findViewById(R.id.vv_preview);
         TextView tvTitle = findViewById(R.id.tv_title);
 
         final String titleSession = getIntent().getStringExtra(TITLE_VIDEO);
@@ -79,8 +82,20 @@ public class SelectedVideoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(SelectedVideoActivity.this, PlayVideoActivity.class);
-                intent.putExtra("idSession",mIdSession);
+                intent.putExtra(ID_SESSION,mIdSession);
                 intent.putExtra(FILE_NAME, fileName);
+                intent.putExtra(TITLE_VIDEO, titleSession);
+                startActivity(intent);
+            }
+        });
+
+        video.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SelectedVideoActivity.this, PlayVideoActivity.class);
+                intent.putExtra(ID_SESSION,mIdSession);
+                intent.putExtra(FILE_NAME, fileName);
+                intent.putExtra(TITLE_VIDEO, titleSession);
                 startActivity(intent);
             }
         });
@@ -89,8 +104,6 @@ public class SelectedVideoActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(titleSession);
 
     }

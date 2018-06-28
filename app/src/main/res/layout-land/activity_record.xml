@@ -82,16 +82,6 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
-                <android.support.design.widget.FloatingActionButton
-                    android:id="@+id/bt_finish"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:clickable="true"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/bt_record"
-                    app:srcCompat="@android:drawable/checkbox_on_background" />
-
 
                 <Chronometer
                     android:id="@+id/chronometer"
