@@ -98,7 +98,7 @@ public class RecordActivity extends AppCompatActivity {
                 chronometer.setBase(SystemClock.elapsedRealtime());
                 chronometer.start();
 
-                /*
+
                 mRecord.setImageResource(R.drawable.icons8_arr_ter_96);
                 recyclerTags.setAlpha(1);
 
@@ -115,17 +115,17 @@ public class RecordActivity extends AppCompatActivity {
                             }
                         });
                 FrameLayout preview = findViewById(R.id.video_view);
-                preview.addView(mPreview);*/
+                preview.addView(mPreview);
 
                 mRecord.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         chronometer.stop();
-                      /*  stopRecording();
+                        stopRecording();
                         recyclerTags.setAlpha(0.5f);
                         mRecord.setClickable(false);
                         btFinish.setVisibility(View.VISIBLE);
-                        mRecord.setAlpha(0.5f);*/
+                        mRecord.setAlpha(0.5f);
                     }
                 });
             }
@@ -154,6 +154,7 @@ public class RecordActivity extends AppCompatActivity {
 
                 //Firebase SESSION
                 DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions");
+                sessionRef.keepSynced(true);
                 String mIdSession = sessionRef.push().getKey();
                 sessionRef.child(mIdSession).child("name").setValue(titleSession);
                 sessionRef.child(mIdSession).child("author").setValue(mAuthUserId);
