@@ -64,6 +64,8 @@ public class RecordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_record);
         final Chronometer chronometer = findViewById(R.id.chronometer);
 
+        mDatabase.setPersistenceEnabled(true);
+
         Date d = new Date();
         mFileName = getExternalCacheDir().getAbsolutePath();
         mFileName += "/" + d.getTime() +  ".mp4";

@@ -38,8 +38,10 @@ public class MyVideoActivity extends AppCompatActivity {
         final GridView gridView = findViewById(R.id.grid_videos);
         SearchView searchView = findViewById(R.id.search_video);
         String authUserId = mAuth.getCurrentUser().getUid();
+        mdatabase.setPersistenceEnabled(true);
 
         DatabaseReference myRef = mdatabase.getReference(authUserId).child("sessions");
+        myRef.keepSynced(true);
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
