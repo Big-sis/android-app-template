@@ -76,7 +76,6 @@ public class RecordActivity extends AppCompatActivity {
         final Button btnBackMain = findViewById(R.id.btn_back_main);
         final Button btnPlay = findViewById(R.id.btn_play);
         final ConstraintLayout sessionRecord = findViewById(R.id.session_record);
-        final FloatingActionButton btFinish = findViewById(R.id.bt_finish);
         final RecyclerView recyclerTags = findViewById(R.id.re_tags);
         final String titleSession = getIntent().getStringExtra(TITLE_VIDEO);
         final String idTagSet = getIntent().getStringExtra(ID_TAG_SET);
@@ -98,10 +97,9 @@ public class RecordActivity extends AppCompatActivity {
                 chronometer.setBase(SystemClock.elapsedRealtime());
                 chronometer.start();
 
-                /*
                 mRecord.setImageResource(R.drawable.icons8_arr_ter_96);
                 recyclerTags.setAlpha(1);
-
+/*
                 mPreview = new CameraPreview(RecordActivity.this, mCamera,
                         new CameraPreview.SurfaceCallback() {
                             @Override
@@ -115,17 +113,36 @@ public class RecordActivity extends AppCompatActivity {
                             }
                         });
                 FrameLayout preview = findViewById(R.id.video_view);
-                preview.addView(mPreview);*/
-
+                preview.addView(mPreview);
+*/
                 mRecord.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         chronometer.stop();
-                      /*  stopRecording();
-                        recyclerTags.setAlpha(0.5f);
-                        mRecord.setClickable(false);
-                        btFinish.setVisibility(View.VISIBLE);
-                        mRecord.setAlpha(0.5f);*/
+                        //stopRecording();
+                        sessionRecord.setVisibility(View.VISIBLE);
+                        Date date = new Date();
+                        Date newDate = new Date(date.getTime());
+                        SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yy HH:mm");
+                        String stringdate = dt.format(newDate);
+
+                        //TODO: obliger l'utilisateur a arreter l'enregistreement avant d'envoyer sur firebase
+
+                        //Firebase SESSION
+                        DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions");
+                        String mIdSession = sessionRef.push().getKey();
+                        sessionRef.child(mIdSession).child("name").setValue(titleSession);
+                        sessionRef.child(mIdSession).child("author").setValue(mAuthUserId);
+                        sessionRef.child(mIdSession).child("videoLink").setValue(mFileName);
+                        sessionRef.child(mIdSession).child("date").setValue(stringdate);
+
+                        //FIREBASE TAGSSESSION
+                        DatabaseReference tagsRef = mDatabase.getReference(mAuthUserId).child("tagsSession");
+                        String idTag = tagsRef.push().getKey();
+                        tagsRef.child(idTag).child("fkSession").setValue(mIdSession);
+                        tagsRef.child(idTag).child("fkTagSet").setValue(idTagSet);
+                        tagsRef.child(idTag).child("fkTagSet").child(idTagSet).setValue(newTagList);
+
                     }
                 });
             }
@@ -139,37 +156,6 @@ public class RecordActivity extends AppCompatActivity {
         final TagRecyclerAdapter adapterTags = new TagRecyclerAdapter(mTagModels, "record");
         final TagRecyclerAdapter adapterTime = new TagRecyclerAdapter(mTagModels, "timelines");
         recyclerTags.setAdapter(adapterTags);
-
-
-        btFinish.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sessionRecord.setVisibility(View.VISIBLE);
-                Date date = new Date();
-                Date newDate = new Date(date.getTime());
-                SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yy HH:mm");
-                String stringdate = dt.format(newDate);
-
-                //TODO: obliger l'utilisateur a arreter l'enregistreement avant d'envoyer sur firebase
-
-                //Firebase SESSION
-                DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions");
-                String mIdSession = sessionRef.push().getKey();
-                sessionRef.child(mIdSession).child("name").setValue(titleSession);
-                sessionRef.child(mIdSession).child("author").setValue(mAuthUserId);
-                sessionRef.child(mIdSession).child("videoLink").setValue(mFileName);
-                sessionRef.child(mIdSession).child("date").setValue(stringdate);
-
-                //FIREBASE TAGSSESSION
-                DatabaseReference tagsRef = mDatabase.getReference(mAuthUserId).child("tagsSession");
-                String idTag = tagsRef.push().getKey();
-                tagsRef.child(idTag).child("fkSession").setValue(mIdSession);
-                tagsRef.child(idTag).child("fkTagSet").setValue(idTagSet);
-                tagsRef.child(idTag).child("fkTagSet").child(idTagSet).setValue(newTagList);
-
-
-            }
-        });
 
         btnBackMain.setOnClickListener(new View.OnClickListener() {
             @Override
