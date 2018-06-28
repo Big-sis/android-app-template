@@ -32,7 +32,8 @@ public class AddGridDialog {
     private static SingletonTags mSingletonTags = SingletonTags.getInstance();
     private static ArrayList<TagModel> mTagModelList = mSingletonTags.getmTagsList();
     private static TagRecyclerAdapter mAdapter = new TagRecyclerAdapter(mTagModelList, "start");
-
+    private static ArrayList<String> colors = new ArrayList<>();
+    private static ImageView ivColor;
 
     public static Dialog openCreateTags(final Context context) {
 
@@ -41,8 +42,22 @@ public class AddGridDialog {
         final View subView = inflater.inflate(R.layout.activity_add_grid, null);
 
         final EditText etName = subView.findViewById(R.id.et_name);
-        final ImageView ivColor = subView.findViewById(R.id.iv_color);
         final RecyclerView recyclerTagList = subView.findViewById(R.id.recycler_view);
+        ivColor = subView.findViewById(R.id.iv_color);
+
+        //TODO: remplacer couleur par celle de la charte graph
+        colors.add("#F57A62");
+        colors.add("#F56290");
+        colors.add("#F562E5");
+        colors.add("#F5EE62");
+        colors.add("#62F5AB");
+        colors.add("#69E3E7");
+        colors.add("#3490E1");
+        colors.add("#6977E7");
+        colors.add("#3F51B5");
+        colors.add("#343F6D");
+        colors.add("#0D1725");
+        colors.add("#d8d8d8");
 
         // Gestion couleurs
         Button btnChooseColor = subView.findViewById(R.id.btn_chosse_color);
@@ -50,20 +65,7 @@ public class AddGridDialog {
             @Override
             public void onClick(View view) {
                 //final ColorPicker colorPicker = new ColorPicker(StartActivity.this);
-                final ArrayList<String> colors = new ArrayList<>();
-                //TODO: remplacer couleur par celle de la charte graph
-                colors.add("#F57A62");
-                colors.add("#F56290");
-                colors.add("#F562E5");
-                colors.add("#F5EE62");
-                colors.add("#62F5AB");
-                colors.add("#69E3E7");
-                colors.add("#3490E1");
-                colors.add("#6977E7");
-                colors.add("#3F51B5");
-                colors.add("#343F6D");
-                colors.add("#0D1725");
-                colors.add("#d8d8d8");
+
 /*
 
                 colorPicker.setColors(colors);
@@ -91,10 +93,7 @@ public class AddGridDialog {
 
         });
 
-        Random random = new Random();
-        int color = Color.argb(255, random.nextInt(256), random.nextInt(256), random.nextInt(256));
-        ivColor.setBackgroundColor(color);
-        mfinalcolor = color;
+        chooseColor();
 
         // Elements du recycler
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
@@ -127,13 +126,8 @@ public class AddGridDialog {
                     InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(btnAddEvenement.getWindowToken(), 0);
 
-                    Random random = new Random();
-                    int color = Color.argb(255, random.nextInt(256), random.nextInt(256), random.nextInt(256));
-                    ivColor.setBackgroundColor(color);
-                    mfinalcolor = color;
-
+                    chooseColor();
                 }
-
             }
         });
 
@@ -191,5 +185,13 @@ public class AddGridDialog {
         mTagModelList.remove(position);
         mAdapter.notifyItemRemoved(position);
 
+    }
+
+    public static void chooseColor() {
+        Random random = new Random();
+        int nbColor = random.nextInt(colors.size());
+        String color = colors.get(nbColor);
+        ivColor.setBackgroundColor(Color.parseColor(color));
+        mfinalcolor = Color.parseColor(color);
     }
 }
