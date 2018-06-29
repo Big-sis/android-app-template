@@ -67,7 +67,7 @@ public class RecordActivity extends AppCompatActivity {
 
         Date d = new Date();
         mFileName = getExternalCacheDir().getAbsolutePath();
-        mFileName += "/" + d.getTime() +  ".mp4";
+        mFileName += "/" + d.getTime() + ".mp4";
 
         int currentCameraId = Camera.CameraInfo.CAMERA_FACING_BACK;
         mCamera = getCameraInstance(currentCameraId);
@@ -99,7 +99,7 @@ public class RecordActivity extends AppCompatActivity {
                 chronometer.setBase(SystemClock.elapsedRealtime());
                 chronometer.start();
 
-
+/*
                 mRecord.setImageResource(R.drawable.icons8_arr_ter_96);
                 recyclerTags.setAlpha(1);
 
@@ -116,17 +116,17 @@ public class RecordActivity extends AppCompatActivity {
                             }
                         });
                 FrameLayout preview = findViewById(R.id.video_view);
-                preview.addView(mPreview);
+                preview.addView(mPreview);*/
 
                 mRecord.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         chronometer.stop();
-                       stopRecording();
+                        /*stopRecording();
                         recyclerTags.setAlpha(0.5f);
                         mRecord.setClickable(false);
                         btFinish.setVisibility(View.VISIBLE);
-                        mRecord.setAlpha(0.5f);
+                        mRecord.setAlpha(0.5f);*/
                     }
                 });
             }
@@ -305,7 +305,6 @@ public class RecordActivity extends AppCompatActivity {
                 iv.setMinimumWidth(endTime - startTime);
 
 
-
                 RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 layoutParams.setMargins(convertToDp(titleLength + startTime), convertToDp(20), 0, convertToDp(20));
@@ -342,8 +341,8 @@ public class RecordActivity extends AppCompatActivity {
         }));
     }
 
-    private int convertToDp(int size){
-         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, size, getResources().getDisplayMetrics());
+    private int convertToDp(int size) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, size, getResources().getDisplayMetrics());
     }
 
 }

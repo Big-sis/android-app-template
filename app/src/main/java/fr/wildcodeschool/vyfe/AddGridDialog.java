@@ -131,7 +131,7 @@ public class AddGridDialog {
                     ivColor.setBackgroundColor(Color.parseColor("#ffaaaaaa"));
 
                     //Fermer clavier après avoir rentré un tag
-                    InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(btnAddEvenement.getWindowToken(), 0);
 
                 }
