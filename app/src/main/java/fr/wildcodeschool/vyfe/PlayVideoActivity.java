@@ -1,8 +1,6 @@
 package fr.wildcodeschool.vyfe;
 
 import android.content.Intent;
-import android.support.annotation.DrawableRes;
-import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,18 +18,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
-import android.widget.Toast;
 import android.widget.VideoView;
 
-import com.bumptech.glide.load.engine.Resource;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -203,7 +194,7 @@ public class PlayVideoActivity extends AppCompatActivity {
                 timeline.addView(iv, layoutParams);
                 mMarge[0] += 30;
 
-                final HorizontalScrollView scrollView = findViewById(R.id.horizontalScrollView);
+                final HorizontalScrollView scrollView = findViewById(R.id.horizontal_scroll_view);
                 scrollView.post(new Runnable() {
                     public void run() {
                         scrollView.fullScroll(View.FOCUS_RIGHT);

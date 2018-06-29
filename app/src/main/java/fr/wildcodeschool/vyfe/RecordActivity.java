@@ -317,7 +317,7 @@ public class RecordActivity extends AppCompatActivity {
                 newTagList.get(nameTag).add(timePair);
 
                 //Scrool automatiquement suit l'ajout des tags
-                final HorizontalScrollView scrollView = findViewById(R.id.horizontalScrollView);
+                final HorizontalScrollView scrollView = findViewById(R.id.horizontal_scroll_view);
                 scrollView.post(new Runnable() {
                     public void run() {
                         scrollView.fullScroll(View.FOCUS_RIGHT);
