@@ -45,7 +45,6 @@ public class StartActivity extends AppCompatActivity {
 
     String mIdGridImport;
 
-
     public static final String TITLE_VIDEO = "titleVideo";
     public static final String ID_TAG_SET = "idTagSet";
 

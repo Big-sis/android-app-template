@@ -162,9 +162,17 @@ public class AddGridDialog {
             @Override
             public void onClick(View view) {
                 mSingletonTags.setmTagsList(mTagModelList);
+
+                Intent intent = activity.getIntent();
+                activity.finish();
+                activity.startActivity(intent);
+
                 alertDialog.cancel();
+
             }
         });
+
+
 
         return alertDialog;
     }
