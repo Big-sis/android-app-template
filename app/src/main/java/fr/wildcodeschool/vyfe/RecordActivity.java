@@ -99,7 +99,7 @@ public class RecordActivity extends AppCompatActivity {
                 chronometer.setBase(SystemClock.elapsedRealtime());
                 chronometer.start();
 
-                /*
+
                 mRecord.setImageResource(R.drawable.icons8_arr_ter_96);
                 recyclerTags.setAlpha(1);
 
@@ -116,17 +116,17 @@ public class RecordActivity extends AppCompatActivity {
                             }
                         });
                 FrameLayout preview = findViewById(R.id.video_view);
-                preview.addView(mPreview);*/
+                preview.addView(mPreview);
 
                 mRecord.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         chronometer.stop();
-                      /*  stopRecording();
+                       stopRecording();
                         recyclerTags.setAlpha(0.5f);
                         mRecord.setClickable(false);
                         btFinish.setVisibility(View.VISIBLE);
-                        mRecord.setAlpha(0.5f);*/
+                        mRecord.setAlpha(0.5f);
                     }
                 });
             }
@@ -306,7 +306,7 @@ public class RecordActivity extends AppCompatActivity {
 
 
 
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 layoutParams.setMargins(convertToDp(titleLength + startTime), convertToDp(20), 0, convertToDp(20));
                 RelativeLayout timeline = mTimelines.get(nameTag);
