@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -44,7 +45,6 @@ public class StartActivity extends AppCompatActivity {
 
     String mIdGridImport;
 
-
     public static final String TITLE_VIDEO = "titleVideo";
     public static final String ID_TAG_SET = "idTagSet";
 
@@ -59,7 +59,7 @@ public class StartActivity extends AppCompatActivity {
         Button buttonGo = findViewById(R.id.button_go);
         final Button buttonGoMulti = findViewById(R.id.button_go_multi);
         final ConstraintLayout share = findViewById(R.id.layout_share);
-        final FloatingActionButton fabAddMoment = findViewById(R.id.fab_add_moment);
+        final ImageView fabAddMoment = findViewById(R.id.fab_add_moment);
         final RecyclerView recyclerTagList = findViewById(R.id.recycler_view);
         final RecyclerView recyclerViewImport = findViewById(R.id.recycler_view_import);
         final RadioButton radioButtonImport = findViewById(R.id.radio_button_insert);
@@ -255,7 +255,12 @@ public class StartActivity extends AppCompatActivity {
                     });
                     MainActivity.mMulti = false;
                 } else {
-                    startActivity(intent);
+                    if (titleSession.isEmpty()) {
+                        Toast.makeText(StartActivity.this, "Veuillez renseigner un titre de vidéo", Toast.LENGTH_SHORT).show();
+                    } else {
+                        startActivity(intent);
+
+                    }
                 }
             }
         });
@@ -296,7 +301,7 @@ public class StartActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void importGrid(EditText titleGrid, FloatingActionButton fabAdd, Boolean bolean) {
+    public void importGrid(EditText titleGrid, ImageView fabAdd, Boolean bolean) {
         titleGrid.setClickable(bolean);
         titleGrid.setLongClickable(bolean);
         titleGrid.setEnabled(bolean);
