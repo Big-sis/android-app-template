@@ -1,13 +1,16 @@
 package fr.wildcodeschool.vyfe;
 
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.GridView;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -38,6 +41,13 @@ public class MyVideoActivity extends AppCompatActivity {
         final GridView gridView = findViewById(R.id.grid_videos);
         SearchView searchView = findViewById(R.id.search_video);
         String authUserId = SingletonFirebase.getInstance().getUid();
+        EditText searchText = searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
+        searchText.setTextColor(getResources().getColor(R.color.colorWhiteTwo));
+        searchText.setHintTextColor(getResources().getColor(R.color.colorWhiteTwo));
+        ImageView closeSearch = searchView.findViewById(android.support.v7.appcompat.R.id.search_close_btn);
+        closeSearch.setImageResource(android.R.drawable.ic_menu_close_clear_cancel);
+        ImageView search = searchView.findViewById(android.support.v7.appcompat.R.id.search_button);
+        search.setImageResource(android.R.drawable.ic_menu_search);
 
         DatabaseReference myRef = mDatabase.getReference(authUserId).child("sessions");
         myRef.keepSynced(true);
