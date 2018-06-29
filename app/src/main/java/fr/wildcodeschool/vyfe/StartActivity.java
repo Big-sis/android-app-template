@@ -15,6 +15,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -33,17 +34,18 @@ import java.util.HashMap;
 
 public class StartActivity extends AppCompatActivity {
 
-    SingletonTags mSingletonTags = SingletonTags.getInstance();
-    ArrayList<TagModel> mTagModelList = mSingletonTags.getmTagsList();
+    private SingletonTags mSingletonTags = SingletonTags.getInstance();
+    private ArrayList<TagModel> mTagModelList = mSingletonTags.getmTagsList();
 
-    SingletonTagsSets mSingletonTagsSets = SingletonTagsSets.getInstance();
-    ArrayList<TagSetsModel> mTagsSetsList = mSingletonTagsSets.getmTagsSetsList();
+    private SingletonTagsSets mSingletonTagsSets = SingletonTagsSets.getInstance();
+    private ArrayList<TagSetsModel> mTagsSetsList = mSingletonTagsSets.getmTagsSetsList();
 
-    FirebaseDatabase mdatabase = FirebaseDatabase.getInstance();
-    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private FirebaseDatabase mDatabase;
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-    String mIdGridImport;
-    String mNameGrid;
+    private String mIdGridImport;
+    private String mNameGrid;
+
 
     public static final String TITLE_VIDEO = "titleVideo";
     public static final String ID_TAG_SET = "idTagSet";
@@ -53,11 +55,13 @@ public class StartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
+        mDatabase = SingletonFirebase.getInstance().getDatabase();
+
         final Button buttonBack = findViewById(R.id.button_back);
         Button buttonGo = findViewById(R.id.button_go);
         final Button buttonGoMulti = findViewById(R.id.button_go_multi);
         final ConstraintLayout share = findViewById(R.id.layout_share);
-        final FloatingActionButton fabAddMoment = findViewById(R.id.fab_add_moment);
+        final ImageView fabAddMoment = findViewById(R.id.fab_add_moment);
         final RecyclerView recyclerTagList = findViewById(R.id.recycler_view);
         final RecyclerView recyclerViewImport = findViewById(R.id.recycler_view_import);
         final RadioButton radioButtonImport = findViewById(R.id.radio_button_insert);
@@ -70,12 +74,11 @@ public class StartActivity extends AppCompatActivity {
 
         final HashMap<String, String> hashMapTitleIdGrid = new HashMap<>();
 
-        final String authUserId = mAuth.getCurrentUser().getUid();
+        final String authUserId = SingletonFirebase.getInstance().getUid();
 
         if (MainActivity.mMulti) {
             buttonGo.setText(R.string.next);
         }
-
 
         final ArrayList<String> nameTagSet = new ArrayList<>();
 
@@ -97,7 +100,8 @@ public class StartActivity extends AppCompatActivity {
                     importGrid(etTagSet, fabAddMoment, false);
                 }
                 //recup données pour mettre spinner
-                DatabaseReference myRef = mdatabase.getReference(authUserId).child("tagSets");
+                DatabaseReference myRef = mDatabase.getReference(authUserId).child("tag_sets");
+                myRef.keepSynced(true);
                 myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -138,7 +142,8 @@ public class StartActivity extends AppCompatActivity {
 
                         if (mIdGridImport != null && !mIdGridImport.equals(R.string.import_grid)) {
                             //recup des tags
-                            DatabaseReference myRefTag = mdatabase.getReference(authUserId).child("tags");
+                            DatabaseReference myRefTag = mDatabase.getReference(authUserId).child("tags");
+                            myRefTag.keepSynced(true);
                             myRefTag.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -200,8 +205,10 @@ public class StartActivity extends AppCompatActivity {
                 intent.putExtra(TITLE_VIDEO, titleSession);
 
                 //Firebase TAGSET
-                DatabaseReference idTagSetRef = mdatabase.getReference(authUserId).child("tagSets").child("name");
-                String idTagSet = idTagSetRef.push().getKey();
+
+                DatabaseReference idTagSetRef = mDatabase.getReference(authUserId).child("tag_sets").child("name");
+                idTagSetRef.keepSynced(true);
+                final String idTagSet = idTagSetRef.push().getKey();
                 String titleTagSet = etTagSet.getText().toString();
                 if(radioButtonImport.isChecked()){
                     idTagSet = mIdGridImport;
@@ -211,8 +218,9 @@ public class StartActivity extends AppCompatActivity {
 
                 intent.putExtra(ID_TAG_SET, idTagSet);
 
-                DatabaseReference TagsSetRef = mdatabase.getReference(authUserId).child("tagSets").child(idTagSet).child("name");
-                TagsSetRef.setValue(titleTagSet);
+                DatabaseReference tagsSetRef = mDatabase.getReference(authUserId).child("tag_sets").child(idTagSet).child("name");
+                tagsSetRef.keepSynced(true);
+                tagsSetRef.setValue(titleTagSet);
                 mTagsSetsList.add(new TagSetsModel(idTagSet, titleTagSet));
                 mSingletonTagsSets.setmTagsSetsList(mTagsSetsList);
 
@@ -230,7 +238,8 @@ public class StartActivity extends AppCompatActivity {
                     String rigthOffset = "30";
                     String leftOffset = "60";
 
-                    DatabaseReference tagsRef = mdatabase.getReference(authUserId).child("tags");
+                    DatabaseReference tagsRef = mDatabase.getReference(authUserId).child("tags");
+                    tagsRef.keepSynced(true);
                     String idTag = tagsRef.push().getKey();
                     tagsRef.child(idTag).child("color").setValue(colorTag);
                     tagsRef.child(idTag).child("name").setValue(nameTag);
@@ -256,7 +265,12 @@ public class StartActivity extends AppCompatActivity {
                     });
                     MainActivity.mMulti = false;
                 } else {
-                    startActivity(intent);
+                    if (titleSession.isEmpty()) {
+                        Toast.makeText(StartActivity.this, "Veuillez renseigner un titre de vidéo", Toast.LENGTH_SHORT).show();
+                    } else {
+                        startActivity(intent);
+
+                    }
                 }
             }
         });
@@ -298,7 +312,7 @@ public class StartActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void importGrid(EditText titleGrid, FloatingActionButton fabAdd, Boolean bolean) {
+    public void importGrid(EditText titleGrid, ImageView fabAdd, Boolean bolean) {
         titleGrid.setClickable(bolean);
         titleGrid.setLongClickable(bolean);
         titleGrid.setEnabled(bolean);

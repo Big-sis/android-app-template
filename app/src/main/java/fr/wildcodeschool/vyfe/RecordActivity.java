@@ -44,9 +44,9 @@ public class RecordActivity extends AppCompatActivity {
     private Camera mCamera;
     private boolean mCamCondition = false;
     private FloatingActionButton mRecord;
-    FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+    FirebaseDatabase mDatabase;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    final String mAuthUserId = mAuth.getCurrentUser().getUid();
+    final String mAuthUserId = SingletonFirebase.getInstance().getUid();
     private static String mFileName = null;
     private MediaRecorder mRecorder = null;
     private CameraPreview mPreview;
@@ -57,13 +57,17 @@ public class RecordActivity extends AppCompatActivity {
 
     public static final String TITLE_VIDEO = "titleVideo";
     public final static String FILE_NAME = "filename";
+    public final static String ID_SESSION = "idSession";
     public static final String ID_TAG_SET = "idTagSet";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
         final Chronometer chronometer = findViewById(R.id.chronometer);
+
+        mDatabase = SingletonFirebase.getInstance().getDatabase();
 
         Date d = new Date();
         mFileName = getExternalCacheDir().getAbsolutePath();
@@ -117,16 +121,15 @@ public class RecordActivity extends AppCompatActivity {
                 FrameLayout preview = findViewById(R.id.video_view);
                 preview.addView(mPreview);
 
+
                 mRecord.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         chronometer.stop();
-
                         stopRecording();
                         mRecord.setClickable(false);
 
-
-                        //stopRecording();
+                      
                         sessionRecord.setVisibility(View.VISIBLE);
                         Date date = new Date();
                         Date newDate = new Date(date.getTime());
@@ -137,6 +140,7 @@ public class RecordActivity extends AppCompatActivity {
 
                         //Firebase SESSION
                         DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions");
+                        sessionRef.keepSynced(true);
                         String mIdSession = sessionRef.push().getKey();
                         sessionRef.child(mIdSession).child("name").setValue(titleSession);
                         sessionRef.child(mIdSession).child("author").setValue(mAuthUserId);
@@ -145,11 +149,11 @@ public class RecordActivity extends AppCompatActivity {
 
                         //FIREBASE TAGSSESSION
                         DatabaseReference tagsRef = mDatabase.getReference(mAuthUserId).child("tagsSession");
+                        tagsRef.keepSynced(true);
                         String idTag = tagsRef.push().getKey();
                         tagsRef.child(idTag).child("fkSession").setValue(mIdSession);
                         tagsRef.child(idTag).child("fkTagSet").setValue(idTagSet);
                         tagsRef.child(idTag).child("fkTagSet").child(idTagSet).setValue(newTagList);
-
                     }
                 });
             }
@@ -272,7 +276,6 @@ public class RecordActivity extends AppCompatActivity {
                 if (!newTagList.containsKey(nameTag)) {
                     ArrayList<Pair<Integer, Integer>> rTagList = new ArrayList<>();
                     newTagList.put(nameTag, rTagList);
-
                     isFirstTitle = true;
                 }
 
@@ -323,7 +326,6 @@ public class RecordActivity extends AppCompatActivity {
                         scrollView.fullScroll(View.FOCUS_RIGHT);
                     }
                 });
-
             }
 
             @Override
@@ -336,5 +338,6 @@ public class RecordActivity extends AppCompatActivity {
     private int convertToDp(int size) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, size, getResources().getDisplayMetrics());
     }
+
 
 }

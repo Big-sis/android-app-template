@@ -65,18 +65,19 @@ public class ConnexionActivity extends AppCompatActivity {
                                 if (!task.isSuccessful()) {
                                     Toast.makeText(ConnexionActivity.this, R.string.bad_authentifiaction, Toast.LENGTH_SHORT).show();
                                 } else {
+                                    SingletonFirebase.getInstance().logUser(auth.getCurrentUser().getUid());
                                     Intent intent = new Intent(ConnexionActivity.this, MainActivity.class);
                                     startActivity(intent);
                                     finish();
                                 }
                             }
                         });
-                Intent intent = new Intent(ConnexionActivity.this, MainActivity.class);
-                startActivity(intent);
+
             }
         });
 
         if (auth.getCurrentUser() != null) {
+            SingletonFirebase.getInstance().logUser(auth.getCurrentUser().getUid());
             Intent intent = new Intent(ConnexionActivity.this, MainActivity.class);
             startActivity(intent);
             finish();

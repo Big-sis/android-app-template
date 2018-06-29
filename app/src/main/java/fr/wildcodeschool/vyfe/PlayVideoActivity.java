@@ -1,6 +1,8 @@
 package fr.wildcodeschool.vyfe;
 
 import android.content.Intent;
+import android.support.annotation.DrawableRes;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,11 +20,18 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
+import android.widget.Toast;
 import android.widget.VideoView;
 
+import com.bumptech.glide.load.engine.Resource;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -40,7 +49,7 @@ public class PlayVideoActivity extends AppCompatActivity {
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     final String mAuthUserId = mAuth.getCurrentUser().getUid();
     HashMap<String, LinearLayout> mTimelines = new HashMap<>();
-    final int[] mMarge = {0};
+
 
     public static final String TITLE_VIDEO = "titleVideo";
     public static final String FILE_NAME = "filename";
@@ -162,52 +171,9 @@ public class PlayVideoActivity extends AppCompatActivity {
         timeLines.setLayoutParams(new FrameLayout.LayoutParams(width, LinearLayout.LayoutParams.WRAP_CONTENT));
         mSeekBar.setLayoutParams(new RelativeLayout.LayoutParams(width, LinearLayout.LayoutParams.MATCH_PARENT));
 
-        initTimeline(mTagModels ,rvTags);
     }
 
-    private void initTimeline(final ArrayList<TagModel> listTag, RecyclerView rv) {
 
-        LinearLayout llMain = findViewById(R.id.ll_main_playvideo);
-        for (TagModel tagModel : listTag) {
-            //TODO: empecher la repetition de nom pour les tags
-            String name = tagModel.getName();
-            //Ajout d'un Linear pour un tag
-            final LinearLayout timeline = new LinearLayout(PlayVideoActivity.this);
-            timeline.setBackgroundResource(R.drawable.style_input);
-            llMain.addView(timeline);
-            mTimelines.put(name, timeline);
-
-        }
-
-        rv.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(),
-                rv, new RecyclerTouchListener.ClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-
-                ImageView iv = new ImageView(PlayVideoActivity.this);
-                //TODO: associer à l'image la couleur du tag
-                iv.setBackgroundResource(R.drawable.ico);
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                layoutParams.setMargins(mMarge[0], 0, 0, 0);
-                LinearLayout timeline = mTimelines.get(listTag.get(position).getName());
-                timeline.addView(iv, layoutParams);
-                mMarge[0] += 30;
-
-                final HorizontalScrollView scrollView = findViewById(R.id.horizontal_scroll_view);
-                scrollView.post(new Runnable() {
-                    public void run() {
-                        scrollView.fullScroll(View.FOCUS_RIGHT);
-                    }
-                });
-            }
-
-            @Override
-            public void onLongClick(View view, int position) {
-
-            }
-        }));
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

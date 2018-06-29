@@ -211,13 +211,12 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/recycler_view">
 
-                            <android.support.design.widget.FloatingActionButton
+                            <ImageView
                                 android:id="@+id/fab_add_moment"
                                 android:layout_width="40dp"
                                 android:layout_height="40dp"
                                 android:clickable="true"
-                                android:src="@android:drawable/ic_input_add"
-                                app:backgroundTint="@color/colorWhiteTwo"
+                                android:src="@drawable/icons8_plus_96"
                                 app:layout_constraintStart_toStartOf="parent"
                                 app:layout_constraintTop_toBottomOf="@+id/recycler_view" />
 
