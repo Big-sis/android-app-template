@@ -39,7 +39,7 @@ public class StartActivity extends AppCompatActivity {
     SingletonTagsSets mSingletonTagsSets = SingletonTagsSets.getInstance();
     ArrayList<TagSetsModel> mTagsSetsList = mSingletonTagsSets.getmTagsSetsList();
 
-    FirebaseDatabase mdatabase = FirebaseDatabase.getInstance();
+    FirebaseDatabase mDatabase;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     String mIdGridImport;
@@ -52,6 +52,8 @@ public class StartActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
+
+        mDatabase = SingletonFirebase.getInstance().getDatabase();
 
         final Button buttonBack = findViewById(R.id.button_back);
         Button buttonGo = findViewById(R.id.button_go);
@@ -70,12 +72,11 @@ public class StartActivity extends AppCompatActivity {
 
         final HashMap<String, String> hashMapTitleIdGrid = new HashMap<>();
 
-        final String authUserId = mAuth.getCurrentUser().getUid();
+        final String authUserId = SingletonFirebase.getInstance().getUid();
 
         if (MainActivity.mMulti) {
             buttonGo.setText(R.string.next);
         }
-
 
         final ArrayList<String> nameTagSet = new ArrayList<>();
 
@@ -97,7 +98,8 @@ public class StartActivity extends AppCompatActivity {
                     importGrid(etTagSet, fabAddMoment, false);
                 }
                 //recup données pour mettre spinner
-                DatabaseReference myRef = mdatabase.getReference(authUserId).child("tag_sets");
+                DatabaseReference myRef = mDatabase.getReference(authUserId).child("tag_sets");
+                myRef.keepSynced(true);
                 myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -137,7 +139,8 @@ public class StartActivity extends AppCompatActivity {
 
                         if (mIdGridImport != null && !mIdGridImport.equals(R.string.import_grid)) {
                             //recup des tags
-                            DatabaseReference myRefTag = mdatabase.getReference(authUserId).child("tags");
+                            DatabaseReference myRefTag = mDatabase.getReference(authUserId).child("tags");
+                            myRefTag.keepSynced(true);
                             myRefTag.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -199,13 +202,15 @@ public class StartActivity extends AppCompatActivity {
                 intent.putExtra(TITLE_VIDEO, titleSession);
 
                 //Firebase TAGSET
-                DatabaseReference idTagSetRef = mdatabase.getReference(authUserId).child("tag_sets").child("name");
+                DatabaseReference idTagSetRef = mDatabase.getReference(authUserId).child("tag_sets").child("name");
+                idTagSetRef.keepSynced(true);
                 final String idTagSet = idTagSetRef.push().getKey();
                 String titleTagSet = etTagSet.getText().toString();
                 intent.putExtra(ID_TAG_SET, idTagSet);
 
-                DatabaseReference TagsSetRef = mdatabase.getReference(authUserId).child("tag_sets").child(idTagSet).child("name");
-                TagsSetRef.setValue(titleTagSet);
+                DatabaseReference tagsSetRef = mDatabase.getReference(authUserId).child("tag_sets").child(idTagSet).child("name");
+                tagsSetRef.keepSynced(true);
+                tagsSetRef.setValue(titleTagSet);
                 mTagsSetsList.add(new TagSetsModel(idTagSet, titleTagSet));
                 mSingletonTagsSets.setmTagsSetsList(mTagsSetsList);
 
@@ -223,7 +228,8 @@ public class StartActivity extends AppCompatActivity {
                     String rigthOffset = "30";
                     String leftOffset = "60";
 
-                    DatabaseReference tagsRef = mdatabase.getReference(authUserId).child("tags");
+                    DatabaseReference tagsRef = mDatabase.getReference(authUserId).child("tags");
+                    tagsRef.keepSynced(true);
                     String idTag = tagsRef.push().getKey();
                     tagsRef.child(idTag).child("color").setValue(colorTag);
                     tagsRef.child(idTag).child("name").setValue(nameTag);
