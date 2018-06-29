@@ -8,6 +8,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -26,6 +27,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
 
+import petrov.kristiyan.colorpicker.ColorPicker;
+
 public class AddGridDialog {
 
     private static int mfinalcolor = 0;
@@ -35,10 +38,10 @@ public class AddGridDialog {
     private static ArrayList<String> colors = new ArrayList<>();
     private static ImageView ivColor;
 
-    public static Dialog openCreateTags(final Context context) {
+    public static Dialog openCreateTags(final AppCompatActivity activity) {
 
 
-        final LayoutInflater inflater = LayoutInflater.from(context);
+        final LayoutInflater inflater = LayoutInflater.from(activity);
         final View subView = inflater.inflate(R.layout.activity_add_grid, null);
 
         final EditText etName = subView.findViewById(R.id.et_name);
@@ -64,14 +67,14 @@ public class AddGridDialog {
         btnChooseColor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //final ColorPicker colorPicker = new ColorPicker(StartActivity.this);
+                final ColorPicker colorPicker = new ColorPicker(activity);
 
-/*
+
 
                 colorPicker.setColors(colors);
                 colorPicker.setColumns(4);
                 colorPicker.setRoundColorButton(true);
-                colorPicker.setTitle(context.getString(R.string.choose_color));
+                colorPicker.setTitle(activity.getString(R.string.choose_color));
                 colorPicker.setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
                     @Override
                     public void onChooseColor(int position, int color) {
@@ -88,7 +91,7 @@ public class AddGridDialog {
                 });
                 colorPicker.show();
 
-*/
+
             }
 
         });
@@ -96,7 +99,7 @@ public class AddGridDialog {
         chooseColor();
 
         // Elements du recycler
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false);
         recyclerTagList.setLayoutManager(layoutManager);
         recyclerTagList.setHasFixedSize(true);
         recyclerTagList.setItemAnimator(new DefaultItemAnimator());
@@ -113,7 +116,7 @@ public class AddGridDialog {
             public void onClick(View view) {
                 String valueName = etName.getText().toString();
                 if (valueName.equals("") || mfinalcolor == 0) {
-                    Toast.makeText(context, R.string.def_colot, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, R.string.def_colot, Toast.LENGTH_SHORT).show();
                 } else {
                     TagModel tagModel = new TagModel(mfinalcolor, valueName, null, null);
                     mTagModelList.add(tagModel);
@@ -123,7 +126,8 @@ public class AddGridDialog {
                     ivColor.setBackgroundColor(Color.parseColor("#ffaaaaaa"));
 
                     //Fermer clavier après avoir rentré un tag
-                    InputMethodManager imm = (InputMethodManager) context.getSystemService(Context.INPUT_METHOD_SERVICE);
+
+                    InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(btnAddEvenement.getWindowToken(), 0);
 
                     chooseColor();
@@ -135,7 +139,7 @@ public class AddGridDialog {
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                Toast.makeText(context, R.string.move, Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, R.string.move, Toast.LENGTH_SHORT).show();
                 moveItem(viewHolder.getAdapterPosition(), target.getAdapterPosition());
                 return true;
             }
@@ -143,13 +147,13 @@ public class AddGridDialog {
             @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 deleteItem(viewHolder.getAdapterPosition());
-                Toast.makeText(context, R.string.delete_tag, Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity, R.string.delete_tag, Toast.LENGTH_SHORT).show();
             }
         });
         itemTouchHelper.attachToRecyclerView(recyclerTagList);
 
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
         builder.setView(subView);
         final AlertDialog alertDialog = builder.create();
         alertDialog.show();
@@ -159,9 +163,17 @@ public class AddGridDialog {
             @Override
             public void onClick(View view) {
                 mSingletonTags.setmTagsList(mTagModelList);
+
+                Intent intent = activity.getIntent();
+                activity.finish();
+                activity.startActivity(intent);
+
                 alertDialog.cancel();
+
             }
         });
+
+
 
         return alertDialog;
     }

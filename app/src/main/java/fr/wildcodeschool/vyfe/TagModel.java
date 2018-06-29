@@ -6,6 +6,8 @@ public class TagModel {
     private String name;
     private String fkTagSet;
     private String rigthOffset;
+    private int start;
+    private int end;
     private int time = 0;
     private String leftOffset;
 
@@ -17,6 +19,15 @@ public class TagModel {
         this.rigthOffset = rigthOffset;
     }
 
+    public TagModel(int color, String name, String fkTagSet, int start, int end) {
+        this.color = color;
+        this.name = name;
+        this.fkTagSet = fkTagSet;
+        this.start = start;
+        this.end = end;
+    }
+
+    public TagModel() {
     public TagModel(TagModel tagModel) {
     }
 
@@ -60,6 +71,20 @@ public class TagModel {
         this.rigthOffset = rigthOffset;
     }
 
+    public int getStart() {
+        return start;
+    }
+
+    public void setStart(int start) {
+        this.start = start;
+    }
+
+    public int getEnd() {
+        return end;
+    }
+
+    public void setEnd(int end) {
+        this.end = end;
     public String getLeftOffset() {
         return leftOffset;
     }
