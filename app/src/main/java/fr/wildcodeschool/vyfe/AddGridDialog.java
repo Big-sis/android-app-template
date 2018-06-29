@@ -190,8 +190,8 @@ public class AddGridDialog {
     }
 
     public static void deleteItem(final int position) {
-        mTagModelList.remove(position);
-        mAdapter.notifyItemRemoved(position);
 
+        mAdapter.notifyItemRemoved(position);
+        mSingletonTags.setmTagsList(mTagModelList);
     }
 }

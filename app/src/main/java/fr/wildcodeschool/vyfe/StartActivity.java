@@ -33,6 +33,8 @@ import java.util.HashMap;
 
 public class StartActivity extends AppCompatActivity {
 
+
+
     SingletonTags mSingletonTags = SingletonTags.getInstance();
     ArrayList<TagModel> mTagModelList = mSingletonTags.getmTagsList();
 
@@ -43,6 +45,8 @@ public class StartActivity extends AppCompatActivity {
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
     String mIdGridImport;
+
+    public boolean mAddTag = false;
 
 
     public static final String TITLE_VIDEO = "titleVideo";
@@ -259,6 +263,7 @@ public class StartActivity extends AppCompatActivity {
         recyclerTagList.setLayoutManager(layoutManager);
         final TagRecyclerAdapter adapter = new TagRecyclerAdapter(mTagModelList, "start");
         recyclerTagList.setAdapter(adapter);
+
 
         if (mTagModelList.size() != 0) {
             tvAddTag.setText(R.string.edit_tags);
