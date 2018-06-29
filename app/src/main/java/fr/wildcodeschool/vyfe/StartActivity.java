@@ -34,16 +34,18 @@ import java.util.HashMap;
 
 public class StartActivity extends AppCompatActivity {
 
-    SingletonTags mSingletonTags = SingletonTags.getInstance();
-    ArrayList<TagModel> mTagModelList = mSingletonTags.getmTagsList();
+    private SingletonTags mSingletonTags = SingletonTags.getInstance();
+    private ArrayList<TagModel> mTagModelList = mSingletonTags.getmTagsList();
 
-    SingletonTagsSets mSingletonTagsSets = SingletonTagsSets.getInstance();
-    ArrayList<TagSetsModel> mTagsSetsList = mSingletonTagsSets.getmTagsSetsList();
+    private SingletonTagsSets mSingletonTagsSets = SingletonTagsSets.getInstance();
+    private ArrayList<TagSetsModel> mTagsSetsList = mSingletonTagsSets.getmTagsSetsList();
 
-    FirebaseDatabase mDatabase;
-    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private FirebaseDatabase mDatabase;
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-    String mIdGridImport;
+    private String mIdGridImport;
+    private String mNameGrid;
+
 
     public static final String TITLE_VIDEO = "titleVideo";
     public static final String ID_TAG_SET = "idTagSet";
@@ -110,10 +112,10 @@ public class StartActivity extends AppCompatActivity {
                             nameTagSet.add(getString(R.string.import_grid));
 
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                String nameGrid = (String) snapshot.child("name").getValue().toString();
+                                mNameGrid = (String) snapshot.child("name").getValue().toString();
                                 String idGrid = (String) snapshot.getKey().toString();
-                                hashMapTitleIdGrid.put(nameGrid, idGrid);
-                                nameTagSet.add(nameGrid);
+                                hashMapTitleIdGrid.put(mNameGrid, idGrid);
+                                nameTagSet.add(mNameGrid);
                             }
                             adapterSpinner.notifyDataSetChanged();
                         }
@@ -131,6 +133,7 @@ public class StartActivity extends AppCompatActivity {
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                         String titlenameTagSetImport = nameTagSet.get(i);
                         mIdGridImport = hashMapTitleIdGrid.get(titlenameTagSetImport);
+
 
                         RecyclerView.LayoutManager layoutManagerImport = new LinearLayoutManager(StartActivity.this, LinearLayoutManager.VERTICAL, false);
                         recyclerViewImport.setLayoutManager(layoutManagerImport);
@@ -202,10 +205,17 @@ public class StartActivity extends AppCompatActivity {
                 intent.putExtra(TITLE_VIDEO, titleSession);
 
                 //Firebase TAGSET
+
                 DatabaseReference idTagSetRef = mDatabase.getReference(authUserId).child("tag_sets").child("name");
                 idTagSetRef.keepSynced(true);
                 final String idTagSet = idTagSetRef.push().getKey();
                 String titleTagSet = etTagSet.getText().toString();
+                if(radioButtonImport.isChecked()){
+                    idTagSet = mIdGridImport;
+                    titleTagSet = mNameGrid;
+
+                }
+
                 intent.putExtra(ID_TAG_SET, idTagSet);
 
                 DatabaseReference tagsSetRef = mDatabase.getReference(authUserId).child("tag_sets").child(idTagSet).child("name");
@@ -270,6 +280,7 @@ public class StartActivity extends AppCompatActivity {
         recyclerTagList.setLayoutManager(layoutManager);
         final TagRecyclerAdapter adapter = new TagRecyclerAdapter(mTagModelList, "start");
         recyclerTagList.setAdapter(adapter);
+
 
         if (mTagModelList.size() != 0) {
             tvAddTag.setText(R.string.edit_tags);

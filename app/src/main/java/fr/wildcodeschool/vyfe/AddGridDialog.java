@@ -126,6 +126,7 @@ public class AddGridDialog {
                     ivColor.setBackgroundColor(Color.parseColor("#ffaaaaaa"));
 
                     //Fermer clavier après avoir rentré un tag
+
                     InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(btnAddEvenement.getWindowToken(), 0);
 
@@ -193,9 +194,9 @@ public class AddGridDialog {
     }
 
     public static void deleteItem(final int position) {
-        mTagModelList.remove(position);
-        mAdapter.notifyItemRemoved(position);
 
+        mAdapter.notifyItemRemoved(position);
+        mSingletonTags.setmTagsList(mTagModelList);
     }
 
     public static void chooseColor() {
