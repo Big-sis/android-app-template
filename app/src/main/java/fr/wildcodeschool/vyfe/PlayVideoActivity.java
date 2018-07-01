@@ -1,6 +1,7 @@
 package fr.wildcodeschool.vyfe;
 
 import android.nfc.Tag;
+import android.os.SystemClock;
 import android.provider.ContactsContract;
 import android.content.Intent;
 import android.support.annotation.DrawableRes;
@@ -18,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Chronometer;
 import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
@@ -42,6 +44,7 @@ import java.util.Map;
 
 public class PlayVideoActivity extends AppCompatActivity {
 
+    private ArrayList<TagModel> mTagegList = new ArrayList<>();
     private ArrayList<TagModel> mTagModels = new ArrayList<>();
     private VideoView mVideoSelected;
     private SeekBar mSeekBar;
@@ -57,8 +60,11 @@ public class PlayVideoActivity extends AppCompatActivity {
     HashMap<String, LinearLayout> mTimelines = new HashMap<>();
     HashMap<String, ArrayList<Pair<Integer, Integer>>> mTagList = new HashMap<>();
     HashMap<String, ArrayList<TagModel>> mTagModelsList = new HashMap<>();
+    TagRecyclerAdapter mAdapterTags = new TagRecyclerAdapter(mTagegList, "count");
 
-    final int[] mMarge = {0};
+
+    SeekbarAsync mAsync;
+    long timeWhenStopped = 0;
 
     public static final String TITLE_VIDEO = "titleVideo";
     public static final String FILE_NAME = "filename";
@@ -67,12 +73,17 @@ public class PlayVideoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_video);
+        final Chronometer chrono = findViewById(R.id.chronometer_play);
 
         final String titleSession = getIntent().getStringExtra(TITLE_VIDEO);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(titleSession);
+
+        final RecyclerView rvTags = findViewById(R.id.re_tags_selected);
+        RecyclerView.LayoutManager layoutManagerTags = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        rvTags.setLayoutManager(layoutManagerTags);
 
 
          mIdSession = getIntent().getStringExtra("idSession");
@@ -101,24 +112,6 @@ public class PlayVideoActivity extends AppCompatActivity {
         String URL = "http://clips.vorwaerts-gmbh.de/VfE_html5.mp4";
 
 
-        mTagModels.add(new TagModel(-3318101, "nameTest1", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest2", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest3", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest4", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest5", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest6", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest7", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest8", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest9", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest10", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest11", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest12", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest13", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest14", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest15", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest16", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest17", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest18", null, null));
 
 
         final DatabaseReference tagsSessionRef = mDatabase.getReference(mAuthUserId).child("tagsSession");
@@ -136,9 +129,12 @@ public class PlayVideoActivity extends AppCompatActivity {
                         fkTagSet.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
+                                mTagList.clear();
                                for (DataSnapshot fkTagSetSnapshot : dataSnapshot.getChildren()) {
-                                    mTagModels = (ArrayList<TagModel>) fkTagSetSnapshot.getValue();
+                                   mTagegList = (ArrayList<TagModel>) fkTagSetSnapshot.getValue();
+                                   rvTags.setAdapter(mAdapterTags);
                                 }
+                                mAdapterTags.notifyDataSetChanged();
                             }
 
                             @Override
@@ -156,19 +152,12 @@ public class PlayVideoActivity extends AppCompatActivity {
             }
         });
 
-        Toast.makeText(this, mTagModels.get(0).getName(), Toast.LENGTH_LONG).show();
-        Log.i("mTagModels : ", mTagModels.toString());
 
 
-        RecyclerView rvTags = findViewById(R.id.re_tags_selected);
-
-        RecyclerView.LayoutManager layoutManagerTags = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-
-        rvTags.setLayoutManager(layoutManagerTags);
 
 
-        final TagRecyclerAdapter adapterTags = new TagRecyclerAdapter(mTagModels, "record");
-        rvTags.setAdapter(adapterTags);
+
+
 
         mSeekBar = findViewById(R.id.seek_bar_selected);
 
@@ -192,27 +181,56 @@ public class PlayVideoActivity extends AppCompatActivity {
         // mVideoSelected.setVideoPath(fileName);
         final FloatingActionButton fbPlay = findViewById(R.id.bt_play_selected);
 
-        final SeekbarAsync async = new SeekbarAsync(mSeekBar, mVideoSelected);
 
         fbPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mIsPlayed) {
                     mVideoSelected.pause();
+                    timeWhenStopped = chrono.getBase() - SystemClock.elapsedRealtime();
+                    chrono.stop();
                     mIsPlayed = false;
+                    fbPlay.setBackgroundResource(R.color.colorLightGreenishBlue);
                     fbPlay.setImageResource(android.R.drawable.ic_media_play);
 
                 } else if (mFirstPlay) {
-                    async.execute();
                     mFirstPlay = false;
                     mIsPlayed = true;
+                    mAsync = new SeekbarAsync(mSeekBar, mVideoSelected);
+                    mAsync.execute();
+                    chrono.setBase(SystemClock.elapsedRealtime());
+                    chrono.start();
+                    fbPlay.setBackgroundResource(R.color.colorFadedOrange);
                     fbPlay.setImageResource(android.R.drawable.ic_media_pause);
+
 
                 } else {
                     mVideoSelected.start();
+                    chrono.setBase(SystemClock.elapsedRealtime() + timeWhenStopped);
+                    chrono.start();
                     mIsPlayed = true;
+                    fbPlay.setBackgroundResource(R.color.colorFadedOrange);
                     fbPlay.setImageResource(android.R.drawable.ic_media_pause);
                 }
+            }
+        });
+
+        FloatingActionButton btReplay = findViewById(R.id.bt_replay);
+        btReplay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mFirstPlay = false;
+                mIsPlayed = true;
+                mVideoSelected.seekTo(0);
+                mSeekBar.setProgress(0);
+                mAsync = new SeekbarAsync(mSeekBar, mVideoSelected);
+                mAsync.execute();
+                mVideoSelected.start();
+                chrono.setBase(0);
+                chrono.setBase(SystemClock.elapsedRealtime());
+                chrono.start();
+                fbPlay.setBackgroundResource(R.color.colorFadedOrange);
+                fbPlay.setImageResource(android.R.drawable.ic_media_pause);
             }
         });
 

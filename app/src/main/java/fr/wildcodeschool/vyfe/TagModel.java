@@ -1,5 +1,10 @@
 package fr.wildcodeschool.vyfe;
 
+import android.graphics.Paint;
+import android.util.Pair;
+
+import java.util.ArrayList;
+
 public class TagModel {
 
     private int color;
@@ -8,9 +13,15 @@ public class TagModel {
     private String rigthOffset;
     private int start;
     private int end;
-    private int time = 0;
     private String leftOffset;
+    private ArrayList<Pair<Integer, Integer>> timesList;
 
+
+    public TagModel(int color, String name, ArrayList<Pair<Integer, Integer>> timesList) {
+        this.color = color;
+        this.name = name;
+        this.timesList = timesList;
+    }
 
     public TagModel(int color, String name, String fkTagSet, String rigthOffset) {
         this.color = color;
@@ -88,6 +99,14 @@ public class TagModel {
 
     public void setLeftOffset(String leftOffset) {
         this.leftOffset = leftOffset;
+    }
+
+    public ArrayList<Pair<Integer, Integer>> getTimesList() {
+        return timesList;
+    }
+
+    public void setTimesList(ArrayList<Pair<Integer, Integer>> timesList) {
+        this.timesList = timesList;
     }
 }
 
