@@ -28,7 +28,6 @@ public class TagModel {
     }
 
     public TagModel() {
-    public TagModel(TagModel tagModel) {
     }
 
     public TagModel(int color, String name, String fkTagSet, String rigthOffset, String leftOffset) {
@@ -85,8 +84,6 @@ public class TagModel {
 
     public void setEnd(int end) {
         this.end = end;
-    public String getLeftOffset() {
-        return leftOffset;
     }
 
     public void setLeftOffset(String leftOffset) {

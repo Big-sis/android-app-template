@@ -1,5 +1,6 @@
 package fr.wildcodeschool.vyfe;
 
+import android.nfc.Tag;
 import android.provider.ContactsContract;
 import android.content.Intent;
 import android.support.annotation.DrawableRes;
@@ -48,12 +49,14 @@ public class PlayVideoActivity extends AppCompatActivity {
     private boolean mFirstPlay = true;
     private String mIdSession;
     private String mVideoLink;
+    private String mIdTagSession;
     private SessionsModel mSessionModel;
     FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     final String mAuthUserId = mAuth.getCurrentUser().getUid();
     HashMap<String, LinearLayout> mTimelines = new HashMap<>();
     HashMap<String, ArrayList<Pair<Integer, Integer>>> mTagList = new HashMap<>();
+    HashMap<String, ArrayList<TagModel>> mTagModelsList = new HashMap<>();
 
     final int[] mMarge = {0};
 
@@ -72,29 +75,31 @@ public class PlayVideoActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(titleSession);
 
 
-        // mIdSession = getIntent().getStringExtra("idSession");
+         mIdSession = getIntent().getStringExtra("idSession");
 
 
         // NE PAS SUPPRIMER POUR LE MOMENT
         // Test de récupération du lien avec données en dur :
-        mIdSession = "-LFw9OH4TpHhciKB2wRi";
+       // mIdSession = "-LFw9OH4TpHhciKB2wRi";
 
+        mVideoSelected = findViewById(R.id.video_view_selected);
 
-        final DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions").child(mIdSession).child("videoLink");
-   /*     sessionRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        final DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions").child(mIdSession);
+        sessionRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                mVideoLink = dataSnapshot.getValue().toString();
+                String idSession = dataSnapshot.child("idSession").getValue(String.class);
+                mVideoLink = dataSnapshot.child("videoLink").getValue(String.class);
+                mVideoSelected.setVideoPath(mVideoLink);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
-        });*/
+        });
 
         // Lien video en dur pour tester
         String URL = "http://clips.vorwaerts-gmbh.de/VfE_html5.mp4";
-        mVideoSelected = findViewById(R.id.video_view_selected);
-        mVideoSelected.setVideoPath(URL);
+
 
         mTagModels.add(new TagModel(-3318101, "nameTest1", null, null));
         mTagModels.add(new TagModel(-3318101, "nameTest2", null, null));
@@ -124,17 +129,15 @@ public class PlayVideoActivity extends AppCompatActivity {
                     Toast.makeText(PlayVideoActivity.this, "Vous n'avez pas de tags enregistrés", Toast.LENGTH_SHORT).show();
                 }
                 for (DataSnapshot tagsSessionSnapshot : dataSnapshot.getChildren()) {
-
                     String fkSession = tagsSessionSnapshot.child("fkSession").getValue().toString();
                     if (fkSession.equals(mIdSession)) {
-                        String idTagSession = tagsSessionSnapshot.getKey();
-                        final DatabaseReference fkTagSet = mDatabase.getReference(mAuthUserId).child("tagsSession").child(idTagSession).child("fkTagSet");
+                        mIdTagSession = tagsSessionSnapshot.getKey();
+                        final DatabaseReference fkTagSet = mDatabase.getReference(mAuthUserId).child("tagsSession").child(mIdTagSession).child("fkTagSet");
                         fkTagSet.addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                for (DataSnapshot fkTagSetSnapshot : dataSnapshot.getChildren()) {
-                                    mTagList = (HashMap<String, ArrayList<Pair<Integer, Integer>>>) fkTagSetSnapshot.getValue();
-                                    Log.e("TAG", mTagList.toString());
+                               for (DataSnapshot fkTagSetSnapshot : dataSnapshot.getChildren()) {
+                                    mTagModels = (ArrayList<TagModel>) fkTagSetSnapshot.getValue();
                                 }
                             }
 
@@ -152,6 +155,9 @@ public class PlayVideoActivity extends AppCompatActivity {
 
             }
         });
+
+        Toast.makeText(this, mTagModels.get(0).getName(), Toast.LENGTH_LONG).show();
+        Log.i("mTagModels : ", mTagModels.toString());
 
 
         RecyclerView rvTags = findViewById(R.id.re_tags_selected);
@@ -220,51 +226,8 @@ public class PlayVideoActivity extends AppCompatActivity {
         timeLines.setLayoutParams(new FrameLayout.LayoutParams(width, LinearLayout.LayoutParams.WRAP_CONTENT));
         mSeekBar.setLayoutParams(new RelativeLayout.LayoutParams(width, LinearLayout.LayoutParams.MATCH_PARENT));
 
-        initTimeline(mTagModels, rvTags);
     }
 
-    private void initTimeline(final ArrayList<TagModel> listTag, RecyclerView rv) {
-
-        LinearLayout llMain = findViewById(R.id.ll_main_playvideo);
-        for (TagModel tagModel : listTag) {
-            //TODO: empecher la repetition de nom pour les tags
-            String name = tagModel.getName();
-            //Ajout d'un Linear pour un tag
-            final LinearLayout timeline = new LinearLayout(PlayVideoActivity.this);
-            timeline.setBackgroundResource(R.drawable.style_input);
-            llMain.addView(timeline);
-            mTimelines.put(name, timeline);
-        }
-
-        rv.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(),
-                rv, new RecyclerTouchListener.ClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-
-                ImageView iv = new ImageView(PlayVideoActivity.this);
-                //TODO: associer à l'image la couleur du tag
-                iv.setBackgroundResource(R.drawable.ico);
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                layoutParams.setMargins(mMarge[0], 0, 0, 0);
-                LinearLayout timeline = mTimelines.get(listTag.get(position).getName());
-                timeline.addView(iv, layoutParams);
-                mMarge[0] += 30;
-
-               /* final HorizontalScrollView scrollView = findViewById(R.id.horizontalScrollView);
-                scrollView.post(new Runnable() {
-                    public void run() {
-                        scrollView.fullScroll(View.FOCUS_RIGHT);
-                    }
-                });*/
-            }
-
-            @Override
-            public void onLongClick(View view, int position) {
-
-            }
-        }));
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
