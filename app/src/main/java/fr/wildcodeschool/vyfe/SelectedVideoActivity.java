@@ -126,7 +126,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
         btnApi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                postNewComment(SelectedVideoActivity.this, fileName);
+               // preparation pour future api: postNewComment(SelectedVideoActivity.this, fileName);
             }
         });
 

@@ -195,7 +195,6 @@ public class StartActivity extends AppCompatActivity {
                     }
                 });
 
-
             }
         });
 
@@ -218,9 +217,6 @@ public class StartActivity extends AppCompatActivity {
                 }
             }
         });
-
-
-        //TODO: en fct du radio button selectionner envoyer telles ou telles arraylist
 
         buttonGo.setOnClickListener(new View.OnClickListener() {
             @Override
