@@ -50,6 +50,14 @@
                         app:layout_constraintStart_toStartOf="@id/vv_preview"
                         app:layout_constraintTop_toTopOf="@+id/vv_preview"
                         app:srcCompat="@drawable/icons8_lecture_de_youtube_100"/>
+
+                    <Button
+                        android:id="@+id/btn_api"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="API"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
                 </android.support.constraint.ConstraintLayout>
 
 
