@@ -58,6 +58,7 @@ public class MyVideoActivity extends AppCompatActivity {
                     Toast.makeText(MyVideoActivity.this, R.string.havent_video, Toast.LENGTH_LONG).show();
                 }
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+
                     SessionsModel sessionsModel = snapshot.getValue(SessionsModel.class);
                     mSessionsModelList.add(sessionsModel);
                 }

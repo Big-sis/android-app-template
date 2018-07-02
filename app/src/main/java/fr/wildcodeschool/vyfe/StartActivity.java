@@ -97,7 +97,7 @@ public class StartActivity extends AppCompatActivity {
                     importGrid(etTagSet, fabAddMoment, false);
                 }
                 //recup données pour mettre spinner
-                DatabaseReference myRef = mdatabase.getReference(authUserId).child("tag_sets");
+                DatabaseReference myRef = mdatabase.getReference(authUserId).child("tagSets");
                 myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -199,12 +199,12 @@ public class StartActivity extends AppCompatActivity {
                 intent.putExtra(TITLE_VIDEO, titleSession);
 
                 //Firebase TAGSET
-                DatabaseReference idTagSetRef = mdatabase.getReference(authUserId).child("tag_sets").child("name");
+                DatabaseReference idTagSetRef = mdatabase.getReference(authUserId).child("tagSets").child("name");
                 final String idTagSet = idTagSetRef.push().getKey();
                 String titleTagSet = etTagSet.getText().toString();
                 intent.putExtra(ID_TAG_SET, idTagSet);
 
-                DatabaseReference TagsSetRef = mdatabase.getReference(authUserId).child("tag_sets").child(idTagSet).child("name");
+                DatabaseReference TagsSetRef = mdatabase.getReference(authUserId).child("tagSets").child(idTagSet).child("name");
                 TagsSetRef.setValue(titleTagSet);
                 mTagsSetsList.add(new TagSetsModel(idTagSet, titleTagSet));
                 mSingletonTagsSets.setmTagsSetsList(mTagsSetsList);

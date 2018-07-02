@@ -1,6 +1,5 @@
 package fr.wildcodeschool.vyfe;
 
-import android.graphics.Paint;
 import android.util.Pair;
 
 import java.util.ArrayList;
@@ -8,31 +7,31 @@ import java.util.ArrayList;
 public class TagModel {
 
     private int color;
-    private String name;
+    private String tagName;
     private String fkTagSet;
     private String rigthOffset;
     private int start;
     private int end;
     private String leftOffset;
-    private ArrayList<Pair<Integer, Integer>> timesList;
+    private ArrayList<TimeModel> times;
 
 
-    public TagModel(int color, String name, ArrayList<Pair<Integer, Integer>> timesList) {
+    public TagModel(int color, String tagName, ArrayList<TimeModel> times) {
         this.color = color;
-        this.name = name;
-        this.timesList = timesList;
+        this.tagName = tagName;
+        this.times = times;
     }
 
-    public TagModel(int color, String name, String fkTagSet, String rigthOffset) {
+    public TagModel(int color, String tagName, String fkTagSet, String rigthOffset) {
         this.color = color;
-        this.name = name;
+        this.tagName = tagName;
         this.fkTagSet = fkTagSet;
         this.rigthOffset = rigthOffset;
     }
 
-    public TagModel(int color, String name, String fkTagSet, int start, int end) {
+    public TagModel(int color, String tagName, String fkTagSet, int start, int end) {
         this.color = color;
-        this.name = name;
+        this.tagName = tagName;
         this.fkTagSet = fkTagSet;
         this.start = start;
         this.end = end;
@@ -41,9 +40,9 @@ public class TagModel {
     public TagModel() {
     }
 
-    public TagModel(int color, String name, String fkTagSet, String rigthOffset, String leftOffset) {
+    public TagModel(int color, String tagName, String fkTagSet, String rigthOffset, String leftOffset) {
         this.color = color;
-        this.name = name;
+        this.tagName = tagName;
         this.fkTagSet = fkTagSet;
         this.rigthOffset = rigthOffset;
         this.leftOffset = leftOffset;
@@ -58,11 +57,11 @@ public class TagModel {
     }
 
     public String getName() {
-        return name;
+        return tagName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String tagName) {
+        this.tagName = tagName;
     }
 
     public String getFkTagSet() {
@@ -105,12 +104,12 @@ public class TagModel {
         return leftOffset;
     }
 
-    public ArrayList<Pair<Integer, Integer>> getTimesList() {
-        return timesList;
+    public ArrayList<TimeModel> getTimes() {
+        return times;
     }
 
-    public void setTimesList(ArrayList<Pair<Integer, Integer>> timesList) {
-        this.timesList = timesList;
+    public void setTimes(ArrayList<TimeModel> times) {
+        this.times = times;
     }
 }
 

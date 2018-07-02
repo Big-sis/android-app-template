@@ -35,6 +35,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Date;
+import java.util.Map;
 
 
 public class RecordActivity extends AppCompatActivity {
@@ -137,13 +138,33 @@ public class RecordActivity extends AppCompatActivity {
                         sessionRef.child(mIdSession).child("author").setValue(mAuthUserId);
                         sessionRef.child(mIdSession).child("videoLink").setValue(mFileName);
                         sessionRef.child(mIdSession).child("date").setValue(stringdate);
+                        sessionRef.child(mIdSession).child("idSession").setValue(mIdSession);
+                        sessionRef.child(mIdSession).child("idTagSet").setValue(idTagSet);
 
-                        //FIREBASE TAGSSESSION
+
+                        for (Map.Entry<String, ArrayList<Pair<Integer, Integer>>> entry : newTagList.entrySet()) {
+
+                            String tagKey = sessionRef.child(mIdSession).child("tags").push().getKey();
+                            sessionRef.child(mIdSession).child("tags").child(tagKey).child("tagName").setValue(entry.getKey());
+                            ArrayList<TimeModel> times = new ArrayList<>();
+
+                            for (Pair<Integer, Integer> pair : entry.getValue()) {
+
+                                times.add(new TimeModel(pair.first, pair.second));
+
+
+                            }
+                            sessionRef.child(mIdSession).child("tags").child(tagKey).child("times").setValue(times);
+
+                        }
+
+
+                        /*//FIREBASE TAGSSESSION
                         DatabaseReference tagsRef = mDatabase.getReference(mAuthUserId).child("tagsSession");
                         String idTag = tagsRef.push().getKey();
                         tagsRef.child(idTag).child("fkSession").setValue(mIdSession);
                         tagsRef.child(idTag).child("fkTagSet").setValue(idTagSet);
-                        tagsRef.child(idTag).child("fkTagSet").child(idTagSet).setValue(newTagList);
+                        tagsRef.child(idTag).child("fkTagSet").child(idTagSet).setValue(newTagList);*/
 
                     }
                 });
