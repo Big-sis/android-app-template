@@ -63,7 +63,7 @@
                 android:background="@drawable/style_input"
                 android:ems="10"
                 android:hint="@string/description"
-                android:inputType="textPersonName"
+                android:inputType="textMultiLine"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"
                 app:fontFamily="@font/roboto"

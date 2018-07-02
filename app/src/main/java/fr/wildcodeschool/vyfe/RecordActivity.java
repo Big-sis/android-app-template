@@ -102,7 +102,7 @@ public class RecordActivity extends AppCompatActivity {
                 chronometer.setBase(SystemClock.elapsedRealtime());
                 chronometer.start();
 
-
+/*
                 mRecord.setImageResource(R.drawable.icons8_arr_ter_96);
                 recyclerTags.setAlpha(1);
 
@@ -119,14 +119,14 @@ public class RecordActivity extends AppCompatActivity {
                             }
                         });
                 FrameLayout preview = findViewById(R.id.video_view);
-                preview.addView(mPreview);
+                preview.addView(mPreview);*/
 
 
                 mRecord.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         chronometer.stop();
-                        stopRecording();
+                        //stopRecording();
                         mRecord.setClickable(false);
 
                       

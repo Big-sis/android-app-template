@@ -85,6 +85,9 @@ public class InfoVideoActivity extends AppCompatActivity {
                             SessionsModel model = video.getValue(SessionsModel.class);
                             if (fileName.equals(model.getVideoLink())) {
                                 video.getRef().removeValue();
+                                Intent intent = new Intent(InfoVideoActivity.this, MyVideoActivity.class);
+                                intent.putExtra(FILE_NAME, fileName);
+                                startActivity(intent);
                             }
                         }
                     }
@@ -109,7 +112,7 @@ public class InfoVideoActivity extends AppCompatActivity {
                                 String description = etDescription.getText().toString();
                                 video.getRef().child("description").setValue(description);
                                 Toast.makeText(InfoVideoActivity.this, R.string.description_added, Toast.LENGTH_SHORT).show();
-                                Intent intent = new Intent(InfoVideoActivity.this, SelectedVideoActivity.class);
+                                Intent intent = new Intent(InfoVideoActivity.this, MyVideoActivity.class);
                                 startActivity(intent);
                             }
                         }

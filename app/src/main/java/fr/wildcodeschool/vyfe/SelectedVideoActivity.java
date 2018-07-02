@@ -53,24 +53,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
 
         final String titleSession = getIntent().getStringExtra(TITLE_VIDEO);
         final String fileName = getIntent().getStringExtra(FILE_NAME);
-
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot video: dataSnapshot.getChildren()) {
-                    SessionsModel model = video.getValue(SessionsModel.class);
-                    if (fileName.equals(model.getVideoLink())) {
-                        tvTitle.setText(model.getName());
-                        tvDescription.setText(model.getDescription());
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
+        tvTitle.setText(titleSession);
 
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,6 +97,27 @@ public class SelectedVideoActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(titleSession);
+
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot video: dataSnapshot.getChildren()) {
+                    SessionsModel model = video.getValue(SessionsModel.class);
+                    if (fileName.equals(model.getVideoLink())) {
+                        if (video.hasChild("description")) {
+                            tvDescription.setText(model.getDescription());
+                        } else {
+                            tvDescription.setText(R.string.description);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
     }
 
