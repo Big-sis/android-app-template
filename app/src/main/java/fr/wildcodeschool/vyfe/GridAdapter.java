@@ -62,6 +62,9 @@ public class GridAdapter extends BaseAdapter implements Filterable {
         final TextView tvName = convertView.findViewById(R.id.title_video);
         tvName.setText(video.getName());
 
+        final TextView tvDate = convertView.findViewById(R.id.video_date);
+        tvDate.setText(video.getDate());
+
         ImageView videoStatus = convertView.findViewById(R.id.img_upload_video);
 
         String lRegex = "^(https?)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";

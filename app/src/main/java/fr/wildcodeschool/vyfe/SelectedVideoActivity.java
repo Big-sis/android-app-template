@@ -86,19 +86,6 @@ public class SelectedVideoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                /*Date date = new Date();
-                Date newDate = new Date(date.getTime());
-                SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yy HH:mm:SS Z");
-                String stringdate = dt.format(newDate);
-                //Firebase SESSION
-                DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions");
-                mIdSession = sessionRef.push().getKey();
-                sessionRef.child(mIdSession).child("name").setValue(titleSession);
-                sessionRef.child(mIdSession).child("author").setValue(mAuthUserId);
-                sessionRef.child(mIdSession).child("videoLink").setValue(fileName);
-                sessionRef.child(mIdSession).child("date").setValue(stringdate);*/
-
-
             }
         });
 
