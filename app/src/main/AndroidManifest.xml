@@ -24,7 +24,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="landscape"></activity>
+            android:screenOrientation="landscape"/>
         <activity
             android:name=".RecordActivity"
             android:screenOrientation="landscape" />
@@ -34,7 +34,7 @@
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".SelectedVideoActivity"
-            android:screenOrientation="landscape"></activity>
+            android:screenOrientation="landscape"/>
         <activity
             android:name=".ConnexionActivity"
             android:screenOrientation="landscape"
@@ -51,7 +51,7 @@
         <activity
             android:name=".StartActivity"
             android:screenOrientation="landscape"
-            android:windowSoftInputMode="stateHidden"></activity>
+            android:windowSoftInputMode="stateHidden"/>
         <activity
             android:name=".PlayVideoActivity"
             android:screenOrientation="landscape" />
@@ -60,14 +60,12 @@
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".ApiActivity" />
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <activity android:name=".ApiActivity">
-
-        </activity>
     </application>
 
 </manifest>
