@@ -84,4 +84,5 @@
     <string name="havent_grid">Vous n\'avez pas encore de grille</string>
     <string name="import_grid">Importer une grille</string>
     <string name="havent_tag">Vous n\'avez pas de tags</string>
+    <string name="description_added">Description ajoutée</string>
 </resources>

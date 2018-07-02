@@ -45,7 +45,7 @@ public class PlayVideoActivity extends AppCompatActivity {
     private String mIdSession;
     private String mVideoLink;
     private SessionsModel mSessionModel;
-    FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+    FirebaseDatabase mDatabase;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     final String mAuthUserId = mAuth.getCurrentUser().getUid();
     HashMap<String, LinearLayout> mTimelines = new HashMap<>();
@@ -60,6 +60,7 @@ public class PlayVideoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_play_video);
 
         final String titleSession = getIntent().getStringExtra(TITLE_VIDEO);
+        mDatabase = SingletonFirebase.getInstance().getDatabase();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

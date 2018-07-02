@@ -6,6 +6,7 @@ public class SessionsModel {
     private String videoLink;
     private String date;
     private String idSession;
+    private String description;
 
     public SessionsModel(String name, String author, String videoLink, String date, String idSession) {
         this.name = name;
@@ -56,5 +57,13 @@ public class SessionsModel {
 
     public void setIdSession(String idSession) {
         this.idSession = idSession;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
