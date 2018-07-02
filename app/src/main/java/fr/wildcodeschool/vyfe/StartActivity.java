@@ -208,7 +208,7 @@ public class StartActivity extends AppCompatActivity {
 
                 DatabaseReference idTagSetRef = mDatabase.getReference(authUserId).child("tag_sets").child("name");
                 idTagSetRef.keepSynced(true);
-                final String idTagSet = idTagSetRef.push().getKey();
+                String idTagSet = idTagSetRef.push().getKey();
                 String titleTagSet = etTagSet.getText().toString();
                 if(radioButtonImport.isChecked()){
                     idTagSet = mIdGridImport;
