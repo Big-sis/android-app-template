@@ -130,7 +130,7 @@ public class RecordActivity extends AppCompatActivity {
                         mRecord.setClickable(false);
 
                       
-                        sessionRecord.setVisibility(View.VISIBLE);
+                        //sessionRecord.setVisibility(View.VISIBLE);
                         Date date = new Date();
                         Date newDate = new Date(date.getTime());
                         SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yy HH:mm");
@@ -302,14 +302,14 @@ public class RecordActivity extends AppCompatActivity {
 
                 RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                layoutParams.setMargins(convertToDp(titleLength + startTime), convertToDp(20), 0, convertToDp(20));
+                layoutParams.setMargins(convertToDp(titleLength + startTime), convertToDp(10), 0, convertToDp(10));
                 RelativeLayout timeline = mTimelines.get(nameTag);
 
                 if (isFirstTitle) {
                     tvNameTimeline.setText(listTag.get(position).getName());
                     LinearLayout.LayoutParams layoutParamsTv = new LinearLayout.LayoutParams(
                             convertToDp(titleLength), LinearLayout.LayoutParams.WRAP_CONTENT);
-                    layoutParamsTv.setMargins(convertToDp(5), convertToDp(5), 0, convertToDp(5));
+                    layoutParamsTv.setMargins(convertToDp(15), convertToDp(5), 0, convertToDp(0));
                     tvNameTimeline.setLayoutParams(layoutParamsTv);
                     timeline.addView(tvNameTimeline, layoutParamsTv);
                 }
