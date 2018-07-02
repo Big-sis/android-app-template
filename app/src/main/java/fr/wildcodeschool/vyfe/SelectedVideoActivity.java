@@ -107,7 +107,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
                         if (video.hasChild("description")) {
                             tvDescription.setText(model.getDescription());
                         } else {
-                            tvDescription.setText(R.string.description);
+                            tvDescription.setText(R.string.no_description);
                         }
                     }
                 }
