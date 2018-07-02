@@ -101,6 +101,10 @@ public class TagModel {
         this.leftOffset = leftOffset;
     }
 
+    public String getLeftOffset() {
+        return leftOffset;
+    }
+
     public ArrayList<Pair<Integer, Integer>> getTimesList() {
         return timesList;
     }

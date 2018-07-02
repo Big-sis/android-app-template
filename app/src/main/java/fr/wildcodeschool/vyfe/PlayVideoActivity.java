@@ -1,18 +1,13 @@
 package fr.wildcodeschool.vyfe;
 
-import android.nfc.Tag;
 import android.os.SystemClock;
-import android.provider.ContactsContract;
 import android.content.Intent;
-import android.support.annotation.DrawableRes;
-import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.util.Pair;
 import android.view.Display;
 import android.view.Menu;
@@ -21,15 +16,12 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Chronometer;
 import android.widget.FrameLayout;
-import android.widget.HorizontalScrollView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import com.bumptech.glide.load.engine.Resource;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -37,14 +29,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 public class PlayVideoActivity extends AppCompatActivity {
 
-    private ArrayList<TagModel> mTagegList = new ArrayList<>();
+    private ArrayList<TagModel> mTagedList = new ArrayList<>();
     private ArrayList<TagModel> mTagModels = new ArrayList<>();
     private VideoView mVideoSelected;
     private SeekBar mSeekBar;
@@ -53,6 +43,7 @@ public class PlayVideoActivity extends AppCompatActivity {
     private String mIdSession;
     private String mVideoLink;
     private String mIdTagSession;
+    private ArrayList<String> mIdTagSet = new ArrayList<>();
     private SessionsModel mSessionModel;
     FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -60,7 +51,8 @@ public class PlayVideoActivity extends AppCompatActivity {
     HashMap<String, LinearLayout> mTimelines = new HashMap<>();
     HashMap<String, ArrayList<Pair<Integer, Integer>>> mTagList = new HashMap<>();
     HashMap<String, ArrayList<TagModel>> mTagModelsList = new HashMap<>();
-    TagRecyclerAdapter mAdapterTags = new TagRecyclerAdapter(mTagegList, "count");
+    TagRecyclerAdapter mAdapterTags = new TagRecyclerAdapter(mTagModels, "count");
+
 
 
     SeekbarAsync mAsync;
@@ -84,9 +76,11 @@ public class PlayVideoActivity extends AppCompatActivity {
         final RecyclerView rvTags = findViewById(R.id.re_tags_selected);
         RecyclerView.LayoutManager layoutManagerTags = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rvTags.setLayoutManager(layoutManagerTags);
+        rvTags.setAdapter(mAdapterTags);
 
 
-         mIdSession = getIntent().getStringExtra("idSession");
+
+        mIdSession = getIntent().getStringExtra("idSession");
 
 
         // NE PAS SUPPRIMER POUR LE MOMENT
@@ -99,7 +93,6 @@ public class PlayVideoActivity extends AppCompatActivity {
         sessionRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                String idSession = dataSnapshot.child("idSession").getValue(String.class);
                 mVideoLink = dataSnapshot.child("videoLink").getValue(String.class);
                 mVideoSelected.setVideoPath(mVideoLink);
             }
@@ -131,10 +124,31 @@ public class PlayVideoActivity extends AppCompatActivity {
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 mTagList.clear();
                                for (DataSnapshot fkTagSetSnapshot : dataSnapshot.getChildren()) {
-                                   mTagegList = (ArrayList<TagModel>) fkTagSetSnapshot.getValue();
-                                   rvTags.setAdapter(mAdapterTags);
+                                   String fkTagSet = fkTagSetSnapshot.getKey();
+                                   mIdTagSet.add(fkTagSet);
+                                   mTagedList = (ArrayList<TagModel>) fkTagSetSnapshot.getValue();
+                                   final DatabaseReference tagRef = mDatabase.getReference(mAuthUserId).child("tags");
+                                   tagRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                       @Override
+                                       public void onDataChange(DataSnapshot dataSnapshot) {
+                                           for (DataSnapshot tagsSnapshot : dataSnapshot.getChildren()) {
+                                               TagModel tagModel = tagsSnapshot.getValue(TagModel.class);
+                                               String fkTagSet = tagModel.getFkTagSet();
+                                               if (mIdTagSet.contains(fkTagSet)) {
+                                                   mTagModels.add(tagsSnapshot.getValue(TagModel.class));
+                                                   mAdapterTags.notifyDataSetChanged();
+
+                                               }
+                                           }
+                                       }
+
+                                       @Override
+                                       public void onCancelled(DatabaseError databaseError) {
+
+                                       }
+                                   });
                                 }
-                                mAdapterTags.notifyDataSetChanged();
+
                             }
 
                             @Override
