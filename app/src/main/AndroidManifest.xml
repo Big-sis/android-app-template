@@ -25,20 +25,16 @@
         <activity
             android:name=".MainActivity"
             android:screenOrientation="landscape"/>
-
         <activity
             android:name=".RecordActivity"
             android:screenOrientation="landscape" />
-
         <activity
             android:name=".InfoVideoActivity"
             android:screenOrientation="landscape"
             android:windowSoftInputMode="stateHidden" />
-
         <activity
             android:name=".SelectedVideoActivity"
-            android:screenOrientation="landscape" />
-
+            android:screenOrientation="landscape"/>
         <activity
             android:name=".ConnexionActivity"
             android:screenOrientation="landscape"
@@ -49,28 +45,27 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".MyVideoActivity"
             android:screenOrientation="landscape" />
-
-
         <activity
             android:name=".StartActivity"
             android:screenOrientation="landscape"
-            android:windowSoftInputMode="stateHidden" />
-
-        <activity android:name=".PlayVideoActivity"
-            android:screenOrientation="landscape"/>
-
-        <activity android:name=".ForgotPassword"
+            android:windowSoftInputMode="stateHidden"/>
+        <activity
+            android:name=".PlayVideoActivity"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".ForgotPassword"
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
+        <activity android:name=".ApiActivity" />
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
     </application>
 
 </manifest>

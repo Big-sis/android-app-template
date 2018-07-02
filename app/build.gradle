@@ -42,6 +42,7 @@ dependencies {
     implementation 'petrov.kristiyan:colorpicker-library:1.1.7'
     implementation 'com.android.volley:volley:1.1.0'
     implementation 'com.google.firebase:firebase-auth:11.8.0'
+
 }
 
 apply plugin: 'com.google.gms.google-services'
