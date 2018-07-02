@@ -64,40 +64,7 @@ public class PlayVideoActivity extends AppCompatActivity {
         SingletonTags singletonTags = SingletonTags.getInstance();
         mTagModels = singletonTags.getmTagsList();
 
-        // NE PAS SUPPRIMER POUR LE MOMENT
-        /* Test de récupération du lien avec données en dur :
-        mIdSession = "-LFRtUEoDalCtBKJq-l0";
-        final DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions").child(mIdSession).child("videoLink");
-        sessionRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                mVideoLink = dataSnapshot.getValue().toString();
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
-        SingletonTags singletonTags = SingletonTags.getInstance();
-        mTagModels = singletonTags.getmTagsList();
-        mTagModels.add(new TagModel(-3318101, "nameTest1", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest2", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest3", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest4", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest5", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest6", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest7", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest8", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest9", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest10", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest11", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest12", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest13", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest14", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest15", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest16", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest17", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest18", null, null));
-        */
+
 
         RecyclerView rvTags = findViewById(R.id.re_tags_selected);
 
@@ -166,66 +133,6 @@ public class PlayVideoActivity extends AppCompatActivity {
 
         timeLines.setLayoutParams(new FrameLayout.LayoutParams(width, LinearLayout.LayoutParams.WRAP_CONTENT));
         mSeekBar.setLayoutParams(new RelativeLayout.LayoutParams(width, LinearLayout.LayoutParams.MATCH_PARENT));
-
-
-
-
-/*        DatabaseReference tagsSessionRe = mDatabase.getReference(mAuthUserId).child("tagsSession").child(String.valueOf(idTagSession));
-        tagsSessionRe.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.getChildrenCount() == 0) {
-                    Toast.makeText(PlayVideoActivity.this, "Vous n'avez pas de tags enregistrés", Toast.LENGTH_SHORT).show();
-                }
-                for (DataSnapshot tagsSessionSnapshot : dataSnapshot.getChildren()) {
-                    String fkSession = tagsSessionSnapshot.getValue().toString();
-                    Toast.makeText(PlayVideoActivity.this, fkSession, Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
-
-*/
-
-        /*
-        if (fkSession[0].
-
-                equals(mIdSession))
-
-        {
-            final String idTagSession = tagsSessionSnapshot.getKey();
-            final DatabaseReference fkTagSetRef = mDatabase.getReference(mAuthUserId).child("tagsSession").child(idTagSession).child("fkTagSet");
-            fkTagSetRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    for (DataSnapshot fkTagSetSnapshot : dataSnapshot.getChildren()) {
-                        String idTagSet = fkTagSetSnapshot.getKey();
-                        DatabaseReference tagRef = mDatabase.getReference(mAuthUserId).child("tagsSession").child(idTagSession).child("fkTagSet").child(idTagSet);
-                        tagRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                for (DataSnapshot tagSnapshot : dataSnapshot.getChildren()) {
-                                    TagModel tagModel = (TagModel) tagSnapshot.getValue();
-                                    mTagModels.add(tagModel);
-                                    Log.i("tagList", tagModel.toString());
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(DatabaseError databaseError) {
-                            }
-                        });
-                    }
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-                }
-            });
-        }*/
 
 
     }
