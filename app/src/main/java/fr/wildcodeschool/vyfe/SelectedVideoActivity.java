@@ -171,19 +171,14 @@ public class SelectedVideoActivity extends AppCompatActivity {
                 params.put("upload.approach","post");
                 params.put("upload.redirect_url",video);
 
-
-
-
                 return params;
-
-
             }
 
 
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("Authorization", "bearer c2af8349ffedd683748ee6a8e383202c");
+                params.put("Authorization", "mettre token");
                 params.put("Content-Type","application/json");
                 params.put("Accept", "application/vnd.vimeo.*+json;version=3.4");
                 //params.put("Content-Type", "application/x-www-form-urlencoded");
@@ -192,8 +187,5 @@ public class SelectedVideoActivity extends AppCompatActivity {
         };
         queue.add(sr);
     }
-
-
-
 
 }
