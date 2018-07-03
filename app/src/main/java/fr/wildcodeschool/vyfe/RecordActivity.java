@@ -14,6 +14,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Pair;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,9 +44,9 @@ public class RecordActivity extends AppCompatActivity {
     private Camera mCamera;
     private boolean mCamCondition = false;
     private FloatingActionButton mRecord;
-    FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+    FirebaseDatabase mDatabase;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    final String mAuthUserId = mAuth.getCurrentUser().getUid();
+    final String mAuthUserId = SingletonFirebase.getInstance().getUid();
     private static String mFileName = null;
     private MediaRecorder mRecorder = null;
     private CameraPreview mPreview;
@@ -66,9 +67,11 @@ public class RecordActivity extends AppCompatActivity {
         setContentView(R.layout.activity_record);
         final Chronometer chronometer = findViewById(R.id.chronometer);
 
+        mDatabase = SingletonFirebase.getInstance().getDatabase();
+
         Date d = new Date();
         mFileName = getExternalCacheDir().getAbsolutePath();
-        mFileName += "/" + d.getTime() +  ".mp4";
+        mFileName += "/" + d.getTime() + ".mp4";
 
         int currentCameraId = Camera.CameraInfo.CAMERA_FACING_BACK;
         mCamera = getCameraInstance(currentCameraId);
@@ -99,9 +102,10 @@ public class RecordActivity extends AppCompatActivity {
                 chronometer.setBase(SystemClock.elapsedRealtime());
                 chronometer.start();
 
+
                 mRecord.setImageResource(R.drawable.icons8_arr_ter_96);
                 recyclerTags.setAlpha(1);
-/*
+
                 mPreview = new CameraPreview(RecordActivity.this, mCamera,
                         new CameraPreview.SurfaceCallback() {
                             @Override
@@ -116,12 +120,16 @@ public class RecordActivity extends AppCompatActivity {
                         });
                 FrameLayout preview = findViewById(R.id.video_view);
                 preview.addView(mPreview);
-*/
+
+
                 mRecord.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         chronometer.stop();
-                        //stopRecording();
+                        stopRecording();
+                        mRecord.setClickable(false);
+
+                      
                         sessionRecord.setVisibility(View.VISIBLE);
                         Date date = new Date();
                         Date newDate = new Date(date.getTime());
@@ -132,6 +140,7 @@ public class RecordActivity extends AppCompatActivity {
 
                         //Firebase SESSION
                         DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions");
+                        sessionRef.keepSynced(true);
                         String mIdSession = sessionRef.push().getKey();
                         sessionRef.child(mIdSession).child("name").setValue(titleSession);
                         sessionRef.child(mIdSession).child("author").setValue(mAuthUserId);
@@ -140,11 +149,11 @@ public class RecordActivity extends AppCompatActivity {
 
                         //FIREBASE TAGSSESSION
                         DatabaseReference tagsRef = mDatabase.getReference(mAuthUserId).child("tagsSession");
+                        tagsRef.keepSynced(true);
                         String idTag = tagsRef.push().getKey();
                         tagsRef.child(idTag).child("fkSession").setValue(mIdSession);
                         tagsRef.child(idTag).child("fkTagSet").setValue(idTagSet);
                         tagsRef.child(idTag).child("fkTagSet").child(idTagSet).setValue(newTagList);
-
                     }
                 });
             }
@@ -276,7 +285,7 @@ public class RecordActivity extends AppCompatActivity {
                 //Ici on pourra changer les caracteristiques des tags pour la V2. Pour l'instant carac = constantes
                 int timeTag = 3 * rapport;
                 int beforeTag = 6 * rapport;
-                int titleLength = 200;
+                int titleLength = 100;
 
                 //init image Tag
                 ImageView iv = new ImageView(RecordActivity.this);
@@ -290,16 +299,17 @@ public class RecordActivity extends AppCompatActivity {
                 int endTime = timeActuel + timeTag;
                 iv.setMinimumWidth(endTime - startTime);
 
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+
+                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                layoutParams.setMargins(titleLength + startTime, 20, 0, 20);
+                layoutParams.setMargins(convertToDp(titleLength + startTime), convertToDp(20), 0, convertToDp(20));
                 RelativeLayout timeline = mTimelines.get(nameTag);
 
                 if (isFirstTitle) {
                     tvNameTimeline.setText(listTag.get(position).getName());
                     LinearLayout.LayoutParams layoutParamsTv = new LinearLayout.LayoutParams(
-                            titleLength, LinearLayout.LayoutParams.WRAP_CONTENT);
-                    layoutParamsTv.setMargins(5, 5, 0, 5);
+                            convertToDp(titleLength), LinearLayout.LayoutParams.WRAP_CONTENT);
+                    layoutParamsTv.setMargins(convertToDp(5), convertToDp(5), 0, convertToDp(5));
                     tvNameTimeline.setLayoutParams(layoutParamsTv);
                     timeline.addView(tvNameTimeline, layoutParamsTv);
                 }
@@ -310,7 +320,7 @@ public class RecordActivity extends AppCompatActivity {
                 newTagList.get(nameTag).add(timePair);
 
                 //Scrool automatiquement suit l'ajout des tags
-                final HorizontalScrollView scrollView = findViewById(R.id.horizontalScrollView);
+                final HorizontalScrollView scrollView = findViewById(R.id.horizontal_scroll_view);
                 scrollView.post(new Runnable() {
                     public void run() {
                         scrollView.fullScroll(View.FOCUS_RIGHT);
@@ -324,4 +334,10 @@ public class RecordActivity extends AppCompatActivity {
             }
         }));
     }
+
+    private int convertToDp(int size) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, size, getResources().getDisplayMetrics());
+    }
+
+
 }

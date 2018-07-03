@@ -3,31 +3,24 @@ package fr.wildcodeschool.vyfe;
 import android.nfc.Tag;
 import android.provider.ContactsContract;
 import android.content.Intent;
-import android.support.annotation.DrawableRes;
-import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.util.Pair;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.HorizontalScrollView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import com.bumptech.glide.load.engine.Resource;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -35,14 +28,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 public class PlayVideoActivity extends AppCompatActivity {
 
-    private ArrayList<TagModel> mTagModels = new ArrayList<>();
+    private ArrayList<TagModel> mTagModels;
     private VideoView mVideoSelected;
     private SeekBar mSeekBar;
     private boolean mIsPlayed = false;
@@ -51,14 +42,13 @@ public class PlayVideoActivity extends AppCompatActivity {
     private String mVideoLink;
     private String mIdTagSession;
     private SessionsModel mSessionModel;
-    FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+    FirebaseDatabase mDatabase;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     final String mAuthUserId = mAuth.getCurrentUser().getUid();
     HashMap<String, LinearLayout> mTimelines = new HashMap<>();
     HashMap<String, ArrayList<Pair<Integer, Integer>>> mTagList = new HashMap<>();
     HashMap<String, ArrayList<TagModel>> mTagModelsList = new HashMap<>();
 
-    final int[] mMarge = {0};
 
     public static final String TITLE_VIDEO = "titleVideo";
     public static final String FILE_NAME = "filename";
@@ -69,6 +59,8 @@ public class PlayVideoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_play_video);
 
         final String titleSession = getIntent().getStringExtra(TITLE_VIDEO);
+
+        mDatabase = SingletonFirebase.getInstance().getDatabase();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -156,9 +148,6 @@ public class PlayVideoActivity extends AppCompatActivity {
             }
         });
 
-        Toast.makeText(this, mTagModels.get(0).getName(), Toast.LENGTH_LONG).show();
-        Log.i("mTagModels : ", mTagModels.toString());
-
 
         RecyclerView rvTags = findViewById(R.id.re_tags_selected);
 
@@ -189,7 +178,7 @@ public class PlayVideoActivity extends AppCompatActivity {
             Toast.makeText(this, "exist", Toast.LENGTH_SHORT).show();
         }
 */
-        // mVideoSelected.setVideoPath(fileName);
+        mVideoSelected.setVideoPath(fileName);
         final FloatingActionButton fbPlay = findViewById(R.id.bt_play_selected);
 
         final SeekbarAsync async = new SeekbarAsync(mSeekBar, mVideoSelected);
@@ -226,6 +215,7 @@ public class PlayVideoActivity extends AppCompatActivity {
         timeLines.setLayoutParams(new FrameLayout.LayoutParams(width, LinearLayout.LayoutParams.WRAP_CONTENT));
         mSeekBar.setLayoutParams(new RelativeLayout.LayoutParams(width, LinearLayout.LayoutParams.MATCH_PARENT));
 
+
     }
 
 
@@ -236,7 +226,7 @@ public class PlayVideoActivity extends AppCompatActivity {
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.logout:
                 Intent intent = new Intent(PlayVideoActivity.this, ConnexionActivity.class);
                 startActivity(intent);
@@ -247,5 +237,3 @@ public class PlayVideoActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 }
-
-

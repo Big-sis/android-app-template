@@ -86,6 +86,10 @@ public class TagModel {
         this.end = end;
     }
 
+    public String getLeftOffset() {
+        return leftOffset;
+    }
+
     public void setLeftOffset(String leftOffset) {
         this.leftOffset = leftOffset;
     }

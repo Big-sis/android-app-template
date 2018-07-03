@@ -84,4 +84,8 @@
     <string name="havent_grid">Vous n\'avez pas encore de grille</string>
     <string name="import_grid">Importer une grille</string>
     <string name="havent_tag">Vous n\'avez pas de tags</string>
+    <string name="title">Veuillez renseigner un titre de vidéo</string>
+    <string name="double_name">Nom déjà utilisé. Veuillez renseigner un nouveau nom</string>
+    <string name="upload_video">Votre vidéo a été mise en ligne</string>
+    <string name="error">erreur :</string>
 </resources>

@@ -50,6 +50,7 @@
                         app:layout_constraintStart_toStartOf="@id/vv_preview"
                         app:layout_constraintTop_toTopOf="@+id/vv_preview"
                         app:srcCompat="@drawable/icons8_lecture_de_youtube_100"/>
+
                 </android.support.constraint.ConstraintLayout>
 
 
