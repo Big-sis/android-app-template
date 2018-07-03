@@ -2,10 +2,12 @@ package fr.wildcodeschool.vyfe;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,17 +18,26 @@ import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -42,6 +53,8 @@ public class SelectedVideoActivity extends AppCompatActivity {
     private String mIdSession = "";
     private SessionsModel sessionsModel;
 
+    private byte[] inputData = new byte[0];
+    private InputStream iStream = null;
 
 
     public static final String TITLE_VIDEO = "titleVideo";
@@ -59,7 +72,6 @@ public class SelectedVideoActivity extends AppCompatActivity {
         Button play = findViewById(R.id.bt_play);
         Button btnUpload = findViewById(R.id.bt_upload);
         Button edit = findViewById(R.id.btn_edit);
-        Button btnApi = findViewById(R.id.btn_api);
         ImageView video = findViewById(R.id.vv_preview);
         TextView tvTitle = findViewById(R.id.tv_title);
 
@@ -75,25 +87,72 @@ public class SelectedVideoActivity extends AppCompatActivity {
             }
         });
 
+        /* En COMM pour ne pas utiliser nos connexions à API
         btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                /*Date date = new Date();
-                Date newDate = new Date(date.getTime());
-                SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yy HH:mm:SS Z");
-                String stringdate = dt.format(newDate);
-                //Firebase SESSION
-                DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions");
-                mIdSession = sessionRef.push().getKey();
-                sessionRef.child(mIdSession).child("name").setValue(titleSession);
-                sessionRef.child(mIdSession).child("author").setValue(mAuthUserId);
-                sessionRef.child(mIdSession).child("videoLink").setValue(fileName);
-                sessionRef.child(mIdSession).child("date").setValue(stringdate);*/
+                File file = new File(fileName);
+                final long length = file.length();
+
+                //transformation du lien de stockage en vidéo
+                try {
+                    iStream = getContentResolver().openInputStream(Uri.fromFile(file));
+                    inputData = getBytes(iStream);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+
+                //1er requete en POST , recuperation upload_link
+                RequestQueue queue = Volley.newRequestQueue(SelectedVideoActivity.this);
+                JsonObjectRequest sr = new JsonObjectRequest(Request.Method.POST, "https://api.vimeo.com/me/videos", null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONObject groups = response.getJSONObject("upload");
+                            String uploadLink = (String) groups.get("upload_link");
+                            //deuxieme requete pour joindre la video
+                            uploadVideo(uploadLink);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Log.d("Volley", "onResponse: " + response);
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Volley", "onError: " + error);
+                        Toast.makeText(SelectedVideoActivity.this, "erreur :" + error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }) {
+                    @Override
+                    protected Map<String, String> getParams() {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("upload.approach", "post");
+                        params.put("upload.redirect_url", "https://google.com");
+                        return params;
+                    }
+
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<String, String>();
+
+                        params.put("Authorization", "mettre token");
+                        params.put("Content-Type", "application/json");
+                        params.put("Accept", "application/vnd.vimeo.*+json;version=3.4");
+
+                        return params;
+                    }
+                };
+                queue.add(sr);
 
 
             }
-        });
+        });*/
 
         play.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,12 +182,6 @@ public class SelectedVideoActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(titleSession);
 
-        btnApi.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-               // preparation pour future api: postNewComment(SelectedVideoActivity.this, fileName);
-            }
-        });
 
     }
 
@@ -150,42 +203,44 @@ public class SelectedVideoActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public static void postNewComment(final Context context, final String video) {
-
-        RequestQueue queue = Volley.newRequestQueue(context);
-        StringRequest sr = new StringRequest(Request.Method.POST, "https://api.vimeo.com/users/6ea7fbd6c8045daff1df570fd3b8f4f12eef2e9c", new Response.Listener<String>() {
+    public void uploadVideo(String url) {
+        RequestQueue queue2 = Volley.newRequestQueue(SelectedVideoActivity.this);
+        VolleyMultipartRequest sr2 = new VolleyMultipartRequest(Request.Method.POST, url, new Response.Listener<NetworkResponse>() {
             @Override
-            public void onResponse(String response) {
-                Toast.makeText(context, " response: " + response, Toast.LENGTH_LONG).show();
+            public void onResponse(NetworkResponse response) {
+                // Toast.makeText(ApiActivity.this, " response: " + response.data, Toast.LENGTH_LONG).show();
+                Toast.makeText(SelectedVideoActivity.this, R.string.upload_video, Toast.LENGTH_SHORT).show();
+                Log.d("Volley", "onResponse: " + response);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
-                Toast.makeText(context, "erreur :" + error.toString(), Toast.LENGTH_SHORT).show();
+                Log.d("Volley", "onError: " + error);
+                Toast.makeText(SelectedVideoActivity.this, getString(R.string.error) + error.toString(), Toast.LENGTH_SHORT).show();
             }
         }) {
             @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("upload.approach","post");
-                params.put("upload.redirect_url",video);
+            protected Map<String, DataPart> getByteData() {
+                Map<String, DataPart> params = new HashMap<>();
+                params.put("file_data", new DataPart("movie.mp4", inputData, "video/mp4"));
 
                 return params;
             }
 
-
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("Authorization", "mettre token");
-                params.put("Content-Type","application/json");
-                params.put("Accept", "application/vnd.vimeo.*+json;version=3.4");
-                //params.put("Content-Type", "application/x-www-form-urlencoded");
-                return params;
-            }
         };
-        queue.add(sr);
+        queue2.add(sr2);
+    }
+
+    public byte[] getBytes(InputStream inputStream) throws IOException {
+        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+        int bufferSize = 1024;
+        byte[] buffer = new byte[bufferSize];
+
+        int len = 0;
+        while ((len = inputStream.read(buffer)) != -1) {
+            byteBuffer.write(buffer, 0, len);
+        }
+        return byteBuffer.toByteArray();
     }
 
 }
