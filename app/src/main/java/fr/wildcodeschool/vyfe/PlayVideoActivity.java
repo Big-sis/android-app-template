@@ -60,7 +60,6 @@ public class PlayVideoActivity extends AppCompatActivity {
     TagRecyclerAdapter mAdapterTags = new TagRecyclerAdapter(mTagModels, "count");
     RelativeLayout timeLines;
 
-
     SeekbarAsync mAsync;
     long timeWhenStopped = 0;
     int mVideoDuration;
@@ -69,7 +68,6 @@ public class PlayVideoActivity extends AppCompatActivity {
     public static final String FILE_NAME = "filename";
     public static final String ID_SESSION = "idSession";
     public static final String URL_TEST = "http://clips.vorwaerts-gmbh.de/VfE_html5.mp4";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,12 +89,6 @@ public class PlayVideoActivity extends AppCompatActivity {
 
 
         mIdSession = getIntent().getStringExtra(ID_SESSION);
-
-
-        // NE PAS SUPPRIMER POUR LE MOMENT
-        // Test de récupération du lien avec données en dur :
-        // mIdSession = "-LFw9OH4TpHhciKB2wRi";
-
         mVideoLink = getIntent().getStringExtra(FILE_NAME);
 
         mVideoSelected = findViewById(R.id.video_view_selected);
@@ -106,10 +98,8 @@ public class PlayVideoActivity extends AppCompatActivity {
             public void onPrepared(MediaPlayer mp) {
                 mVideoDuration = mVideoSelected.getDuration();
                 initTimeLines();
-                String coucou = "coucou";
             }
         });
-
 
         // Réupération du lien de la video
         final DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions").child(mIdSession);
@@ -124,14 +114,6 @@ public class PlayVideoActivity extends AppCompatActivity {
             }
         });
 
-        // Lien video en dur pour tester
-
-        // Récupération des tags et de leurs temps
-
-
-
-
-
         mSeekBar = findViewById(R.id.seek_bar_selected);
 
         // Rend la seekbar indéplaceable au click
@@ -142,18 +124,7 @@ public class PlayVideoActivity extends AppCompatActivity {
             }
         });
 
-
-
-/*
-        File file = new File(fileName);
-        if(file.exists()) {
-            Toast.makeText(this, "exist", Toast.LENGTH_SHORT).show();
-        }
-*/
-        // mVideoSelected.setVideoPath(fileName);
         final FloatingActionButton fbPlay = findViewById(R.id.bt_play_selected);
-
-
         fbPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
