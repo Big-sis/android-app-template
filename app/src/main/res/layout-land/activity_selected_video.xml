@@ -50,6 +50,7 @@
                         app:layout_constraintStart_toStartOf="@id/vv_preview"
                         app:layout_constraintTop_toTopOf="@+id/vv_preview"
                         app:srcCompat="@drawable/icons8_lecture_de_youtube_100"/>
+
                 </android.support.constraint.ConstraintLayout>
 
 
@@ -69,7 +70,7 @@
                     android:layout_height="72dp"
                     android:layout_marginBottom="8dp"
                     android:layout_marginTop="8dp"
-                    android:text="@string/description"
+                    android:text="@string/no_description"
                     android:textColor="@color/white"
                     android:textSize="12sp"
                     app:fontFamily="@font/roboto" />

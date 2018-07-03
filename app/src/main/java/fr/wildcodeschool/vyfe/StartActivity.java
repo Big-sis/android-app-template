@@ -11,10 +11,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -33,16 +35,17 @@ import java.util.HashMap;
 
 public class StartActivity extends AppCompatActivity {
 
-    SingletonTags mSingletonTags = SingletonTags.getInstance();
-    ArrayList<TagModel> mTagModelList = mSingletonTags.getmTagsList();
+    private SingletonTags mSingletonTags = SingletonTags.getInstance();
+    private ArrayList<TagModel> mTagModelList = mSingletonTags.getmTagsList();
 
-    SingletonTagsSets mSingletonTagsSets = SingletonTagsSets.getInstance();
-    ArrayList<TagSetsModel> mTagsSetsList = mSingletonTagsSets.getmTagsSetsList();
+    private SingletonTagsSets mSingletonTagsSets = SingletonTagsSets.getInstance();
+    private ArrayList<TagSetsModel> mTagsSetsList = mSingletonTagsSets.getmTagsSetsList();
 
-    FirebaseDatabase mdatabase = FirebaseDatabase.getInstance();
-    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private FirebaseDatabase mDatabase;
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
 
-    String mIdGridImport;
+    private String mIdGridImport;
+    private String mNameGrid;
 
 
     public static final String TITLE_VIDEO = "titleVideo";
@@ -53,11 +56,13 @@ public class StartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
+        mDatabase = SingletonFirebase.getInstance().getDatabase();
+
         final Button buttonBack = findViewById(R.id.button_back);
         Button buttonGo = findViewById(R.id.button_go);
         final Button buttonGoMulti = findViewById(R.id.button_go_multi);
         final ConstraintLayout share = findViewById(R.id.layout_share);
-        final FloatingActionButton fabAddMoment = findViewById(R.id.fab_add_moment);
+        final ImageView fabAddMoment = findViewById(R.id.fab_add_moment);
         final RecyclerView recyclerTagList = findViewById(R.id.recycler_view);
         final RecyclerView recyclerViewImport = findViewById(R.id.recycler_view_import);
         final RadioButton radioButtonImport = findViewById(R.id.radio_button_insert);
@@ -70,12 +75,11 @@ public class StartActivity extends AppCompatActivity {
 
         final HashMap<String, String> hashMapTitleIdGrid = new HashMap<>();
 
-        final String authUserId = mAuth.getCurrentUser().getUid();
+        final String authUserId = SingletonFirebase.getInstance().getUid();
 
         if (MainActivity.mMulti) {
             buttonGo.setText(R.string.next);
         }
-
 
         final ArrayList<String> nameTagSet = new ArrayList<>();
 
@@ -87,17 +91,39 @@ public class StartActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.start_session);
 
+        recyclerTagList.setVisibility(View.VISIBLE);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        recyclerTagList.setLayoutManager(layoutManager);
+        final TagRecyclerAdapter adapter = new TagRecyclerAdapter(mTagModelList, "start");
+        recyclerTagList.setAdapter(adapter);
+
+
+        RecyclerView.LayoutManager layoutManagerImport = new LinearLayoutManager(StartActivity.this, LinearLayoutManager.VERTICAL, false);
+        recyclerViewImport.setLayoutManager(layoutManagerImport);
+        final TagRecyclerAdapter adapterImport = new TagRecyclerAdapter(mTagModelList, "start");
+        recyclerViewImport.setAdapter(adapterImport);
+
+        recyclerViewImport.setVisibility(View.INVISIBLE);
+
         //TODO gerer lapparition des recyclers
         radioButtonImport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (radioButtonImport.isChecked()) {
+                    mTagModelList.clear();
+
+                    adapterNotifyDataChange(adapter, adapterImport);
+
+                    recyclerTagList.setVisibility(View.GONE);
+                    recyclerViewImport.setVisibility(View.VISIBLE);
+
                     radioButtonNew.setChecked(false);
                     spinner.setClickable(true);
                     importGrid(etTagSet, fabAddMoment, false);
                 }
                 //recup données pour mettre spinner
-                DatabaseReference myRef = mdatabase.getReference(authUserId).child("tagSets");
+                DatabaseReference myRef = mDatabase.getReference(authUserId).child("tagSets");
+                myRef.keepSynced(true);
                 myRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
@@ -108,10 +134,10 @@ public class StartActivity extends AppCompatActivity {
                             nameTagSet.add(getString(R.string.import_grid));
 
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                String nameGrid = (String) snapshot.child("name").getValue().toString();
+                                mNameGrid = (String) snapshot.child("name").getValue().toString();
                                 String idGrid = (String) snapshot.getKey().toString();
-                                hashMapTitleIdGrid.put(nameGrid, idGrid);
-                                nameTagSet.add(nameGrid);
+                                hashMapTitleIdGrid.put(mNameGrid, idGrid);
+                                nameTagSet.add(mNameGrid);
                             }
                             adapterSpinner.notifyDataSetChanged();
                         }
@@ -129,15 +155,13 @@ public class StartActivity extends AppCompatActivity {
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                         String titlenameTagSetImport = nameTagSet.get(i);
                         mIdGridImport = hashMapTitleIdGrid.get(titlenameTagSetImport);
-
-                        RecyclerView.LayoutManager layoutManagerImport = new LinearLayoutManager(StartActivity.this, LinearLayoutManager.VERTICAL, false);
-                        recyclerViewImport.setLayoutManager(layoutManagerImport);
-                        final TagRecyclerAdapter adapterImport = new TagRecyclerAdapter(mTagModelList, "start");
-                        recyclerViewImport.setAdapter(adapterImport);
+                        mTagModelList.clear();
+                        adapterNotifyDataChange(adapter, adapterImport);
 
                         if (mIdGridImport != null && !mIdGridImport.equals(R.string.import_grid)) {
                             //recup des tags
-                            DatabaseReference myRefTag = mdatabase.getReference(authUserId).child("tags");
+                            DatabaseReference myRefTag = mDatabase.getReference(authUserId).child("tags");
+                            myRefTag.keepSynced(true);
                             myRefTag.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
@@ -171,7 +195,6 @@ public class StartActivity extends AppCompatActivity {
                     }
                 });
 
-
             }
         });
 
@@ -180,6 +203,13 @@ public class StartActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (radioButtonNew.isChecked()) {
+                    mTagModelList.clear();
+
+                    adapterNotifyDataChange(adapter, adapterImport);
+
+                    recyclerTagList.setVisibility(View.VISIBLE);
+                    recyclerViewImport.setVisibility(View.GONE);
+
                     radioButtonImport.setChecked(false);
                     spinner.setClickable(false);
                     spinner.setLongClickable(false);
@@ -187,9 +217,6 @@ public class StartActivity extends AppCompatActivity {
                 }
             }
         });
-
-
-        //TODO: en fct du radio button selectionner envoyer telles ou telles arraylist
 
         buttonGo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -199,13 +226,21 @@ public class StartActivity extends AppCompatActivity {
                 intent.putExtra(TITLE_VIDEO, titleSession);
 
                 //Firebase TAGSET
-                DatabaseReference idTagSetRef = mdatabase.getReference(authUserId).child("tagSets").child("name");
-                final String idTagSet = idTagSetRef.push().getKey();
+
+                DatabaseReference idTagSetRef = mDatabase.getReference(authUserId).child("tagSets").child("name");
+                idTagSetRef.keepSynced(true);
+                String idTagSet = idTagSetRef.push().getKey();
                 String titleTagSet = etTagSet.getText().toString();
+                if (radioButtonImport.isChecked()) {
+                    titleTagSet = mNameGrid;
+
+                }
+
                 intent.putExtra(ID_TAG_SET, idTagSet);
 
-                DatabaseReference TagsSetRef = mdatabase.getReference(authUserId).child("tagSets").child(idTagSet).child("name");
-                TagsSetRef.setValue(titleTagSet);
+                DatabaseReference tagsSetRef = mDatabase.getReference(authUserId).child("tagSets").child(idTagSet).child("name");
+                tagsSetRef.keepSynced(true);
+                tagsSetRef.setValue(titleTagSet);
                 mTagsSetsList.add(new TagSetsModel(idTagSet, titleTagSet));
                 mSingletonTagsSets.setmTagsSetsList(mTagsSetsList);
 
@@ -223,13 +258,16 @@ public class StartActivity extends AppCompatActivity {
                     String rigthOffset = "30";
                     String leftOffset = "60";
 
-                    DatabaseReference tagsRef = mdatabase.getReference(authUserId).child("tags");
+
+                    DatabaseReference tagsRef = mDatabase.getReference(authUserId).child("tags");
+                    tagsRef.keepSynced(true);
                     String idTag = tagsRef.push().getKey();
                     tagsRef.child(idTag).child("color").setValue(colorTag);
                     tagsRef.child(idTag).child("name").setValue(nameTag);
                     tagsRef.child(idTag).child("leftOffset").setValue(leftOffset);
                     tagsRef.child(idTag).child("rigthOffset").setValue(rigthOffset);
                     tagsRef.child(idTag).child("fkTagSet").setValue(idTagSet);
+
                 }
 
                 if (MainActivity.mMulti) {
@@ -249,16 +287,16 @@ public class StartActivity extends AppCompatActivity {
                     });
                     MainActivity.mMulti = false;
                 } else {
-                    startActivity(intent);
+                    if (titleSession.isEmpty()) {
+                        Toast.makeText(StartActivity.this, R.string.title, Toast.LENGTH_SHORT).show();
+                    } else {
+                        startActivity(intent);
+
+                    }
                 }
             }
         });
 
-        recyclerTagList.setVisibility(View.VISIBLE);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        recyclerTagList.setLayoutManager(layoutManager);
-        final TagRecyclerAdapter adapter = new TagRecyclerAdapter(mTagModelList, "start");
-        recyclerTagList.setAdapter(adapter);
 
         if (mTagModelList.size() != 0) {
             tvAddTag.setText(R.string.edit_tags);
@@ -290,12 +328,18 @@ public class StartActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void importGrid(EditText titleGrid, FloatingActionButton fabAdd, Boolean bolean) {
+    public void importGrid(EditText titleGrid, ImageView fabAdd, Boolean bolean) {
         titleGrid.setClickable(bolean);
         titleGrid.setLongClickable(bolean);
         titleGrid.setEnabled(bolean);
         fabAdd.setClickable(bolean);
         fabAdd.setLongClickable(bolean);
         fabAdd.setFocusable(bolean);
+    }
+
+    public void adapterNotifyDataChange(TagRecyclerAdapter adapterImport, TagRecyclerAdapter adapternew) {
+        adapterImport.notifyDataSetChanged();
+        adapternew.notifyDataSetChanged();
+
     }
 }

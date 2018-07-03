@@ -11,6 +11,7 @@ public class SessionsModel {
     private String idSession;
     private String idTagSet;
     private HashMap<String, TagModel> tags;
+    private String description;
 
 
     public SessionsModel(String name, String author, String videoLink, String date, String idSession, String idTagSet) {
@@ -66,6 +67,13 @@ public class SessionsModel {
         this.idSession = idSession;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
     public String getIdTagSet() {
         return idTagSet;
     }

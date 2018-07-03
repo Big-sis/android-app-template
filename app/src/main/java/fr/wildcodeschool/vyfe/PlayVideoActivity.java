@@ -3,7 +3,8 @@ package fr.wildcodeschool.vyfe;
 import android.media.MediaPlayer;
 import android.os.SystemClock;
 import android.content.Intent;
-import android.support.annotation.ColorRes;
+import android.support.annotation.DrawableRes;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -33,10 +34,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 public class PlayVideoActivity extends AppCompatActivity {
 
@@ -50,7 +49,8 @@ public class PlayVideoActivity extends AppCompatActivity {
     private String mVideoLink;
     private String mIdTagSession;
     private String mIdTagSet;
-    FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+    private SessionsModel mSessionModel;
+    FirebaseDatabase mDatabase;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     final String mAuthUserId = mAuth.getCurrentUser().getUid();
     HashMap<String, RelativeLayout> mTimelines = new HashMap<>();
@@ -77,6 +77,7 @@ public class PlayVideoActivity extends AppCompatActivity {
         timeLines = findViewById(R.id.time_lines_container);
 
         final String titleSession = getIntent().getStringExtra(TITLE_VIDEO);
+        mDatabase = SingletonFirebase.getInstance().getDatabase();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -194,8 +195,6 @@ public class PlayVideoActivity extends AppCompatActivity {
         Display display = getWindowManager().getDefaultDisplay();
         int width = display.getWidth();
         double ratio = ((float) (width)) / 300.0;
-
-
         timeLines.setLayoutParams(new FrameLayout.LayoutParams(width, LinearLayout.LayoutParams.WRAP_CONTENT));
         mSeekBar.setLayoutParams(new RelativeLayout.LayoutParams(width, LinearLayout.LayoutParams.MATCH_PARENT));
 
@@ -332,5 +331,3 @@ public class PlayVideoActivity extends AppCompatActivity {
 
     }
 }
-
-

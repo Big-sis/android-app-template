@@ -26,7 +26,7 @@ public class GridAdapter extends BaseAdapter implements Filterable {
 
     public static final String TITLE_VIDEO = "titleVideo";
     public final static String FILE_NAME = "filename";
-    public final static String ID_SESSION = "idSession";
+    public static final String ID_SESSION = "idSession";
 
     public GridAdapter(Context context, ArrayList<SessionsModel> video) {
         this.mContext = context;
@@ -62,6 +62,9 @@ public class GridAdapter extends BaseAdapter implements Filterable {
         //Test avec seulement le nom
         final TextView tvName = convertView.findViewById(R.id.title_video);
         tvName.setText(video.getName());
+
+        final TextView tvDate = convertView.findViewById(R.id.video_date);
+        tvDate.setText(video.getDate());
 
         ImageView videoStatus = convertView.findViewById(R.id.img_upload_video);
 
