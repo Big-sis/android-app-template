@@ -48,6 +48,7 @@ public class RecordActivity extends AppCompatActivity {
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     final String mAuthUserId = mAuth.getCurrentUser().getUid();
     private static String mFileName = null;
+    private static String mIdSession = null;
     private MediaRecorder mRecorder = null;
     private CameraPreview mPreview;
 
@@ -133,7 +134,7 @@ public class RecordActivity extends AppCompatActivity {
 
                         //Firebase SESSION
                         DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions");
-                        String mIdSession = sessionRef.push().getKey();
+                        mIdSession = sessionRef.push().getKey();
                         sessionRef.child(mIdSession).child("name").setValue(titleSession);
                         sessionRef.child(mIdSession).child("author").setValue(mAuthUserId);
                         sessionRef.child(mIdSession).child("videoLink").setValue(mFileName);
@@ -195,6 +196,7 @@ public class RecordActivity extends AppCompatActivity {
                 Intent intent = new Intent(RecordActivity.this, SelectedVideoActivity.class);
                 intent.putExtra(TITLE_VIDEO, titleSession);
                 intent.putExtra(FILE_NAME, mFileName);
+                intent.putExtra(ID_SESSION, mIdSession);
                 startActivity(intent);
             }
         });

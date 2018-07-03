@@ -39,7 +39,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selected_video);
 
-        mIdSession = getIntent().getStringExtra("idSession");
+        mIdSession = getIntent().getStringExtra(ID_SESSION);
         Button play = findViewById(R.id.bt_play);
         Button btnUpload = findViewById(R.id.bt_upload);
         Button edit = findViewById(R.id.btn_edit);
