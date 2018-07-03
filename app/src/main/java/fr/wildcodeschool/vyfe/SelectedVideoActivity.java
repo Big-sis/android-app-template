@@ -62,11 +62,13 @@ public class SelectedVideoActivity extends AppCompatActivity {
 
     public static final String TITLE_VIDEO = "titleVideo";
     public static final String FILE_NAME = "filename";
+    public static final String ID_SESSION = "idSession";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selected_video);
+        mIdSession = getIntent().getStringExtra(ID_SESSION);
 
 
         mDatabase = SingletonFirebase.getInstance().getDatabase();
@@ -142,9 +144,6 @@ public class SelectedVideoActivity extends AppCompatActivity {
                         return params;
                     }
 
-                    @Override
-                    public Map<String, String> getHeaders() throws AuthFailureError {
-                        Map<String, String> params = new HashMap<String, String>();
 
                         params.put("Authorization", SelectedVideoActivity.this.getString(R.string.VIMEO_TOKEN));
                         params.put("Content-Type", "application/json");
@@ -155,7 +154,8 @@ public class SelectedVideoActivity extends AppCompatActivity {
                 };
                 queue.add(sr);
             }
-        });*/
+        });
+        */
 
         play.setOnClickListener(new View.OnClickListener() {
             @Override

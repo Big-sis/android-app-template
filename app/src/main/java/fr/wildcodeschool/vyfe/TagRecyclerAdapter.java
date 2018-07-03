@@ -34,6 +34,8 @@ public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.
         holder.tvName.setText(tagModel.getName());
         holder.ivColor.setBackgroundColor(tagModel.getColor());
 
+
+
         if (mFrom.equals("start")) {
             holder.tvNum.setVisibility(View.GONE);
         } else if (mFrom.equals("record")) {
@@ -42,8 +44,10 @@ public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.
             holder.tvNum.setVisibility(View.GONE);
         } else if (mFrom.equals("count")) {
             holder.tvNum.setVisibility(View.VISIBLE);
-            // Pour tester :
-            holder.tvNum.setText("10");
+            if (tagModel.getTimes() != null) {
+                int count = tagModel.getTimes().size();
+                holder.tvNum.setText(String.valueOf(count));
+            } holder.tvNum.setText("0");
         }
     }
 

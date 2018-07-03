@@ -1,19 +1,27 @@
 package fr.wildcodeschool.vyfe;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class SessionsModel {
     private String name;
     private String author;
     private String videoLink;
     private String date;
     private String idSession;
+    private String idTagSet;
+    private HashMap<String, TagModel> tags;
     private String description;
 
-    public SessionsModel(String name, String author, String videoLink, String date, String idSession) {
+
+    public SessionsModel(String name, String author, String videoLink, String date, String idSession, String idTagSet) {
         this.name = name;
         this.author = author;
         this.videoLink = videoLink;
         this.date = date;
         this.idSession = idSession;
+        this.idTagSet = idTagSet;
+        this.tags = new HashMap<>();
     }
 
     public SessionsModel(){}
@@ -65,5 +73,20 @@ public class SessionsModel {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+    public String getIdTagSet() {
+        return idTagSet;
+    }
+
+    public void setIdTagSet(String idTagSet) {
+        this.idTagSet = idTagSet;
+    }
+
+    public HashMap<String, TagModel> getTags() {
+        return tags;
+    }
+
+    public void setTags(HashMap<String, TagModel> tags) {
+        this.tags = tags;
     }
 }
