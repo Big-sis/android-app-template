@@ -62,7 +62,7 @@
                 android:layout_marginTop="25dp"
                 android:background="@drawable/style_input"
                 android:ems="10"
-                android:hint="@string/description"
+                android:hint="@string/no_description"
                 android:inputType="textMultiLine"
                 android:textColor="@color/white"
                 android:textColorHint="@color/white"

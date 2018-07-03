@@ -36,6 +36,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Date;
+import java.util.Map;
 
 
 public class RecordActivity extends AppCompatActivity {
@@ -48,6 +49,7 @@ public class RecordActivity extends AppCompatActivity {
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     final String mAuthUserId = SingletonFirebase.getInstance().getUid();
     private static String mFileName = null;
+    private static String mIdSession = null;
     private MediaRecorder mRecorder = null;
     private CameraPreview mPreview;
 
@@ -102,10 +104,9 @@ public class RecordActivity extends AppCompatActivity {
                 chronometer.setBase(SystemClock.elapsedRealtime());
                 chronometer.start();
 
-/*
                 mRecord.setImageResource(R.drawable.icons8_arr_ter_96);
                 recyclerTags.setAlpha(1);
-
+/*
                 mPreview = new CameraPreview(RecordActivity.this, mCamera,
                         new CameraPreview.SurfaceCallback() {
                             @Override
@@ -119,17 +120,14 @@ public class RecordActivity extends AppCompatActivity {
                             }
                         });
                 FrameLayout preview = findViewById(R.id.video_view);
-                preview.addView(mPreview);*/
-
-
+                preview.addView(mPreview);
+*/
                 mRecord.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         chronometer.stop();
                         //stopRecording();
                         mRecord.setClickable(false);
-
-                      
                         sessionRecord.setVisibility(View.VISIBLE);
                         Date date = new Date();
                         Date newDate = new Date(date.getTime());
@@ -141,11 +139,31 @@ public class RecordActivity extends AppCompatActivity {
                         //Firebase SESSION
                         DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions");
                         sessionRef.keepSynced(true);
-                        String mIdSession = sessionRef.push().getKey();
+                        mIdSession = sessionRef.push().getKey();
                         sessionRef.child(mIdSession).child("name").setValue(titleSession);
                         sessionRef.child(mIdSession).child("author").setValue(mAuthUserId);
                         sessionRef.child(mIdSession).child("videoLink").setValue(mFileName);
                         sessionRef.child(mIdSession).child("date").setValue(stringdate);
+                        sessionRef.child(mIdSession).child("idSession").setValue(mIdSession);
+                        sessionRef.child(mIdSession).child("idTagSet").setValue(idTagSet);
+
+
+                        for (Map.Entry<String, ArrayList<Pair<Integer, Integer>>> entry : newTagList.entrySet()) {
+
+                            String tagKey = sessionRef.child(mIdSession).child("tags").push().getKey();
+                            sessionRef.child(mIdSession).child("tags").child(tagKey).child("tagName").setValue(entry.getKey());
+                            ArrayList<TimeModel> times = new ArrayList<>();
+
+                            for (Pair<Integer, Integer> pair : entry.getValue()) {
+
+                                times.add(new TimeModel(pair.first, pair.second));
+
+
+                            }
+                            sessionRef.child(mIdSession).child("tags").child(tagKey).child("times").setValue(times);
+
+                        }
+
 
                         //FIREBASE TAGSSESSION
                         DatabaseReference tagsRef = mDatabase.getReference(mAuthUserId).child("tagsSession");
@@ -154,6 +172,7 @@ public class RecordActivity extends AppCompatActivity {
                         tagsRef.child(idTag).child("fkSession").setValue(mIdSession);
                         tagsRef.child(idTag).child("fkTagSet").setValue(idTagSet);
                         tagsRef.child(idTag).child("fkTagSet").child(idTagSet).setValue(newTagList);
+
                     }
                 });
             }
@@ -161,11 +180,9 @@ public class RecordActivity extends AppCompatActivity {
 
 
         RecyclerView.LayoutManager layoutManagerTags = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        RecyclerView.LayoutManager layoutManagerTime = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerTags.setLayoutManager(layoutManagerTags);
 
         final TagRecyclerAdapter adapterTags = new TagRecyclerAdapter(mTagModels, "record");
-        final TagRecyclerAdapter adapterTime = new TagRecyclerAdapter(mTagModels, "timelines");
         recyclerTags.setAdapter(adapterTags);
 
         btnBackMain.setOnClickListener(new View.OnClickListener() {
@@ -183,6 +200,7 @@ public class RecordActivity extends AppCompatActivity {
                 Intent intent = new Intent(RecordActivity.this, SelectedVideoActivity.class);
                 intent.putExtra(TITLE_VIDEO, titleSession);
                 intent.putExtra(FILE_NAME, mFileName);
+                intent.putExtra(ID_SESSION, mIdSession);
                 startActivity(intent);
             }
         });
@@ -285,7 +303,7 @@ public class RecordActivity extends AppCompatActivity {
                 //Ici on pourra changer les caracteristiques des tags pour la V2. Pour l'instant carac = constantes
                 int timeTag = 3 * rapport;
                 int beforeTag = 6 * rapport;
-                int titleLength = 100;
+                int titleLength = 200;
 
                 //init image Tag
                 ImageView iv = new ImageView(RecordActivity.this);
