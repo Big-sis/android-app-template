@@ -34,7 +34,10 @@
             android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".SelectedVideoActivity"
-            android:screenOrientation="landscape"/>
+            android:screenOrientation="landscape">
+
+        </activity>
+
         <activity
             android:name=".ConnexionActivity"
             android:screenOrientation="landscape"
@@ -44,6 +47,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity
             android:name=".MyVideoActivity"
@@ -51,7 +55,10 @@
         <activity
             android:name=".StartActivity"
             android:screenOrientation="landscape"
-            android:windowSoftInputMode="stateHidden"/>
+            android:windowSoftInputMode="stateHidden">
+
+        </activity>
+
         <activity
             android:name=".PlayVideoActivity"
             android:screenOrientation="landscape" />
@@ -60,11 +67,12 @@
             android:screenOrientation="landscape"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden" />
-        <activity android:name=".ApiActivity" />
+
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+
 
     </application>
 
