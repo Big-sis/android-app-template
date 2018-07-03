@@ -115,7 +115,7 @@
                         <android.support.v7.widget.RecyclerView
                             android:id="@+id/recycler_view_import"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_marginEnd="32dp"
                             android:layout_marginLeft="32dp"
                             android:layout_marginRight="32dp"
@@ -142,15 +142,10 @@
 
                     <LinearLayout
                         android:id="@+id/ll_create_grid"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="8dp"
-                        android:layout_marginRight="8dp"
+                        android:layout_width="483dp"
+                        android:layout_height="match_parent"
                         android:clickable="true"
-                        android:orientation="vertical"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/radio_Button_new">
+                        android:orientation="vertical">
 
                         <RadioButton
                             android:id="@+id/radio_Button_new"
@@ -187,7 +182,7 @@
 
                             android:id="@+id/recycler_view"
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_height="wrap_content"
                             android:layout_marginEnd="32dp"
                             android:layout_marginLeft="32dp"
                             android:layout_marginRight="32dp"
@@ -203,8 +198,8 @@
 
                         <LinearLayout
                             android:id="@+id/new_event"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_marginLeft="32dp"
                             android:layout_marginStart="32dp"
                             android:layout_marginTop="8dp"

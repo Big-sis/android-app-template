@@ -1,8 +1,6 @@
 package fr.wildcodeschool.vyfe;
 
 import android.content.Intent;
-import android.support.annotation.DrawableRes;
-import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,15 +13,12 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.HorizontalScrollView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.Toast;
 import android.widget.VideoView;
 
-import com.bumptech.glide.load.engine.Resource;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -31,7 +26,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -62,6 +56,8 @@ public class PlayVideoActivity extends AppCompatActivity {
         final String titleSession = getIntent().getStringExtra(TITLE_VIDEO);
         mDatabase = SingletonFirebase.getInstance().getDatabase();
 
+        mDatabase = SingletonFirebase.getInstance().getDatabase();
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(titleSession);
@@ -69,40 +65,7 @@ public class PlayVideoActivity extends AppCompatActivity {
         SingletonTags singletonTags = SingletonTags.getInstance();
         mTagModels = singletonTags.getmTagsList();
 
-        // NE PAS SUPPRIMER POUR LE MOMENT
-        /* Test de récupération du lien avec données en dur :
-        mIdSession = "-LFRtUEoDalCtBKJq-l0";
-        final DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions").child(mIdSession).child("videoLink");
-        sessionRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                mVideoLink = dataSnapshot.getValue().toString();
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
-        SingletonTags singletonTags = SingletonTags.getInstance();
-        mTagModels = singletonTags.getmTagsList();
-        mTagModels.add(new TagModel(-3318101, "nameTest1", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest2", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest3", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest4", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest5", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest6", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest7", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest8", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest9", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest10", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest11", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest12", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest13", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest14", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest15", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest16", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest17", null, null));
-        mTagModels.add(new TagModel(-3318101, "nameTest18", null, null));
-        */
+
 
         RecyclerView rvTags = findViewById(R.id.re_tags_selected);
 
@@ -165,15 +128,15 @@ public class PlayVideoActivity extends AppCompatActivity {
         //TODO : mettre valeur calculée
         Display display = getWindowManager().getDefaultDisplay();
         int width = display.getWidth();
-        double ratio = ((float) (width))/300.0;
-        int height = (int)(ratio*50);
+        double ratio = ((float) (width)) / 300.0;
+        int height = (int) (ratio * 50);
         RelativeLayout timeLines = findViewById(R.id.time_lines_container);
 
         timeLines.setLayoutParams(new FrameLayout.LayoutParams(width, LinearLayout.LayoutParams.WRAP_CONTENT));
         mSeekBar.setLayoutParams(new RelativeLayout.LayoutParams(width, LinearLayout.LayoutParams.MATCH_PARENT));
 
-    }
 
+    }
 
 
     @Override
@@ -183,7 +146,7 @@ public class PlayVideoActivity extends AppCompatActivity {
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.logout:
                 Intent intent = new Intent(PlayVideoActivity.this, ConnexionActivity.class);
                 startActivity(intent);

@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 
 import android.app.Dialog;
-import android.content.Context;
 import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -15,8 +14,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -37,18 +34,19 @@ public class AddGridDialog {
     private static TagRecyclerAdapter mAdapter = new TagRecyclerAdapter(mTagModelList, "start");
     private static ArrayList<String> colors = new ArrayList<>();
     private static ImageView ivColor;
+    private static ArrayList<String> nameDouble = new ArrayList<>();
+    private static boolean repeatName = false;
 
     public static Dialog openCreateTags(final AppCompatActivity activity) {
 
 
         final LayoutInflater inflater = LayoutInflater.from(activity);
         final View subView = inflater.inflate(R.layout.activity_add_grid, null);
-
         final EditText etName = subView.findViewById(R.id.et_name);
         final RecyclerView recyclerTagList = subView.findViewById(R.id.recycler_view);
         ivColor = subView.findViewById(R.id.iv_color);
 
-        //TODO: remplacer couleur par celle de la charte graph
+        // TODO mettre couleur à partir values
         colors.add("#F57A62");
         colors.add("#F56290");
         colors.add("#F562E5");
@@ -69,8 +67,6 @@ public class AddGridDialog {
             public void onClick(View view) {
                 final ColorPicker colorPicker = new ColorPicker(activity);
 
-
-
                 colorPicker.setColors(colors);
                 colorPicker.setColumns(4);
                 colorPicker.setRoundColorButton(true);
@@ -90,8 +86,6 @@ public class AddGridDialog {
                     }
                 });
                 colorPicker.show();
-
-
             }
 
         });
@@ -115,7 +109,15 @@ public class AddGridDialog {
             @Override
             public void onClick(View view) {
                 String valueName = etName.getText().toString();
-                if (valueName.equals("") || mfinalcolor == 0) {
+                for (int i = 0; i < nameDouble.size(); i++) {
+                    if (valueName.equals(nameDouble.get(i))) {
+                        repeatName = true;
+                    }
+                }
+
+                if (repeatName) {
+                    Toast.makeText(activity, R.string.double_name, Toast.LENGTH_SHORT).show();
+                } else if ((valueName.equals("") || mfinalcolor == 0)) {
                     Toast.makeText(activity, R.string.def_colot, Toast.LENGTH_SHORT).show();
                 } else {
                     TagModel tagModel = new TagModel(mfinalcolor, valueName, null, null);
@@ -126,10 +128,9 @@ public class AddGridDialog {
                     ivColor.setBackgroundColor(Color.parseColor("#ffaaaaaa"));
 
                     //Fermer clavier après avoir rentré un tag
-
-                    InputMethodManager imm = (InputMethodManager)activity.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    InputMethodManager imm = (InputMethodManager) activity.getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(btnAddEvenement.getWindowToken(), 0);
-
+                    nameDouble.add(valueName);
                     chooseColor();
                 }
             }
@@ -172,7 +173,6 @@ public class AddGridDialog {
 
             }
         });
-
 
 
         return alertDialog;
