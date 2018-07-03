@@ -109,6 +109,7 @@ public class StartActivity extends AppCompatActivity {
         radioButtonImport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                spinner.setVisibility(View.VISIBLE);
                 if (radioButtonImport.isChecked()) {
                     mTagModelList.clear();
 
