@@ -161,7 +161,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(SelectedVideoActivity.this, PlayVideoActivity.class);
-                intent.putExtra(ID_SESSION, mIdSession);
+                //intent.putExtra(ID_SESSION, mIdSession);
                 intent.putExtra(FILE_NAME, fileName);
                 intent.putExtra(TITLE_VIDEO, titleSession);
                 startActivity(intent);
@@ -172,7 +172,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(SelectedVideoActivity.this, PlayVideoActivity.class);
-                intent.putExtra(ID_SESSION, mIdSession);
+                //intent.putExtra(ID_SESSION, mIdSession);
                 intent.putExtra(FILE_NAME, fileName);
                 intent.putExtra(TITLE_VIDEO, titleSession);
                 startActivity(intent);
