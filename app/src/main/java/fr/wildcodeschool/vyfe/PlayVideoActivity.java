@@ -60,6 +60,7 @@ public class PlayVideoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_play_video);
 
         final String titleSession = getIntent().getStringExtra(TITLE_VIDEO);
+        mDatabase = SingletonFirebase.getInstance().getDatabase();
 
         mDatabase = SingletonFirebase.getInstance().getDatabase();
 

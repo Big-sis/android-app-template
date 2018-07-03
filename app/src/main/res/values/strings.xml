@@ -2,7 +2,7 @@
     <string name="app_name">Vyfe</string>
     <string name="video_tittle">Titre de la vidéo</string>
     <string name="video_info">Informations sur la vidéo</string>
-    <string name="description">Pas de description</string>
+    <string name="no_description">Pas de description</string>
     <string name="play_video">Visionner</string>
     <string name="edit">Modifier</string>
     <string name="upload">Uploader</string>
@@ -84,6 +84,7 @@
     <string name="havent_grid">Vous n\'avez pas encore de grille</string>
     <string name="import_grid">Importer une grille</string>
     <string name="havent_tag">Vous n\'avez pas de tags</string>
+    <string name="description_added">Description ajoutée</string>
     <string name="title">Veuillez renseigner un titre de vidéo</string>
     <string name="double_name">Nom déjà utilisé. Veuillez renseigner un nouveau nom</string>
     <string name="upload_video">Votre vidéo a été mise en ligne</string>

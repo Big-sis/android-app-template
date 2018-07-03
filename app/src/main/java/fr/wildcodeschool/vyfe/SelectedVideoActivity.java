@@ -27,8 +27,11 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -59,7 +62,6 @@ public class SelectedVideoActivity extends AppCompatActivity {
 
     public static final String TITLE_VIDEO = "titleVideo";
     public static final String FILE_NAME = "filename";
-    public static final String ID_SESSION = "idSession";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,21 +70,25 @@ public class SelectedVideoActivity extends AppCompatActivity {
 
 
         mDatabase = SingletonFirebase.getInstance().getDatabase();
-        mIdSession = getIntent().getStringExtra("idSession");
         Button play = findViewById(R.id.bt_play);
         Button btnUpload = findViewById(R.id.bt_upload);
         Button edit = findViewById(R.id.btn_edit);
         ImageView video = findViewById(R.id.vv_preview);
-        TextView tvTitle = findViewById(R.id.tv_title);
+        final TextView tvTitle = findViewById(R.id.tv_title);
+        final TextView tvDescription = findViewById(R.id.tv_description);
+
+        final DatabaseReference ref = mDatabase.getInstance().getReference(mAuthUserId).child("sessions");
 
         final String titleSession = getIntent().getStringExtra(TITLE_VIDEO);
-        tvTitle.setText(titleSession);
         final String fileName = getIntent().getStringExtra(FILE_NAME);
+        tvTitle.setText(titleSession);
 
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(SelectedVideoActivity.this, InfoVideoActivity.class);
+                intent.putExtra(FILE_NAME, fileName);
+                intent.putExtra(TITLE_VIDEO, titleSession);
                 startActivity(intent);
             }
         });
@@ -91,7 +97,6 @@ public class SelectedVideoActivity extends AppCompatActivity {
         btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 File file = new File(fileName);
                 final long length = file.length();
 
@@ -149,8 +154,6 @@ public class SelectedVideoActivity extends AppCompatActivity {
                     }
                 };
                 queue.add(sr);
-
-
             }
         });*/
 
@@ -182,7 +185,26 @@ public class SelectedVideoActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(titleSession);
 
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot video: dataSnapshot.getChildren()) {
+                    SessionsModel model = video.getValue(SessionsModel.class);
+                    if (fileName.equals(model.getVideoLink())) {
+                        if (video.hasChild("description")) {
+                            tvDescription.setText(model.getDescription());
+                        } else {
+                            tvDescription.setText(R.string.no_description);
+                        }
+                    }
+                }
+            }
 
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override

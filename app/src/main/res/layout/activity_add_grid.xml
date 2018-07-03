@@ -29,30 +29,37 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/scroll_view_all">
 
-                <ImageView
-                    android:id="@+id/iv_color"
-                    android:layout_width="10dp"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_weight="1"
-                    android:background="@android:color/darker_gray" />
-
-                <EditText
-                    android:id="@+id/et_name"
+                <LinearLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="8dp"
-                    android:layout_weight="1"
-                    android:background="@drawable/style_input"
-                    android:ems="10"
-                    android:hint="@string/name_event"
-                    android:inputType="textPersonName"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/white"
-                    app:fontFamily="@font/roboto"
-                    tools:layout_editor_absoluteX="116dp"
-                    tools:layout_editor_absoluteY="58dp" />
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/tag">
+
+                    <ImageView
+                        android:id="@+id/iv_color"
+                        android:layout_width="5dp"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:background="@android:color/darker_gray" />
+
+                    <EditText
+                        android:id="@+id/et_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="8dp"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:hint="@string/name_event"
+                        android:inputType="textPersonName"
+                        android:background="@android:color/transparent"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/white"
+                        app:fontFamily="@font/roboto"
+                        tools:layout_editor_absoluteX="116dp"
+                        tools:layout_editor_absoluteY="58dp" />
+
+                </LinearLayout>
 
                 <Button
                     android:id="@+id/btn_chosse_color"
