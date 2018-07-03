@@ -87,7 +87,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
             }
         });
 
-        /* En COMM pour ne pas utiliser nos connexions à API
+        /*//En COMM pour ne pas utiliser nos connexions à API
         btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -141,7 +141,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
                     public Map<String, String> getHeaders() throws AuthFailureError {
                         Map<String, String> params = new HashMap<String, String>();
 
-                        params.put("Authorization", "mettre token");
+                        params.put("Authorization", SelectedVideoActivity.this.getString(R.string.VIMEO_TOKEN));
                         params.put("Content-Type", "application/json");
                         params.put("Accept", "application/vnd.vimeo.*+json;version=3.4");
 
