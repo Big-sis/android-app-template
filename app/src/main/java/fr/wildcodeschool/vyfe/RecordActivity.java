@@ -106,7 +106,7 @@ public class RecordActivity extends AppCompatActivity {
 
                 mRecord.setImageResource(R.drawable.icons8_arr_ter_96);
                 recyclerTags.setAlpha(1);
-/*
+
                 mPreview = new CameraPreview(RecordActivity.this, mCamera,
                         new CameraPreview.SurfaceCallback() {
                             @Override
@@ -121,12 +121,12 @@ public class RecordActivity extends AppCompatActivity {
                         });
                 FrameLayout preview = findViewById(R.id.video_view);
                 preview.addView(mPreview);
-*/
+
                 mRecord.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         chronometer.stop();
-                        //stopRecording();
+                        stopRecording();
                         mRecord.setClickable(false);
                         sessionRecord.setVisibility(View.VISIBLE);
                         Date date = new Date();
