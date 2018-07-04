@@ -57,6 +57,9 @@ public class PlayVideoActivity extends AppCompatActivity {
     TagRecyclerAdapter mAdapterTags;
     RelativeLayout timeLines;
 
+    private final RecyclerView rvTags = findViewById(R.id.re_tags_selected);
+
+
     SeekbarAsync mAsync;
     long timeWhenStopped = 0;
     int mVideoDuration;
@@ -184,11 +187,13 @@ public class PlayVideoActivity extends AppCompatActivity {
             }
         });
 
+
         Display display = getWindowManager().getDefaultDisplay();
         int width = display.getWidth();
+        RelativeLayout.LayoutParams seekBarParams = new RelativeLayout.LayoutParams(width, LinearLayout.LayoutParams.MATCH_PARENT);
+        seekBarParams.setMargins(200, 0, 0, 0);
         timeLines.setLayoutParams(new FrameLayout.LayoutParams(width, LinearLayout.LayoutParams.WRAP_CONTENT));
-        mSeekBar.setLayoutParams(new RelativeLayout.LayoutParams(width, LinearLayout.LayoutParams.MATCH_PARENT));
-
+        mSeekBar.setLayoutParams(seekBarParams);
     }
 
 
@@ -311,12 +316,42 @@ public class PlayVideoActivity extends AppCompatActivity {
                         }
                     });
                 }
+
                 makeTimelines();
+                for (TagModel tagModel : mTagModels) {
+                    for (TagModel taged : mTagedList) {
+                        ArrayList<TimeModel> timeList = taged.getTimes();
+                        String tagedName = taged.getName();
+                        if (tagedName.equals(tagModel.getName())) {
+                            tagModel.setTimes(timeList);
+                        }
+                    }
+                }
                 mAdapterTags = new TagRecyclerAdapter(mTagModels, mTagedList,"count");
-                final RecyclerView rvTags = findViewById(R.id.re_tags_selected);
                 RecyclerView.LayoutManager layoutManagerTags = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
                 rvTags.setLayoutManager(layoutManagerTags);
                 rvTags.setAdapter(mAdapterTags);
+
+               /* rvTags.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), rvTags, new RecyclerTouchListener.ClickListener() {
+                    @Override
+                    public void onClick(View view, int position) {
+                        int tagNumber = 0;
+                        ArrayList<TimeModel> timeList = new ArrayList<>();
+                        TimeModel time = timeList.get(tagNumber);
+
+                        int timeListSize = timeList.size();
+                        while (tagNumber < timeListSize) {
+                            tagNumber++;
+                            mVideoSelected.seekTo(time.getStart());
+                        }
+                    }
+
+                    @Override
+                    public void onLongClick(View view, int position) {
+
+                    }
+                }));*/
+
             }
 
             @Override
