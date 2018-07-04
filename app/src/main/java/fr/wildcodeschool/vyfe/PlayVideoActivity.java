@@ -47,15 +47,11 @@ public class PlayVideoActivity extends AppCompatActivity {
     private boolean mFirstPlay = true;
     private String mIdSession;
     private String mVideoLink;
-    private String mIdTagSession;
     private String mIdTagSet;
-    private SessionsModel mSessionModel;
     FirebaseDatabase mDatabase;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     final String mAuthUserId = mAuth.getCurrentUser().getUid();
     HashMap<String, RelativeLayout> mTimelines = new HashMap<>();
-    HashMap<String, ArrayList<TimeModel>> mTagList = new HashMap<>();
-    HashMap<String, ArrayList<TimeModel>> mNewTagList = new HashMap<>();
     HashMap<String, Integer> mTagColorList = new HashMap<>();
     TagRecyclerAdapter mAdapterTags = new TagRecyclerAdapter(mTagModels, "count");
     RelativeLayout timeLines;
@@ -102,7 +98,6 @@ public class PlayVideoActivity extends AppCompatActivity {
             }
         });
 
-        // Réupération du lien de la video
         final DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions").child(mIdSession);
         sessionRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -191,10 +186,8 @@ public class PlayVideoActivity extends AppCompatActivity {
             }
         });
 
-        //TODO : mettre valeur calculée
         Display display = getWindowManager().getDefaultDisplay();
         int width = display.getWidth();
-        double ratio = ((float) (width)) / 300.0;
         timeLines.setLayoutParams(new FrameLayout.LayoutParams(width, LinearLayout.LayoutParams.WRAP_CONTENT));
         mSeekBar.setLayoutParams(new RelativeLayout.LayoutParams(width, LinearLayout.LayoutParams.MATCH_PARENT));
 
@@ -223,13 +216,9 @@ public class PlayVideoActivity extends AppCompatActivity {
 
         LinearLayout llMain = findViewById(R.id.ll_main_playvideo);
         int tagedLineSize = timeLines.getWidth() - 200;
-        int videoDuration = mVideoDuration;
         int titleLength = 200;
 
-
-        // ArrayList<Pair<Integer, Integer>> timesList = hashMap.get(tagName);
-
-        for (TagModel tagModel : mTagedList) {
+        for (final TagModel tagModel : mTagedList) {
             String tagName = tagModel.getName();
             final RelativeLayout timeline = new RelativeLayout(PlayVideoActivity.this);
             timeline.setBackgroundColor(getResources().getColor(R.color.colorCharcoal));
@@ -246,23 +235,40 @@ public class PlayVideoActivity extends AppCompatActivity {
             ArrayList<TimeModel> value = tagModel.getTimes();
 
 
-            for (TimeModel pair : value) {
+            for (final TimeModel pair : value) {
                 int first = pair.getStart();
                 int second = pair.getEnd();
 
-                int firstMilli = first * 1000000;
-                int secondMilli = second * 1000000;
+                int firstMicro = first * 1000000;
+                int secondMicro = second * 1000000;
 
-                double startRatio = firstMilli / mVideoDuration;
-                double endRatio = secondMilli / mVideoDuration;
+                double startRatio = firstMicro / mVideoDuration;
+                double endRatio = secondMicro / mVideoDuration;
 
                 int start = (int) (startRatio * tagedLineSize) / 1000;
                 int end = (int) (endRatio * tagedLineSize) / 1000;
 
-                ImageView iv = new ImageView(PlayVideoActivity.this);
+                final ImageView iv = new ImageView(PlayVideoActivity.this);
                 iv.setMinimumHeight(10);
                 iv.setMinimumWidth(end - start);
-                // TODO : Trouver pourquoi ca bug :)
+                final DatabaseReference tagRef = mDatabase.getReference(mAuthUserId).child("tags");
+                tagRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot tagSnapshot : dataSnapshot.getChildren()) {
+                            TagModel tagModel = tagSnapshot.getValue(TagModel.class);
+                            if (tagModel.getFkTagSet().equals(mIdTagSet)) {
+                                mTagColorList.put(tagModel.getName(), tagModel.getColor());
+                            }
+                        }
+                        iv.setBackgroundColor(mTagColorList.get(tagModel.getName()));
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
                 iv.setBackgroundColor(getResources().getColor(R.color.colorFadedOrange));
 
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
@@ -270,15 +276,14 @@ public class PlayVideoActivity extends AppCompatActivity {
                 layoutParams.setMargins(200 + start, 20, 0, 20);
                 timeline.setBackgroundResource(R.drawable.style_input);
 
-                    timeline.addView(iv, layoutParams);
+                timeline.addView(iv, layoutParams);
             }
         }
     }
 
 
     private void initTimeLines() {
-        final DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions").child(mIdSession);
-        DatabaseReference tagSessionRef = sessionRef.child("tags");
+        final DatabaseReference tagSessionRef = mDatabase.getReference(mAuthUserId).child("sessions").child(mIdSession).child("tags");
         tagSessionRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -294,23 +299,10 @@ public class PlayVideoActivity extends AppCompatActivity {
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             mTagModels.clear();
                             for (DataSnapshot tagsSnapshot : dataSnapshot.getChildren()) {
-                                String tagsName = tagsSnapshot.child("name").getValue(String.class);
                                 TagModel tagModel = tagsSnapshot.getValue(TagModel.class);
                                 if (tagModel.getFkTagSet().equals(mIdTagSet)) {
-                                    mTagColorList.put(tagModel.getName(), tagModel.getColor());
-                                    for (TagModel taged : mTagedList) {
-                                        ArrayList<TimeModel> tagTimeList = taged.getTimes();
-                                        String tagedName = taged.getName();
-                                        for (TagModel tag : mTagModels) {
-                                            String tagName = tag.getName();
-                                            if (tagedName.equals(tagName)) {
-                                                tag.setTimes(tagTimeList);
-                                                String coucou = "coucou";
-                                            }
-                                        }
-                                        if (!mTagModels.contains(tagModel)) {
-                                            mTagModels.add(tagModel);
-                                        }
+                                    if (!mTagModels.contains(tagModel)) {
+                                        mTagModels.add(tagModel);
                                     }
                                 }
                                 mAdapterTags.notifyDataSetChanged();
@@ -319,12 +311,10 @@ public class PlayVideoActivity extends AppCompatActivity {
 
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
-
                         }
                     });
                 }
                 makeTimelines();
-
             }
 
             @Override
