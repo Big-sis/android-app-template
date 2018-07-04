@@ -98,7 +98,7 @@ public class MyVideoActivity extends AppCompatActivity {
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.logout:
                 Intent intent = new Intent(MyVideoActivity.this, ConnexionActivity.class);
                 startActivity(intent);
