@@ -1,6 +1,8 @@
 package fr.wildcodeschool.vyfe;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -46,7 +48,7 @@ public class StartActivity extends AppCompatActivity {
 
     private String mIdGridImport;
     private String mNameGrid;
-
+    private String title;
 
     public static final String TITLE_VIDEO = "titleVideo";
     public static final String ID_TAG_SET = "idTagSet";
@@ -72,6 +74,10 @@ public class StartActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         final EditText etTagSet = findViewById(R.id.et_grid_title);
         final EditText etVideoTitle = findViewById(R.id.et_video_title);
+
+        final SharedPreferences pref = StartActivity.this.getPreferences(Context.MODE_PRIVATE);
+        String title2 = pref.getString("title", "");
+        etVideoTitle.setText(title2);
 
         final HashMap<String, String> hashMapTitleIdGrid = new HashMap<>();
 
@@ -139,6 +145,10 @@ public class StartActivity extends AppCompatActivity {
                                 String idGrid = (String) snapshot.getKey().toString();
                                 hashMapTitleIdGrid.put(mNameGrid, idGrid);
                                 nameTagSet.add(mNameGrid);
+                                title = etVideoTitle.getText().toString();
+                                SharedPreferences.Editor editor = pref.edit();
+                                editor.putString("title", title).apply();
+
                             }
                             adapterSpinner.notifyDataSetChanged();
                         }
