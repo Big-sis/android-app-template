@@ -98,7 +98,6 @@ public class PlayVideoActivity extends AppCompatActivity {
             }
         });
 
-        // Réupération du lien de la video
         final DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions").child(mIdSession);
         sessionRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -219,7 +218,7 @@ public class PlayVideoActivity extends AppCompatActivity {
         int tagedLineSize = timeLines.getWidth() - 200;
         int titleLength = 200;
 
-        for (TagModel tagModel : mTagedList) {
+        for (final TagModel tagModel : mTagedList) {
             String tagName = tagModel.getName();
             final RelativeLayout timeline = new RelativeLayout(PlayVideoActivity.this);
             timeline.setBackgroundColor(getResources().getColor(R.color.colorCharcoal));
@@ -236,7 +235,7 @@ public class PlayVideoActivity extends AppCompatActivity {
             ArrayList<TimeModel> value = tagModel.getTimes();
 
 
-            for (TimeModel pair : value) {
+            for (final TimeModel pair : value) {
                 int first = pair.getStart();
                 int second = pair.getEnd();
 
@@ -249,10 +248,27 @@ public class PlayVideoActivity extends AppCompatActivity {
                 int start = (int) (startRatio * tagedLineSize) / 1000;
                 int end = (int) (endRatio * tagedLineSize) / 1000;
 
-                ImageView iv = new ImageView(PlayVideoActivity.this);
+                final ImageView iv = new ImageView(PlayVideoActivity.this);
                 iv.setMinimumHeight(10);
                 iv.setMinimumWidth(end - start);
-                // TODO : Trouver pourquoi ca bug :)
+                final DatabaseReference tagRef = mDatabase.getReference(mAuthUserId).child("tags");
+                tagRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot tagSnapshot : dataSnapshot.getChildren()) {
+                            TagModel tagModel = tagSnapshot.getValue(TagModel.class);
+                            if (tagModel.getFkTagSet().equals(mIdTagSet)) {
+                                mTagColorList.put(tagModel.getName(), tagModel.getColor());
+                            }
+                        }
+                        iv.setBackgroundColor(mTagColorList.get(tagModel.getName()));
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
                 iv.setBackgroundColor(getResources().getColor(R.color.colorFadedOrange));
 
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
@@ -260,7 +276,7 @@ public class PlayVideoActivity extends AppCompatActivity {
                 layoutParams.setMargins(200 + start, 20, 0, 20);
                 timeline.setBackgroundResource(R.drawable.style_input);
 
-                    timeline.addView(iv, layoutParams);
+                timeline.addView(iv, layoutParams);
             }
         }
     }
@@ -283,7 +299,6 @@ public class PlayVideoActivity extends AppCompatActivity {
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             mTagModels.clear();
                             for (DataSnapshot tagsSnapshot : dataSnapshot.getChildren()) {
-                                String tagsName = tagsSnapshot.child("name").getValue(String.class);
                                 TagModel tagModel = tagsSnapshot.getValue(TagModel.class);
                                 if (tagModel.getFkTagSet().equals(mIdTagSet)) {
                                     mTagColorList.put(tagModel.getName(), tagModel.getColor());
@@ -307,12 +322,10 @@ public class PlayVideoActivity extends AppCompatActivity {
 
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
-
                         }
                     });
                 }
                 makeTimelines();
-
             }
 
             @Override
