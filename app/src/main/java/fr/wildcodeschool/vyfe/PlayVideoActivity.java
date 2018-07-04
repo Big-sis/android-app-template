@@ -191,10 +191,8 @@ public class PlayVideoActivity extends AppCompatActivity {
             }
         });
 
-        //TODO : mettre valeur calculée
         Display display = getWindowManager().getDefaultDisplay();
         int width = display.getWidth();
-        double ratio = ((float) (width)) / 300.0;
         timeLines.setLayoutParams(new FrameLayout.LayoutParams(width, LinearLayout.LayoutParams.WRAP_CONTENT));
         mSeekBar.setLayoutParams(new RelativeLayout.LayoutParams(width, LinearLayout.LayoutParams.MATCH_PARENT));
 
@@ -225,9 +223,6 @@ public class PlayVideoActivity extends AppCompatActivity {
         int tagedLineSize = timeLines.getWidth() - 200;
         int videoDuration = mVideoDuration;
         int titleLength = 200;
-
-
-        // ArrayList<Pair<Integer, Integer>> timesList = hashMap.get(tagName);
 
         for (TagModel tagModel : mTagedList) {
             String tagName = tagModel.getName();
@@ -277,8 +272,7 @@ public class PlayVideoActivity extends AppCompatActivity {
 
 
     private void initTimeLines() {
-        final DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions").child(mIdSession);
-        DatabaseReference tagSessionRef = sessionRef.child("tags");
+        final DatabaseReference tagSessionRef = mDatabase.getReference(mAuthUserId).child("sessions").child(mIdSession).child("tags");
         tagSessionRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -305,7 +299,6 @@ public class PlayVideoActivity extends AppCompatActivity {
                                             String tagName = tag.getName();
                                             if (tagedName.equals(tagName)) {
                                                 tag.setTimes(tagTimeList);
-                                                String coucou = "coucou";
                                             }
                                         }
                                         if (!mTagModels.contains(tagModel)) {

@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -54,11 +55,13 @@ public class SelectedVideoActivity extends AppCompatActivity {
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     final String mAuthUserId = SingletonFirebase.getInstance().getUid();
     private String mIdSession = "";
+    private String mIdTagSet;
     private SessionsModel sessionsModel;
 
     private byte[] inputData = new byte[0];
     private InputStream iStream = null;
 
+    private TagRecyclerAdapter mAdapterTags = new TagRecyclerAdapter(mTagModels, "count");
 
     public static final String TITLE_VIDEO = "titleVideo";
     public static final String FILE_NAME = "filename";
@@ -180,6 +183,43 @@ public class SelectedVideoActivity extends AppCompatActivity {
         });
 
         RecyclerView recyclerTags = findViewById(R.id.re_tags);
+        RecyclerView.LayoutManager layoutManagerTags = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        recyclerTags.setLayoutManager(layoutManagerTags);
+        recyclerTags.setAdapter(mAdapterTags);
+
+        final DatabaseReference tagSessionRef = mDatabase.getReference(mAuthUserId).child("sessions").child(mIdSession).child("idTagSet");
+
+        tagSessionRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                mIdTagSet = dataSnapshot.getValue(String.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        final DatabaseReference tagRef = mDatabase.getReference(mAuthUserId).child("tags");
+        tagRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                mTagModels.clear();
+                for (DataSnapshot tagSnapshot : dataSnapshot.getChildren()) {
+                    TagModel tagModel = tagSnapshot.getValue(TagModel.class);
+                    if (tagModel.getFkTagSet().equals(mIdTagSet)) {
+                        mTagModels.add(tagModel);
+                    }
+                }
+                mAdapterTags.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
