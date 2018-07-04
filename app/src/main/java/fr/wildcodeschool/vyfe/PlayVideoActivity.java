@@ -247,9 +247,17 @@ public class PlayVideoActivity extends AppCompatActivity {
 
 
             for (TimeModel pair : value) {
+                int first = pair.getStart();
+                int second = pair.getEnd();
 
-                int start = pair.getStart();
-                int end = pair.getEnd();
+                int firstMilli = first * 1000000;
+                int secondMilli = second * 1000000;
+
+                double startRatio = firstMilli / mVideoDuration;
+                double endRatio = secondMilli / mVideoDuration;
+
+                int start = (int) (startRatio * tagedLineSize) / 1000;
+                int end = (int) (endRatio * tagedLineSize) / 1000;
 
                 ImageView iv = new ImageView(PlayVideoActivity.this);
                 iv.setMinimumHeight(10);
@@ -288,7 +296,6 @@ public class PlayVideoActivity extends AppCompatActivity {
                             for (DataSnapshot tagsSnapshot : dataSnapshot.getChildren()) {
                                 String tagsName = tagsSnapshot.child("name").getValue(String.class);
                                 TagModel tagModel = tagsSnapshot.getValue(TagModel.class);
-                                String coucou = "coucou";
                                 if (tagModel.getFkTagSet().equals(mIdTagSet)) {
                                     mTagColorList.put(tagModel.getName(), tagModel.getColor());
                                     for (TagModel taged : mTagedList) {
@@ -298,19 +305,16 @@ public class PlayVideoActivity extends AppCompatActivity {
                                             String tagName = tag.getName();
                                             if (tagedName.equals(tagName)) {
                                                 tag.setTimes(tagTimeList);
+                                                String coucou = "coucou";
                                             }
                                         }
                                         if (!mTagModels.contains(tagModel)) {
                                             mTagModels.add(tagModel);
                                         }
-
                                     }
-
                                 }
                                 mAdapterTags.notifyDataSetChanged();
-
                             }
-
                         }
 
                         @Override
@@ -328,6 +332,5 @@ public class PlayVideoActivity extends AppCompatActivity {
 
             }
         });
-
     }
 }
