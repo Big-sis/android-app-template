@@ -41,6 +41,7 @@ public class PlayVideoActivity extends AppCompatActivity {
 
     private ArrayList<TagModel> mTagedList = new ArrayList<>();
     private ArrayList<TagModel> mTagModels = new ArrayList<>();
+    private ArrayList<TimeModel> mTimeList = new ArrayList<>();
     private VideoView mVideoSelected;
     private SeekBar mSeekBar;
     private boolean mIsPlayed = false;
@@ -53,7 +54,7 @@ public class PlayVideoActivity extends AppCompatActivity {
     final String mAuthUserId = mAuth.getCurrentUser().getUid();
     HashMap<String, RelativeLayout> mTimelines = new HashMap<>();
     HashMap<String, Integer> mTagColorList = new HashMap<>();
-    TagRecyclerAdapter mAdapterTags = new TagRecyclerAdapter(mTagModels, "count");
+    TagRecyclerAdapter mAdapterTags;
     RelativeLayout timeLines;
 
     SeekbarAsync mAsync;
@@ -79,10 +80,7 @@ public class PlayVideoActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(titleSession);
 
-        final RecyclerView rvTags = findViewById(R.id.re_tags_selected);
-        RecyclerView.LayoutManager layoutManagerTags = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        rvTags.setLayoutManager(layoutManagerTags);
-        rvTags.setAdapter(mAdapterTags);
+
 
 
         mIdSession = getIntent().getStringExtra(ID_SESSION);
@@ -232,10 +230,10 @@ public class PlayVideoActivity extends AppCompatActivity {
             layoutParamsTv.setMargins(5, 5, 0, 5);
             tvNameTimeline.setLayoutParams(layoutParamsTv);
             timeline.addView(tvNameTimeline, layoutParamsTv);
-            ArrayList<TimeModel> value = tagModel.getTimes();
+            ArrayList<TimeModel> timeList = tagModel.getTimes();
 
 
-            for (final TimeModel pair : value) {
+            for (final TimeModel pair : timeList) {
                 int first = pair.getStart();
                 int second = pair.getEnd();
 
@@ -263,7 +261,6 @@ public class PlayVideoActivity extends AppCompatActivity {
                         }
                         iv.setBackgroundColor(mTagColorList.get(tagModel.getName()));
                     }
-
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
 
@@ -315,6 +312,11 @@ public class PlayVideoActivity extends AppCompatActivity {
                     });
                 }
                 makeTimelines();
+                mAdapterTags = new TagRecyclerAdapter(mTagModels, mTagedList,"count");
+                final RecyclerView rvTags = findViewById(R.id.re_tags_selected);
+                RecyclerView.LayoutManager layoutManagerTags = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+                rvTags.setLayoutManager(layoutManagerTags);
+                rvTags.setAdapter(mAdapterTags);
             }
 
             @Override
