@@ -47,15 +47,11 @@ public class PlayVideoActivity extends AppCompatActivity {
     private boolean mFirstPlay = true;
     private String mIdSession;
     private String mVideoLink;
-    private String mIdTagSession;
     private String mIdTagSet;
-    private SessionsModel mSessionModel;
     FirebaseDatabase mDatabase;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     final String mAuthUserId = mAuth.getCurrentUser().getUid();
     HashMap<String, RelativeLayout> mTimelines = new HashMap<>();
-    HashMap<String, ArrayList<TimeModel>> mTagList = new HashMap<>();
-    HashMap<String, ArrayList<TimeModel>> mNewTagList = new HashMap<>();
     HashMap<String, Integer> mTagColorList = new HashMap<>();
     TagRecyclerAdapter mAdapterTags = new TagRecyclerAdapter(mTagModels, "count");
     RelativeLayout timeLines;
@@ -221,7 +217,6 @@ public class PlayVideoActivity extends AppCompatActivity {
 
         LinearLayout llMain = findViewById(R.id.ll_main_playvideo);
         int tagedLineSize = timeLines.getWidth() - 200;
-        int videoDuration = mVideoDuration;
         int titleLength = 200;
 
         for (TagModel tagModel : mTagedList) {
@@ -245,11 +240,11 @@ public class PlayVideoActivity extends AppCompatActivity {
                 int first = pair.getStart();
                 int second = pair.getEnd();
 
-                int firstMilli = first * 1000000;
-                int secondMilli = second * 1000000;
+                int firstMicro = first * 1000000;
+                int secondMicro = second * 1000000;
 
-                double startRatio = firstMilli / mVideoDuration;
-                double endRatio = secondMilli / mVideoDuration;
+                double startRatio = firstMicro / mVideoDuration;
+                double endRatio = secondMicro / mVideoDuration;
 
                 int start = (int) (startRatio * tagedLineSize) / 1000;
                 int end = (int) (endRatio * tagedLineSize) / 1000;
