@@ -301,19 +301,8 @@ public class PlayVideoActivity extends AppCompatActivity {
                             for (DataSnapshot tagsSnapshot : dataSnapshot.getChildren()) {
                                 TagModel tagModel = tagsSnapshot.getValue(TagModel.class);
                                 if (tagModel.getFkTagSet().equals(mIdTagSet)) {
-                                    mTagColorList.put(tagModel.getName(), tagModel.getColor());
-                                    for (TagModel taged : mTagedList) {
-                                        ArrayList<TimeModel> tagTimeList = taged.getTimes();
-                                        String tagedName = taged.getName();
-                                        for (TagModel tag : mTagModels) {
-                                            String tagName = tag.getName();
-                                            if (tagedName.equals(tagName)) {
-                                                tag.setTimes(tagTimeList);
-                                            }
-                                        }
-                                        if (!mTagModels.contains(tagModel)) {
-                                            mTagModels.add(tagModel);
-                                        }
+                                    if (!mTagModels.contains(tagModel)) {
+                                        mTagModels.add(tagModel);
                                     }
                                 }
                                 mAdapterTags.notifyDataSetChanged();
