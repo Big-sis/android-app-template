@@ -8,14 +8,12 @@
     <string name="upload">Uploader</string>
     <string name="information">Informations sur la vidéo</string>
 
-
     <string-array name="select_folder">
         <item>Importer votre grille</item>
         <item>Dossier 1</item>
         <item>Dossier 2</item>
         <item>Dossier 3</item>
     </string-array>
-
 
     <string name="title_video">Titre de la vidéo</string>
     <string name="start_session">Lancer une session</string>

@@ -81,8 +81,6 @@ public class PlayVideoActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(titleSession);
 
-
-
         // Enregistre la taille de l'écran pour la rentrer dans les paramètres des layouts/widgets
         Display display = getWindowManager().getDefaultDisplay();
         mWidth = display.getWidth();
@@ -200,7 +198,6 @@ public class PlayVideoActivity extends AppCompatActivity {
         });
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.settings, menu);
@@ -223,8 +220,8 @@ public class PlayVideoActivity extends AppCompatActivity {
     public void makeTimelines() {
 
         LinearLayout llMain = findViewById(R.id.ll_main_playvideo);
-        int titleLength = 200;
-        int tagedLineSize = mWidth - titleLength;
+        int tagedLineSize = timeLines.getWidth() - getResources().getInteger(R.integer.title_length_timeline);
+        int titleLength = getResources().getInteger(R.integer.title_length_timeline);
 
         // Créé une timeline par tags utilisés
         for (final TagModel tagModel : mTagedList) {
@@ -253,14 +250,13 @@ public class PlayVideoActivity extends AppCompatActivity {
 
                 // Evite les valeurs trop petites,
                 // qui seraient arrondies à 0 dans les variables int "start" et "end"
-                int firstMicro = first * 1000000;
-                int secondMicro = second * 1000000;
+                int firstMicro = first * getResources().getInteger(R.integer.second_to_micro);
+                int secondMicro = second * getResources().getInteger(R.integer.second_to_micro);
                 double startRatio = firstMicro / mVideoDuration;
                 double endRatio = secondMicro / mVideoDuration;
 
-                // Reconversion en millisecondes
-                final int start = (int) (startRatio * tagedLineSize) / 1000;
-                int end = (int) (endRatio * tagedLineSize) / 1000;
+                final int start = (int) (startRatio * tagedLineSize) / getResources().getInteger(R.integer.micro_to_milli);
+                int end = (int) (endRatio * tagedLineSize) / getResources().getInteger(R.integer.micro_to_milli);
 
                 final ImageView iv = new ImageView(PlayVideoActivity.this);
                 iv.setMinimumHeight(10);
@@ -269,9 +265,9 @@ public class PlayVideoActivity extends AppCompatActivity {
                 iv.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Integer millis = first * 1000;
+                        Integer millis = first * getResources().getInteger(R.integer.micro_to_milli);
                         mVideoSelected.seekTo(millis);
-                        long millisLong = first * 1000;
+                        long millisLong = first * getResources().getInteger(R.integer.micro_to_milli);
                         mChrono.setBase(SystemClock.elapsedRealtime() - millisLong);
                     }
                 });
@@ -290,6 +286,7 @@ public class PlayVideoActivity extends AppCompatActivity {
                         }
                         iv.setBackgroundColor(mTagColorList.get(tagModel.getName()));
                     }
+
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
 
@@ -298,7 +295,8 @@ public class PlayVideoActivity extends AppCompatActivity {
 
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                layoutParams.setMargins(200 + start, 20, 0, 20);
+                layoutParams.setMargins(getResources().getInteger(R.integer.title_length_timeline) + start, 20, 0, 20);
+                timeline.setBackgroundResource(R.drawable.style_input);
                 timeline.addView(iv, layoutParams);
             }
         }
@@ -352,7 +350,7 @@ public class PlayVideoActivity extends AppCompatActivity {
                 }
 
                 RecyclerView rvTags = findViewById(R.id.re_tags_selected);
-                mAdapterTags = new TagRecyclerAdapter(mTagModels, mTagedList,"count");
+                mAdapterTags = new TagRecyclerAdapter(mTagModels, mTagedList, "count");
                 RecyclerView.LayoutManager layoutManagerTags = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
                 rvTags.setLayoutManager(layoutManagerTags);
                 rvTags.setAdapter(mAdapterTags);

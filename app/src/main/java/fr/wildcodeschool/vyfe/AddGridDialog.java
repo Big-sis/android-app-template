@@ -37,8 +37,8 @@ public class AddGridDialog {
     private static ArrayList<String> nameDouble = new ArrayList<>();
     private static boolean repeatName = false;
 
-    public static Dialog openCreateTags(final AppCompatActivity activity) {
 
+    public static Dialog openCreateTags(final AppCompatActivity activity) {
 
         final LayoutInflater inflater = LayoutInflater.from(activity);
         final View subView = inflater.inflate(R.layout.activity_add_grid, null);
@@ -46,7 +46,6 @@ public class AddGridDialog {
         final RecyclerView recyclerTagList = subView.findViewById(R.id.recycler_view);
         ivColor = subView.findViewById(R.id.iv_color);
 
-        // TODO mettre couleur à partir values
         colors.add("#F57A62");
         colors.add("#F56290");
         colors.add("#F562E5");
@@ -100,7 +99,6 @@ public class AddGridDialog {
 
         if (mTagModelList != null) {
             recyclerTagList.setAdapter(mAdapter);
-
         }
 
 
@@ -117,6 +115,7 @@ public class AddGridDialog {
 
                 if (repeatName) {
                     Toast.makeText(activity, R.string.double_name, Toast.LENGTH_SHORT).show();
+                    repeatName = false;
                 } else if ((valueName.equals("") || mfinalcolor == 0)) {
                     Toast.makeText(activity, R.string.def_colot, Toast.LENGTH_SHORT).show();
                 } else {
@@ -164,16 +163,13 @@ public class AddGridDialog {
             @Override
             public void onClick(View view) {
                 mSingletonTags.setmTagsList(mTagModelList);
-
                 Intent intent = activity.getIntent();
                 activity.finish();
                 activity.startActivity(intent);
-
                 alertDialog.cancel();
 
             }
         });
-
 
         return alertDialog;
     }
@@ -194,7 +190,6 @@ public class AddGridDialog {
     }
 
     public static void deleteItem(final int position) {
-
         mAdapter.notifyItemRemoved(position);
         mSingletonTags.setmTagsList(mTagModelList);
     }
