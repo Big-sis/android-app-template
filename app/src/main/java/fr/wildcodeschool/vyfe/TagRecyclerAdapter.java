@@ -8,16 +8,24 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.sql.Time;
 import java.util.ArrayList;
 
 public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.ViewHolder> {
 
     private ArrayList<TagModel> mTagModelList;
+    private ArrayList<TagModel> mTagedList;
     private String mFrom;
 
     public TagRecyclerAdapter(ArrayList<TagModel> observations, String from) {
         mTagModelList = observations;
         mFrom = from;
+    }
+
+    public TagRecyclerAdapter(ArrayList<TagModel> mTagModelList, ArrayList<TagModel> mTagedList, String mFrom) {
+        this.mTagModelList = mTagModelList;
+        this.mTagedList = mTagedList;
+        this.mFrom = mFrom;
     }
 
     @Override
@@ -36,7 +44,8 @@ public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.
 
 
 
-        if (mFrom.equals("start")) {
+
+            if (mFrom.equals("start")) {
             holder.tvNum.setVisibility(View.GONE);
         } else if (mFrom.equals("record")) {
             holder.tvNum.setVisibility(View.GONE);
@@ -44,10 +53,19 @@ public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.
             holder.tvNum.setVisibility(View.GONE);
         } else if (mFrom.equals("count")) {
             holder.tvNum.setVisibility(View.VISIBLE);
-            if (tagModel.getTimes() != null) {
-                int count = tagModel.getTimes().size();
-                holder.tvNum.setText(String.valueOf(count));
-            } holder.tvNum.setText("0");
+                for (TagModel taged : mTagedList) {
+                    ArrayList<TimeModel> timeList = taged.getTimes();
+                    String tagedName = taged.getName();
+                    if (tagedName.equals(tagModel.getName())) {
+                        tagModel.setTimes(timeList);
+                    }
+                }
+                if (!(tagModel.getTimes() == null)) {
+                    int count = tagModel.getTimes().size();
+                    holder.tvNum.setText(String.valueOf(count));
+                } else {
+                    holder.tvNum.setText("0");
+                }
         }
     }
 

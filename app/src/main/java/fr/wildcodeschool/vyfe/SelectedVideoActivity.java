@@ -61,7 +61,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
     private byte[] inputData = new byte[0];
     private InputStream iStream = null;
 
-    private TagRecyclerAdapter mAdapterTags = new TagRecyclerAdapter(mTagModels, "count");
+    private TagRecyclerAdapter mAdapterTags = new TagRecyclerAdapter(mTagModels, "record");
 
     public static final String TITLE_VIDEO = "titleVideo";
     public static final String FILE_NAME = "filename";
