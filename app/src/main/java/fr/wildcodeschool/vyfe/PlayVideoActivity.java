@@ -34,7 +34,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 
 public class PlayVideoActivity extends AppCompatActivity {
@@ -56,13 +58,10 @@ public class PlayVideoActivity extends AppCompatActivity {
     HashMap<String, Integer> mTagColorList = new HashMap<>();
     TagRecyclerAdapter mAdapterTags;
     RelativeLayout timeLines;
-
-    private final RecyclerView rvTags = findViewById(R.id.re_tags_selected);
-
-
     SeekbarAsync mAsync;
     long timeWhenStopped = 0;
     int mVideoDuration;
+    private Chronometer mChrono;
 
     public static final String TITLE_VIDEO = "titleVideo";
     public static final String FILE_NAME = "filename";
@@ -73,7 +72,8 @@ public class PlayVideoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_video);
-        final Chronometer chrono = findViewById(R.id.chronometer_play);
+        mChrono = findViewById(R.id.chronometer_play);
+
         timeLines = findViewById(R.id.time_lines_container);
 
         final String titleSession = getIntent().getStringExtra(TITLE_VIDEO);
@@ -114,12 +114,13 @@ public class PlayVideoActivity extends AppCompatActivity {
         mSeekBar = findViewById(R.id.seek_bar_selected);
 
         // Rend la seekbar indéplaceable au click
-        mSeekBar.setOnTouchListener(new View.OnTouchListener() {
+        mSeekBar.setEnabled(false);
+        /*mSeekBar.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 return true;
             }
-        });
+        });*/
 
         final FloatingActionButton fbPlay = findViewById(R.id.bt_play_selected);
         fbPlay.setOnClickListener(new View.OnClickListener() {
@@ -127,30 +128,26 @@ public class PlayVideoActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (mIsPlayed) {
                     mVideoSelected.pause();
-                    timeWhenStopped = chrono.getBase() - SystemClock.elapsedRealtime();
-                    chrono.stop();
+                    timeWhenStopped = mChrono.getBase() - SystemClock.elapsedRealtime();
+                    mChrono.stop();
                     mIsPlayed = false;
                     fbPlay.setBackgroundColor(getResources().getColor(R.color.colorLightGreenishBlue));
                     fbPlay.setImageResource(android.R.drawable.ic_media_play);
-
-                } else if (mFirstPlay) {
-                    mFirstPlay = false;
-                    mIsPlayed = true;
-                    mAsync = new SeekbarAsync(mSeekBar, mVideoSelected);
-                    mAsync.execute();
-                    chrono.setBase(SystemClock.elapsedRealtime());
-                    chrono.start();
-                    fbPlay.setBackgroundColor(getResources().getColor(R.color.colorFadedOrange));
-                    fbPlay.setImageResource(android.R.drawable.ic_media_pause);
-
-
                 } else {
-                    mVideoSelected.start();
-                    chrono.setBase(SystemClock.elapsedRealtime() + timeWhenStopped);
-                    chrono.start();
-                    mIsPlayed = true;
                     fbPlay.setBackgroundColor(getResources().getColor(R.color.colorFadedOrange));
                     fbPlay.setImageResource(android.R.drawable.ic_media_pause);
+                    mIsPlayed = true;
+                    if (mFirstPlay) {
+                        mFirstPlay = false;
+                        mChrono.setBase(SystemClock.elapsedRealtime());
+                        mChrono.start();
+                        mAsync = new SeekbarAsync(mSeekBar, mVideoSelected, mChrono);
+                        mAsync.execute();
+                    } else {
+                        mVideoSelected.start();
+                        mChrono.setBase(SystemClock.elapsedRealtime() + timeWhenStopped);
+                        mChrono.start();
+                    }
                 }
             }
         });
@@ -163,12 +160,12 @@ public class PlayVideoActivity extends AppCompatActivity {
                 mIsPlayed = true;
                 mVideoSelected.seekTo(0);
                 mSeekBar.setProgress(0);
-                mAsync = new SeekbarAsync(mSeekBar, mVideoSelected);
+                mAsync = new SeekbarAsync(mSeekBar, mVideoSelected, mChrono);
                 mAsync.execute();
                 mVideoSelected.start();
-                chrono.setBase(0);
-                chrono.setBase(SystemClock.elapsedRealtime());
-                chrono.start();
+                mChrono.setBase(0);
+                mChrono.setBase(SystemClock.elapsedRealtime());
+                mChrono.start();
                 fbPlay.setEnabled(true);
                 fbPlay.setVisibility(View.VISIBLE);
                 fbPlay.setBackgroundColor(getResources().getColor(R.color.colorFadedOrange));
@@ -179,13 +176,17 @@ public class PlayVideoActivity extends AppCompatActivity {
         mVideoSelected.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
-                timeWhenStopped = chrono.getBase() - SystemClock.elapsedRealtime();
-                chrono.stop();
+                mChrono.stop();
                 mIsPlayed = false;
                 fbPlay.setEnabled(false);
                 fbPlay.setVisibility(View.INVISIBLE);
+                mSeekBar.setProgress(0);
+                mVideoSelected.seekTo(0);
+                mChrono.setBase(0);
             }
         });
+
+
 
 
         Display display = getWindowManager().getDefaultDisplay();
@@ -239,7 +240,7 @@ public class PlayVideoActivity extends AppCompatActivity {
 
 
             for (final TimeModel pair : timeList) {
-                int first = pair.getStart();
+                final int first = pair.getStart();
                 int second = pair.getEnd();
 
                 int firstMicro = first * 1000000;
@@ -248,12 +249,21 @@ public class PlayVideoActivity extends AppCompatActivity {
                 double startRatio = firstMicro / mVideoDuration;
                 double endRatio = secondMicro / mVideoDuration;
 
-                int start = (int) (startRatio * tagedLineSize) / 1000;
+                final int start = (int) (startRatio * tagedLineSize) / 1000;
                 int end = (int) (endRatio * tagedLineSize) / 1000;
 
                 final ImageView iv = new ImageView(PlayVideoActivity.this);
                 iv.setMinimumHeight(10);
                 iv.setMinimumWidth(end - start);
+                iv.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Integer millis = first * 1000;
+                        mVideoSelected.seekTo(millis);
+                        long millisLong = first * 1000;
+                        mChrono.setBase(SystemClock.elapsedRealtime() - millisLong);
+                    }
+                });
                 final DatabaseReference tagRef = mDatabase.getReference(mAuthUserId).child("tags");
                 tagRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -271,13 +281,11 @@ public class PlayVideoActivity extends AppCompatActivity {
 
                     }
                 });
-                iv.setBackgroundColor(getResources().getColor(R.color.colorFadedOrange));
 
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 layoutParams.setMargins(200 + start, 20, 0, 20);
                 timeline.setBackgroundResource(R.drawable.style_input);
-
                 timeline.addView(iv, layoutParams);
             }
         }
@@ -327,31 +335,11 @@ public class PlayVideoActivity extends AppCompatActivity {
                         }
                     }
                 }
+                RecyclerView rvTags = findViewById(R.id.re_tags_selected);
                 mAdapterTags = new TagRecyclerAdapter(mTagModels, mTagedList,"count");
                 RecyclerView.LayoutManager layoutManagerTags = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
                 rvTags.setLayoutManager(layoutManagerTags);
                 rvTags.setAdapter(mAdapterTags);
-
-               /* rvTags.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(), rvTags, new RecyclerTouchListener.ClickListener() {
-                    @Override
-                    public void onClick(View view, int position) {
-                        int tagNumber = 0;
-                        ArrayList<TimeModel> timeList = new ArrayList<>();
-                        TimeModel time = timeList.get(tagNumber);
-
-                        int timeListSize = timeList.size();
-                        while (tagNumber < timeListSize) {
-                            tagNumber++;
-                            mVideoSelected.seekTo(time.getStart());
-                        }
-                    }
-
-                    @Override
-                    public void onLongClick(View view, int position) {
-
-                    }
-                }));*/
-
             }
 
             @Override

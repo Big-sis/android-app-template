@@ -47,6 +47,7 @@ public class StartActivity extends AppCompatActivity {
     private String mIdGridImport;
     private String mNameGrid;
 
+
     public static final String TITLE_VIDEO = "titleVideo";
     public static final String ID_TAG_SET = "idTagSet";
 
@@ -155,6 +156,8 @@ public class StartActivity extends AppCompatActivity {
                                 String idGrid = (String) snapshot.getKey().toString();
                                 hashMapTitleIdGrid.put(mNameGrid, idGrid);
                                 nameTagSet.add(mNameGrid);
+
+
                             }
                             adapterSpinner.notifyDataSetChanged();
                         }

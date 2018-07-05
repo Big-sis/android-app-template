@@ -1,6 +1,7 @@
 package fr.wildcodeschool.vyfe;
 
 import android.os.AsyncTask;
+import android.widget.Chronometer;
 import android.widget.SeekBar;
 import android.widget.VideoView;
 
@@ -9,10 +10,12 @@ public class SeekbarAsync extends AsyncTask<Void, Integer, Void> {
     int current = 0;
     SeekBar seekBar;
     VideoView videoView;
+    Chronometer chrono;
 
-    public SeekbarAsync(SeekBar seekBar, VideoView videoView) {
+    public SeekbarAsync(SeekBar seekBar, VideoView videoView, Chronometer chrono) {
         this.seekBar = seekBar;
         this.videoView = videoView;
+        this.chrono = chrono;
     }
 
     @Override
