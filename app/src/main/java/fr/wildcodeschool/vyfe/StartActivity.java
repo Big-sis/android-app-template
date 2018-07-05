@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,7 +12,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -49,9 +47,14 @@ public class StartActivity extends AppCompatActivity {
     private String mIdGridImport;
     private String mNameGrid;
 
-
     public static final String TITLE_VIDEO = "titleVideo";
     public static final String ID_TAG_SET = "idTagSet";
+
+    private SharedPreferences mSharedPrefTagSet;
+    private SharedPreferences mSharedPrefVideoTitle;
+
+    private EditText mEtTagSet;
+    private EditText mEtVideoTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,18 +75,18 @@ public class StartActivity extends AppCompatActivity {
         final Spinner spinner = (Spinner) findViewById(R.id.spinner_session_infos);
         TextView tvAddTag = findViewById(R.id.tv_add_tag);
         Toolbar toolbar = findViewById(R.id.toolbar);
-        final EditText etTagSet = findViewById(R.id.et_grid_title);
-        final EditText etVideoTitle = findViewById(R.id.et_video_title);
+        mEtTagSet = findViewById(R.id.et_grid_title);
+        mEtVideoTitle = findViewById(R.id.et_video_title);
 
         //enregistrement données
-        final SharedPreferences sharedPrefTagSet = this.getSharedPreferences("TAGSET", Context.MODE_PRIVATE);
-        final SharedPreferences sharedPrefVideoTitle = this.getSharedPreferences("VIDEOTITLE", Context.MODE_PRIVATE);
+        mSharedPrefTagSet= this.getSharedPreferences("TAGSET", Context.MODE_PRIVATE);
+        mSharedPrefVideoTitle = this.getSharedPreferences("VIDEOTITLE", Context.MODE_PRIVATE);
 
         //tagSetShared des données
-        String tagSetShared = sharedPrefTagSet.getString("TAGSET","");
-        etTagSet.setText(tagSetShared);
-        String videoTitleShared = sharedPrefVideoTitle.getString("VIDEOTITLE","");
-        etVideoTitle.setText(videoTitleShared);
+        String tagSetShared = mSharedPrefTagSet.getString("TAGSET","");
+        mEtTagSet.setText(tagSetShared);
+        String videoTitleShared = mSharedPrefVideoTitle.getString("VIDEOTITLE","");
+        mEtVideoTitle.setText(videoTitleShared);
 
 
 
@@ -134,7 +137,7 @@ public class StartActivity extends AppCompatActivity {
 
                     radioButtonNew.setChecked(false);
                     spinner.setClickable(true);
-                    importGrid(etTagSet, fabAddMoment, false);
+                    importGrid(mEtTagSet, fabAddMoment, false);
                 }
                 //tagSetShared données pour mettre spinner
                 DatabaseReference myRef = mDatabase.getReference(authUserId).child("tagSets");
@@ -228,7 +231,7 @@ public class StartActivity extends AppCompatActivity {
                     radioButtonImport.setChecked(false);
                     spinner.setClickable(false);
                     spinner.setLongClickable(false);
-                    importGrid(etTagSet, fabAddMoment, true);
+                    importGrid(mEtTagSet, fabAddMoment, true);
                 }
             }
         });
@@ -238,7 +241,7 @@ public class StartActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 final Intent intent = new Intent(StartActivity.this, RecordActivity.class);
-                final String titleSession = etVideoTitle.getText().toString();
+                final String titleSession = mEtVideoTitle.getText().toString();
                 intent.putExtra(TITLE_VIDEO, titleSession);
 
                 //Firebase TAGSET
@@ -246,7 +249,7 @@ public class StartActivity extends AppCompatActivity {
                 DatabaseReference idTagSetRef = mDatabase.getReference(authUserId).child("tagSets").child("name");
                 idTagSetRef.keepSynced(true);
                 String idTagSet = idTagSetRef.push().getKey();
-                String titleTagSet = etTagSet.getText().toString();
+                String titleTagSet = mEtTagSet.getText().toString();
                 if (radioButtonImport.isChecked()) {
                     titleTagSet = mNameGrid;
 
@@ -310,10 +313,10 @@ public class StartActivity extends AppCompatActivity {
 
                     }
                 }
-                sharedPrefTagSet.edit().putString("TAGSET","");
-                etTagSet.setText("");
-                sharedPrefVideoTitle.edit().putString("VIDEOTITLE", "");
-                etVideoTitle.setText("");
+                mSharedPrefTagSet.edit().putString("TAGSET","");
+                mEtTagSet.setText("");
+                mSharedPrefVideoTitle.edit().putString("VIDEOTITLE", "");
+                mEtVideoTitle.setText("");
             }
 
         });
@@ -326,8 +329,8 @@ public class StartActivity extends AppCompatActivity {
         fabAddMoment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sharedPrefTagSet.edit().putString("TAGSET",etTagSet.getText().toString()).apply();
-                sharedPrefVideoTitle.edit().putString("VIDEOTITLE", etVideoTitle.getText().toString()).apply();
+                mSharedPrefTagSet.edit().putString("TAGSET", mEtTagSet.getText().toString()).apply();
+                mSharedPrefVideoTitle.edit().putString("VIDEOTITLE", mEtVideoTitle.getText().toString()).apply();
                 AddGridDialog.openCreateTags(StartActivity.this);
             }
         });
@@ -364,5 +367,14 @@ public class StartActivity extends AppCompatActivity {
         adapterImport.notifyDataSetChanged();
         adapternew.notifyDataSetChanged();
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        mSharedPrefTagSet.edit().putString("TAGSET","");
+        mEtTagSet.setText("");
+        mSharedPrefVideoTitle.edit().putString("VIDEOTITLE", "");
+        mEtVideoTitle.setText("");
     }
 }
