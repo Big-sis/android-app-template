@@ -298,12 +298,12 @@ public class RecordActivity extends AppCompatActivity {
                 }
 
                 //rapport pour la presentation
-                int rapport = 10;
+                int rapport = R.integer.rapport_timeline;
 
                 //Ici on pourra changer les caracteristiques des tags pour la V2. Pour l'instant carac = constantes
-                int timeTag = 3 * rapport;
-                int beforeTag = 6 * rapport;
-                int titleLength = 200;
+                int durationTag = R.integer.duration_tag * rapport;
+                int beforeTag = R.integer.before_tag * rapport;
+                int titleLength = R.integer.title_length_timeline;
 
                 //init image Tag
                 ImageView iv = new ImageView(RecordActivity.this);
@@ -314,7 +314,7 @@ public class RecordActivity extends AppCompatActivity {
                 int timeActuel = (int) ((SystemClock.elapsedRealtime() - chronometer.getBase()) / (1000 / rapport));
 
                 int startTime = Math.max(0, timeActuel - beforeTag);
-                int endTime = timeActuel + timeTag;
+                int endTime = timeActuel + durationTag;
                 iv.setMinimumWidth(endTime - startTime);
 
 

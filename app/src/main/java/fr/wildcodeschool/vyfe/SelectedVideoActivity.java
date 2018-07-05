@@ -148,12 +148,15 @@ public class SelectedVideoActivity extends AppCompatActivity {
                     }
 
 
-                        params.put("Authorization", SelectedVideoActivity.this.getString(R.string.VIMEO_TOKEN));
+                         @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("Authorization", "mettre token");
                         params.put("Content-Type", "application/json");
                         params.put("Accept", "application/vnd.vimeo.*+json;version=3.4");
-
                         return params;
                     }
+
                 };
                 queue.add(sr);
             }
