@@ -38,11 +38,13 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginStart="8dp"
                         android:layout_marginTop="8dp"
                         android:orientation="vertical"
                         app:layout_constraintBottom_toBottomOf="@+id/recycler_view_import"
-                        app:layout_constraintTop_toBottomOf="@+id/radio_button_insert"
-                        tools:layout_editor_absoluteX="8dp">
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/radio_button_insert">
 
                         <TextView
                             android:id="@+id/tv_information"
@@ -53,6 +55,7 @@
                             android:layout_marginTop="32dp"
                             android:text="@string/info_session"
                             android:textColor="@color/white"
+                            android:textSize="20sp"
                             app:fontFamily="@font/roboto_bold"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
@@ -74,19 +77,6 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/tv_information" />
 
-                        <TextView
-                            android:id="@+id/tv_my_analyse"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="32dp"
-                            android:layout_marginStart="32dp"
-                            android:layout_marginTop="16dp"
-                            android:text="@string/my_analyse"
-                            android:textColor="@color/white"
-                            app:fontFamily="@font/roboto_bold"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/et_video_title" />
-
                         <RadioButton
                             android:id="@+id/radio_button_insert"
                             android:layout_width="wrap_content"
@@ -94,8 +84,10 @@
                             android:layout_marginLeft="32dp"
                             android:layout_marginStart="32dp"
                             android:layout_marginTop="16dp"
+                            android:layout_marginBottom="16dp"
                             android:text="@string/grid_import"
                             android:textColor="@color/white"
+                            android:textSize="16sp"
                             app:fontFamily="@font/roboto"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/tv_my_analyse" />
@@ -104,10 +96,10 @@
                             android:id="@+id/spinner_session_infos"
                             android:layout_width="wrap_content"
                             android:layout_height="30dp"
-                            android:background="@drawable/style_input"
                             android:layout_marginLeft="32dp"
                             android:layout_marginStart="32dp"
                             android:layout_marginTop="12dp"
+                            android:background="@drawable/style_input"
                             android:padding="5dp"
                             android:visibility="invisible"
                             app:layout_constraintStart_toStartOf="parent"
@@ -152,6 +144,7 @@
                             android:id="@+id/radio_Button_new"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp"
                             android:layout_marginLeft="32dp"
                             android:layout_marginStart="32dp"
                             android:layout_marginTop="32dp"
@@ -159,6 +152,7 @@
                             android:includeFontPadding="false"
                             android:text="@string/new_grid2"
                             android:textColor="@color/white"
+                            android:textSize="16sp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
