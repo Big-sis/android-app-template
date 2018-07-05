@@ -37,6 +37,7 @@ public class AddGridDialog {
     private static ArrayList<String> nameDouble = new ArrayList<>();
     private static boolean repeatName = false;
 
+
     public static Dialog openCreateTags(final AppCompatActivity activity) {
 
 
@@ -45,6 +46,7 @@ public class AddGridDialog {
         final EditText etName = subView.findViewById(R.id.et_name);
         final RecyclerView recyclerTagList = subView.findViewById(R.id.recycler_view);
         ivColor = subView.findViewById(R.id.iv_color);
+        nameDouble = null;
 
         // TODO mettre couleur à partir values
         colors.add("#F57A62");
