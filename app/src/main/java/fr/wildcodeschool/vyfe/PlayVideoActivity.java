@@ -1,5 +1,6 @@
 package fr.wildcodeschool.vyfe;
 
+import android.graphics.Color;
 import android.media.MediaPlayer;
 import android.os.SystemClock;
 import android.content.Intent;
@@ -43,7 +44,6 @@ public class PlayVideoActivity extends AppCompatActivity {
 
     private ArrayList<TagModel> mTagedList = new ArrayList<>();
     private ArrayList<TagModel> mTagModels = new ArrayList<>();
-    private ArrayList<TimeModel> mTimeList = new ArrayList<>();
     private VideoView mVideoSelected;
     private SeekBar mSeekBar;
     private boolean mIsPlayed = false;
@@ -54,13 +54,13 @@ public class PlayVideoActivity extends AppCompatActivity {
     FirebaseDatabase mDatabase;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     final String mAuthUserId = mAuth.getCurrentUser().getUid();
-    HashMap<String, RelativeLayout> mTimelines = new HashMap<>();
     HashMap<String, Integer> mTagColorList = new HashMap<>();
     TagRecyclerAdapter mAdapterTags;
     RelativeLayout timeLines;
     SeekbarAsync mAsync;
     long timeWhenStopped = 0;
     int mVideoDuration;
+    int mWidth;
     private Chronometer mChrono;
 
     public static final String TITLE_VIDEO = "titleVideo";
@@ -72,21 +72,40 @@ public class PlayVideoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_video);
-        mChrono = findViewById(R.id.chronometer_play);
 
-        timeLines = findViewById(R.id.time_lines_container);
+        mIdSession = getIntent().getStringExtra(ID_SESSION);
 
-        final String titleSession = getIntent().getStringExtra(TITLE_VIDEO);
         mDatabase = SingletonFirebase.getInstance().getDatabase();
-
+        final String titleSession = getIntent().getStringExtra(TITLE_VIDEO);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(titleSession);
 
-        mIdSession = getIntent().getStringExtra(ID_SESSION);
-        mVideoLink = getIntent().getStringExtra(FILE_NAME);
 
+
+        // Enregistre la taille de l'écran pour la rentrer dans les paramètres des layouts/widgets
+        Display display = getWindowManager().getDefaultDisplay();
+        mWidth = display.getWidth();
+        timeLines = findViewById(R.id.time_lines_container);
+        timeLines.setLayoutParams(new FrameLayout.LayoutParams(mWidth, LinearLayout.LayoutParams.WRAP_CONTENT));
+
+        LinearLayout linearTags = findViewById(R.id.linear_re_tags);
+        linearTags.setLayoutParams(new FrameLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+
+        // Applique les paramètres à la seekBar
+        RelativeLayout.LayoutParams seekBarParams = new RelativeLayout.LayoutParams(mWidth - 200, LinearLayout.LayoutParams.MATCH_PARENT);
+        seekBarParams.setMargins(200, 0, 0, 0);
+        mSeekBar = findViewById(R.id.seek_bar_selected);
+        mSeekBar.setLayoutParams(seekBarParams);
+        // Rend la seekBar incliquable
+        mSeekBar.setEnabled(false);
+
+        // Charge le lien de la vidéo dans la videoView, et enregistre sa durée totale
+        // (nécessaire au calculs des positions des tags sur la timeline)
+        // Lance la méthode qui récupère les données des tags
+        mVideoLink = getIntent().getStringExtra(FILE_NAME);
         mVideoSelected = findViewById(R.id.video_view_selected);
+        mVideoSelected.setMinimumWidth((int) (mWidth * 0.8));
         mVideoSelected.setVideoPath(mVideoLink);
         mVideoSelected.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
@@ -96,21 +115,20 @@ public class PlayVideoActivity extends AppCompatActivity {
             }
         });
 
+        // Requête qui récupère l'ID de la grille, nécessaire à la récupération des données des tags
         final DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions").child(mIdSession);
         sessionRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mIdTagSet = dataSnapshot.child("idTagSet").getValue(String.class);
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
         });
 
-        mSeekBar = findViewById(R.id.seek_bar_selected);
-        mSeekBar.setEnabled(false);
-
+        // Bouton play/pause
+        mChrono = findViewById(R.id.chronometer_play);
         final FloatingActionButton fbPlay = findViewById(R.id.bt_play_selected);
         fbPlay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -130,7 +148,7 @@ public class PlayVideoActivity extends AppCompatActivity {
                         mFirstPlay = false;
                         mChrono.setBase(SystemClock.elapsedRealtime());
                         mChrono.start();
-                        mAsync = new SeekbarAsync(mSeekBar, mVideoSelected, mChrono);
+                        mAsync = new SeekbarAsync(mSeekBar, mVideoSelected);
                         mAsync.execute();
                     } else {
                         mVideoSelected.start();
@@ -141,6 +159,8 @@ public class PlayVideoActivity extends AppCompatActivity {
             }
         });
 
+        // Bouton replay que remet la vidéo, la seekBar et le chrono à 0
+        // Recréé une instance de SeekbarAsync pour éviter les bug liés à la seekBar
         FloatingActionButton btReplay = findViewById(R.id.bt_replay);
         btReplay.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,7 +169,7 @@ public class PlayVideoActivity extends AppCompatActivity {
                 mIsPlayed = true;
                 mVideoSelected.seekTo(0);
                 mSeekBar.setProgress(0);
-                mAsync = new SeekbarAsync(mSeekBar, mVideoSelected, mChrono);
+                mAsync = new SeekbarAsync(mSeekBar, mVideoSelected);
                 mAsync.execute();
                 mVideoSelected.start();
                 mChrono.setBase(0);
@@ -162,28 +182,22 @@ public class PlayVideoActivity extends AppCompatActivity {
             }
         });
 
+
+        // Remet la vidéo, la seekBar et le chrono à 0 en fin de lecture de la vidéo
+        // Oblige l'utilisateur à utiliser le bouton replay
         mVideoSelected.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
-                mChrono.stop();
                 mIsPlayed = false;
-                fbPlay.setEnabled(false);
                 fbPlay.setVisibility(View.INVISIBLE);
                 mSeekBar.setProgress(0);
                 mVideoSelected.seekTo(0);
+                mVideoSelected.pause();
                 mChrono.setBase(0);
+                mChrono.setBase(SystemClock.elapsedRealtime());
+                mChrono.stop();
             }
         });
-
-
-
-
-        Display display = getWindowManager().getDefaultDisplay();
-        int width = display.getWidth();
-        RelativeLayout.LayoutParams seekBarParams = new RelativeLayout.LayoutParams(width, LinearLayout.LayoutParams.MATCH_PARENT);
-        seekBarParams.setMargins(200, 0, 0, 0);
-        timeLines.setLayoutParams(new FrameLayout.LayoutParams(width, LinearLayout.LayoutParams.WRAP_CONTENT));
-        mSeekBar.setLayoutParams(seekBarParams);
     }
 
 
@@ -205,45 +219,53 @@ public class PlayVideoActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    // Méthode qui créé les layouts et images des timelines en fonction des données des tags
     public void makeTimelines() {
 
         LinearLayout llMain = findViewById(R.id.ll_main_playvideo);
-        int tagedLineSize = timeLines.getWidth() - 200;
         int titleLength = 200;
+        int tagedLineSize = mWidth - titleLength;
 
+        // Créé une timeline par tags utilisés
         for (final TagModel tagModel : mTagedList) {
+
             String tagName = tagModel.getName();
             final RelativeLayout timeline = new RelativeLayout(PlayVideoActivity.this);
             timeline.setBackgroundColor(getResources().getColor(R.color.colorCharcoal));
             llMain.addView(timeline);
-            mTimelines.put(tagName, timeline);
             TextView tvNameTimeline = new TextView(PlayVideoActivity.this);
-
             tvNameTimeline.setText(tagName);
             LinearLayout.LayoutParams layoutParamsTv = new LinearLayout.LayoutParams(
                     titleLength, LinearLayout.LayoutParams.WRAP_CONTENT);
             layoutParamsTv.setMargins(5, 5, 0, 5);
             tvNameTimeline.setLayoutParams(layoutParamsTv);
+            tvNameTimeline.setTextColor(Color.WHITE);
+
             timeline.addView(tvNameTimeline, layoutParamsTv);
             ArrayList<TimeModel> timeList = tagModel.getTimes();
 
-
+            // Créé une image par utilisation du tag en cour
             for (final TimeModel pair : timeList) {
+
+                // Valeurs des temps récupérés sur Firebase
                 final int first = pair.getStart();
                 int second = pair.getEnd();
 
+                // Evite les valeurs trop petites,
+                // qui seraient arrondies à 0 dans les variables int "start" et "end"
                 int firstMicro = first * 1000000;
                 int secondMicro = second * 1000000;
-
                 double startRatio = firstMicro / mVideoDuration;
                 double endRatio = secondMicro / mVideoDuration;
 
+                // Reconversion en millisecondes
                 final int start = (int) (startRatio * tagedLineSize) / 1000;
                 int end = (int) (endRatio * tagedLineSize) / 1000;
 
                 final ImageView iv = new ImageView(PlayVideoActivity.this);
                 iv.setMinimumHeight(10);
                 iv.setMinimumWidth(end - start);
+                // Permet de se déplacer dans la vidéo en cliquant sur les images
                 iv.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -253,6 +275,9 @@ public class PlayVideoActivity extends AppCompatActivity {
                         mChrono.setBase(SystemClock.elapsedRealtime() - millisLong);
                     }
                 });
+
+                // Récupère la couleur du tag en cour pour l'appliquer à l'image
+                // TODO (V2) : ajouter les couleurs dans tagModel pour éviter d'avoir à faire une requête
                 final DatabaseReference tagRef = mDatabase.getReference(mAuthUserId).child("tags");
                 tagRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -274,13 +299,13 @@ public class PlayVideoActivity extends AppCompatActivity {
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 layoutParams.setMargins(200 + start, 20, 0, 20);
-                timeline.setBackgroundResource(R.drawable.style_input);
                 timeline.addView(iv, layoutParams);
             }
         }
     }
 
 
+    // Méthode qui récupère les données des tags sur Firebase
     private void initTimeLines() {
         final DatabaseReference tagSessionRef = mDatabase.getReference(mAuthUserId).child("sessions").child(mIdSession).child("tags");
         tagSessionRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -314,6 +339,7 @@ public class PlayVideoActivity extends AppCompatActivity {
                     });
                 }
 
+                // Lance la méthode qui créé les timelines losques toutes les données des tags ont été récupérées
                 makeTimelines();
                 for (TagModel tagModel : mTagModels) {
                     for (TagModel taged : mTagedList) {
@@ -324,6 +350,7 @@ public class PlayVideoActivity extends AppCompatActivity {
                         }
                     }
                 }
+
                 RecyclerView rvTags = findViewById(R.id.re_tags_selected);
                 mAdapterTags = new TagRecyclerAdapter(mTagModels, mTagedList,"count");
                 RecyclerView.LayoutManager layoutManagerTags = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);

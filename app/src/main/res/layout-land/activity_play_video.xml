@@ -29,7 +29,7 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="350dp"
+                android:layout_height="wrap_content"
                 android:layout_marginTop="65dp"
                 android:orientation="horizontal"
                 app:layout_constraintTop_toTopOf="parent">
@@ -46,9 +46,9 @@
 
                         <VideoView
                             android:id="@+id/video_view_selected"
-                            android:layout_width="600dp"
+                            android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="8dp"
+                            android:layout_margin="8dp"
                             android:layout_marginStart="8dp"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintStart_toStartOf="parent"
@@ -102,17 +102,18 @@
                 </LinearLayout>
 
                 <ScrollView
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
 
                     <LinearLayout
-                        android:layout_width="match_parent"
+                        android:id="@+id/linear_re_tags"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:orientation="vertical">
 
                         <android.support.v7.widget.RecyclerView
                             android:id="@+id/re_tags_selected"
-                            android:layout_width="match_parent"
+                            android:layout_width="wrap_content"
                             android:layout_height="match_parent"
                             android:padding="8dp"
                             app:layout_constraintEnd_toEndOf="parent"
