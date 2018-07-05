@@ -124,6 +124,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
                         try {
                             JSONObject groups = response.getJSONObject("upload");
                             String uploadLink = (String) groups.get("upload_link");
+                            //ici on peut aussi recucuperer le lien ou l'utilisateur pourras visialiser la vidéo, elle est dans upoad ->link
                             //deuxieme requete pour joindre la video
                             uploadVideo(uploadLink);
 

@@ -5,5 +5,5 @@
     <integer name="title_length_timeline">100</integer>
     <integer name="rapport_timeline">10</integer>
     <integer name="second_to_micro">1000000</integer>
-    <integer name="micro_to_milli"></integer>
+    <integer name="micro_to_milli">1000</integer>
 </resources>

@@ -118,6 +118,7 @@
                         android:background="@drawable/style_button_white"
                         android:text="@string/upload"
                         android:textColor="@color/colorBlack"
+                        android:visibility="gone"
                         app:fontFamily="@font/roboto_bold" />
                 </LinearLayout>
             </LinearLayout>
