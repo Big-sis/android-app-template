@@ -98,7 +98,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
             }
         });
 
-        /*//En COMM pour ne pas utiliser nos connexions à API
+        //En COMM pour ne pas utiliser nos connexions à API
         btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -148,17 +148,20 @@ public class SelectedVideoActivity extends AppCompatActivity {
                     }
 
 
-                        params.put("Authorization", SelectedVideoActivity.this.getString(R.string.VIMEO_TOKEN));
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("Authorization", getResources().getString(R.string.VIMEO_TOKEN));
                         params.put("Content-Type", "application/json");
                         params.put("Accept", "application/vnd.vimeo.*+json;version=3.4");
-
                         return params;
+
                     }
                 };
                 queue.add(sr);
             }
         });
-        */
+
 
         play.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -305,4 +308,9 @@ public class SelectedVideoActivity extends AppCompatActivity {
         return byteBuffer.toByteArray();
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(SelectedVideoActivity.this, MyVideoActivity.class);
+        startActivity(intent);
+    }
 }
