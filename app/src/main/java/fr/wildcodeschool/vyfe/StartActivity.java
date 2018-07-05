@@ -79,15 +79,14 @@ public class StartActivity extends AppCompatActivity {
         mEtVideoTitle = findViewById(R.id.et_video_title);
 
         //enregistrement données
-        mSharedPrefTagSet= this.getSharedPreferences("TAGSET", Context.MODE_PRIVATE);
+        mSharedPrefTagSet = this.getSharedPreferences("TAGSET", Context.MODE_PRIVATE);
         mSharedPrefVideoTitle = this.getSharedPreferences("VIDEOTITLE", Context.MODE_PRIVATE);
 
         //tagSetShared des données
-        String tagSetShared = mSharedPrefTagSet.getString("TAGSET","");
+        String tagSetShared = mSharedPrefTagSet.getString("TAGSET", "");
         mEtTagSet.setText(tagSetShared);
-        String videoTitleShared = mSharedPrefVideoTitle.getString("VIDEOTITLE","");
+        String videoTitleShared = mSharedPrefVideoTitle.getString("VIDEOTITLE", "");
         mEtVideoTitle.setText(videoTitleShared);
-
 
 
         final HashMap<String, String> hashMapTitleIdGrid = new HashMap<>();
@@ -273,9 +272,9 @@ public class StartActivity extends AppCompatActivity {
 
                     int colorTag = mTagModelList.get(i).getColor();
                     String nameTag = mTagModelList.get(i).getName();
-                    //V2 : choisir le temps
-                    String rigthOffset = "30";
-                    String leftOffset = "60";
+                    //V2 : choisir le temps, necessaire ???
+                    String durationTag = String.valueOf(getResources().getInteger(R.integer.duration_tag));
+                    String beforeTag = String.valueOf(getResources().getInteger(R.integer.before_tag));
 
 
                     DatabaseReference tagsRef = mDatabase.getReference(authUserId).child("tags");
@@ -283,8 +282,8 @@ public class StartActivity extends AppCompatActivity {
                     String idTag = tagsRef.push().getKey();
                     tagsRef.child(idTag).child("color").setValue(colorTag);
                     tagsRef.child(idTag).child("name").setValue(nameTag);
-                    tagsRef.child(idTag).child("leftOffset").setValue(leftOffset);
-                    tagsRef.child(idTag).child("rigthOffset").setValue(rigthOffset);
+                    tagsRef.child(idTag).child("leftOffset").setValue(beforeTag);
+                    tagsRef.child(idTag).child("rigthOffset").setValue(durationTag);
                     tagsRef.child(idTag).child("fkTagSet").setValue(idTagSet);
 
                 }
@@ -310,17 +309,14 @@ public class StartActivity extends AppCompatActivity {
                         Toast.makeText(StartActivity.this, R.string.title, Toast.LENGTH_SHORT).show();
                     } else {
                         startActivity(intent);
-
                     }
                 }
-                mSharedPrefTagSet.edit().putString("TAGSET","");
+                mSharedPrefTagSet.edit().putString("TAGSET", "").apply();
                 mEtTagSet.setText("");
-                mSharedPrefVideoTitle.edit().putString("VIDEOTITLE", "");
+                mSharedPrefVideoTitle.edit().putString("VIDEOTITLE", "").apply();
                 mEtVideoTitle.setText("");
             }
-
         });
-
 
         if (mTagModelList.size() != 0) {
             tvAddTag.setText(R.string.edit_tags);
@@ -371,10 +367,12 @@ public class StartActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        mSharedPrefTagSet.edit().putString("TAGSET","");
+
+        mSharedPrefTagSet.edit().putString("TAGSET", null).apply();
         mEtTagSet.setText("");
-        mSharedPrefVideoTitle.edit().putString("VIDEOTITLE", "");
+        mSharedPrefVideoTitle.edit().putString("VIDEOTITLE", null).apply();
         mEtVideoTitle.setText("");
+
+        super.onBackPressed();
     }
 }
