@@ -83,9 +83,6 @@ public class PlayVideoActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(titleSession);
 
-
-
-
         mIdSession = getIntent().getStringExtra(ID_SESSION);
         mVideoLink = getIntent().getStringExtra(FILE_NAME);
 
@@ -112,15 +109,7 @@ public class PlayVideoActivity extends AppCompatActivity {
         });
 
         mSeekBar = findViewById(R.id.seek_bar_selected);
-
-        // Rend la seekbar indéplaceable au click
         mSeekBar.setEnabled(false);
-        /*mSeekBar.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return true;
-            }
-        });*/
 
         final FloatingActionButton fbPlay = findViewById(R.id.bt_play_selected);
         fbPlay.setOnClickListener(new View.OnClickListener() {
