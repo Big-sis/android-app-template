@@ -7,14 +7,6 @@
     <string name="edit">Modifier</string>
     <string name="upload">Uploader</string>
     <string name="information">Informations sur la vidéo</string>
-
-    <string-array name="select_folder">
-        <item>Importer votre grille</item>
-        <item>Dossier 1</item>
-        <item>Dossier 2</item>
-        <item>Dossier 3</item>
-    </string-array>
-
     <string name="title_video">Titre de la vidéo</string>
     <string name="start_session">Lancer une session</string>
     <string name="start_multi_session">Lancer une session collaborative</string>
@@ -26,7 +18,7 @@
     <string name="password">Mot de passe</string>
     <string name="lost_password">Mot de passe oublié ?</string>
     <string name="connected_maj">Se connecter</string>
-    <string name="info_session">Information sur la session</string>
+    <string name="info_session">Informations sur la session</string>
     <string name="add_description">Ajouter une description</string>
     <string name="my_analyse">Mes grilles d\'analyses</string>
     <string name="grid_title">Titre de la grille</string>

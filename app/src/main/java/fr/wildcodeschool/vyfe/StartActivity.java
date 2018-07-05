@@ -101,8 +101,8 @@ public class StartActivity extends AppCompatActivity {
         final ArrayList<String> nameTagSet = new ArrayList<>();
 
         final ArrayAdapter<String> adapterSpinner = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, nameTagSet);
-        adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                R.layout.item_spinner, nameTagSet);
+        adapterSpinner.setDropDownViewResource(R.layout.item_spinner_dropdown);
         spinner.setAdapter(adapterSpinner);
 
         setSupportActionBar(toolbar);

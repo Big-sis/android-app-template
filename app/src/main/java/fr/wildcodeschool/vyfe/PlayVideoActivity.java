@@ -276,6 +276,7 @@ public class PlayVideoActivity extends AppCompatActivity {
 
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
                 layoutParams.setMargins(getResources().getInteger(R.integer.title_length_timeline) + start, 20, 0, 20);
                 timeline.setBackgroundResource(R.drawable.style_input);
                 timeline.addView(iv, layoutParams);
