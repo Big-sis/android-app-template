@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 
 import android.app.Dialog;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -145,9 +146,45 @@ public class AddGridDialog {
             }
 
             @Override
+            public void onSelectedChanged(RecyclerView.ViewHolder viewHolder, int actionState) {
+                if (viewHolder != null) {
+                    final View foregroundView = ((TagRecyclerAdapter.ViewHolder) viewHolder).viewForeground;
+                    getDefaultUIUtil().onSelected(foregroundView);
+                }
+            }
+
+            @Override
+            public void onChildDrawOver(Canvas c, RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder,
+                                        float dX, float dY, int actionState, boolean isCurrentlyActive) {
+                final View foregroundView = ((TagRecyclerAdapter.ViewHolder) viewHolder).viewForeground;
+                getDefaultUIUtil().onDraw(c, recyclerView, foregroundView, dX, dY, actionState, isCurrentlyActive);
+            }
+
+            @Override
+            public void clearView(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder) {
+                final View foregroundView = ((TagRecyclerAdapter.ViewHolder) viewHolder).viewForeground;
+                getDefaultUIUtil().clearView(foregroundView);
+            }
+
+            @Override
+            public void onChildDraw(Canvas c, RecyclerView recyclerView,
+                                    RecyclerView.ViewHolder viewHolder, float dX, float dY,
+                                    int actionState, boolean isCurrentlyActive) {
+                final View foregroundView = ((TagRecyclerAdapter.ViewHolder) viewHolder).viewForeground;
+
+                getDefaultUIUtil().onDraw(c, recyclerView, foregroundView, dX, dY,
+                        actionState, isCurrentlyActive);
+            }
+
+            @Override
             public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction) {
                 deleteItem(viewHolder.getAdapterPosition());
                 Toast.makeText(activity, R.string.delete_tag, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public int convertToAbsoluteDirection(int flags, int layoutDirection) {
+                return super.convertToAbsoluteDirection(flags, layoutDirection);
             }
         });
         itemTouchHelper.attachToRecyclerView(recyclerTagList);
@@ -201,4 +238,5 @@ public class AddGridDialog {
         ivColor.setBackgroundColor(Color.parseColor(color));
         mfinalcolor = Color.parseColor(color);
     }
+
 }
