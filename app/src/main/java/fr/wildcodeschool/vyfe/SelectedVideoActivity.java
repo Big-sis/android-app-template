@@ -148,7 +148,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
                     @Override
                     public Map<String, String> getHeaders() throws AuthFailureError {
                         Map<String, String> params = new HashMap<String, String>();
-                        params.put("Authorization", "Bearer c2af8349ffedd683748ee6a8e383202c");
+                        params.put("Authorization", getResources().getString(R.string.VIMEO_TOKEN));
                         params.put("Content-Type", "application/json");
                         params.put("Accept", "application/vnd.vimeo.*+json;version=3.4");
                         return params;
