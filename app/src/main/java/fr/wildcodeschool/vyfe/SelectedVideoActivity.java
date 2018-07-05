@@ -1,6 +1,6 @@
 package fr.wildcodeschool.vyfe;
 
-import android.content.Context;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -16,8 +16,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.VideoView;
-
 import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
@@ -25,7 +23,6 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -56,7 +53,6 @@ public class SelectedVideoActivity extends AppCompatActivity {
     final String mAuthUserId = SingletonFirebase.getInstance().getUid();
     private String mIdSession = "";
     private String mIdTagSet;
-    private SessionsModel sessionsModel;
 
     private byte[] inputData = new byte[0];
     private InputStream iStream = null;
@@ -102,7 +98,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
         btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                File file = new File(fileName);
+                /*File file = new File(fileName);
                 final long length = file.length();
 
                 //transformation du lien de stockage en vidéo
@@ -160,7 +156,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
                     }
 
                 };
-                queue.add(sr);
+                queue.add(sr);*/
             }
         });
 
@@ -298,6 +294,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
         queue2.add(sr2);
     }
 
+    //methode conv String en tableau pour envoit
     public byte[] getBytes(InputStream inputStream) throws IOException {
         ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
         int bufferSize = 1024;
