@@ -298,12 +298,12 @@ public class RecordActivity extends AppCompatActivity {
                 }
 
                 //rapport pour la presentation
-                int rapport = R.integer.rapport_timeline;
+                int rapport = getResources().getInteger(R.integer.rapport_timeline);
 
                 //Ici on pourra changer les caracteristiques des tags pour la V2. Pour l'instant carac = constantes
-                int durationTag = R.integer.duration_tag * rapport;
-                int beforeTag = R.integer.before_tag * rapport;
-                int titleLength = R.integer.title_length_timeline;
+                int durationTag = getResources().getInteger(R.integer.duration_tag) * rapport;
+                int beforeTag = getResources().getInteger(R.integer.before_tag) * rapport;
+                int titleLength = getResources().getInteger(R.integer.title_length_timeline);
 
                 //init image Tag
                 ImageView iv = new ImageView(RecordActivity.this);

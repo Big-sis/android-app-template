@@ -147,7 +147,6 @@ public class SelectedVideoActivity extends AppCompatActivity {
                         return params;
                     }
 
-
                          @Override
                     public Map<String, String> getHeaders() throws AuthFailureError {
                         Map<String, String> params = new HashMap<String, String>();

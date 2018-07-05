@@ -1,6 +1,8 @@
 package fr.wildcodeschool.vyfe;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -73,6 +75,18 @@ public class StartActivity extends AppCompatActivity {
         final EditText etTagSet = findViewById(R.id.et_grid_title);
         final EditText etVideoTitle = findViewById(R.id.et_video_title);
 
+        //enregistrement données
+        final SharedPreferences sharedPrefTagSet = this.getSharedPreferences("TAGSET", Context.MODE_PRIVATE);
+        final SharedPreferences sharedPrefVideoTitle = this.getSharedPreferences("VIDEOTITLE", Context.MODE_PRIVATE);
+
+        //tagSetShared des données
+        String tagSetShared = sharedPrefTagSet.getString("TAGSET","");
+        etTagSet.setText(tagSetShared);
+        String videoTitleShared = sharedPrefVideoTitle.getString("VIDEOTITLE","");
+        etVideoTitle.setText(videoTitleShared);
+
+
+
         final HashMap<String, String> hashMapTitleIdGrid = new HashMap<>();
 
         final String authUserId = SingletonFirebase.getInstance().getUid();
@@ -122,7 +136,7 @@ public class StartActivity extends AppCompatActivity {
                     spinner.setClickable(true);
                     importGrid(etTagSet, fabAddMoment, false);
                 }
-                //recup données pour mettre spinner
+                //tagSetShared données pour mettre spinner
                 DatabaseReference myRef = mDatabase.getReference(authUserId).child("tagSets");
                 myRef.keepSynced(true);
                 myRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -160,7 +174,7 @@ public class StartActivity extends AppCompatActivity {
                         adapterNotifyDataChange(adapter, adapterImport);
 
                         if (mIdGridImport != null && !mIdGridImport.equals(R.string.import_grid)) {
-                            //recup des tags
+                            //tagSetShared des tags
                             DatabaseReference myRefTag = mDatabase.getReference(authUserId).child("tags");
                             myRefTag.keepSynced(true);
                             myRefTag.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -222,6 +236,7 @@ public class StartActivity extends AppCompatActivity {
         buttonGo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 final Intent intent = new Intent(StartActivity.this, RecordActivity.class);
                 final String titleSession = etVideoTitle.getText().toString();
                 intent.putExtra(TITLE_VIDEO, titleSession);
@@ -295,7 +310,12 @@ public class StartActivity extends AppCompatActivity {
 
                     }
                 }
+                sharedPrefTagSet.edit().putString("TAGSET","");
+                etTagSet.setText("");
+                sharedPrefVideoTitle.edit().putString("VIDEOTITLE", "");
+                etVideoTitle.setText("");
             }
+
         });
 
 
@@ -306,6 +326,8 @@ public class StartActivity extends AppCompatActivity {
         fabAddMoment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                sharedPrefTagSet.edit().putString("TAGSET",etTagSet.getText().toString()).apply();
+                sharedPrefVideoTitle.edit().putString("VIDEOTITLE", etVideoTitle.getText().toString()).apply();
                 AddGridDialog.openCreateTags(StartActivity.this);
             }
         });

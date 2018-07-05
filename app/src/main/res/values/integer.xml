@@ -2,7 +2,8 @@
 <resources>
     <integer name="duration_tag">3</integer>
     <integer name="before_tag">6</integer>
-    <integer name="title_length_timeline">150</integer>
+    <integer name="title_length_timeline">100</integer>
     <integer name="rapport_timeline">10</integer>
-    <integer name="secont_to_micro">1000000</integer>
+    <integer name="second_to_micro">1000000</integer>
+    <integer name="micro_to_milli"></integer>
 </resources>
