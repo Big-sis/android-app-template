@@ -176,8 +176,6 @@ public class PlayVideoActivity extends AppCompatActivity {
         });
 
 
-
-
         Display display = getWindowManager().getDefaultDisplay();
         int width = display.getWidth();
         RelativeLayout.LayoutParams seekBarParams = new RelativeLayout.LayoutParams(width, LinearLayout.LayoutParams.MATCH_PARENT);
@@ -208,8 +206,8 @@ public class PlayVideoActivity extends AppCompatActivity {
     public void makeTimelines() {
 
         LinearLayout llMain = findViewById(R.id.ll_main_playvideo);
-        int tagedLineSize = timeLines.getWidth() - 200;
-        int titleLength = 200;
+        int tagedLineSize = timeLines.getWidth() - getResources().getInteger(R.integer.title_length_timeline);
+        int titleLength = getResources().getInteger(R.integer.title_length_timeline);
 
         for (final TagModel tagModel : mTagedList) {
             String tagName = tagModel.getName();
@@ -232,14 +230,14 @@ public class PlayVideoActivity extends AppCompatActivity {
                 final int first = pair.getStart();
                 int second = pair.getEnd();
 
-                int firstMicro = first * 1000000;
-                int secondMicro = second * 1000000;
+                int firstMicro = first * getResources().getInteger(R.integer.second_to_micro);
+                int secondMicro = second * getResources().getInteger(R.integer.second_to_micro);
 
                 double startRatio = firstMicro / mVideoDuration;
                 double endRatio = secondMicro / mVideoDuration;
 
-                final int start = (int) (startRatio * tagedLineSize) / 1000;
-                int end = (int) (endRatio * tagedLineSize) / 1000;
+                final int start = (int) (startRatio * tagedLineSize) / getResources().getInteger(R.integer.micro_to_milli);
+                int end = (int) (endRatio * tagedLineSize) / getResources().getInteger(R.integer.micro_to_milli);
 
                 final ImageView iv = new ImageView(PlayVideoActivity.this);
                 iv.setMinimumHeight(10);
@@ -247,9 +245,9 @@ public class PlayVideoActivity extends AppCompatActivity {
                 iv.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Integer millis = first * 1000;
+                        Integer millis = first * getResources().getInteger(R.integer.micro_to_milli);
                         mVideoSelected.seekTo(millis);
-                        long millisLong = first * 1000;
+                        long millisLong = first * getResources().getInteger(R.integer.micro_to_milli);
                         mChrono.setBase(SystemClock.elapsedRealtime() - millisLong);
                     }
                 });
@@ -265,6 +263,7 @@ public class PlayVideoActivity extends AppCompatActivity {
                         }
                         iv.setBackgroundColor(mTagColorList.get(tagModel.getName()));
                     }
+
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
 
@@ -273,7 +272,8 @@ public class PlayVideoActivity extends AppCompatActivity {
 
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                layoutParams.setMargins(200 + start, 20, 0, 20);
+
+                layoutParams.setMargins(getResources().getInteger(R.integer.title_length_timeline) + start, 20, 0, 20);
                 timeline.setBackgroundResource(R.drawable.style_input);
                 timeline.addView(iv, layoutParams);
             }
@@ -325,7 +325,7 @@ public class PlayVideoActivity extends AppCompatActivity {
                     }
                 }
                 RecyclerView rvTags = findViewById(R.id.re_tags_selected);
-                mAdapterTags = new TagRecyclerAdapter(mTagModels, mTagedList,"count");
+                mAdapterTags = new TagRecyclerAdapter(mTagModels, mTagedList, "count");
                 RecyclerView.LayoutManager layoutManagerTags = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
                 rvTags.setLayoutManager(layoutManagerTags);
                 rvTags.setAdapter(mAdapterTags);

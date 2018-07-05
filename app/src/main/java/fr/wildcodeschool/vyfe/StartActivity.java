@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,7 +12,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -48,10 +46,16 @@ public class StartActivity extends AppCompatActivity {
 
     private String mIdGridImport;
     private String mNameGrid;
-    private String title;
+
 
     public static final String TITLE_VIDEO = "titleVideo";
     public static final String ID_TAG_SET = "idTagSet";
+
+    private SharedPreferences mSharedPrefTagSet;
+    private SharedPreferences mSharedPrefVideoTitle;
+
+    private EditText mEtTagSet;
+    private EditText mEtVideoTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,12 +76,19 @@ public class StartActivity extends AppCompatActivity {
         final Spinner spinner = (Spinner) findViewById(R.id.spinner_session_infos);
         TextView tvAddTag = findViewById(R.id.tv_add_tag);
         Toolbar toolbar = findViewById(R.id.toolbar);
-        final EditText etTagSet = findViewById(R.id.et_grid_title);
-        final EditText etVideoTitle = findViewById(R.id.et_video_title);
+        mEtTagSet = findViewById(R.id.et_grid_title);
+        mEtVideoTitle = findViewById(R.id.et_video_title);
 
-        final SharedPreferences pref = StartActivity.this.getPreferences(Context.MODE_PRIVATE);
-        String title2 = pref.getString("title", "");
-        etVideoTitle.setText(title2);
+        //enregistrement données
+        mSharedPrefTagSet = this.getSharedPreferences("TAGSET", Context.MODE_PRIVATE);
+        mSharedPrefVideoTitle = this.getSharedPreferences("VIDEOTITLE", Context.MODE_PRIVATE);
+
+        //tagSetShared des données
+        String tagSetShared = mSharedPrefTagSet.getString("TAGSET", "");
+        mEtTagSet.setText(tagSetShared);
+        String videoTitleShared = mSharedPrefVideoTitle.getString("VIDEOTITLE", "");
+        mEtVideoTitle.setText(videoTitleShared);
+
 
         final HashMap<String, String> hashMapTitleIdGrid = new HashMap<>();
 
@@ -90,8 +101,8 @@ public class StartActivity extends AppCompatActivity {
         final ArrayList<String> nameTagSet = new ArrayList<>();
 
         final ArrayAdapter<String> adapterSpinner = new ArrayAdapter<String>(this,
-                android.R.layout.simple_spinner_item, nameTagSet);
-        adapterSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                R.layout.item_spinner, nameTagSet);
+        adapterSpinner.setDropDownViewResource(R.layout.item_spinner_dropdown);
         spinner.setAdapter(adapterSpinner);
 
         setSupportActionBar(toolbar);
@@ -126,9 +137,9 @@ public class StartActivity extends AppCompatActivity {
 
                     radioButtonNew.setChecked(false);
                     spinner.setClickable(true);
-                    importGrid(etTagSet, fabAddMoment, false);
+                    importGrid(mEtTagSet, fabAddMoment, false);
                 }
-                //recup données pour mettre spinner
+                //tagSetShared données pour mettre spinner
                 DatabaseReference myRef = mDatabase.getReference(authUserId).child("tagSets");
                 myRef.keepSynced(true);
                 myRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -145,9 +156,7 @@ public class StartActivity extends AppCompatActivity {
                                 String idGrid = (String) snapshot.getKey().toString();
                                 hashMapTitleIdGrid.put(mNameGrid, idGrid);
                                 nameTagSet.add(mNameGrid);
-                                title = etVideoTitle.getText().toString();
-                                SharedPreferences.Editor editor = pref.edit();
-                                editor.putString("title", title).apply();
+
 
                             }
                             adapterSpinner.notifyDataSetChanged();
@@ -170,7 +179,7 @@ public class StartActivity extends AppCompatActivity {
                         adapterNotifyDataChange(adapter, adapterImport);
 
                         if (mIdGridImport != null && !mIdGridImport.equals(R.string.import_grid)) {
-                            //recup des tags
+                            //tagSetShared des tags
                             DatabaseReference myRefTag = mDatabase.getReference(authUserId).child("tags");
                             myRefTag.keepSynced(true);
                             myRefTag.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -224,7 +233,7 @@ public class StartActivity extends AppCompatActivity {
                     radioButtonImport.setChecked(false);
                     spinner.setClickable(false);
                     spinner.setLongClickable(false);
-                    importGrid(etTagSet, fabAddMoment, true);
+                    importGrid(mEtTagSet, fabAddMoment, true);
                 }
             }
         });
@@ -232,8 +241,9 @@ public class StartActivity extends AppCompatActivity {
         buttonGo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 final Intent intent = new Intent(StartActivity.this, RecordActivity.class);
-                final String titleSession = etVideoTitle.getText().toString();
+                final String titleSession = mEtVideoTitle.getText().toString();
                 intent.putExtra(TITLE_VIDEO, titleSession);
 
                 //Firebase TAGSET
@@ -241,7 +251,7 @@ public class StartActivity extends AppCompatActivity {
                 DatabaseReference idTagSetRef = mDatabase.getReference(authUserId).child("tagSets").child("name");
                 idTagSetRef.keepSynced(true);
                 String idTagSet = idTagSetRef.push().getKey();
-                String titleTagSet = etTagSet.getText().toString();
+                String titleTagSet = mEtTagSet.getText().toString();
                 if (radioButtonImport.isChecked()) {
                     titleTagSet = mNameGrid;
 
@@ -265,9 +275,9 @@ public class StartActivity extends AppCompatActivity {
 
                     int colorTag = mTagModelList.get(i).getColor();
                     String nameTag = mTagModelList.get(i).getName();
-                    //V2 : choisir le temps
-                    String rigthOffset = "30";
-                    String leftOffset = "60";
+                    //V2 : choisir le temps, necessaire ???
+                    String durationTag = String.valueOf(getResources().getInteger(R.integer.duration_tag));
+                    String beforeTag = String.valueOf(getResources().getInteger(R.integer.before_tag));
 
 
                     DatabaseReference tagsRef = mDatabase.getReference(authUserId).child("tags");
@@ -275,8 +285,8 @@ public class StartActivity extends AppCompatActivity {
                     String idTag = tagsRef.push().getKey();
                     tagsRef.child(idTag).child("color").setValue(colorTag);
                     tagsRef.child(idTag).child("name").setValue(nameTag);
-                    tagsRef.child(idTag).child("leftOffset").setValue(leftOffset);
-                    tagsRef.child(idTag).child("rigthOffset").setValue(rigthOffset);
+                    tagsRef.child(idTag).child("leftOffset").setValue(beforeTag);
+                    tagsRef.child(idTag).child("rigthOffset").setValue(durationTag);
                     tagsRef.child(idTag).child("fkTagSet").setValue(idTagSet);
 
                 }
@@ -302,12 +312,14 @@ public class StartActivity extends AppCompatActivity {
                         Toast.makeText(StartActivity.this, R.string.title, Toast.LENGTH_SHORT).show();
                     } else {
                         startActivity(intent);
-
                     }
                 }
+                mSharedPrefTagSet.edit().putString("TAGSET", "").apply();
+                mEtTagSet.setText("");
+                mSharedPrefVideoTitle.edit().putString("VIDEOTITLE", "").apply();
+                mEtVideoTitle.setText("");
             }
         });
-
 
         if (mTagModelList.size() != 0) {
             tvAddTag.setText(R.string.edit_tags);
@@ -316,6 +328,8 @@ public class StartActivity extends AppCompatActivity {
         fabAddMoment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mSharedPrefTagSet.edit().putString("TAGSET", mEtTagSet.getText().toString()).apply();
+                mSharedPrefVideoTitle.edit().putString("VIDEOTITLE", mEtVideoTitle.getText().toString()).apply();
                 AddGridDialog.openCreateTags(StartActivity.this);
             }
         });
@@ -352,5 +366,16 @@ public class StartActivity extends AppCompatActivity {
         adapterImport.notifyDataSetChanged();
         adapternew.notifyDataSetChanged();
 
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        mSharedPrefTagSet.edit().putString("TAGSET", null).apply();
+        mEtTagSet.setText("");
+        mSharedPrefVideoTitle.edit().putString("VIDEOTITLE", null).apply();
+        mEtVideoTitle.setText("");
+
+        super.onBackPressed();
     }
 }
