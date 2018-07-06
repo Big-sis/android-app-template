@@ -112,7 +112,8 @@ public class StartActivity extends AppCompatActivity {
         final ArrayList<String> nameTagSet = new ArrayList<>();
 
         final ArrayAdapter<String> adapterSpinner = new ArrayAdapter<String>(this,
-                R.layout.support_simple_spinner_dropdown_item, nameTagSet);
+                R.layout.simple_spinner, nameTagSet);
+
         adapterSpinner.setDropDownViewResource(R.layout.item_spinner_dropdown);
         spinner.setAdapter(adapterSpinner);
 
@@ -120,13 +121,15 @@ public class StartActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(R.string.start_session);
 
         recyclerTagList.setVisibility(View.VISIBLE);
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this,
+                LinearLayoutManager.VERTICAL, false);
         recyclerTagList.setLayoutManager(layoutManager);
         final TagRecyclerAdapter adapter = new TagRecyclerAdapter(mTagModelList, "start");
         recyclerTagList.setAdapter(adapter);
 
 
-        RecyclerView.LayoutManager layoutManagerImport = new LinearLayoutManager(StartActivity.this, LinearLayoutManager.VERTICAL, false);
+        RecyclerView.LayoutManager layoutManagerImport = new LinearLayoutManager(StartActivity.this,
+                LinearLayoutManager.VERTICAL, false);
         recyclerViewImport.setLayoutManager(layoutManagerImport);
         final TagRecyclerAdapter adapterImport = new TagRecyclerAdapter(mTagModelList, "start");
         recyclerViewImport.setAdapter(adapterImport);
@@ -209,11 +212,13 @@ public class StartActivity extends AppCompatActivity {
                                 @Override
                                 public void onDataChange(DataSnapshot dataSnapshot) {
                                     if (dataSnapshot.getChildrenCount() == 0) {
-                                        Toast.makeText(StartActivity.this, R.string.havent_tag, Toast.LENGTH_SHORT).show();
+                                        Toast.makeText(StartActivity.this, R.string.havent_tag,
+                                                Toast.LENGTH_SHORT).show();
                                     }
                                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
-                                        if (snapshot.child("fkTagSet").getValue().toString() != null && snapshot.child("fkTagSet").getValue().toString().equals(mIdGridImport)) {
+                                        if (snapshot.child("fkTagSet").getValue().toString() != null
+                                                && snapshot.child("fkTagSet").getValue().toString().equals(mIdGridImport)) {
                                             String name = (String) snapshot.child("name").getValue();
                                             int color = Integer.parseInt(snapshot.child("color").getValue().toString());
                                             mTagModelList.add(new TagModel(color, name, null, null));
@@ -354,7 +359,8 @@ public class StartActivity extends AppCompatActivity {
             public void onClick(View v) {
                 mSharedPrefTagSet.edit().putString("TAGSET", mEtTagSet.getText().toString()).apply();
                 mSharedPrefVideoTitle.edit().putString("VIDEOTITLE", mEtVideoTitle.getText().toString()).apply();
-                AddGridDialog.openCreateTags(StartActivity.this);
+                Intent intent = new Intent(StartActivity.this, AddGridActivity.class);
+                startActivity(intent);
             }
         });
     }
@@ -400,6 +406,7 @@ public class StartActivity extends AppCompatActivity {
         mSharedPrefVideoTitle.edit().putString("VIDEOTITLE", null).apply();
         mEtVideoTitle.setText("");
 
-        super.onBackPressed();
+        Intent intent = new Intent(StartActivity.this, MainActivity.class);
+        startActivity(intent);
     }
 }

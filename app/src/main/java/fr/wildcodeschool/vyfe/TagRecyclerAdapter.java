@@ -1,6 +1,7 @@
 package fr.wildcodeschool.vyfe;
 
 
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -79,12 +80,14 @@ public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.
         TextView tvName;
         ImageView ivColor;
         TextView tvNum;
+        ConstraintLayout viewForeground;
 
         public ViewHolder(View v) {
             super(v);
             this.tvName = v.findViewById(R.id.tv_name);
             this.ivColor = v.findViewById(R.id.iv_color);
             this.tvNum = v.findViewById(R.id.tv_stats);
+            this.viewForeground = v.findViewById(R.id.view_foreground);
         }
     }
 }

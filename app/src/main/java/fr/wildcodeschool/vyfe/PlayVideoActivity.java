@@ -66,7 +66,6 @@ public class PlayVideoActivity extends AppCompatActivity {
     public static final String TITLE_VIDEO = "titleVideo";
     public static final String FILE_NAME = "filename";
     public static final String ID_SESSION = "idSession";
-    public static final String URL_TEST = "http://clips.vorwaerts-gmbh.de/VfE_html5.mp4";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
