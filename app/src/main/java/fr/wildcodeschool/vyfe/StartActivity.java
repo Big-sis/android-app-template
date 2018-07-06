@@ -247,12 +247,9 @@ public class StartActivity extends AppCompatActivity {
             public void onClick(View view) {
                 if (radioButtonNew.isChecked()) {
                     mTagModelList.clear();
-
                     adapterNotifyDataChange(adapter, adapterImport);
-
                     recyclerTagList.setVisibility(View.VISIBLE);
                     recyclerViewImport.setVisibility(View.GONE);
-
                     radioButtonImport.setChecked(false);
                     spinner.setClickable(false);
                     spinner.setLongClickable(false);
@@ -279,68 +276,72 @@ public class StartActivity extends AppCompatActivity {
                     titleTagSet = mNameGrid;
 
                 }
+                if (radioButtonNew.isChecked() && titleTagSet.isEmpty()) {
+                    Toast.makeText(StartActivity.this, "Indiquez un titre à votre grille d'observation", Toast.LENGTH_LONG).show();
+                }else {
 
-                intent.putExtra(ID_TAG_SET, idTagSet);
+                    intent.putExtra(ID_TAG_SET, idTagSet);
 
-                DatabaseReference tagsSetRef = mDatabase.getReference(authUserId).child("tagSets").child(idTagSet).child("name");
-                tagsSetRef.keepSynced(true);
-                tagsSetRef.setValue(titleTagSet);
-                mTagsSetsList.add(new TagSetsModel(idTagSet, titleTagSet));
-                mSingletonTagsSets.setmTagsSetsList(mTagsSetsList);
+                    DatabaseReference tagsSetRef = mDatabase.getReference(authUserId).child("tagSets").child(idTagSet).child("name");
+                    tagsSetRef.keepSynced(true);
+                    tagsSetRef.setValue(titleTagSet);
+                    mTagsSetsList.add(new TagSetsModel(idTagSet, titleTagSet));
+                    mSingletonTagsSets.setmTagsSetsList(mTagsSetsList);
 
-                for (int i = 0; i < mTagsSetsList.size(); i++) {
-                    nameTagSet.add(mTagsSetsList.get(i).getName());
-                    adapterSpinner.notifyDataSetChanged();
+                    for (int i = 0; i < mTagsSetsList.size(); i++) {
+                        nameTagSet.add(mTagsSetsList.get(i).getName());
+                        adapterSpinner.notifyDataSetChanged();
 
-                }
-                //Firebase TAG
-                for (int i = 0; i < mTagModelList.size(); i++) {
+                    }
+                    //Firebase TAG
+                    for (int i = 0; i < mTagModelList.size(); i++) {
 
-                    int colorTag = mTagModelList.get(i).getColor();
-                    String nameTag = mTagModelList.get(i).getName();
-                    //V2 : choisir le temps, necessaire ???
-                    String durationTag = String.valueOf(getResources().getInteger(R.integer.duration_tag));
-                    String beforeTag = String.valueOf(getResources().getInteger(R.integer.before_tag));
+                        int colorTag = mTagModelList.get(i).getColor();
+                        String nameTag = mTagModelList.get(i).getName();
+                        //V2 : choisir le temps, necessaire ???
+                        String durationTag = String.valueOf(getResources().getInteger(R.integer.duration_tag));
+                        String beforeTag = String.valueOf(getResources().getInteger(R.integer.before_tag));
 
 
-                    DatabaseReference tagsRef = mDatabase.getReference(authUserId).child("tags");
-                    tagsRef.keepSynced(true);
-                    String idTag = tagsRef.push().getKey();
-                    tagsRef.child(idTag).child("color").setValue(colorTag);
-                    tagsRef.child(idTag).child("name").setValue(nameTag);
-                    tagsRef.child(idTag).child("leftOffset").setValue(beforeTag);
-                    tagsRef.child(idTag).child("rigthOffset").setValue(durationTag);
-                    tagsRef.child(idTag).child("fkTagSet").setValue(idTagSet);
+                        DatabaseReference tagsRef = mDatabase.getReference(authUserId).child("tags");
+                        tagsRef.keepSynced(true);
+                        String idTag = tagsRef.push().getKey();
+                        tagsRef.child(idTag).child("color").setValue(colorTag);
+                        tagsRef.child(idTag).child("name").setValue(nameTag);
+                        tagsRef.child(idTag).child("leftOffset").setValue(beforeTag);
+                        tagsRef.child(idTag).child("rigthOffset").setValue(durationTag);
+                        tagsRef.child(idTag).child("fkTagSet").setValue(idTagSet);
 
-                }
+                    }
 
-                if (MainActivity.mMulti) {
-                    share.setVisibility(View.VISIBLE);
-                    buttonBack.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            share.setVisibility(View.GONE);
-                        }
-                    });
-                    buttonGoMulti.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
+                    if (MainActivity.mMulti) {
+                        share.setVisibility(View.VISIBLE);
+                        buttonBack.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                share.setVisibility(View.GONE);
+                            }
+                        });
+                        buttonGoMulti.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
 
+                                startActivity(intent);
+                            }
+                        });
+                        MainActivity.mMulti = false;
+                    } else {
+                        if (titleSession.isEmpty()) {
+                            Toast.makeText(StartActivity.this, R.string.title, Toast.LENGTH_SHORT).show();
+                        } else {
                             startActivity(intent);
                         }
-                    });
-                    MainActivity.mMulti = false;
-                } else {
-                    if (titleSession.isEmpty()) {
-                        Toast.makeText(StartActivity.this, R.string.title, Toast.LENGTH_SHORT).show();
-                    } else {
-                        startActivity(intent);
                     }
+                    mSharedPrefTagSet.edit().putString("TAGSET", "").apply();
+                    mEtTagSet.setText("");
+                    mSharedPrefVideoTitle.edit().putString("VIDEOTITLE", "").apply();
+                    mEtVideoTitle.setText("");
                 }
-                mSharedPrefTagSet.edit().putString("TAGSET", "").apply();
-                mEtTagSet.setText("");
-                mSharedPrefVideoTitle.edit().putString("VIDEOTITLE", "").apply();
-                mEtVideoTitle.setText("");
             }
         });
 
