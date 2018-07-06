@@ -330,7 +330,8 @@ public class StartActivity extends AppCompatActivity {
             public void onClick(View v) {
                 mSharedPrefTagSet.edit().putString("TAGSET", mEtTagSet.getText().toString()).apply();
                 mSharedPrefVideoTitle.edit().putString("VIDEOTITLE", mEtVideoTitle.getText().toString()).apply();
-                AddGridDialog.openCreateTags(StartActivity.this);
+                Intent intent = new Intent(StartActivity.this, AddGridActivity.class);
+                startActivity(intent);
             }
         });
     }
