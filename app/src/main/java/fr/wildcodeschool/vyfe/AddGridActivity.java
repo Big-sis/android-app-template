@@ -145,6 +145,7 @@ public class AddGridActivity extends AppCompatActivity {
 
                 Intent intent = new Intent(AddGridActivity.this, StartActivity.class);
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -194,4 +195,5 @@ public class AddGridActivity extends AppCompatActivity {
         ivColor.setBackgroundColor(Color.parseColor(color));
         mfinalcolor = Color.parseColor(color);
     }
+
 }
