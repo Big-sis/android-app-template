@@ -43,7 +43,6 @@ public class PlayVideoActivity extends AppCompatActivity {
 
     private ArrayList<TagModel> mTagedList = new ArrayList<>();
     private ArrayList<TagModel> mTagModels = new ArrayList<>();
-    private ArrayList<TimeModel> mTimeList = new ArrayList<>();
     private VideoView mVideoSelected;
     private SeekBar mSeekBar;
     private boolean mIsPlayed = false;
@@ -66,15 +65,12 @@ public class PlayVideoActivity extends AppCompatActivity {
     public static final String TITLE_VIDEO = "titleVideo";
     public static final String FILE_NAME = "filename";
     public static final String ID_SESSION = "idSession";
-    public static final String URL_TEST = "http://clips.vorwaerts-gmbh.de/VfE_html5.mp4";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_video);
         mChrono = findViewById(R.id.chronometer_play);
-
-        timeLines = findViewById(R.id.time_lines_container);
 
         final String titleSession = getIntent().getStringExtra(TITLE_VIDEO);
         mDatabase = SingletonFirebase.getInstance().getDatabase();
@@ -130,7 +126,7 @@ public class PlayVideoActivity extends AppCompatActivity {
                         mFirstPlay = false;
                         mChrono.setBase(SystemClock.elapsedRealtime());
                         mChrono.start();
-                        mAsync = new SeekbarAsync(mSeekBar, mVideoSelected, mChrono);
+                        mAsync = new SeekbarAsync(mSeekBar, mVideoSelected);
                         mAsync.execute();
                     } else {
                         mVideoSelected.start();
@@ -149,7 +145,7 @@ public class PlayVideoActivity extends AppCompatActivity {
                 mIsPlayed = true;
                 mVideoSelected.seekTo(0);
                 mSeekBar.setProgress(0);
-                mAsync = new SeekbarAsync(mSeekBar, mVideoSelected, mChrono);
+                mAsync = new SeekbarAsync(mSeekBar, mVideoSelected);
                 mAsync.execute();
                 mVideoSelected.start();
                 mChrono.setBase(0);
