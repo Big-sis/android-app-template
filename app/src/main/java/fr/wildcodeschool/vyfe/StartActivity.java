@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +18,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -30,6 +32,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -57,6 +60,8 @@ public class StartActivity extends AppCompatActivity {
     private EditText mEtTagSet;
     private EditText mEtVideoTitle;
 
+    private int mWidth;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -78,6 +83,12 @@ public class StartActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         mEtTagSet = findViewById(R.id.et_grid_title);
         mEtVideoTitle = findViewById(R.id.et_video_title);
+        Display display = getWindowManager().getDefaultDisplay();
+        mWidth = display.getWidth();
+
+        final String[] str = {getString(R.string.arrow)};
+        spinner.setMinimumWidth((int)(0.22*mWidth));
+
 
         //enregistrement données
         mSharedPrefTagSet = this.getSharedPreferences("TAGSET", Context.MODE_PRIVATE);
@@ -101,7 +112,7 @@ public class StartActivity extends AppCompatActivity {
         final ArrayList<String> nameTagSet = new ArrayList<>();
 
         final ArrayAdapter<String> adapterSpinner = new ArrayAdapter<String>(this,
-                R.layout.item_spinner, nameTagSet);
+                R.layout.support_simple_spinner_dropdown_item, nameTagSet);
         adapterSpinner.setDropDownViewResource(R.layout.item_spinner_dropdown);
         spinner.setAdapter(adapterSpinner);
 
@@ -149,14 +160,26 @@ public class StartActivity extends AppCompatActivity {
                             nameTagSet.add(getString(R.string.havent_grid));
                         } else {
                             nameTagSet.clear();
-                            nameTagSet.add(getString(R.string.import_grid));
+
+
+                            byte spbyte[] = new byte[0];
+                            try {
+                                spbyte = str[0].getBytes("UTF-8");
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            }
+                            try {
+                                str[0] = new String( spbyte,"UTF-8");
+                            } catch (UnsupportedEncodingException e) {
+                                e.printStackTrace();
+                            }
+                            nameTagSet.add(getString(R.string.import_grid_arrow) + str[0]);
 
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                 mNameGrid = (String) snapshot.child("name").getValue().toString();
                                 String idGrid = (String) snapshot.getKey().toString();
                                 hashMapTitleIdGrid.put(mNameGrid, idGrid);
                                 nameTagSet.add(mNameGrid);
-
 
                             }
                             adapterSpinner.notifyDataSetChanged();
@@ -178,7 +201,7 @@ public class StartActivity extends AppCompatActivity {
                         mTagModelList.clear();
                         adapterNotifyDataChange(adapter, adapterImport);
 
-                        if (mIdGridImport != null && !mIdGridImport.equals(R.string.import_grid)) {
+                        if (mIdGridImport != null && !mIdGridImport.equals(getString(R.string.import_grid_arrow) + str[0])) {
                             //tagSetShared des tags
                             DatabaseReference myRefTag = mDatabase.getReference(authUserId).child("tags");
                             myRefTag.keepSynced(true);

@@ -72,7 +72,6 @@
     <string name="contact">Vous pouvez nous contacter sur : www.vyfe-app.com</string>
     <string name="create_account">Créer un compte</string>
     <string name="havent_grid">Vous n\'avez pas encore de grille</string>
-    <string name="import_grid">Importer une grille</string>
     <string name="havent_tag">Vous n\'avez pas de tags</string>
     <string name="description_added">Description ajoutée</string>
     <string name="title">Veuillez renseigner un titre de vidéo</string>
@@ -82,4 +81,6 @@
     <string name="quit_app">Voulez-vous quitter l\'application</string>
     <string name="yes">Oui</string>
     <string name="no">Non</string>
+    <string name="import_grid_arrow">Importer une grille</string>
+    <string name="arrow"> \ \ \ ▼</string>
 </resources>

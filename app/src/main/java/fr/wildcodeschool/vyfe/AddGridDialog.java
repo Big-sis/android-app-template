@@ -38,7 +38,9 @@ public class AddGridDialog {
     private static boolean repeatName = false;
 
 
+
     public static Dialog openCreateTags(final AppCompatActivity activity) {
+
 
         final LayoutInflater inflater = LayoutInflater.from(activity);
         final View subView = inflater.inflate(R.layout.activity_add_grid, null);
