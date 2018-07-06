@@ -377,6 +377,7 @@ public class StartActivity extends AppCompatActivity {
         mSharedPrefVideoTitle.edit().putString("VIDEOTITLE", null).apply();
         mEtVideoTitle.setText("");
 
-        super.onBackPressed();
+        Intent intent = new Intent(StartActivity.this, MainActivity.class);
+        startActivity(intent);
     }
 }
