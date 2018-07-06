@@ -56,7 +56,6 @@ public class RecordActivity extends AppCompatActivity {
     private MediaRecorder mRecorder = null;
     private CameraPreview mPreview;
     private boolean mBack;
-    private int mHeight;
 
     HashMap<String, RelativeLayout> mTimelines = new HashMap<>();
     HashMap<String, ArrayList<Pair<Integer, Integer>>> newTagList = new HashMap<>();
@@ -125,10 +124,9 @@ public class RecordActivity extends AppCompatActivity {
                                 }).start();
                             }
                         });
-                Display display = getWindowManager().getDefaultDisplay();
-                mHeight = display.getHeight();
+
                 FrameLayout preview = findViewById(R.id.video_view);
-                preview.setMinimumHeight((int) (0.5 * mHeight));
+
                 preview.addView(mPreview);
 
                 mRecord.setOnClickListener(new View.OnClickListener() {
