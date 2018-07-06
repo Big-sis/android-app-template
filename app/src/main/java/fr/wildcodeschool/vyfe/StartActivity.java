@@ -277,7 +277,7 @@ public class StartActivity extends AppCompatActivity {
 
                 }
                 if (radioButtonNew.isChecked() && titleTagSet.isEmpty()) {
-                    Toast.makeText(StartActivity.this, "Indiquez un titre à votre grille d'observation", Toast.LENGTH_LONG).show();
+                    Toast.makeText(StartActivity.this, R.string.choose_name_grid, Toast.LENGTH_LONG).show();
                 }else {
 
                     intent.putExtra(ID_TAG_SET, idTagSet);
