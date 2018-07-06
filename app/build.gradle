@@ -1,6 +1,14 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        config {
+            keyAlias 'vyfe'
+            keyPassword '5W*fA=%#s@d6ZKxs'
+            storeFile file('keystore.jks')
+            storePassword 'tZ_r5Bj6vvpp_EfM'
+        }
+    }
     compileSdkVersion 26
     defaultConfig {
         applicationId "fr.wildcodeschool.vyfe"
@@ -14,9 +22,15 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config
         }
     }
-
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
 }
 
 repositories {
@@ -25,23 +39,22 @@ repositories {
 
 
 dependencies {
-
-
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
-    implementation 'com.android.volley:volley:1.1.0'
+    implementation 'com.android.support:design:26.1.0'
+    implementation 'com.android.support:recyclerview-v7:26.1.0'
     implementation 'com.github.bumptech.glide:glide:4.3.1'
-    implementation 'com.google.firebase:firebase-database:11.8.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.3.1'
+    implementation 'petrov.kristiyan:colorpicker-library:1.1.7'
+    implementation 'com.android.volley:volley:1.1.0'
+    implementation 'com.google.firebase:firebase-database:11.8.0'
+    implementation 'com.google.firebase:firebase-auth:11.8.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
-    implementation 'com.android.support:design:26.1.0'
-    implementation 'com.android.support:recyclerview-v7:26.1.0'
-    implementation 'petrov.kristiyan:colorpicker-library:1.1.7'
-    implementation 'com.android.volley:volley:1.1.0'
-    implementation 'com.google.firebase:firebase-auth:11.8.0'
 }
+
+
 
 apply plugin: 'com.google.gms.google-services'

@@ -1,6 +1,7 @@
 package fr.wildcodeschool.vyfe;
 
 
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,16 +9,24 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.sql.Time;
 import java.util.ArrayList;
 
 public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.ViewHolder> {
 
     private ArrayList<TagModel> mTagModelList;
+    private ArrayList<TagModel> mTagedList;
     private String mFrom;
 
     public TagRecyclerAdapter(ArrayList<TagModel> observations, String from) {
         mTagModelList = observations;
         mFrom = from;
+    }
+
+    public TagRecyclerAdapter(ArrayList<TagModel> mTagModelList, ArrayList<TagModel> mTagedList, String mFrom) {
+        this.mTagModelList = mTagModelList;
+        this.mTagedList = mTagedList;
+        this.mFrom = mFrom;
     }
 
     @Override
@@ -34,7 +43,10 @@ public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.
         holder.tvName.setText(tagModel.getName());
         holder.ivColor.setBackgroundColor(tagModel.getColor());
 
-        if (mFrom.equals("start")) {
+
+
+
+            if (mFrom.equals("start")) {
             holder.tvNum.setVisibility(View.GONE);
         } else if (mFrom.equals("record")) {
             holder.tvNum.setVisibility(View.GONE);
@@ -42,8 +54,19 @@ public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.
             holder.tvNum.setVisibility(View.GONE);
         } else if (mFrom.equals("count")) {
             holder.tvNum.setVisibility(View.VISIBLE);
-            // Pour tester :
-            holder.tvNum.setText("10");
+                for (TagModel taged : mTagedList) {
+                    ArrayList<TimeModel> timeList = taged.getTimes();
+                    String tagedName = taged.getName();
+                    if (tagedName.equals(tagModel.getName())) {
+                        tagModel.setTimes(timeList);
+                    }
+                }
+                if (!(tagModel.getTimes() == null)) {
+                    int count = tagModel.getTimes().size();
+                    holder.tvNum.setText(String.valueOf(count));
+                } else {
+                    holder.tvNum.setText("0");
+                }
         }
     }
 
@@ -57,12 +80,14 @@ public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.
         TextView tvName;
         ImageView ivColor;
         TextView tvNum;
+        ConstraintLayout viewForeground;
 
         public ViewHolder(View v) {
             super(v);
             this.tvName = v.findViewById(R.id.tv_name);
             this.ivColor = v.findViewById(R.id.iv_color);
             this.tvNum = v.findViewById(R.id.tv_stats);
+            this.viewForeground = v.findViewById(R.id.view_foreground);
         }
     }
 }

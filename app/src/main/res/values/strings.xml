@@ -2,21 +2,11 @@
     <string name="app_name">Vyfe</string>
     <string name="video_tittle">Titre de la vidéo</string>
     <string name="video_info">Informations sur la vidéo</string>
-    <string name="description">Pas de description</string>
+    <string name="no_description">Pas de description</string>
     <string name="play_video">Visionner</string>
     <string name="edit">Modifier</string>
     <string name="upload">Uploader</string>
     <string name="information">Informations sur la vidéo</string>
-
-
-    <string-array name="select_folder">
-        <item>Importer votre grille</item>
-        <item>Dossier 1</item>
-        <item>Dossier 2</item>
-        <item>Dossier 3</item>
-    </string-array>
-
-
     <string name="title_video">Titre de la vidéo</string>
     <string name="start_session">Lancer une session</string>
     <string name="start_multi_session">Lancer une session collaborative</string>
@@ -28,7 +18,7 @@
     <string name="password">Mot de passe</string>
     <string name="lost_password">Mot de passe oublié ?</string>
     <string name="connected_maj">Se connecter</string>
-    <string name="info_session">Information sur la session</string>
+    <string name="info_session">Informations sur la session</string>
     <string name="add_description">Ajouter une description</string>
     <string name="my_analyse">Mes grilles d\'analyses</string>
     <string name="grid_title">Titre de la grille</string>
@@ -79,9 +69,19 @@
     <string name="mail_unkown">Email inconnu</string>
     <string name="send">Envoyer</string>
     <string name="date">Date</string>
-    <string name="contact">Vous pouvez nous contacter sur : www.vyfe.com</string>
+    <string name="contact">Vous pouvez nous contacter sur : www.vyfe-app.com</string>
     <string name="create_account">Créer un compte</string>
     <string name="havent_grid">Vous n\'avez pas encore de grille</string>
-    <string name="import_grid">Importer une grille</string>
     <string name="havent_tag">Vous n\'avez pas de tags</string>
+    <string name="description_added">Description ajoutée</string>
+    <string name="title">Veuillez renseigner un titre de vidéo</string>
+    <string name="double_name">Nom déjà utilisé. Veuillez renseigner un nouveau nom</string>
+    <string name="upload_video">Votre vidéo a été mise en ligne</string>
+    <string name="error">erreur :</string>
+    <string name="quit_app">Voulez-vous quitter l\'application</string>
+    <string name="yes">Oui</string>
+    <string name="no">Non</string>
+    <string name="import_grid_arrow">Importer une grille</string>
+    <string name="arrow"> \ \ \ ▼</string>
+    <string name="choose_name_grid">Indiquez un titre à votre grille d\'observation</string>
 </resources>

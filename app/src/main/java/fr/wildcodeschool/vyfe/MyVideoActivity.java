@@ -19,17 +19,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
 public class MyVideoActivity extends AppCompatActivity {
     SingletonSessions mSingletonSessions = SingletonSessions.getInstance();
     ArrayList<SessionsModel> mSessionsModelList = mSingletonSessions.getmSessionsList();
-    FirebaseDatabase mdatabase = FirebaseDatabase.getInstance();
+    FirebaseDatabase mDatabase;
     GridAdapter mGridAdapter = new GridAdapter(this, mSessionsModelList);
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
-
 
     private static ArrayList<String> mFilesName = null;
 
@@ -38,9 +36,11 @@ public class MyVideoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_video);
 
+        mDatabase = SingletonFirebase.getInstance().getDatabase();
+
         final GridView gridView = findViewById(R.id.grid_videos);
         SearchView searchView = findViewById(R.id.search_video);
-        String authUserId = mAuth.getCurrentUser().getUid();
+        String authUserId = SingletonFirebase.getInstance().getUid();
         EditText searchText = searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
         searchText.setTextColor(getResources().getColor(R.color.colorWhiteTwo));
         searchText.setHintTextColor(getResources().getColor(R.color.colorWhiteTwo));
@@ -49,7 +49,8 @@ public class MyVideoActivity extends AppCompatActivity {
         ImageView search = searchView.findViewById(android.support.v7.appcompat.R.id.search_button);
         search.setImageResource(android.R.drawable.ic_menu_search);
 
-        DatabaseReference myRef = mdatabase.getReference(authUserId).child("sessions");
+        DatabaseReference myRef = mDatabase.getReference(authUserId).child("sessions");
+        myRef.keepSynced(true);
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -58,6 +59,7 @@ public class MyVideoActivity extends AppCompatActivity {
                     Toast.makeText(MyVideoActivity.this, R.string.havent_video, Toast.LENGTH_LONG).show();
                 }
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+
                     SessionsModel sessionsModel = snapshot.getValue(SessionsModel.class);
                     mSessionsModelList.add(sessionsModel);
                 }
@@ -87,8 +89,6 @@ public class MyVideoActivity extends AppCompatActivity {
             }
         });
         mGridAdapter.notifyDataSetChanged();
-
-
     }
 
     @Override
@@ -98,7 +98,7 @@ public class MyVideoActivity extends AppCompatActivity {
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.logout:
                 Intent intent = new Intent(MyVideoActivity.this, ConnexionActivity.class);
                 startActivity(intent);
@@ -107,5 +107,11 @@ public class MyVideoActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(MyVideoActivity.this, MainActivity.class);
+        startActivity(intent);
     }
 }

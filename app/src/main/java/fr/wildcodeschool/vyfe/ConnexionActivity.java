@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -39,7 +40,7 @@ public class ConnexionActivity extends AppCompatActivity {
         final EditText inputMail = findViewById(R.id.et_mail);
         final EditText inputPass = findViewById(R.id.et_password);
         Button forgotPassword = findViewById(R.id.tv_lost_password);
-        Button btnCreateAccount = findViewById(R.id.btn_create_account);
+        final TextView btnCreateAccount = findViewById(R.id.btn_create_account);
 
         Button connexion = findViewById(R.id.btn_connected);
         connexion.setOnClickListener(new View.OnClickListener() {
@@ -65,18 +66,19 @@ public class ConnexionActivity extends AppCompatActivity {
                                 if (!task.isSuccessful()) {
                                     Toast.makeText(ConnexionActivity.this, R.string.bad_authentifiaction, Toast.LENGTH_SHORT).show();
                                 } else {
+                                    SingletonFirebase.getInstance().logUser(auth.getCurrentUser().getUid());
                                     Intent intent = new Intent(ConnexionActivity.this, MainActivity.class);
                                     startActivity(intent);
                                     finish();
                                 }
                             }
                         });
-                Intent intent = new Intent(ConnexionActivity.this, MainActivity.class);
-                startActivity(intent);
+
             }
         });
 
         if (auth.getCurrentUser() != null) {
+            SingletonFirebase.getInstance().logUser(auth.getCurrentUser().getUid());
             Intent intent = new Intent(ConnexionActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
@@ -93,7 +95,7 @@ public class ConnexionActivity extends AppCompatActivity {
         btnCreateAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(ConnexionActivity.this, R.string.contact, Toast.LENGTH_LONG).show();
+                btnCreateAccount.setText(R.string.contact);
             }
         });
 

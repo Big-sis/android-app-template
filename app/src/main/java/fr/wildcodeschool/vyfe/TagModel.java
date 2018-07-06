@@ -1,28 +1,48 @@
 package fr.wildcodeschool.vyfe;
 
+import android.util.Pair;
+
+import java.util.ArrayList;
+
 public class TagModel {
 
     private int color;
-    private String name;
+    private String tagName;
     private String fkTagSet;
     private String rigthOffset;
-    private int time = 0;
+    private int start;
+    private int end;
     private String leftOffset;
+    private ArrayList<TimeModel> times;
 
 
-    public TagModel(int color, String name, String fkTagSet, String rigthOffset) {
+    public TagModel(int color, String tagName, ArrayList<TimeModel> times) {
         this.color = color;
-        this.name = name;
+        this.tagName = tagName;
+        this.times = times;
+    }
+
+    public TagModel(int color, String tagName, String fkTagSet, String rigthOffset) {
+        this.color = color;
+        this.tagName = tagName;
         this.fkTagSet = fkTagSet;
         this.rigthOffset = rigthOffset;
     }
 
-    public TagModel(TagModel tagModel) {
+    public TagModel(int color, String tagName, String fkTagSet, int start, int end) {
+        this.color = color;
+        this.tagName = tagName;
+        this.fkTagSet = fkTagSet;
+        this.start = start;
+        this.end = end;
     }
 
-    public TagModel(int color, String name, String fkTagSet, String rigthOffset, String leftOffset) {
+    public TagModel() {
+    }
+
+    public TagModel(int color, String tagName, String fkTagSet, String rigthOffset, String leftOffset) {
         this.color = color;
-        this.name = name;
+        this.tagName = tagName;
         this.fkTagSet = fkTagSet;
         this.rigthOffset = rigthOffset;
         this.leftOffset = leftOffset;
@@ -37,11 +57,11 @@ public class TagModel {
     }
 
     public String getName() {
-        return name;
+        return tagName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setName(String tagName) {
+        this.tagName = tagName;
     }
 
     public String getFkTagSet() {
@@ -60,12 +80,36 @@ public class TagModel {
         this.rigthOffset = rigthOffset;
     }
 
+    public int getStart() {
+        return start;
+    }
+
+    public void setStart(int start) {
+        this.start = start;
+    }
+
+    public int getEnd() {
+        return end;
+    }
+
+    public void setEnd(int end) {
+        this.end = end;
+    }
+
     public String getLeftOffset() {
         return leftOffset;
     }
 
     public void setLeftOffset(String leftOffset) {
         this.leftOffset = leftOffset;
+    }
+
+    public ArrayList<TimeModel> getTimes() {
+        return times;
+    }
+
+    public void setTimes(ArrayList<TimeModel> times) {
+        this.times = times;
     }
 }
 

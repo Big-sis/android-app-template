@@ -1,6 +1,7 @@
 package fr.wildcodeschool.vyfe;
 
 import android.os.AsyncTask;
+import android.widget.Chronometer;
 import android.widget.SeekBar;
 import android.widget.VideoView;
 

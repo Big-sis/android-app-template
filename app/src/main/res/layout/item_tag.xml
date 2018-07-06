@@ -5,47 +5,54 @@
     android:layout_width="match_parent"
     android:layout_height="35dp"
     android:layout_marginBottom="5dp"
-    android:background="@drawable/tag"
     tools:layout_editor_absoluteY="25dp">
 
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/view_foreground"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/tag">
 
-    <ImageView
-        android:id="@+id/iv_color"
-        android:layout_width="5dp"
-        android:layout_height="40dp"
-        android:background="@android:color/holo_blue_light"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <ImageView
+            android:id="@+id/iv_color"
+            android:layout_width="5dp"
+            android:layout_height="40dp"
+            android:background="@android:color/holo_blue_light"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tv_name"
-        android:layout_width="300dp"
-        android:layout_height="35dp"
-        android:layout_marginLeft="12dp"
-        android:layout_marginStart="12dp"
-        android:gravity="center_vertical"
-        android:maxLength="30"
-        android:text="@string/name_observation"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        app:fontFamily="@font/roboto"
-        app:layout_constraintStart_toEndOf="@+id/iv_color"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="300dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginStart="12dp"
+            android:gravity="center_vertical"
+            android:maxLength="30"
+            android:text="@string/name_observation"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            app:fontFamily="@font/roboto"
+            app:layout_constraintStart_toEndOf="@+id/iv_color"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
-    <TextView
-        android:id="@+id/tv_stats"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:gravity="center_vertical"
-        android:visibility="gone"
-        app:fontFamily="@font/roboto"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:visibility="visible" />
+        <TextView
+            android:id="@+id/tv_stats"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:gravity="center_vertical"
+            android:visibility="gone"
+            app:fontFamily="@font/roboto"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:visibility="visible" />
+
+
+    </android.support.constraint.ConstraintLayout>
 
 
 </android.support.constraint.ConstraintLayout>

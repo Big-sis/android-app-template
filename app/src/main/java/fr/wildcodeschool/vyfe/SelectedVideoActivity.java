@@ -1,33 +1,63 @@
 package fr.wildcodeschool.vyfe;
 
+
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.VideoView;
-
+import android.widget.Toast;
+import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class SelectedVideoActivity extends AppCompatActivity {
 
     ArrayList<TagModel> mTagModels = new ArrayList<>();
-    FirebaseDatabase mDatabase = FirebaseDatabase.getInstance();
+    FirebaseDatabase mDatabase;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    final String mAuthUserId = mAuth.getCurrentUser().getUid();
+    final String mAuthUserId = SingletonFirebase.getInstance().getUid();
     private String mIdSession = "";
+    private String mIdTagSet;
+
+    private byte[] inputData = new byte[0];
+    private InputStream iStream = null;
+
+    private TagRecyclerAdapter mAdapterTags = new TagRecyclerAdapter(mTagModels, "record");
 
     public static final String TITLE_VIDEO = "titleVideo";
     public static final String FILE_NAME = "filename";
@@ -37,50 +67,105 @@ public class SelectedVideoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selected_video);
+        mIdSession = getIntent().getStringExtra(ID_SESSION);
 
+
+        mDatabase = SingletonFirebase.getInstance().getDatabase();
         Button play = findViewById(R.id.bt_play);
         Button btnUpload = findViewById(R.id.bt_upload);
         Button edit = findViewById(R.id.btn_edit);
         ImageView video = findViewById(R.id.vv_preview);
-        TextView tvTitle = findViewById(R.id.tv_title);
+        final TextView tvTitle = findViewById(R.id.tv_title);
+        final TextView tvDescription = findViewById(R.id.tv_description);
+
+        final DatabaseReference ref = mDatabase.getInstance().getReference(mAuthUserId).child("sessions");
 
         final String titleSession = getIntent().getStringExtra(TITLE_VIDEO);
-        tvTitle.setText(titleSession);
         final String fileName = getIntent().getStringExtra(FILE_NAME);
+        tvTitle.setText(titleSession);
 
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(SelectedVideoActivity.this, InfoVideoActivity.class);
+                intent.putExtra(FILE_NAME, fileName);
+                intent.putExtra(TITLE_VIDEO, titleSession);
                 startActivity(intent);
             }
         });
 
+        //En COMM pour ne pas utiliser nos connexions à API
         btnUpload.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                /*File file = new File(fileName);
+                final long length = file.length();
 
-                /*Date date = new Date();
-                Date newDate = new Date(date.getTime());
-                SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yy HH:mm:SS Z");
-                String stringdate = dt.format(newDate);
-                //Firebase SESSION
-                DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions");
-                mIdSession = sessionRef.push().getKey();
-                sessionRef.child(mIdSession).child("name").setValue(titleSession);
-                sessionRef.child(mIdSession).child("author").setValue(mAuthUserId);
-                sessionRef.child(mIdSession).child("videoLink").setValue(fileName);
-                sessionRef.child(mIdSession).child("date").setValue(stringdate);*/
+                //transformation du lien de stockage en vidéo
+                try {
+                    iStream = getContentResolver().openInputStream(Uri.fromFile(file));
+                    inputData = getBytes(iStream);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
 
+                //1er requete en POST , recuperation upload_link
+                RequestQueue queue = Volley.newRequestQueue(SelectedVideoActivity.this);
+                JsonObjectRequest sr = new JsonObjectRequest(Request.Method.POST, "https://api.vimeo.com/me/videos", null, new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            JSONObject groups = response.getJSONObject("upload");
+                            String uploadLink = (String) groups.get("upload_link");
+                            //ici on peut aussi recucuperer le lien ou l'utilisateur pourras visialiser la vidéo, elle est dans upoad ->link
+                            //deuxieme requete pour joindre la video
+                            uploadVideo(uploadLink);
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        Log.d("Volley", "onResponse: " + response);
+                    }
+                }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Volley", "onError: " + error);
+                        Toast.makeText(SelectedVideoActivity.this, "erreur :" + error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }) {
+                    @Override
+                    protected Map<String, String> getParams() {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("upload.approach", "post");
+                        params.put("upload.redirect_url", "https://google.com");
+                        return params;
+                    }
+
+
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("Authorization", getResources().getString(R.string.VIMEO_TOKEN));
+                        params.put("Content-Type", "application/json");
+                        params.put("Accept", "application/vnd.vimeo.*+json;version=3.4");
+                        return params;
+
+                    }
+
+                };
+                queue.add(sr);*/
             }
         });
+
 
         play.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(SelectedVideoActivity.this, PlayVideoActivity.class);
-                intent.putExtra(ID_SESSION,mIdSession);
+                intent.putExtra(ID_SESSION, mIdSession);
                 intent.putExtra(FILE_NAME, fileName);
                 intent.putExtra(TITLE_VIDEO, titleSession);
                 startActivity(intent);
@@ -91,7 +176,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(SelectedVideoActivity.this, PlayVideoActivity.class);
-                intent.putExtra(ID_SESSION,mIdSession);
+                intent.putExtra(ID_SESSION, mIdSession);
                 intent.putExtra(FILE_NAME, fileName);
                 intent.putExtra(TITLE_VIDEO, titleSession);
                 startActivity(intent);
@@ -99,11 +184,68 @@ public class SelectedVideoActivity extends AppCompatActivity {
         });
 
         RecyclerView recyclerTags = findViewById(R.id.re_tags);
+        RecyclerView.LayoutManager layoutManagerTags = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        recyclerTags.setLayoutManager(layoutManagerTags);
+        recyclerTags.setAdapter(mAdapterTags);
+
+        final DatabaseReference tagSessionRef = mDatabase.getReference(mAuthUserId).child("sessions").child(mIdSession).child("idTagSet");
+
+        tagSessionRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                mIdTagSet = dataSnapshot.getValue(String.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        final DatabaseReference tagRef = mDatabase.getReference(mAuthUserId).child("tags");
+        tagRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                mTagModels.clear();
+                for (DataSnapshot tagSnapshot : dataSnapshot.getChildren()) {
+                    TagModel tagModel = tagSnapshot.getValue(TagModel.class);
+                    if (tagModel.getFkTagSet().equals(mIdTagSet)) {
+                        mTagModels.add(tagModel);
+                    }
+                }
+                mAdapterTags.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(titleSession);
 
+        ref.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot video: dataSnapshot.getChildren()) {
+                    SessionsModel model = video.getValue(SessionsModel.class);
+                    if (fileName.equals(model.getVideoLink())) {
+                        if (video.hasChild("description")) {
+                            tvDescription.setText(model.getDescription());
+                        } else {
+                            tvDescription.setText(R.string.no_description);
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override
@@ -113,7 +255,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.logout:
                 Intent intent = new Intent(SelectedVideoActivity.this, ConnexionActivity.class);
                 startActivity(intent);
@@ -122,5 +264,52 @@ public class SelectedVideoActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void uploadVideo(String url) {
+        RequestQueue queue2 = Volley.newRequestQueue(SelectedVideoActivity.this);
+        VolleyMultipartRequest sr2 = new VolleyMultipartRequest(Request.Method.POST, url, new Response.Listener<NetworkResponse>() {
+            @Override
+            public void onResponse(NetworkResponse response) {
+                // Toast.makeText(ApiActivity.this, " response: " + response.data, Toast.LENGTH_LONG).show();
+                Toast.makeText(SelectedVideoActivity.this, R.string.upload_video, Toast.LENGTH_SHORT).show();
+                Log.d("Volley", "onResponse: " + response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("Volley", "onError: " + error);
+                Toast.makeText(SelectedVideoActivity.this, getString(R.string.error) + error.toString(), Toast.LENGTH_SHORT).show();
+            }
+        }) {
+            @Override
+            protected Map<String, DataPart> getByteData() {
+                Map<String, DataPart> params = new HashMap<>();
+                params.put("file_data", new DataPart("movie.mp4", inputData, "video/mp4"));
+
+                return params;
+            }
+
+        };
+        queue2.add(sr2);
+    }
+
+    //methode conv String en tableau pour envoit
+    public byte[] getBytes(InputStream inputStream) throws IOException {
+        ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
+        int bufferSize = 1024;
+        byte[] buffer = new byte[bufferSize];
+
+        int len = 0;
+        while ((len = inputStream.read(buffer)) != -1) {
+            byteBuffer.write(buffer, 0, len);
+        }
+        return byteBuffer.toByteArray();
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(SelectedVideoActivity.this, MyVideoActivity.class);
+        startActivity(intent);
     }
 }
