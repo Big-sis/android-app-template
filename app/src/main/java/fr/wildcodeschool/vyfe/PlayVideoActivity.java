@@ -44,7 +44,6 @@ public class PlayVideoActivity extends AppCompatActivity {
 
     private ArrayList<TagModel> mTagedList = new ArrayList<>();
     private ArrayList<TagModel> mTagModels = new ArrayList<>();
-    private ArrayList<TimeModel> mTimeList = new ArrayList<>();
     private VideoView mVideoSelected;
     private SeekBar mSeekBar;
     private boolean mIsPlayed = false;

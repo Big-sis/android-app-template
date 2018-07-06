@@ -101,7 +101,7 @@ public class StartActivity extends AppCompatActivity {
         final ArrayList<String> nameTagSet = new ArrayList<>();
 
         final ArrayAdapter<String> adapterSpinner = new ArrayAdapter<String>(this,
-                R.layout.item_spinner, nameTagSet);
+                R.layout.simple_spinner, nameTagSet);
         adapterSpinner.setDropDownViewResource(R.layout.item_spinner_dropdown);
         spinner.setAdapter(adapterSpinner);
 
