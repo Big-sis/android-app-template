@@ -1,6 +1,7 @@
 package fr.wildcodeschool.vyfe;
 
 import android.graphics.Color;
+import android.graphics.drawable.shapes.Shape;
 import android.media.MediaPlayer;
 import android.os.SystemClock;
 import android.content.Intent;
@@ -23,6 +24,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -72,7 +74,10 @@ public class PlayVideoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_video);
 
+        ScrollView scrollTimeline = findViewById(R.id.scroll_timeline);
         mIdSession = getIntent().getStringExtra(ID_SESSION);
+
+        View thumb = findViewById(R.drawable.thumb);
 
         mDatabase = SingletonFirebase.getInstance().getDatabase();
         final String titleSession = getIntent().getStringExtra(TITLE_VIDEO);
@@ -102,7 +107,7 @@ public class PlayVideoActivity extends AppCompatActivity {
         // Lance la méthode qui récupère les données des tags
         mVideoLink = getIntent().getStringExtra(FILE_NAME);
         mVideoSelected = findViewById(R.id.video_view_selected);
-        mVideoSelected.setMinimumWidth((int) (mWidth * 0.8));
+        //mVideoSelected.setMinimumWidth((int) (mWidth * 0.8));
         mVideoSelected.setVideoPath(mVideoLink);
         mVideoSelected.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
@@ -227,11 +232,10 @@ public class PlayVideoActivity extends AppCompatActivity {
 
             String tagName = tagModel.getName();
             final RelativeLayout timeline = new RelativeLayout(PlayVideoActivity.this);
-            timeline.setBackgroundColor(getResources().getColor(R.color.colorCharcoal));
             llMain.addView(timeline);
             TextView tvNameTimeline = new TextView(PlayVideoActivity.this);
             tvNameTimeline.setText(tagName);
-            LinearLayout.LayoutParams layoutParamsTv = new LinearLayout.LayoutParams(
+            RelativeLayout.LayoutParams layoutParamsTv = new RelativeLayout.LayoutParams(
                     titleLength, LinearLayout.LayoutParams.WRAP_CONTENT);
             layoutParamsTv.setMargins(5, 5, 0, 5);
             tvNameTimeline.setLayoutParams(layoutParamsTv);
@@ -292,11 +296,11 @@ public class PlayVideoActivity extends AppCompatActivity {
                     }
                 });
 
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
                 layoutParams.setMargins(getResources().getInteger(R.integer.title_length_timeline) + start, 20, 0, 20);
-                timeline.setBackgroundResource(R.drawable.style_input);
+                timeline.setBackgroundColor(getResources().getColor(R.color.colorCharcoalGrey));
                 timeline.addView(iv, layoutParams);
             }
         }
