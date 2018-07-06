@@ -61,6 +61,7 @@ public class StartActivity extends AppCompatActivity {
     private EditText mEtVideoTitle;
 
     private int mWidth;
+    String titleTagSet ="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +88,7 @@ public class StartActivity extends AppCompatActivity {
         mWidth = display.getWidth();
 
         final String[] str = {getString(R.string.arrow)};
-        spinner.setMinimumWidth((int)(0.22*mWidth));
+        spinner.setMinimumWidth((int) (0.22 * mWidth));
 
 
         //enregistrement données
@@ -172,7 +173,7 @@ public class StartActivity extends AppCompatActivity {
                                 e.printStackTrace();
                             }
                             try {
-                                str[0] = new String( spbyte,"UTF-8");
+                                str[0] = new String(spbyte, "UTF-8");
                             } catch (UnsupportedEncodingException e) {
                                 e.printStackTrace();
                             }
@@ -233,7 +234,7 @@ public class StartActivity extends AppCompatActivity {
 
                                 }
                             });
-
+                            titleTagSet = titlenameTagSetImport;
                         }
                     }
 
@@ -276,14 +277,19 @@ public class StartActivity extends AppCompatActivity {
                 DatabaseReference idTagSetRef = mDatabase.getReference(authUserId).child("tagSets").child("name");
                 idTagSetRef.keepSynced(true);
                 String idTagSet = idTagSetRef.push().getKey();
-                String titleTagSet = mEtTagSet.getText().toString();
-                if (radioButtonImport.isChecked()) {
-                    titleTagSet = mNameGrid;
+
+
+                if  (radioButtonNew.isChecked()) {
+                    titleTagSet = mEtTagSet.getText().toString();
+
 
                 }
-                if (radioButtonNew.isChecked() && titleTagSet.isEmpty()) {
+                if(radioButtonNew.isChecked() && titleTagSet.isEmpty()){
                     Toast.makeText(StartActivity.this, R.string.choose_name_grid, Toast.LENGTH_LONG).show();
                 }else {
+                    if(radioButtonNew.isChecked()){
+
+                    }
 
                     intent.putExtra(ID_TAG_SET, idTagSet);
 

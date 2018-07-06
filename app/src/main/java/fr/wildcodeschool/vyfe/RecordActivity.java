@@ -173,14 +173,14 @@ public class RecordActivity extends AppCompatActivity {
 
                         }
 
-
+/*
                         //FIREBASE TAGSSESSION
                         DatabaseReference tagsRef = mDatabase.getReference(mAuthUserId).child("tagsSession");
                         tagsRef.keepSynced(true);
                         String idTag = tagsRef.push().getKey();
                         tagsRef.child(idTag).child("fkSession").setValue(mIdSession);
                         tagsRef.child(idTag).child("fkTagSet").setValue(idTagSet);
-                        tagsRef.child(idTag).child("fkTagSet").child(idTagSet).setValue(newTagList);
+                        tagsRef.child(idTag).child("fkTagSet").child(idTagSet).setValue(newTagList);*/
 
                     }
                 });
