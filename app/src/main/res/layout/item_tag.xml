@@ -45,6 +45,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:gravity="center_vertical"
+            android:textColor="@android:color/white"
             android:visibility="gone"
             app:fontFamily="@font/roboto"
             app:layout_constraintEnd_toEndOf="parent"
