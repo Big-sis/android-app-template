@@ -7,18 +7,19 @@
     android:background="@drawable/bg"
     tools:context=".MainActivity">
 
+    <include
+        android:id="@+id/appBar"
+        layout="@layout/toolbar" />
+
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <include
-                android:id="@+id/appBar"
-                layout="@layout/toolbar"/>
+            android:layout_height="wrap_content">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -60,9 +61,10 @@
 
                     <LinearLayout
                         android:id="@+id/btn_start_session"
-                        android:layout_width="400dp"
-                        android:layout_height="100dp"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
                         android:layout_margin="5dp"
+                        android:layout_weight="0.5"
                         android:background="@color/colorCharcoalGrey">
 
                         <ImageView
@@ -87,10 +89,13 @@
 
                     <LinearLayout
                         android:id="@+id/btn_multi_session"
-                        android:layout_width="400dp"
-                        android:layout_height="100dp"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
                         android:layout_margin="5dp"
-                        android:background="@color/colorCharcoalGrey">
+                        android:layout_weight="0.5"
+                        android:background="@color/colorCharcoalGrey"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp">
 
                         <ImageView
                             android:id="@+id/logo_multi_session"
@@ -115,19 +120,21 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="32dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    tools:layout_editor_absoluteY="236dp">
+                    android:orientation="horizontal">
 
                     <LinearLayout
                         android:id="@+id/btn_videos"
-                        android:layout_width="400dp"
-                        android:layout_height="100dp"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
                         android:layout_margin="5dp"
-                        android:background="@color/colorCharcoalGrey">
+                        android:layout_weight="0.5"
+                        android:background="@color/colorCharcoalGrey"
+                        android:orientation="horizontal"
+                        android:paddingBottom="10dp"
+                        android:paddingTop="10dp">
 
                         <ImageView
                             android:id="@+id/logo_videos"
@@ -148,6 +155,15 @@
                             android:textSize="20sp"
                             app:fontFamily="@font/roboto_bold" />
                     </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:layout_weight="0.5">
+
+                    </LinearLayout>
+
 
                 </LinearLayout>
             </LinearLayout>
