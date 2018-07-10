@@ -8,6 +8,7 @@ import android.hardware.Camera;
 import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -56,16 +57,15 @@ public class RecordActivity extends AppCompatActivity {
     private MediaRecorder mRecorder = null;
     private CameraPreview mPreview;
     private boolean mBack;
+    int mWidth;
 
     HashMap<String, RelativeLayout> mTimelines = new HashMap<>();
     HashMap<String, ArrayList<Pair<Integer, Integer>>> newTagList = new HashMap<>();
-
 
     public static final String TITLE_VIDEO = "titleVideo";
     public final static String FILE_NAME = "filename";
     public final static String ID_SESSION = "idSession";
     public static final String ID_TAG_SET = "idTagSet";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,7 +111,7 @@ public class RecordActivity extends AppCompatActivity {
                 mRecord.setImageResource(R.drawable.icons8_arr_ter_96);
                 recyclerTags.setAlpha(1);
 
-              /*  mPreview = new CameraPreview(RecordActivity.this, mCamera,
+                mPreview = new CameraPreview(RecordActivity.this, mCamera,
                         new CameraPreview.SurfaceCallback() {
                             @Override
                             public void onSurfaceCreated() {
@@ -123,17 +123,33 @@ public class RecordActivity extends AppCompatActivity {
                                     }
                                 }).start();
                             }
-                        });*/
+                        });
 
-                FrameLayout preview = findViewById(R.id.video_view);
+                // TODO : Vérifier les dimensions sur tablette
+                Display display = getWindowManager().getDefaultDisplay();
+                mWidth = display.getWidth();
+                final FrameLayout preview = findViewById(R.id.video_view);
+                final Handler handler = new Handler();
+                handler.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        double ratio = 1080d / 1920d;
+                        int previewWidth = mWidth * 60 / 100;
+                        int previewHeight = (int) Math.floor(previewWidth * ratio);
+                        ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) preview.getLayoutParams();
+                        params.width = previewWidth;
+                        params.height = previewHeight;
+                        preview.setLayoutParams(params);
+                    }
+                }, 30);
 
-//                preview.addView(mPreview);
+                preview.addView(mPreview);
 
                 mRecord.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         chronometer.stop();
-                       // stopRecording();
+                        stopRecording();
                         mRecord.setClickable(false);
                         sessionRecord.setVisibility(View.VISIBLE);
                         Date date = new Date();
