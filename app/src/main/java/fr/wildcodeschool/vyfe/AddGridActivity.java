@@ -68,7 +68,6 @@ public class AddGridActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 final ColorPicker colorPicker = new ColorPicker(AddGridActivity.this);
-
                 colorPicker.setColors(colors);
                 colorPicker.setColumns(4);
                 colorPicker.setRoundColorButton(true);
