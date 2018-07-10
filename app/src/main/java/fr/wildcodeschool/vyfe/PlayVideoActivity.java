@@ -273,7 +273,7 @@ public class PlayVideoActivity extends AppCompatActivity {
                 int end = (int) (endRatio * tagedLineSize) / getResources().getInteger(R.integer.micro_to_milli);
 
                 final ImageView iv = new ImageView(PlayVideoActivity.this);
-                iv.setMinimumHeight(10);
+                iv.setMinimumHeight(20);
                 iv.setMinimumWidth(end - start);
                 // Permet de se déplacer dans la vidéo en cliquant sur les images
                 iv.setOnClickListener(new View.OnClickListener() {

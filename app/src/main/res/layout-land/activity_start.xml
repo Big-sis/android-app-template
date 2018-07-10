@@ -228,7 +228,7 @@
                             android:id="@+id/button_go"
                             android:layout_width="wrap_content"
                             android:layout_height="30dp"
-                            android:layout_gravity="center"
+                            android:layout_gravity="right"
                             android:layout_marginBottom="8dp"
                             android:layout_marginEnd="16dp"
                             android:layout_marginRight="16dp"
@@ -237,7 +237,7 @@
                             android:text="@string/go"
                             android:textColor="@color/white"
                             app:fontFamily="@font/roboto"
-                            app:layout_constraintBottom_toBottomOf="@+id/new_event"
+                            app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/ll_create_grid" />
 
