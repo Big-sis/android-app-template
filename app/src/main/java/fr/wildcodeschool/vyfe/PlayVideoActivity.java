@@ -3,6 +3,7 @@ package fr.wildcodeschool.vyfe;
 import android.graphics.Color;
 import android.graphics.drawable.shapes.Shape;
 import android.media.MediaPlayer;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.content.Intent;
 import android.support.annotation.DrawableRes;
@@ -77,8 +78,6 @@ public class PlayVideoActivity extends AppCompatActivity {
         ScrollView scrollTimeline = findViewById(R.id.scroll_timeline);
         mIdSession = getIntent().getStringExtra(ID_SESSION);
 
-        View thumb = findViewById(R.drawable.thumb);
-
         mDatabase = SingletonFirebase.getInstance().getDatabase();
         final String titleSession = getIntent().getStringExtra(TITLE_VIDEO);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -107,7 +106,19 @@ public class PlayVideoActivity extends AppCompatActivity {
         // Lance la méthode qui récupère les données des tags
         mVideoLink = getIntent().getStringExtra(FILE_NAME);
         mVideoSelected = findViewById(R.id.video_view_selected);
-        //mVideoSelected.setMinimumWidth((int) (mWidth * 0.8));
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                double ratio = 1080d / 1920d;
+                int previewWidth = mWidth * 60 / 100;
+                int previewHeight = (int) Math.floor(previewWidth * ratio);
+                ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) mVideoSelected.getLayoutParams();
+                params.width = previewWidth;
+                params.height = previewHeight;
+                mVideoSelected.setLayoutParams(params);
+            }
+        }, 30);
         mVideoSelected.setVideoPath(mVideoLink);
         mVideoSelected.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
