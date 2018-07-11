@@ -111,6 +111,8 @@ public class InfoVideoActivity extends AppCompatActivity {
                             if (fileName.equals(model.getVideoLink())) {
                                 String description = etDescription.getText().toString();
                                 video.getRef().child("description").setValue(description);
+                                String title = etVideoTitle.getText().toString();
+                                video.getRef().child("name").setValue(title);
                                 Toast.makeText(InfoVideoActivity.this, R.string.description_added, Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(InfoVideoActivity.this, MyVideoActivity.class);
                                 startActivity(intent);

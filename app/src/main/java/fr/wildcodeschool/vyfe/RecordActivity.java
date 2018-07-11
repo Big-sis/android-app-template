@@ -116,6 +116,20 @@ public class RecordActivity extends AppCompatActivity {
             }
         }, 30);
 
+        mPreview = new CameraPreview(RecordActivity.this, mCamera,
+                new CameraPreview.SurfaceCallback() {
+                    @Override
+                    public void onSurfaceCreated() {
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                            }
+                        }).start();
+                    }
+                });
+        preview.addView(mPreview);
+
+
         mRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,24 +137,13 @@ public class RecordActivity extends AppCompatActivity {
                 chronometer.setBase(SystemClock.elapsedRealtime());
                 chronometer.start();
 
+                startRecording();
+                mBack = false;
                 mRecord.setImageResource(R.drawable.icons8_arr_ter_96);
                 recyclerTags.setAlpha(1);
 
-                mPreview = new CameraPreview(RecordActivity.this, mCamera,
-                        new CameraPreview.SurfaceCallback() {
-                            @Override
-                            public void onSurfaceCreated() {
-                                new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        startRecording();
-                                        mBack = false;
-                                    }
-                                }).start();
-                            }
-                        });
 
-                preview.addView(mPreview);
+
 
                 mRecord.setOnClickListener(new View.OnClickListener() {
                     @Override
