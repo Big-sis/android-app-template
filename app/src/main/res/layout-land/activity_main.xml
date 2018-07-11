@@ -9,62 +9,60 @@
 
     <include
         android:id="@+id/appBar"
-        layout="@layout/toolbar" />
+        layout="@layout/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp">
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBar">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_margin="50dp">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="100dp"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/name_user"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="32dp">
-
-                    <TextView
-                        android:id="@+id/name_user"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="8dp"
-                        android:text="@string/hello_user"
-                        android:textColor="@color/white"
-                        app:fontFamily="@font/roboto_bold"
-                        app:layout_constraintStart_toEndOf="@+id/img_avatar"
-                        app:layout_constraintTop_toTopOf="@+id/appBar" />
-
-                </LinearLayout>
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginBottom="32dp"
+                    android:layout_marginLeft="8dp"
+                    android:text="@string/hello_user"
+                    android:textColor="@color/white"
+                    app:fontFamily="@font/roboto_bold"
+                    app:layout_constraintStart_toEndOf="@+id/img_avatar"
+                    app:layout_constraintTop_toTopOf="@+id/appBar" />
 
 
                 <LinearLayout
                     android:id="@+id/line1"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    tools:layout_editor_absoluteY="104dp">
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:orientation="horizontal">
 
                     <LinearLayout
                         android:id="@+id/btn_start_session"
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
+                        android:layout_height="100dp"
                         android:layout_margin="5dp"
-                        android:layout_weight="0.5"
+                        android:layout_weight="1"
                         android:background="@color/colorCharcoalGrey">
 
                         <ImageView
@@ -90,12 +88,10 @@
                     <LinearLayout
                         android:id="@+id/btn_multi_session"
                         android:layout_width="0dp"
-                        android:layout_height="match_parent"
+                        android:layout_height="100dp"
                         android:layout_margin="5dp"
-                        android:layout_weight="0.5"
-                        android:background="@color/colorCharcoalGrey"
-                        android:paddingBottom="10dp"
-                        android:paddingTop="10dp">
+                        android:layout_weight="1"
+                        android:background="@color/colorCharcoalGrey">
 
                         <ImageView
                             android:id="@+id/logo_multi_session"
@@ -122,19 +118,18 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
                     android:layout_marginTop="32dp"
                     android:orientation="horizontal">
 
                     <LinearLayout
                         android:id="@+id/btn_videos"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="100dp"
                         android:layout_margin="5dp"
-                        android:layout_weight="0.5"
-                        android:background="@color/colorCharcoalGrey"
-                        android:orientation="horizontal"
-                        android:paddingBottom="10dp"
-                        android:paddingTop="10dp">
+                        android:layout_weight="1"
+                        android:background="@color/colorCharcoalGrey">
 
                         <ImageView
                             android:id="@+id/logo_videos"
@@ -159,11 +154,7 @@
                     <LinearLayout
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:layout_weight="0.5">
-
-                    </LinearLayout>
-
+                        android:layout_weight="1" />
 
                 </LinearLayout>
             </LinearLayout>
