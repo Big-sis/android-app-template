@@ -1,13 +1,12 @@
 package fr.wildcodeschool.vyfe;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.hardware.Camera;
 import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
@@ -17,7 +16,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Pair;
 import android.util.TypedValue;
-import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -104,6 +102,21 @@ public class RecordActivity extends AppCompatActivity {
 
         recyclerTags.setAlpha(0.5f);
 
+        final FrameLayout preview = findViewById(R.id.video_view);
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                double ratio = 1080d / 1920d;
+                int previewWidth = preview.getWidth();
+                int previewHeight = (int) Math.floor(previewWidth * ratio);
+                ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) preview.getLayoutParams();
+                params.width = previewWidth;
+                params.height = previewHeight;
+                preview.setLayoutParams(params);
+            }
+        }, 30);
+
         mRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -127,8 +140,6 @@ public class RecordActivity extends AppCompatActivity {
                                 }).start();
                             }
                         });
-
-                FrameLayout preview = findViewById(R.id.video_view);
 
                 preview.addView(mPreview);
 
