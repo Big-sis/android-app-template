@@ -232,6 +232,11 @@ public class RecordActivity extends AppCompatActivity {
                 startActivity(intent);
                 mAuth.signOut();
                 return true;
+
+            case R.id.home:
+                Intent intentHome = new Intent(RecordActivity.this, MainActivity.class);
+                startActivity(intentHome);
+                return true;
         }
 
         return super.onOptionsItemSelected(item);

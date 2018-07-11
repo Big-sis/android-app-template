@@ -385,6 +385,11 @@ public class StartActivity extends AppCompatActivity {
                 startActivity(intent);
                 mAuth.signOut();
                 return true;
+
+            case R.id.home:
+                Intent intentHome = new Intent(StartActivity.this, MainActivity.class);
+                startActivity(intentHome);
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
