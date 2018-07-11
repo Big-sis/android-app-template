@@ -56,16 +56,15 @@ public class RecordActivity extends AppCompatActivity {
     private boolean mBack;
     private boolean mActiveTag = false;
 
+    int mWidth;
 
     HashMap<String, RelativeLayout> mTimelines = new HashMap<>();
     HashMap<String, ArrayList<Pair<Integer, Integer>>> newTagList = new HashMap<>();
-
 
     public static final String TITLE_VIDEO = "titleVideo";
     public final static String FILE_NAME = "filename";
     public final static String ID_SESSION = "idSession";
     public static final String ID_TAG_SET = "idTagSet";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -333,33 +332,36 @@ public class RecordActivity extends AppCompatActivity {
                     int beforeTag = getResources().getInteger(R.integer.before_tag) * rapport;
                     int titleLength = getResources().getInteger(R.integer.title_length_timeline);
 
-                    //init image Tag
-                    ImageView iv = new ImageView(RecordActivity.this);
-                    iv.setMinimumHeight(10);
-                    iv.setBackgroundColor(listTag.get(position).getColor());
+                //init image Tag
+                ImageView iv = new ImageView(RecordActivity.this);
+                RelativeLayout.LayoutParams layoutParamsIv = new RelativeLayout.LayoutParams(
+                        titleLength, LinearLayout.LayoutParams.WRAP_CONTENT);
+                layoutParamsIv.setMargins(0, convertToDp(8), 0, convertToDp(8));
+                iv.setLayoutParams(layoutParamsIv);
+                iv.setMinimumHeight(50);
+                iv.setBackgroundColor(listTag.get(position).getColor());
 
-                    //init chrono
-                    int timeActuel = (int) ((SystemClock.elapsedRealtime() - chronometer.getBase()) / (1000 / rapport));
+                //init chrono
+                int timeActuel = (int) ((SystemClock.elapsedRealtime() - chronometer.getBase()) / (1000 / rapport));
+                int startTime = Math.max(0, timeActuel - beforeTag);
+                int endTime = timeActuel + durationTag;
+                iv.setMinimumWidth(endTime - startTime);
 
-                    int startTime = Math.max(0, timeActuel - beforeTag);
-                    int endTime = timeActuel + durationTag;
-                    iv.setMinimumWidth(endTime - startTime);
+                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                layoutParams.setMargins(convertToDp(titleLength + startTime + convertToDp(15)), convertToDp(10), 0, convertToDp(10));
+                RelativeLayout timeline = mTimelines.get(nameTag);
 
-
-                    RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-                            LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                    layoutParams.setMargins(convertToDp(titleLength + startTime), convertToDp(10), 0, convertToDp(10));
-                    RelativeLayout timeline = mTimelines.get(nameTag);
-
-                    if (isFirstTitle) {
-                        tvNameTimeline.setText(listTag.get(position).getName());
-                        LinearLayout.LayoutParams layoutParamsTv = new LinearLayout.LayoutParams(
-                                convertToDp(titleLength), LinearLayout.LayoutParams.WRAP_CONTENT);
-                        layoutParamsTv.setMargins(convertToDp(15), convertToDp(5), 0, convertToDp(0));
-                        tvNameTimeline.setLayoutParams(layoutParamsTv);
-                        timeline.addView(tvNameTimeline, layoutParamsTv);
-                    }
-                    timeline.addView(iv, layoutParams);
+                if (isFirstTitle) {
+                    tvNameTimeline.setText(listTag.get(position).getName());
+                    RelativeLayout.LayoutParams layoutParamsTv = new RelativeLayout.LayoutParams(
+                            convertToDp(titleLength), LinearLayout.LayoutParams.WRAP_CONTENT);
+                    layoutParamsTv.setMargins(convertToDp(15), convertToDp(8), convertToDp(8), convertToDp(8));
+                    tvNameTimeline.setLayoutParams(layoutParamsTv);
+                    tvNameTimeline.setTextSize(convertToDp(10));
+                    timeline.addView(tvNameTimeline, layoutParamsTv);
+                }
+                timeline.addView(iv, layoutParams);
 
                     //Pour envoit sur firebase
                     Pair<Integer, Integer> timePair = new Pair<>(startTime / rapport, endTime / rapport);
