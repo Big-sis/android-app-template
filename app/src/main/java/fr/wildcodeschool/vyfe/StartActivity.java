@@ -272,11 +272,7 @@ public class StartActivity extends AppCompatActivity {
                 final String titleSession = mEtVideoTitle.getText().toString();
                 intent.putExtra(TITLE_VIDEO, titleSession);
 
-                //Firebase TAGSET
 
-                DatabaseReference idTagSetRef = mDatabase.getReference(authUserId).child("tagSets").child("name");
-                idTagSetRef.keepSynced(true);
-                String idTagSet = idTagSetRef.push().getKey();
 
 
                 if (radioButtonNew.isChecked()) {
@@ -290,6 +286,12 @@ public class StartActivity extends AppCompatActivity {
                     if (mTagModelList.isEmpty()) {
                         Toast.makeText(StartActivity.this, R.string.empty_grid, Toast.LENGTH_SHORT).show();
                     } else {
+
+                        //Firebase TAGSET
+
+                        DatabaseReference idTagSetRef = mDatabase.getReference(authUserId).child("tagSets").child("name");
+                        idTagSetRef.keepSynced(true);
+                        String idTagSet = idTagSetRef.push().getKey();
 
                         intent.putExtra(ID_TAG_SET, idTagSet);
 
