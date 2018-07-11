@@ -103,9 +103,7 @@ public class PlayVideoActivity extends AppCompatActivity {
         // Rend la seekBar incliquable
         mSeekBar.setEnabled(false);
 
-        // Charge le lien de la vidéo dans la videoView, et enregistre sa durée totale
-        // (nécessaire au calculs des positions des tags sur la timeline)
-        // Lance la méthode qui récupère les données des tags
+
         mVideoLink = getIntent().getStringExtra(FILE_NAME);
         mVideoSelected = findViewById(R.id.video_view_selected);
         final Handler handler = new Handler();
@@ -121,12 +119,27 @@ public class PlayVideoActivity extends AppCompatActivity {
                 mVideoSelected.setLayoutParams(params);
             }
         }, 30);
+
+        mChrono = findViewById(R.id.chronometer_play);
+        final FloatingActionButton fbPlay = findViewById(R.id.bt_play_selected);
+
+        // Charge le lien de la vidéo dans la videoView, et enregistre sa durée totale
+        // (nécessaire au calculs des positions des tags sur la timeline)
+        // Lance la méthode qui récupère les données des tags
         mVideoSelected.setVideoPath(mVideoLink);
         mVideoSelected.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
                 mVideoDuration = mVideoSelected.getDuration();
                 initTimeLines();
+                mChrono.setBase(SystemClock.elapsedRealtime());
+                mChrono.start();
+                mAsync = new SeekbarAsync(mSeekBar, mVideoSelected);
+                mAsync.execute();
+                timeWhenStopped = 0;
+                mChrono.stop();
+                fbPlay.setImageResource(android.R.drawable.ic_media_play);
+                mIsPlayed = false;
             }
         });
 
@@ -137,14 +150,14 @@ public class PlayVideoActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mIdTagSet = dataSnapshot.child("idTagSet").getValue(String.class);
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
         });
 
         // Bouton play/pause
-        mChrono = findViewById(R.id.chronometer_play);
-        final FloatingActionButton fbPlay = findViewById(R.id.bt_play_selected);
+
         fbPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -159,17 +172,10 @@ public class PlayVideoActivity extends AppCompatActivity {
                     fbPlay.setBackgroundColor(getResources().getColor(R.color.colorFadedOrange));
                     fbPlay.setImageResource(android.R.drawable.ic_media_pause);
                     mIsPlayed = true;
-                    if (mFirstPlay) {
-                        mFirstPlay = false;
-                        mChrono.setBase(SystemClock.elapsedRealtime());
-                        mChrono.start();
-                        mAsync = new SeekbarAsync(mSeekBar, mVideoSelected);
-                        mAsync.execute();
-                    } else {
-                        mVideoSelected.start();
-                        mChrono.setBase(SystemClock.elapsedRealtime() + timeWhenStopped);
-                        mChrono.start();
-                    }
+                    mVideoSelected.start();
+                    mChrono.setBase(SystemClock.elapsedRealtime() + timeWhenStopped);
+                    mChrono.start();
+
                 }
             }
         });
@@ -291,9 +297,10 @@ public class PlayVideoActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         Integer millis = first * getResources().getInteger(R.integer.micro_to_milli);
-                        mVideoSelected.seekTo(millis);
                         long millisLong = first * getResources().getInteger(R.integer.micro_to_milli);
+                        mVideoSelected.seekTo(millis);
                         mChrono.setBase(SystemClock.elapsedRealtime() - millisLong);
+                        timeWhenStopped = mChrono.getBase() - SystemClock.elapsedRealtime();
                     }
                 });
 
@@ -365,15 +372,6 @@ public class PlayVideoActivity extends AppCompatActivity {
 
                 // Lance la méthode qui créé les timelines losques toutes les données des tags ont été récupérées
                 makeTimelines();
-                for (TagModel tagModel : mTagModels) {
-                    for (TagModel taged : mTagedList) {
-                        ArrayList<TimeModel> timeList = taged.getTimes();
-                        String tagedName = taged.getName();
-                        if (tagedName.equals(tagModel.getName())) {
-                            tagModel.setTimes(timeList);
-                        }
-                    }
-                }
 
                 RecyclerView rvTags = findViewById(R.id.re_tags_selected);
                 mAdapterTags = new TagRecyclerAdapter(mTagModels, mTagedList, "count");
@@ -386,8 +384,10 @@ public class PlayVideoActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
 
             }
+
         });
     }
+
     private int convertToDp(int size) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, size, getResources().getDisplayMetrics());
     }
