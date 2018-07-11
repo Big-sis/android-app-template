@@ -79,6 +79,7 @@ public class PlayVideoActivity extends AppCompatActivity {
         ScrollView scrollTimeline = findViewById(R.id.scroll_timeline);
         mIdSession = getIntent().getStringExtra(ID_SESSION);
 
+
         mDatabase = SingletonFirebase.getInstance().getDatabase();
         final String titleSession = getIntent().getStringExtra(TITLE_VIDEO);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -226,6 +227,10 @@ public class PlayVideoActivity extends AppCompatActivity {
                 Intent intent = new Intent(PlayVideoActivity.this, ConnexionActivity.class);
                 startActivity(intent);
                 mAuth.signOut();
+                return true;
+            case R.id.home:
+                Intent intentHome = new Intent(PlayVideoActivity.this, MainActivity.class);
+                startActivity(intentHome);
                 return true;
         }
 

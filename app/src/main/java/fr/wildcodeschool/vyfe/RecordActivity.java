@@ -1,7 +1,5 @@
 package fr.wildcodeschool.vyfe;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.hardware.Camera;
@@ -18,7 +16,6 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Pair;
 import android.util.TypedValue;
-import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -57,6 +54,8 @@ public class RecordActivity extends AppCompatActivity {
     private MediaRecorder mRecorder = null;
     private CameraPreview mPreview;
     private boolean mBack;
+    private boolean mActiveTag = false;
+
     int mWidth;
 
     HashMap<String, RelativeLayout> mTimelines = new HashMap<>();
@@ -102,9 +101,25 @@ public class RecordActivity extends AppCompatActivity {
 
         recyclerTags.setAlpha(0.5f);
 
+        final FrameLayout preview = findViewById(R.id.video_view);
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                double ratio = 1080d / 1920d;
+                int previewWidth = preview.getWidth();
+                int previewHeight = (int) Math.floor(previewWidth * ratio);
+                ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) preview.getLayoutParams();
+                params.width = previewWidth;
+                params.height = previewHeight;
+                preview.setLayoutParams(params);
+            }
+        }, 30);
+
         mRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mActiveTag = true;
                 chronometer.setBase(SystemClock.elapsedRealtime());
                 chronometer.start();
 
@@ -125,18 +140,14 @@ public class RecordActivity extends AppCompatActivity {
                             }
                         });
 
-                // TODO : Vérifier les dimensions sur tablette
-                Display display = getWindowManager().getDefaultDisplay();
-                mWidth = display.getWidth();
-                final FrameLayout preview = findViewById(R.id.video_view);
-
                 preview.addView(mPreview);
 
                 mRecord.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        mActiveTag = false;
                         chronometer.stop();
-                        //stopRecording();
+                        stopRecording();
                         mRecord.setClickable(false);
                         sessionRecord.setVisibility(View.VISIBLE);
                         Date date = new Date();
@@ -144,7 +155,6 @@ public class RecordActivity extends AppCompatActivity {
                         SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yy HH:mm");
                         String stringdate = dt.format(newDate);
 
-                        //TODO: obliger l'utilisateur a arreter l'enregistreement avant d'envoyer sur firebase
 
                         //Firebase SESSION
                         DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions");
@@ -232,6 +242,11 @@ public class RecordActivity extends AppCompatActivity {
                 startActivity(intent);
                 mAuth.signOut();
                 return true;
+
+            case R.id.home:
+                Intent intentHome = new Intent(RecordActivity.this, MainActivity.class);
+                startActivity(intentHome);
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -290,30 +305,32 @@ public class RecordActivity extends AppCompatActivity {
             mTimelines.put(name, timeline);
         }
 
-        rv.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(),
-                rv, new RecyclerTouchListener.ClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                String nameTag = listTag.get(position).getName();
-                //init name Tag
-                TextView tvNameTimeline = new TextView(RecordActivity.this);
-                tvNameTimeline.setTextColor(Color.WHITE);
 
-                boolean isFirstTitle = false;
+            rv.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(),
+                    rv, new RecyclerTouchListener.ClickListener() {
+                @Override
+                public void onClick(View view, int position) {
+                    if(mActiveTag){
+                    String nameTag = listTag.get(position).getName();
+                    //init name Tag
+                    TextView tvNameTimeline = new TextView(RecordActivity.this);
+                    tvNameTimeline.setTextColor(Color.WHITE);
 
-                if (!newTagList.containsKey(nameTag)) {
-                    ArrayList<Pair<Integer, Integer>> rTagList = new ArrayList<>();
-                    newTagList.put(nameTag, rTagList);
-                    isFirstTitle = true;
-                }
+                    boolean isFirstTitle = false;
 
-                //rapport pour la presentation
-                int rapport = getResources().getInteger(R.integer.rapport_timeline);
+                    if (!newTagList.containsKey(nameTag)) {
+                        ArrayList<Pair<Integer, Integer>> rTagList = new ArrayList<>();
+                        newTagList.put(nameTag, rTagList);
+                        isFirstTitle = true;
+                    }
 
-                //Ici on pourra changer les caracteristiques des tags pour la V2. Pour l'instant carac = constantes
-                int durationTag = getResources().getInteger(R.integer.duration_tag) * rapport;
-                int beforeTag = getResources().getInteger(R.integer.before_tag) * rapport;
-                int titleLength = getResources().getInteger(R.integer.title_length_timeline);
+                    //rapport pour la presentation
+                    int rapport = getResources().getInteger(R.integer.rapport_timeline);
+
+                    //Ici on pourra changer les caracteristiques des tags pour la V2. Pour l'instant carac = constantes
+                    int durationTag = getResources().getInteger(R.integer.duration_tag) * rapport;
+                    int beforeTag = getResources().getInteger(R.integer.before_tag) * rapport;
+                    int titleLength = getResources().getInteger(R.integer.title_length_timeline);
 
                 //init image Tag
                 ImageView iv = new ImageView(RecordActivity.this);
@@ -346,24 +363,26 @@ public class RecordActivity extends AppCompatActivity {
                 }
                 timeline.addView(iv, layoutParams);
 
-                //Pour envoit sur firebase
-                Pair<Integer, Integer> timePair = new Pair<>(startTime / rapport, endTime / rapport);
-                newTagList.get(nameTag).add(timePair);
+                    //Pour envoit sur firebase
+                    Pair<Integer, Integer> timePair = new Pair<>(startTime / rapport, endTime / rapport);
+                    newTagList.get(nameTag).add(timePair);
 
-                //Scrool automatiquement suit l'ajout des tags
-                final HorizontalScrollView scrollView = findViewById(R.id.horizontal_scroll_view);
-                scrollView.post(new Runnable() {
-                    public void run() {
-                        scrollView.fullScroll(View.FOCUS_RIGHT);
-                    }
-                });
-            }
+                    //Scrool automatiquement suit l'ajout des tags
+                    final HorizontalScrollView scrollView = findViewById(R.id.horizontal_scroll_view);
+                    scrollView.post(new Runnable() {
+                        public void run() {
+                            scrollView.fullScroll(View.FOCUS_RIGHT);
+                        }
+                    });
+                }
+                }
 
-            @Override
-            public void onLongClick(View view, int position) {
+                @Override
+                public void onLongClick(View view, int position) {
 
-            }
-        }));
+                }
+            }));
+
     }
 
     private int convertToDp(int size) {
