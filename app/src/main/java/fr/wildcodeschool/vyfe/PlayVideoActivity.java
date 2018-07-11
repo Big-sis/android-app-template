@@ -103,9 +103,7 @@ public class PlayVideoActivity extends AppCompatActivity {
         // Rend la seekBar incliquable
         mSeekBar.setEnabled(false);
 
-        // Charge le lien de la vidéo dans la videoView, et enregistre sa durée totale
-        // (nécessaire au calculs des positions des tags sur la timeline)
-        // Lance la méthode qui récupère les données des tags
+
         mVideoLink = getIntent().getStringExtra(FILE_NAME);
         mVideoSelected = findViewById(R.id.video_view_selected);
         final Handler handler = new Handler();
@@ -121,6 +119,10 @@ public class PlayVideoActivity extends AppCompatActivity {
                 mVideoSelected.setLayoutParams(params);
             }
         }, 30);
+
+        // Charge le lien de la vidéo dans la videoView, et enregistre sa durée totale
+        // (nécessaire au calculs des positions des tags sur la timeline)
+        // Lance la méthode qui récupère les données des tags
         mVideoSelected.setVideoPath(mVideoLink);
         mVideoSelected.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
@@ -365,15 +367,6 @@ public class PlayVideoActivity extends AppCompatActivity {
 
                 // Lance la méthode qui créé les timelines losques toutes les données des tags ont été récupérées
                 makeTimelines();
-                for (TagModel tagModel : mTagModels) {
-                    for (TagModel taged : mTagedList) {
-                        ArrayList<TimeModel> timeList = taged.getTimes();
-                        String tagedName = taged.getName();
-                        if (tagedName.equals(tagModel.getName())) {
-                            tagModel.setTimes(timeList);
-                        }
-                    }
-                }
 
                 RecyclerView rvTags = findViewById(R.id.re_tags_selected);
                 mAdapterTags = new TagRecyclerAdapter(mTagModels, mTagedList, "count");
@@ -386,6 +379,7 @@ public class PlayVideoActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
 
             }
+
         });
     }
     private int convertToDp(int size) {

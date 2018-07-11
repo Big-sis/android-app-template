@@ -48,6 +48,7 @@ import java.util.Map;
 public class SelectedVideoActivity extends AppCompatActivity {
 
     ArrayList<TagModel> mTagModels = new ArrayList<>();
+    ArrayList<TagModel> mTagedList = new ArrayList<>();
     FirebaseDatabase mDatabase;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     final String mAuthUserId = SingletonFirebase.getInstance().getUid();
@@ -56,8 +57,6 @@ public class SelectedVideoActivity extends AppCompatActivity {
 
     private byte[] inputData = new byte[0];
     private InputStream iStream = null;
-
-    private TagRecyclerAdapter mAdapterTags = new TagRecyclerAdapter(mTagModels, "record");
 
     public static final String TITLE_VIDEO = "titleVideo";
     public static final String FILE_NAME = "filename";
@@ -183,10 +182,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
             }
         });
 
-        RecyclerView recyclerTags = findViewById(R.id.re_tags);
-        RecyclerView.LayoutManager layoutManagerTags = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        recyclerTags.setLayoutManager(layoutManagerTags);
-        recyclerTags.setAdapter(mAdapterTags);
+
 
         final DatabaseReference tagSessionRef = mDatabase.getReference(mAuthUserId).child("sessions").child(mIdSession).child("idTagSet");
 
@@ -213,7 +209,33 @@ public class SelectedVideoActivity extends AppCompatActivity {
                         mTagModels.add(tagModel);
                     }
                 }
-                mAdapterTags.notifyDataSetChanged();
+
+                DatabaseReference tagedRef = mDatabase.getReference(mAuthUserId).child("sessions").child(mIdSession).child("tags");
+                tagedRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot tagedSnapshot : dataSnapshot.getChildren()) {
+                            TagModel taged = tagedSnapshot.getValue(TagModel.class);
+                            // TODO : trouver pourquoi la requête ne récupère pas le tagName avec le modèle
+                            String tagedName = tagedSnapshot.child("tagName").getValue(String.class);
+                            taged.setName(tagedName);
+                            mTagedList.add(taged);
+
+                        }
+                        RecyclerView recyclerTags = findViewById(R.id.re_tags);
+                        TagRecyclerAdapter adapterTags = new TagRecyclerAdapter(mTagModels, mTagedList,"count");
+                        RecyclerView.LayoutManager layoutManagerTags = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+                        recyclerTags.setLayoutManager(layoutManagerTags);
+                        recyclerTags.setAdapter(adapterTags);
+                        adapterTags.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
             }
 
             @Override
