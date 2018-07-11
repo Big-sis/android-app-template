@@ -184,6 +184,7 @@ public class AddGridActivity extends AppCompatActivity {
     public void deleteItem(final int position) {
         mTagModelList.remove(position);
         mAdapter.notifyItemRemoved(position);
+        nameDouble.remove(position);
 
     }
 
