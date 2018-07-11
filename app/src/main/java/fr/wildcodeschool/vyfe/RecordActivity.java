@@ -129,19 +129,6 @@ public class RecordActivity extends AppCompatActivity {
                 Display display = getWindowManager().getDefaultDisplay();
                 mWidth = display.getWidth();
                 final FrameLayout preview = findViewById(R.id.video_view);
-                final Handler handler = new Handler();
-                handler.postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        double ratio = 1080d / 1920d;
-                        int previewWidth = mWidth * 60 / 100;
-                        int previewHeight = (int) Math.floor(previewWidth * ratio);
-                        ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) preview.getLayoutParams();
-                        params.width = previewWidth;
-                        params.height = previewHeight;
-                        preview.setLayoutParams(params);
-                    }
-                }, 30);
 
                 preview.addView(mPreview);
 
@@ -149,7 +136,7 @@ public class RecordActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         chronometer.stop();
-                        stopRecording();
+                        //stopRecording();
                         mRecord.setClickable(false);
                         sessionRecord.setVisibility(View.VISIBLE);
                         Date date = new Date();
@@ -330,28 +317,31 @@ public class RecordActivity extends AppCompatActivity {
 
                 //init image Tag
                 ImageView iv = new ImageView(RecordActivity.this);
-                iv.setMinimumHeight(10);
+                RelativeLayout.LayoutParams layoutParamsIv = new RelativeLayout.LayoutParams(
+                        titleLength, LinearLayout.LayoutParams.WRAP_CONTENT);
+                layoutParamsIv.setMargins(0, convertToDp(8), 0, convertToDp(8));
+                iv.setLayoutParams(layoutParamsIv);
+                iv.setMinimumHeight(50);
                 iv.setBackgroundColor(listTag.get(position).getColor());
 
                 //init chrono
                 int timeActuel = (int) ((SystemClock.elapsedRealtime() - chronometer.getBase()) / (1000 / rapport));
-
                 int startTime = Math.max(0, timeActuel - beforeTag);
                 int endTime = timeActuel + durationTag;
                 iv.setMinimumWidth(endTime - startTime);
 
-
                 RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                layoutParams.setMargins(convertToDp(titleLength + startTime), convertToDp(10), 0, convertToDp(10));
+                layoutParams.setMargins(convertToDp(titleLength + startTime + convertToDp(15)), convertToDp(10), 0, convertToDp(10));
                 RelativeLayout timeline = mTimelines.get(nameTag);
 
                 if (isFirstTitle) {
                     tvNameTimeline.setText(listTag.get(position).getName());
-                    LinearLayout.LayoutParams layoutParamsTv = new LinearLayout.LayoutParams(
+                    RelativeLayout.LayoutParams layoutParamsTv = new RelativeLayout.LayoutParams(
                             convertToDp(titleLength), LinearLayout.LayoutParams.WRAP_CONTENT);
-                    layoutParamsTv.setMargins(convertToDp(15), convertToDp(5), 0, convertToDp(0));
+                    layoutParamsTv.setMargins(convertToDp(15), convertToDp(8), convertToDp(8), convertToDp(8));
                     tvNameTimeline.setLayoutParams(layoutParamsTv);
+                    tvNameTimeline.setTextSize(convertToDp(10));
                     timeline.addView(tvNameTimeline, layoutParamsTv);
                 }
                 timeline.addView(iv, layoutParams);

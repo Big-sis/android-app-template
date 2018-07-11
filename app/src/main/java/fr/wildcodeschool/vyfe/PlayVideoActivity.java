@@ -15,6 +15,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Pair;
+import android.util.TypedValue;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -111,7 +112,7 @@ public class PlayVideoActivity extends AppCompatActivity {
             @Override
             public void run() {
                 double ratio = 1080d / 1920d;
-                int previewWidth = mWidth * 60 / 100;
+                int previewWidth = mWidth * 70 / 100;
                 int previewHeight = (int) Math.floor(previewWidth * ratio);
                 ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) mVideoSelected.getLayoutParams();
                 params.width = previewWidth;
@@ -247,9 +248,10 @@ public class PlayVideoActivity extends AppCompatActivity {
             TextView tvNameTimeline = new TextView(PlayVideoActivity.this);
             tvNameTimeline.setText(tagName);
             RelativeLayout.LayoutParams layoutParamsTv = new RelativeLayout.LayoutParams(
-                    titleLength, LinearLayout.LayoutParams.WRAP_CONTENT);
-            layoutParamsTv.setMargins(5, 5, 0, 5);
+                    convertToDp(titleLength), LinearLayout.LayoutParams.WRAP_CONTENT);
+            layoutParamsTv.setMargins(convertToDp(15), convertToDp(8), convertToDp(8), convertToDp(8));
             tvNameTimeline.setLayoutParams(layoutParamsTv);
+            tvNameTimeline.setTextSize(convertToDp(10));
             tvNameTimeline.setTextColor(Color.WHITE);
 
             timeline.addView(tvNameTimeline, layoutParamsTv);
@@ -273,7 +275,11 @@ public class PlayVideoActivity extends AppCompatActivity {
                 int end = (int) (endRatio * tagedLineSize) / getResources().getInteger(R.integer.micro_to_milli);
 
                 final ImageView iv = new ImageView(PlayVideoActivity.this);
-                iv.setMinimumHeight(20);
+                RelativeLayout.LayoutParams layoutParamsIv = new RelativeLayout.LayoutParams(
+                        titleLength, LinearLayout.LayoutParams.WRAP_CONTENT);
+                layoutParamsIv.setMargins(0, convertToDp(8), 0, convertToDp(8));
+                iv.setLayoutParams(layoutParamsIv);
+                iv.setMinimumHeight(50);
                 iv.setMinimumWidth(end - start);
                 // Permet de se déplacer dans la vidéo en cliquant sur les images
                 iv.setOnClickListener(new View.OnClickListener() {
@@ -376,5 +382,8 @@ public class PlayVideoActivity extends AppCompatActivity {
 
             }
         });
+    }
+    private int convertToDp(int size) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, size, getResources().getDisplayMetrics());
     }
 }
