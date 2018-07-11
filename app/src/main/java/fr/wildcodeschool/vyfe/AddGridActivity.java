@@ -68,7 +68,6 @@ public class AddGridActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 final ColorPicker colorPicker = new ColorPicker(AddGridActivity.this);
-
                 colorPicker.setColors(colors);
                 colorPicker.setColumns(4);
                 colorPicker.setRoundColorButton(true);
@@ -103,7 +102,7 @@ public class AddGridActivity extends AppCompatActivity {
 
         }
 
-        final ImageView btnAddEvenement = findViewById(R.id.btn_add);
+        final Button btnAddEvenement = findViewById(R.id.btn_add);
         btnAddEvenement.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -185,6 +184,7 @@ public class AddGridActivity extends AppCompatActivity {
     public void deleteItem(final int position) {
         mTagModelList.remove(position);
         mAdapter.notifyItemRemoved(position);
+        nameDouble.remove(position);
 
     }
 

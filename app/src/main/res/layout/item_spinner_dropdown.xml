@@ -8,4 +8,6 @@
     android:ellipsize="marquee"
     android:background="@color/colorCharcoal"
     android:textColor="@color/colorWhiteTwo"
-    android:layout_marginTop="5dp"/>
+    android:layout_marginTop="5dp"
+    android:textSize="18sp"
+    android:padding="10sp"/>

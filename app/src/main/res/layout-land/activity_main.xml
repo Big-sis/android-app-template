@@ -41,9 +41,13 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginBottom="32dp"
+
+                    android:layout_marginTop="32dp"
                     android:layout_marginLeft="8dp"
+
                     android:text="@string/hello_user"
                     android:textColor="@color/white"
+                    android:textSize="20sp"
                     app:fontFamily="@font/roboto_bold"
                     app:layout_constraintStart_toEndOf="@+id/img_avatar"
                     app:layout_constraintTop_toTopOf="@+id/appBar" />
