@@ -220,8 +220,8 @@ public class SelectedVideoActivity extends AppCompatActivity {
                             String tagedName = tagedSnapshot.child("tagName").getValue(String.class);
                             taged.setName(tagedName);
                             mTagedList.add(taged);
-
                         }
+
                         RecyclerView recyclerTags = findViewById(R.id.re_tags);
                         TagRecyclerAdapter adapterTags = new TagRecyclerAdapter(mTagModels, mTagedList,"count");
                         RecyclerView.LayoutManager layoutManagerTags = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
