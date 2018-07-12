@@ -9,5 +9,5 @@
     android:background="@color/colorCharcoal"
     android:textColor="@color/colorWhiteTwo"
     android:layout_marginTop="5dp"
-    android:textSize="18sp"
+    android:textSize="20sp"
     android:padding="10sp"/>

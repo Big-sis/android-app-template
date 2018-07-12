@@ -20,144 +20,80 @@
                 android:id="@+id/appBar"
                 layout="@layout/toolbar" />
 
+            <TextView
+                android:id="@+id/tv_information"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="40dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="36dp"
+                android:text="@string/info_session"
+                android:textColor="@color/white"
+                android:textSize="24sp"
+                app:fontFamily="@font/roboto_bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/appBar" />
+
+            <EditText
+                android:id="@+id/et_video_title2"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginLeft="40dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="24dp"
+                android:background="@drawable/style_input"
+                android:ems="10"
+                android:hint="@string/title_video"
+                android:inputType="textPersonName"
+                android:textColor="@color/white"
+                android:textColorHint="@color/white"
+                android:textSize="20sp"
+                app:fontFamily="@font/roboto"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_information" />
+
             <LinearLayout
+                android:id="@+id/linearLayout2"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="70dp"
+                android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                app:layout_constraintTop_toTopOf="parent">
+                app:layout_constraintTop_toBottomOf="@+id/et_video_title2">
 
                 <LinearLayout
                     android:id="@+id/linear_layout_left"
                     android:layout_width="0dp"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_weight="0.5">
 
                     <LinearLayout
                         android:id="@+id/ll_import_grid"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="8dp"
-                        android:layout_marginLeft="8dp"
                         android:layout_marginStart="8dp"
-                        android:layout_marginTop="8dp"
                         android:orientation="vertical"
                         app:layout_constraintStart_toStartOf="parent">
 
-                        <TextView
-                            android:id="@+id/tv_information"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="32dp"
-                            android:layout_marginStart="32dp"
-                            android:layout_marginTop="32dp"
-                            android:text="@string/info_session"
-                            android:textColor="@color/white"
-                            android:textSize="20sp"
-                            app:fontFamily="@font/roboto_bold"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <EditText
-                            android:id="@+id/et_video_title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="30dp"
-                            android:layout_marginLeft="32dp"
-                            android:layout_marginStart="32dp"
-                            android:layout_marginTop="16dp"
-                            android:background="@drawable/style_input"
-                            android:ems="10"
-                            android:hint="@string/title_video"
-                            android:inputType="textPersonName"
-                            android:textColor="@color/white"
-                            android:textColorHint="@color/white"
-                            app:fontFamily="@font/roboto"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/tv_information" />
-
-                        <RadioButton
-                            android:id="@+id/radio_button_insert"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="16dp"
-                            android:layout_marginLeft="32dp"
-                            android:layout_marginStart="32dp"
-                            android:layout_marginTop="16dp"
-                            android:text="@string/grid_import"
-                            android:textColor="@color/white"
-                            android:textSize="16sp"
-                            app:fontFamily="@font/roboto"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/tv_my_analyse" />
-
-                        <Spinner
-                            android:id="@+id/spinner_session_infos"
-                            android:layout_width="wrap_content"
-                            android:layout_height="30dp"
-                            android:layout_marginLeft="32dp"
-                            android:layout_marginStart="32dp"
-                            android:layout_marginTop="8dp"
-                            android:background="@drawable/style_input"
-                            android:padding="5dp"
-                            android:visibility="invisible"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/radio_button_insert" />
-
-                        <android.support.v7.widget.RecyclerView
-                            android:id="@+id/recycler_view_import"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="32dp"
-                            android:layout_marginLeft="32dp"
-                            android:layout_marginRight="32dp"
-                            android:layout_marginStart="32dp"
-                            android:layout_marginTop="8dp"
-                            android:scrollbars="vertical"
-                            android:visibility="visible"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/spinner_session_infos"
-                            tools:visibility="visible">
-
-
-                        </android.support.v7.widget.RecyclerView>
-                    </LinearLayout>
-
-                </LinearLayout>
-
-                <android.support.constraint.ConstraintLayout
-                    android:id="@+id/linear_layout_right"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.5">
-
-                    <LinearLayout
-                        android:id="@+id/ll_create_grid"
-                        android:layout_width="483dp"
-                        android:layout_height="match_parent"
-                        android:clickable="true"
-                        android:orientation="vertical">
-
                         <RadioButton
                             android:id="@+id/radio_Button_new"
+                            style="@style/Widget.AppCompat.CompoundButton.CheckBox"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginBottom="16dp"
                             android:layout_marginLeft="32dp"
                             android:layout_marginStart="32dp"
-                            android:layout_marginTop="32dp"
+                            android:layout_marginTop="30dp"
                             android:checked="true"
                             android:includeFontPadding="false"
                             android:text="@string/new_grid2"
                             android:textColor="@color/white"
-                            android:textSize="16sp"
+                            android:textSize="20sp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
                         <EditText
                             android:id="@+id/et_grid_title"
                             android:layout_width="wrap_content"
-                            android:layout_height="30dp"
+                            android:layout_height="40dp"
                             android:layout_marginLeft="32dp"
                             android:layout_marginStart="32dp"
                             android:layout_marginTop="0dp"
@@ -167,35 +103,18 @@
                             android:inputType="textPersonName"
                             android:textColor="@color/white"
                             android:textColorHint="@color/white"
+                            android:textSize="20sp"
                             app:fontFamily="@font/roboto"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/radio_Button_new" />
 
-                        <android.support.v7.widget.RecyclerView
-
-                            android:id="@+id/recycler_view"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginEnd="32dp"
-                            android:layout_marginLeft="32dp"
-                            android:layout_marginRight="32dp"
-                            android:layout_marginStart="32dp"
-                            android:layout_marginTop="16dp"
-                            android:scrollbars="vertical"
-                            android:visibility="gone"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/et_grid_title"
-                            tools:visibility="visible" />
-
-
                         <LinearLayout
                             android:id="@+id/new_event"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_height="match_parent"
                             android:layout_marginLeft="32dp"
                             android:layout_marginStart="32dp"
-                            android:layout_marginTop="8dp"
+                            android:layout_marginTop="16dp"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/recycler_view">
 
@@ -218,11 +137,98 @@
                                 android:layout_marginRight="8dp"
                                 android:text="@string/add_evenement"
                                 android:textColor="@android:color/white"
-                                android:textSize="17sp"
+                                android:textSize="20sp"
                                 app:fontFamily="@font/roboto"
                                 app:layout_constraintStart_toEndOf="@+id/fab_add_moment"
                                 app:layout_constraintTop_toBottomOf="@+id/recycler_view" />
                         </LinearLayout>
+
+                        <android.support.v7.widget.RecyclerView
+
+                            android:id="@+id/recycler_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="32dp"
+                            android:layout_marginLeft="32dp"
+                            android:layout_marginRight="32dp"
+                            android:layout_marginStart="32dp"
+                            android:layout_marginTop="16dp"
+                            android:scrollbars="vertical"
+                            android:visibility="gone"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/et_grid_title"
+                            tools:visibility="visible" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/linear_layout_right"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.5">
+
+
+                    <LinearLayout
+                        android:id="@+id/ll_create_grid"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:clickable="true"
+                        android:orientation="vertical"
+                        tools:layout_editor_absoluteX="8dp">
+
+                        <RadioButton
+                            android:id="@+id/radio_button_insert"
+                            style="@style/Widget.AppCompat.CompoundButton.CheckBox"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="16dp"
+                            android:layout_marginLeft="32dp"
+                            android:layout_marginStart="32dp"
+                            android:layout_marginTop="30dp"
+                            android:cursorVisible="false"
+                            android:text="@string/grid_import"
+                            android:textColor="@color/white"
+                            android:textSize="20sp"
+
+                            app:fontFamily="@font/roboto"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_my_analyse" />
+
+                        <Spinner
+                            android:id="@+id/spinner_session_infos"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="32dp"
+                            android:layout_marginStart="32dp"
+                            android:layout_marginTop="0dp"
+                            android:background="@drawable/style_input"
+                            android:visibility="invisible"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/radio_button_insert" />
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/recycler_view_import"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="32dp"
+                            android:layout_marginLeft="32dp"
+                            android:layout_marginRight="32dp"
+                            android:layout_marginStart="32dp"
+                            android:layout_marginTop="16dp"
+                            android:scrollbars="vertical"
+                            android:visibility="visible"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/spinner_session_infos"
+                            tools:visibility="visible">
+
+
+                        </android.support.v7.widget.RecyclerView>
+
 
                     </LinearLayout>
 
@@ -234,13 +240,15 @@
                         android:layout_marginBottom="8dp"
                         android:layout_marginEnd="16dp"
                         android:layout_marginRight="16dp"
+                        android:layout_marginTop="8dp"
                         android:background="@drawable/style_button"
                         android:text="@string/go"
                         android:textColor="@color/white"
                         android:textSize="18sp"
                         app:fontFamily="@font/roboto"
-                        app:layout_constraintBottom_toBottomOf="@+id/ll_create_grid"
-                        app:layout_constraintEnd_toEndOf="parent" />
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/ll_create_grid" />
 
                 </android.support.constraint.ConstraintLayout>
             </LinearLayout>
