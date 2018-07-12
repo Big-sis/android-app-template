@@ -5,7 +5,7 @@
     <shape android:shape="line">
         <size
             android:height="300dp"
-            android:width="200dp"
+            android:width="300dp"
 
             />
         <stroke

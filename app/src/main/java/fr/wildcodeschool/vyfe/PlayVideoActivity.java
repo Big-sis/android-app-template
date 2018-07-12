@@ -105,19 +105,10 @@ public class PlayVideoActivity extends AppCompatActivity {
 
         // Applique les paramètres à la seekBar
         RelativeLayout.LayoutParams seekBarParams = new RelativeLayout.LayoutParams(mWidth - 200, LinearLayout.LayoutParams.MATCH_PARENT);
-        seekBarParams.setMargins(215, 0, 0, 0);
+        seekBarParams.setMargins(200, 0, 0, 0);
         mSeekBar = findViewById(R.id.seek_bar_selected);
         mSeekBar.setLayoutParams(seekBarParams);
-        RectShape line = new RectShape();
-        Drawable test = getResources().getDrawable(R.drawable.thumb);
 
-        ShapeDrawable thumb = new ShapeDrawable(line);
-        thumb.setIntrinsicHeight(linear.getHeight());
-
-
-        thumb.getPaint().setColor(getResources().getColor(R.color.colorTiffanyBlue));
-        thumb.getPaint().setStrokeWidth(LinearLayout.LayoutParams.MATCH_PARENT);
-        mSeekBar.setThumb(thumb);
         // Rend la seekBar incliquable
         mSeekBar.setEnabled(false);
 
@@ -192,7 +183,6 @@ public class PlayVideoActivity extends AppCompatActivity {
                     mVideoSelected.start();
                     mChrono.setBase(SystemClock.elapsedRealtime() + timeWhenStopped);
                     mChrono.start();
-
                 }
             }
         });

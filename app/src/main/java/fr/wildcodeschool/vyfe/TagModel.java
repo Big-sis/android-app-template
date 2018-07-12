@@ -14,6 +14,7 @@ public class TagModel {
     private int end;
     private String leftOffset;
     private ArrayList<TimeModel> times;
+    private int count = 0;
 
     public TagModel(int color, String tagName, ArrayList<TimeModel> times) {
         this.color = color;
@@ -110,6 +111,15 @@ public class TagModel {
     public void setTimes(ArrayList<TimeModel> times) {
         this.times = times;
     }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
 }
+
 
 

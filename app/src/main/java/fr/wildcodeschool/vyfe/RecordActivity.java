@@ -55,6 +55,8 @@ public class RecordActivity extends AppCompatActivity {
     private CameraPreview mPreview;
     private boolean mBack;
     private boolean mActiveTag = false;
+    private TagRecyclerAdapter mAdapterTags;
+
 
     int mWidth;
 
@@ -116,7 +118,7 @@ public class RecordActivity extends AppCompatActivity {
             }
         }, 30);
 
-        /*mPreview = new CameraPreview(RecordActivity.this, mCamera,
+        mPreview = new CameraPreview(RecordActivity.this, mCamera,
                 new CameraPreview.SurfaceCallback() {
                     @Override
                     public void onSurfaceCreated() {
@@ -126,8 +128,8 @@ public class RecordActivity extends AppCompatActivity {
                             }
                         }).start();
                     }
-                });*/
-        //preview.addView(mPreview);
+                });
+        preview.addView(mPreview);
 
 
         mRecord.setOnClickListener(new View.OnClickListener() {
@@ -137,7 +139,7 @@ public class RecordActivity extends AppCompatActivity {
                 chronometer.setBase(SystemClock.elapsedRealtime());
                 chronometer.start();
 
-                //startRecording();
+                startRecording();
                 mBack = false;
                 mRecord.setImageResource(R.drawable.icons8_arr_ter_96);
                 recyclerTags.setAlpha(1);
@@ -150,7 +152,7 @@ public class RecordActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         mActiveTag = false;
                         chronometer.stop();
-                        //stopRecording();
+                        stopRecording();
                         mRecord.setClickable(false);
                         sessionRecord.setVisibility(View.VISIBLE);
                         Date date = new Date();
@@ -202,11 +204,11 @@ public class RecordActivity extends AppCompatActivity {
         });
 
 
+        mAdapterTags = new TagRecyclerAdapter(mTagModels, "record");
         RecyclerView.LayoutManager layoutManagerTags = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerTags.setLayoutManager(layoutManagerTags);
 
-        final TagRecyclerAdapter adapterTags = new TagRecyclerAdapter(mTagModels, "record");
-        recyclerTags.setAdapter(adapterTags);
+        recyclerTags.setAdapter(mAdapterTags);
 
         btnBackMain.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -369,6 +371,10 @@ public class RecordActivity extends AppCompatActivity {
                     //Pour envoit sur firebase
                     Pair<Integer, Integer> timePair = new Pair<>(startTime / rapport, endTime / rapport);
                     newTagList.get(nameTag).add(timePair);
+                    int count = listTag.get(position).getCount();
+                    count++;
+                    listTag.get(position).setCount(count);
+                    mAdapterTags.notifyDataSetChanged();
 
                     //Scrool automatiquement suit l'ajout des tags
                     final HorizontalScrollView scrollView = findViewById(R.id.horizontal_scroll_view);
