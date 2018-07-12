@@ -29,4 +29,6 @@ Ajout du paramètre couleur de texte
     android:layout_height="?attr/dropdownListPreferredItemHeight"
     android:ellipsize="marquee"
     android:textColor="@color/white"
+    android:textSize="20sp"
+
     />

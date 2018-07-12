@@ -83,12 +83,12 @@ public class StartActivity extends AppCompatActivity {
         TextView tvAddTag = findViewById(R.id.tv_add_tag);
         Toolbar toolbar = findViewById(R.id.toolbar);
         mEtTagSet = findViewById(R.id.et_grid_title);
-        mEtVideoTitle = findViewById(R.id.et_video_title);
+        mEtVideoTitle = findViewById(R.id.et_video_title2);
         Display display = getWindowManager().getDefaultDisplay();
         mWidth = display.getWidth();
 
         final String[] str = {getString(R.string.arrow)};
-        spinner.setMinimumWidth((int) (0.22 * mWidth));
+        spinner.setMinimumWidth((int) (0.2 * mWidth));
 
 
         //enregistrement données
@@ -97,9 +97,11 @@ public class StartActivity extends AppCompatActivity {
 
         //tagSetShared des données
         String tagSetShared = mSharedPrefTagSet.getString("TAGSET", "");
-        mEtTagSet.setText(tagSetShared);
+        if(!tagSetShared.isEmpty()){
+        mEtTagSet.setText(tagSetShared);}
         String videoTitleShared = mSharedPrefVideoTitle.getString("VIDEOTITLE", "");
-        mEtVideoTitle.setText(videoTitleShared);
+        if(!videoTitleShared.isEmpty()){
+        mEtVideoTitle.setText(videoTitleShared);}
 
 
         final HashMap<String, String> hashMapTitleIdGrid = new HashMap<>();
@@ -152,6 +154,7 @@ public class StartActivity extends AppCompatActivity {
 
                     radioButtonNew.setChecked(false);
                     spinner.setClickable(true);
+                    spinner.setEnabled(true);
                     importGrid(mEtTagSet, fabAddMoment, false);
                 }
                 //tagSetShared données pour mettre spinner
@@ -270,6 +273,7 @@ public class StartActivity extends AppCompatActivity {
                     radioButtonImport.setChecked(false);
                     spinner.setClickable(false);
                     spinner.setLongClickable(false);
+                    spinner.setEnabled(false);
                     importGrid(mEtTagSet, fabAddMoment, true);
                 }
             }

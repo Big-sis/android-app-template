@@ -169,6 +169,7 @@ public class PlayVideoActivity extends AppCompatActivity {
                     mIsPlayed = false;
                     fbPlay.setBackgroundColor(getResources().getColor(R.color.colorLightGreenishBlue));
                     fbPlay.setImageResource(android.R.drawable.ic_media_play);
+
                 } else {
                     fbPlay.setBackgroundColor(getResources().getColor(R.color.colorFadedOrange));
                     fbPlay.setImageResource(android.R.drawable.ic_media_pause);
@@ -176,6 +177,7 @@ public class PlayVideoActivity extends AppCompatActivity {
                     mVideoSelected.start();
                     mChrono.setBase(SystemClock.elapsedRealtime() + timeWhenStopped);
                     mChrono.start();
+
 
                 }
             }
@@ -398,6 +400,7 @@ public class PlayVideoActivity extends AppCompatActivity {
         Intent intent = new Intent(PlayVideoActivity.this,SelectedVideoActivity.class);
         intent.putExtra(ID_SESSION,mIdSession);
         intent.putExtra(FILE_NAME,mVideoLink);
+
         startActivity(intent);
 
     }
