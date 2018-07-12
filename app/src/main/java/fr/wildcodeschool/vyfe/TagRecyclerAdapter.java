@@ -46,7 +46,9 @@ public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.
         if (mFrom.equals("start")) {
             holder.tvNum.setVisibility(View.GONE);
         } else if (mFrom.equals("record")) {
-            holder.tvNum.setVisibility(View.GONE);
+            holder.tvNum.setVisibility(View.VISIBLE);
+            int count = tagModel.getCount();
+            holder.tvNum.setText(String.valueOf(count));
         } else if (mFrom.equals("timelines")) {
             holder.tvNum.setVisibility(View.GONE);
         } else if (mFrom.equals("count")) {

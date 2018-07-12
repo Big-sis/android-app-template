@@ -33,6 +33,7 @@ public class SeekbarAsync extends AsyncTask<Void, Integer, Void> {
             }
         } while (seekBar.getProgress() <= 100);
 
+        videoView.pause();
         return null;
     }
 
