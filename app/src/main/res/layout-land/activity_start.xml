@@ -215,8 +215,10 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
                                 android:layout_marginLeft="8dp"
+                                android:layout_marginRight="8dp"
                                 android:text="@string/add_evenement"
                                 android:textColor="@android:color/white"
+                                android:textSize="17sp"
                                 app:fontFamily="@font/roboto"
                                 app:layout_constraintStart_toEndOf="@+id/fab_add_moment"
                                 app:layout_constraintTop_toBottomOf="@+id/recycler_view" />
@@ -235,6 +237,7 @@
                         android:background="@drawable/style_button"
                         android:text="@string/go"
                         android:textColor="@color/white"
+                        android:textSize="18sp"
                         app:fontFamily="@font/roboto"
                         app:layout_constraintBottom_toBottomOf="@+id/ll_create_grid"
                         app:layout_constraintEnd_toEndOf="parent" />

@@ -179,11 +179,22 @@ public class StartActivity extends AppCompatActivity {
                             }
                             nameTagSet.add(getString(R.string.import_grid_arrow) + str[0]);
 
+
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                 mNameGrid = (String) snapshot.child("name").getValue().toString();
                                 String idGrid = (String) snapshot.getKey().toString();
-                                hashMapTitleIdGrid.put(mNameGrid, idGrid);
-                                nameTagSet.add(mNameGrid);
+                                boolean simpleGridName = true;
+
+                                for (int i = 0; i < nameTagSet.size(); i++) {
+                                    if (mNameGrid.equals(nameTagSet.get(i))) {
+                                        simpleGridName = false;
+                                    }
+                                }
+                                if (simpleGridName) {
+                                    hashMapTitleIdGrid.put(mNameGrid, idGrid);
+                                    nameTagSet.add(mNameGrid);
+                                    simpleGridName = true;
+                                }
 
                             }
                             adapterSpinner.notifyDataSetChanged();
@@ -272,12 +283,6 @@ public class StartActivity extends AppCompatActivity {
                 final String titleSession = mEtVideoTitle.getText().toString();
                 intent.putExtra(TITLE_VIDEO, titleSession);
 
-                //Firebase TAGSET
-
-                DatabaseReference idTagSetRef = mDatabase.getReference(authUserId).child("tagSets").child("name");
-                idTagSetRef.keepSynced(true);
-                String idTagSet = idTagSetRef.push().getKey();
-
 
                 if (radioButtonNew.isChecked()) {
                     titleTagSet = mEtTagSet.getText().toString();
@@ -290,6 +295,12 @@ public class StartActivity extends AppCompatActivity {
                     if (mTagModelList.isEmpty()) {
                         Toast.makeText(StartActivity.this, R.string.empty_grid, Toast.LENGTH_SHORT).show();
                     } else {
+
+                        //Firebase TAGSET
+
+                        DatabaseReference idTagSetRef = mDatabase.getReference(authUserId).child("tagSets").child("name");
+                        idTagSetRef.keepSynced(true);
+                        String idTagSet = idTagSetRef.push().getKey();
 
                         intent.putExtra(ID_TAG_SET, idTagSet);
 

@@ -309,11 +309,11 @@ public class RecordActivity extends AppCompatActivity {
         }
 
 
-            rv.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(),
-                    rv, new RecyclerTouchListener.ClickListener() {
-                @Override
-                public void onClick(View view, int position) {
-                    if(mActiveTag){
+        rv.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(),
+                rv, new RecyclerTouchListener.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                if(mActiveTag){
                     String nameTag = listTag.get(position).getName();
                     //init name Tag
                     TextView tvNameTimeline = new TextView(RecordActivity.this);
@@ -335,36 +335,36 @@ public class RecordActivity extends AppCompatActivity {
                     int beforeTag = getResources().getInteger(R.integer.before_tag) * rapport;
                     int titleLength = getResources().getInteger(R.integer.title_length_timeline);
 
-                //init image Tag
-                ImageView iv = new ImageView(RecordActivity.this);
-                RelativeLayout.LayoutParams layoutParamsIv = new RelativeLayout.LayoutParams(
-                        titleLength, LinearLayout.LayoutParams.WRAP_CONTENT);
-                layoutParamsIv.setMargins(0, convertToDp(8), 0, convertToDp(8));
-                iv.setLayoutParams(layoutParamsIv);
-                iv.setMinimumHeight(50);
-                iv.setBackgroundColor(listTag.get(position).getColor());
+                    //init image Tag
+                    ImageView iv = new ImageView(RecordActivity.this);
+                    RelativeLayout.LayoutParams layoutParamsIv = new RelativeLayout.LayoutParams(
+                            titleLength, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    layoutParamsIv.setMargins(0, convertToDp(8), 0, convertToDp(8));
+                    iv.setLayoutParams(layoutParamsIv);
+                    iv.setMinimumHeight(50);
+                    iv.setBackgroundColor(listTag.get(position).getColor());
 
-                //init chrono
-                int timeActuel = (int) ((SystemClock.elapsedRealtime() - chronometer.getBase()) / (1000 / rapport));
-                int startTime = Math.max(0, timeActuel - beforeTag);
-                int endTime = timeActuel + durationTag;
-                iv.setMinimumWidth(endTime - startTime);
+                    //init chrono
+                    int timeActuel = (int) ((SystemClock.elapsedRealtime() - chronometer.getBase()) / (1000 / rapport));
+                    int startTime = Math.max(0, timeActuel - beforeTag);
+                    int endTime = timeActuel + durationTag;
+                    iv.setMinimumWidth(endTime - startTime);
 
-                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-                        LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                layoutParams.setMargins(convertToDp(titleLength + startTime + convertToDp(15)), convertToDp(10), 0, convertToDp(10));
-                RelativeLayout timeline = mTimelines.get(nameTag);
+                    RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                            LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    layoutParams.setMargins(convertToDp(titleLength + startTime + convertToDp(15)), convertToDp(10), 0, convertToDp(10));
+                    RelativeLayout timeline = mTimelines.get(nameTag);
 
-                if (isFirstTitle) {
-                    tvNameTimeline.setText(listTag.get(position).getName());
-                    RelativeLayout.LayoutParams layoutParamsTv = new RelativeLayout.LayoutParams(
-                            convertToDp(titleLength), LinearLayout.LayoutParams.WRAP_CONTENT);
-                    layoutParamsTv.setMargins(convertToDp(15), convertToDp(8), convertToDp(8), convertToDp(8));
-                    tvNameTimeline.setLayoutParams(layoutParamsTv);
-                    tvNameTimeline.setTextSize(convertToDp(10));
-                    timeline.addView(tvNameTimeline, layoutParamsTv);
-                }
-                timeline.addView(iv, layoutParams);
+                    if (isFirstTitle) {
+                        tvNameTimeline.setText(listTag.get(position).getName());
+                        RelativeLayout.LayoutParams layoutParamsTv = new RelativeLayout.LayoutParams(
+                                convertToDp(titleLength), LinearLayout.LayoutParams.WRAP_CONTENT);
+                        layoutParamsTv.setMargins(convertToDp(15), convertToDp(8), convertToDp(8), convertToDp(8));
+                        tvNameTimeline.setLayoutParams(layoutParamsTv);
+                        tvNameTimeline.setTextSize(convertToDp(10));
+                        timeline.addView(tvNameTimeline, layoutParamsTv);
+                    }
+                    timeline.addView(iv, layoutParams);
 
                     //Pour envoit sur firebase
                     Pair<Integer, Integer> timePair = new Pair<>(startTime / rapport, endTime / rapport);
@@ -378,17 +378,23 @@ public class RecordActivity extends AppCompatActivity {
                         }
                     });
                 }
-                }
+            }
 
-                @Override
-                public void onLongClick(View view, int position) {
+            @Override
+            public void onLongClick(View view, int position) {
 
-                }
-            }));
+            }
+        }));
 
     }
 
     private int convertToDp(int size) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, size, getResources().getDisplayMetrics());
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(RecordActivity.this, StartActivity.class);
+        startActivity(intent);
     }
 }

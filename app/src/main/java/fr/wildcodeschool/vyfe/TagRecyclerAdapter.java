@@ -43,7 +43,7 @@ public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.
         holder.tvName.setText(tagModel.getName());
         holder.ivColor.setBackgroundColor(tagModel.getColor());
 
-            if (mFrom.equals("start")) {
+        if (mFrom.equals("start")) {
             holder.tvNum.setVisibility(View.GONE);
         } else if (mFrom.equals("record")) {
             holder.tvNum.setVisibility(View.GONE);
@@ -51,19 +51,19 @@ public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.
             holder.tvNum.setVisibility(View.GONE);
         } else if (mFrom.equals("count")) {
             holder.tvNum.setVisibility(View.VISIBLE);
-                for (TagModel taged : mTagedList) {
-                    ArrayList<TimeModel> timeList = taged.getTimes();
-                    String tagedName = taged.getName();
-                    if (tagedName.equals(tagModel.getName())) {
-                        tagModel.setTimes(timeList);
-                    }
+            for (TagModel taged : mTagedList) {
+                ArrayList<TimeModel> timeList = taged.getTimes();
+                String tagedName = taged.getName();
+                if (tagedName.equals(tagModel.getName())) {
+                    tagModel.setTimes(timeList);
                 }
-                if (!(tagModel.getTimes() == null)) {
-                    int count = tagModel.getTimes().size();
-                    holder.tvNum.setText(String.valueOf(count));
-                } else {
-                    holder.tvNum.setText("0");
-                }
+            }
+            if (!(tagModel.getTimes() == null)) {
+                int count = tagModel.getTimes().size();
+                holder.tvNum.setText(String.valueOf(count));
+            } else {
+                holder.tvNum.setText("0");
+            }
         }
     }
 
