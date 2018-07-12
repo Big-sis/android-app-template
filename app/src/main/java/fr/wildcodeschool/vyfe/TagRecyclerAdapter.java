@@ -18,12 +18,10 @@ public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.
     private ArrayList<TagModel> mTagedList;
     private String mFrom;
 
-
     public TagRecyclerAdapter(ArrayList<TagModel> observations, String from) {
         mTagModelList = observations;
         mFrom = from;
     }
-
 
     public TagRecyclerAdapter(ArrayList<TagModel> mTagModelList, ArrayList<TagModel> mTagedList, String mFrom) {
         this.mTagModelList = mTagModelList;
@@ -40,18 +38,15 @@ public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.
     }
 
     @Override
-    public void onBindViewHolder(final TagRecyclerAdapter.ViewHolder holder, int position) {
-        final TagModel tagModel = mTagModelList.get(position);
+    public void onBindViewHolder(TagRecyclerAdapter.ViewHolder holder, int position) {
+        TagModel tagModel = mTagModelList.get(position);
         holder.tvName.setText(tagModel.getName());
         holder.ivColor.setBackgroundColor(tagModel.getColor());
-
 
         if (mFrom.equals("start")) {
             holder.tvNum.setVisibility(View.GONE);
         } else if (mFrom.equals("record")) {
-
-                holder.tvNum.setVisibility(View.VISIBLE);
-
+            holder.tvNum.setVisibility(View.GONE);
         } else if (mFrom.equals("timelines")) {
             holder.tvNum.setVisibility(View.GONE);
         } else if (mFrom.equals("count")) {

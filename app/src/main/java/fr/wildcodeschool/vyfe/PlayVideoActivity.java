@@ -3,6 +3,7 @@ package fr.wildcodeschool.vyfe;
 import android.graphics.Color;
 import android.graphics.drawable.shapes.Shape;
 import android.media.MediaPlayer;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.content.Intent;
 import android.support.annotation.DrawableRes;
@@ -14,6 +15,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Pair;
+import android.util.TypedValue;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -101,18 +103,43 @@ public class PlayVideoActivity extends AppCompatActivity {
         // Rend la seekBar incliquable
         mSeekBar.setEnabled(false);
 
+
+        mVideoLink = getIntent().getStringExtra(FILE_NAME);
+        mVideoSelected = findViewById(R.id.video_view_selected);
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                double ratio = 1080d / 1920d;
+                int previewWidth = mWidth * 70 / 100;
+                int previewHeight = (int) Math.floor(previewWidth * ratio);
+                ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) mVideoSelected.getLayoutParams();
+                params.width = previewWidth;
+                params.height = previewHeight;
+                mVideoSelected.setLayoutParams(params);
+            }
+        }, 30);
+
+        mChrono = findViewById(R.id.chronometer_play);
+        final FloatingActionButton fbPlay = findViewById(R.id.bt_play_selected);
+
         // Charge le lien de la vidéo dans la videoView, et enregistre sa durée totale
         // (nécessaire au calculs des positions des tags sur la timeline)
         // Lance la méthode qui récupère les données des tags
-        mVideoLink = getIntent().getStringExtra(FILE_NAME);
-        mVideoSelected = findViewById(R.id.video_view_selected);
-        //mVideoSelected.setMinimumWidth((int) (mWidth * 0.8));
         mVideoSelected.setVideoPath(mVideoLink);
         mVideoSelected.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
                 mVideoDuration = mVideoSelected.getDuration();
                 initTimeLines();
+                mChrono.setBase(SystemClock.elapsedRealtime());
+                mChrono.start();
+                mAsync = new SeekbarAsync(mSeekBar, mVideoSelected);
+                mAsync.execute();
+                timeWhenStopped = 0;
+                mChrono.stop();
+                fbPlay.setImageResource(android.R.drawable.ic_media_play);
+                mIsPlayed = false;
             }
         });
 
@@ -123,14 +150,14 @@ public class PlayVideoActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mIdTagSet = dataSnapshot.child("idTagSet").getValue(String.class);
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
         });
 
         // Bouton play/pause
-        mChrono = findViewById(R.id.chronometer_play);
-        final FloatingActionButton fbPlay = findViewById(R.id.bt_play_selected);
+
         fbPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -145,17 +172,10 @@ public class PlayVideoActivity extends AppCompatActivity {
                     fbPlay.setBackgroundColor(getResources().getColor(R.color.colorFadedOrange));
                     fbPlay.setImageResource(android.R.drawable.ic_media_pause);
                     mIsPlayed = true;
-                    if (mFirstPlay) {
-                        mFirstPlay = false;
-                        mChrono.setBase(SystemClock.elapsedRealtime());
-                        mChrono.start();
-                        mAsync = new SeekbarAsync(mSeekBar, mVideoSelected);
-                        mAsync.execute();
-                    } else {
-                        mVideoSelected.start();
-                        mChrono.setBase(SystemClock.elapsedRealtime() + timeWhenStopped);
-                        mChrono.start();
-                    }
+                    mVideoSelected.start();
+                    mChrono.setBase(SystemClock.elapsedRealtime() + timeWhenStopped);
+                    mChrono.start();
+
                 }
             }
         });
@@ -239,9 +259,10 @@ public class PlayVideoActivity extends AppCompatActivity {
             TextView tvNameTimeline = new TextView(PlayVideoActivity.this);
             tvNameTimeline.setText(tagName);
             RelativeLayout.LayoutParams layoutParamsTv = new RelativeLayout.LayoutParams(
-                    titleLength, LinearLayout.LayoutParams.WRAP_CONTENT);
-            layoutParamsTv.setMargins(5, 5, 0, 5);
+                    convertToDp(titleLength), LinearLayout.LayoutParams.WRAP_CONTENT);
+            layoutParamsTv.setMargins(convertToDp(15), convertToDp(8), convertToDp(8), convertToDp(8));
             tvNameTimeline.setLayoutParams(layoutParamsTv);
+            tvNameTimeline.setTextSize(convertToDp(10));
             tvNameTimeline.setTextColor(Color.WHITE);
 
             timeline.addView(tvNameTimeline, layoutParamsTv);
@@ -265,16 +286,21 @@ public class PlayVideoActivity extends AppCompatActivity {
                 int end = (int) (endRatio * tagedLineSize) / getResources().getInteger(R.integer.micro_to_milli);
 
                 final ImageView iv = new ImageView(PlayVideoActivity.this);
-                iv.setMinimumHeight(10);
+                RelativeLayout.LayoutParams layoutParamsIv = new RelativeLayout.LayoutParams(
+                        titleLength, LinearLayout.LayoutParams.WRAP_CONTENT);
+                layoutParamsIv.setMargins(0, convertToDp(8), 0, convertToDp(8));
+                iv.setLayoutParams(layoutParamsIv);
+                iv.setMinimumHeight(50);
                 iv.setMinimumWidth(end - start);
                 // Permet de se déplacer dans la vidéo en cliquant sur les images
                 iv.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         Integer millis = first * getResources().getInteger(R.integer.micro_to_milli);
-                        mVideoSelected.seekTo(millis);
                         long millisLong = first * getResources().getInteger(R.integer.micro_to_milli);
+                        mVideoSelected.seekTo(millis);
                         mChrono.setBase(SystemClock.elapsedRealtime() - millisLong);
+                        timeWhenStopped = mChrono.getBase() - SystemClock.elapsedRealtime();
                     }
                 });
 
@@ -346,15 +372,6 @@ public class PlayVideoActivity extends AppCompatActivity {
 
                 // Lance la méthode qui créé les timelines losques toutes les données des tags ont été récupérées
                 makeTimelines();
-                for (TagModel tagModel : mTagModels) {
-                    for (TagModel taged : mTagedList) {
-                        ArrayList<TimeModel> timeList = taged.getTimes();
-                        String tagedName = taged.getName();
-                        if (tagedName.equals(tagModel.getName())) {
-                            tagModel.setTimes(timeList);
-                        }
-                    }
-                }
 
                 RecyclerView rvTags = findViewById(R.id.re_tags_selected);
                 mAdapterTags = new TagRecyclerAdapter(mTagModels, mTagedList, "count");
@@ -367,6 +384,11 @@ public class PlayVideoActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
 
             }
+
         });
+    }
+
+    private int convertToDp(int size) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, size, getResources().getDisplayMetrics());
     }
 }

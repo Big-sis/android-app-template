@@ -20,6 +20,7 @@ public class SeekbarAsync extends AsyncTask<Void, Integer, Void> {
     protected Void doInBackground(Void... voids) {
         videoView.start();
         duration = videoView.getDuration();
+        videoView.pause();
         do {
             current = videoView.getCurrentPosition();
             try {

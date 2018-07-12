@@ -29,12 +29,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Date;
+import java.util.Map;
 
 
 public class RecordActivity extends AppCompatActivity {
@@ -53,17 +56,15 @@ public class RecordActivity extends AppCompatActivity {
     private boolean mBack;
     private boolean mActiveTag = false;
 
+    int mWidth;
+
     HashMap<String, RelativeLayout> mTimelines = new HashMap<>();
     HashMap<String, ArrayList<Pair<Integer, Integer>>> newTagList = new HashMap<>();
-
-    TagRecyclerAdapter mAdapterTags;
-
 
     public static final String TITLE_VIDEO = "titleVideo";
     public final static String FILE_NAME = "filename";
     public final static String ID_SESSION = "idSession";
     public static final String ID_TAG_SET = "idTagSet";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +116,20 @@ public class RecordActivity extends AppCompatActivity {
             }
         }, 30);
 
+        mPreview = new CameraPreview(RecordActivity.this, mCamera,
+                new CameraPreview.SurfaceCallback() {
+                    @Override
+                    public void onSurfaceCreated() {
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                            }
+                        }).start();
+                    }
+                });
+        preview.addView(mPreview);
+
+
         mRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,31 +137,20 @@ public class RecordActivity extends AppCompatActivity {
                 chronometer.setBase(SystemClock.elapsedRealtime());
                 chronometer.start();
 
-               /* mRecord.setImageResource(R.drawable.icons8_arr_ter_96);
+                startRecording();
+                mBack = false;
+                mRecord.setImageResource(R.drawable.icons8_arr_ter_96);
                 recyclerTags.setAlpha(1);
 
-                mPreview = new CameraPreview(RecordActivity.this, mCamera,
-                        new CameraPreview.SurfaceCallback() {
-                            @Override
-                            public void onSurfaceCreated() {
-                                new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        startRecording();
-                                        mBack = false;
-                                    }
-                                }).start();
-                            }
-                        });
 
-                preview.addView(mPreview);*/
+
 
                 mRecord.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         mActiveTag = false;
                         chronometer.stop();
-                       /* stopRecording();
+                        stopRecording();
                         mRecord.setClickable(false);
                         sessionRecord.setVisibility(View.VISIBLE);
                         Date date = new Date();
@@ -201,8 +205,8 @@ public class RecordActivity extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManagerTags = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerTags.setLayoutManager(layoutManagerTags);
 
-        mAdapterTags = new TagRecyclerAdapter(mTagModels, "record");
-        recyclerTags.setAdapter(mAdapterTags);
+        final TagRecyclerAdapter adapterTags = new TagRecyclerAdapter(mTagModels, "record");
+        recyclerTags.setAdapter(adapterTags);
 
         btnBackMain.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -292,6 +296,7 @@ public class RecordActivity extends AppCompatActivity {
     private void initTimeline(final ArrayList<TagModel> listTag, RecyclerView rv) {
         //Init variable
         final Chronometer chronometer = findViewById(R.id.chronometer);
+
         //Ajout des differentes timelines au conteneur principal
         LinearLayout llMain = findViewById(R.id.ll_main);
         for (TagModel tagModel : listTag) {
@@ -301,20 +306,14 @@ public class RecordActivity extends AppCompatActivity {
             timeline.setBackgroundColor(getResources().getColor(R.color.colorCharcoal));
             llMain.addView(timeline);
             mTimelines.put(name, timeline);
-
         }
-
 
 
         rv.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(),
                 rv, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                /*
-                TagModel tagModel = listTag.get(position);
-                tagModel.setTimes(tagModel.getTimes().add(new TimeModel(0,0)));*/
-
-                if (mActiveTag) {
+                if(mActiveTag){
                     String nameTag = listTag.get(position).getName();
                     //init name Tag
                     TextView tvNameTimeline = new TextView(RecordActivity.this);
@@ -338,28 +337,31 @@ public class RecordActivity extends AppCompatActivity {
 
                     //init image Tag
                     ImageView iv = new ImageView(RecordActivity.this);
-                    iv.setMinimumHeight(10);
+                    RelativeLayout.LayoutParams layoutParamsIv = new RelativeLayout.LayoutParams(
+                            titleLength, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    layoutParamsIv.setMargins(0, convertToDp(8), 0, convertToDp(8));
+                    iv.setLayoutParams(layoutParamsIv);
+                    iv.setMinimumHeight(50);
                     iv.setBackgroundColor(listTag.get(position).getColor());
 
                     //init chrono
                     int timeActuel = (int) ((SystemClock.elapsedRealtime() - chronometer.getBase()) / (1000 / rapport));
-
                     int startTime = Math.max(0, timeActuel - beforeTag);
                     int endTime = timeActuel + durationTag;
                     iv.setMinimumWidth(endTime - startTime);
 
-
                     RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                             LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                    layoutParams.setMargins(convertToDp(titleLength + startTime), convertToDp(10), 0, convertToDp(10));
+                    layoutParams.setMargins(convertToDp(titleLength + startTime + convertToDp(15)), convertToDp(10), 0, convertToDp(10));
                     RelativeLayout timeline = mTimelines.get(nameTag);
 
                     if (isFirstTitle) {
                         tvNameTimeline.setText(listTag.get(position).getName());
-                        LinearLayout.LayoutParams layoutParamsTv = new LinearLayout.LayoutParams(
+                        RelativeLayout.LayoutParams layoutParamsTv = new RelativeLayout.LayoutParams(
                                 convertToDp(titleLength), LinearLayout.LayoutParams.WRAP_CONTENT);
-                        layoutParamsTv.setMargins(convertToDp(15), convertToDp(5), 0, convertToDp(0));
+                        layoutParamsTv.setMargins(convertToDp(15), convertToDp(8), convertToDp(8), convertToDp(8));
                         tvNameTimeline.setLayoutParams(layoutParamsTv);
+                        tvNameTimeline.setTextSize(convertToDp(10));
                         timeline.addView(tvNameTimeline, layoutParamsTv);
                     }
                     timeline.addView(iv, layoutParams);
