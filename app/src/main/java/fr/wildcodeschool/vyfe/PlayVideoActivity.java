@@ -2,12 +2,19 @@ package fr.wildcodeschool.vyfe;
 
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.PathShape;
+import android.graphics.drawable.shapes.RectShape;
 import android.graphics.drawable.shapes.Shape;
 import android.media.MediaPlayer;
+import android.os.Build;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.content.Intent;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.RequiresApi;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -52,7 +59,6 @@ public class PlayVideoActivity extends AppCompatActivity {
     private VideoView mVideoSelected;
     private SeekBar mSeekBar;
     private boolean mIsPlayed = false;
-    private boolean mFirstPlay = true;
     private String mIdSession;
     private String mVideoLink;
     private String mIdTagSet;
@@ -72,6 +78,7 @@ public class PlayVideoActivity extends AppCompatActivity {
     public static final String FILE_NAME = "filename";
     public static final String ID_SESSION = "idSession";
 
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,6 +86,7 @@ public class PlayVideoActivity extends AppCompatActivity {
 
         ScrollView scrollTimeline = findViewById(R.id.scroll_timeline);
         mIdSession = getIntent().getStringExtra(ID_SESSION);
+        LinearLayout linear = findViewById(R.id.linear_re_tags);
 
 
         mDatabase = SingletonFirebase.getInstance().getDatabase();
@@ -101,6 +109,7 @@ public class PlayVideoActivity extends AppCompatActivity {
         seekBarParams.setMargins(200, 0, 0, 0);
         mSeekBar = findViewById(R.id.seek_bar_selected);
         mSeekBar.setLayoutParams(seekBarParams);
+
         // Rend la seekBar incliquable
         mSeekBar.setEnabled(false);
 
@@ -158,7 +167,6 @@ public class PlayVideoActivity extends AppCompatActivity {
         });
 
         // Bouton play/pause
-
         fbPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -178,7 +186,6 @@ public class PlayVideoActivity extends AppCompatActivity {
                     mChrono.setBase(SystemClock.elapsedRealtime() + timeWhenStopped);
                     mChrono.start();
 
-
                 }
             }
         });
@@ -189,7 +196,6 @@ public class PlayVideoActivity extends AppCompatActivity {
         btReplay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mFirstPlay = false;
                 mIsPlayed = true;
                 mVideoSelected.seekTo(0);
                 mSeekBar.setProgress(0);

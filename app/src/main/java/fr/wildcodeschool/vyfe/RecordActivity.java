@@ -55,6 +55,8 @@ public class RecordActivity extends AppCompatActivity {
     private CameraPreview mPreview;
     private boolean mBack;
     private boolean mActiveTag = false;
+    private TagRecyclerAdapter mAdapterTags;
+
 
     int mWidth;
 
@@ -143,8 +145,6 @@ public class RecordActivity extends AppCompatActivity {
                 recyclerTags.setAlpha(1);
 
 
-
-
                 mRecord.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -202,11 +202,11 @@ public class RecordActivity extends AppCompatActivity {
         });
 
 
+        mAdapterTags = new TagRecyclerAdapter(mTagModels, "record");
         RecyclerView.LayoutManager layoutManagerTags = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerTags.setLayoutManager(layoutManagerTags);
 
-        final TagRecyclerAdapter adapterTags = new TagRecyclerAdapter(mTagModels, "record");
-        recyclerTags.setAdapter(adapterTags);
+        recyclerTags.setAdapter(mAdapterTags);
 
         btnBackMain.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -369,6 +369,10 @@ public class RecordActivity extends AppCompatActivity {
                     //Pour envoit sur firebase
                     Pair<Integer, Integer> timePair = new Pair<>(startTime / rapport, endTime / rapport);
                     newTagList.get(nameTag).add(timePair);
+                    int count = listTag.get(position).getCount();
+                    count++;
+                    listTag.get(position).setCount(count);
+                    mAdapterTags.notifyDataSetChanged();
 
                     //Scrool automatiquement suit l'ajout des tags
                     final HorizontalScrollView scrollView = findViewById(R.id.horizontal_scroll_view);
