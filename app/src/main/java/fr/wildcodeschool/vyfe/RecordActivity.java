@@ -391,4 +391,10 @@ public class RecordActivity extends AppCompatActivity {
     private int convertToDp(int size) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, size, getResources().getDisplayMetrics());
     }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(RecordActivity.this, StartActivity.class);
+        startActivity(intent);
+    }
 }
