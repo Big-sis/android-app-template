@@ -1,5 +1,6 @@
 package fr.wildcodeschool.vyfe;
 
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.shapes.Shape;
 import android.media.MediaPlayer;
@@ -198,8 +199,8 @@ public class PlayVideoActivity extends AppCompatActivity {
                 mChrono.start();
                 fbPlay.setEnabled(true);
                 fbPlay.setVisibility(View.VISIBLE);
-                fbPlay.setBackgroundColor(getResources().getColor(R.color.colorFadedOrange));
                 fbPlay.setImageResource(android.R.drawable.ic_media_pause);
+                fbPlay.setBackgroundColor(getResources().getColor(R.color.color1));
             }
         });
 
@@ -390,5 +391,14 @@ public class PlayVideoActivity extends AppCompatActivity {
 
     private int convertToDp(int size) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, size, getResources().getDisplayMetrics());
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(PlayVideoActivity.this,SelectedVideoActivity.class);
+        intent.putExtra(ID_SESSION,mIdSession);
+        intent.putExtra(FILE_NAME,mVideoLink);
+        startActivity(intent);
+
     }
 }
