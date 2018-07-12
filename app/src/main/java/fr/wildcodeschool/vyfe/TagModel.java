@@ -15,7 +15,6 @@ public class TagModel {
     private String leftOffset;
     private ArrayList<TimeModel> times;
 
-
     public TagModel(int color, String tagName, ArrayList<TimeModel> times) {
         this.color = color;
         this.tagName = tagName;
