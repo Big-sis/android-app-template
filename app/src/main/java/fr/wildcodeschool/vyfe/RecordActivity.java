@@ -116,7 +116,7 @@ public class RecordActivity extends AppCompatActivity {
             }
         }, 30);
 
-        mPreview = new CameraPreview(RecordActivity.this, mCamera,
+        /*mPreview = new CameraPreview(RecordActivity.this, mCamera,
                 new CameraPreview.SurfaceCallback() {
                     @Override
                     public void onSurfaceCreated() {
@@ -126,8 +126,8 @@ public class RecordActivity extends AppCompatActivity {
                             }
                         }).start();
                     }
-                });
-        preview.addView(mPreview);
+                });*/
+        //preview.addView(mPreview);
 
 
         mRecord.setOnClickListener(new View.OnClickListener() {
@@ -137,7 +137,7 @@ public class RecordActivity extends AppCompatActivity {
                 chronometer.setBase(SystemClock.elapsedRealtime());
                 chronometer.start();
 
-                startRecording();
+                //startRecording();
                 mBack = false;
                 mRecord.setImageResource(R.drawable.icons8_arr_ter_96);
                 recyclerTags.setAlpha(1);
@@ -150,7 +150,7 @@ public class RecordActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         mActiveTag = false;
                         chronometer.stop();
-                        stopRecording();
+                        //stopRecording();
                         mRecord.setClickable(false);
                         sessionRecord.setVisibility(View.VISIBLE);
                         Date date = new Date();
