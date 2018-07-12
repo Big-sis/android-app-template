@@ -179,11 +179,22 @@ public class StartActivity extends AppCompatActivity {
                             }
                             nameTagSet.add(getString(R.string.import_grid_arrow) + str[0]);
 
+
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                 mNameGrid = (String) snapshot.child("name").getValue().toString();
                                 String idGrid = (String) snapshot.getKey().toString();
-                                hashMapTitleIdGrid.put(mNameGrid, idGrid);
-                                nameTagSet.add(mNameGrid);
+                                boolean simpleGridName = true;
+
+                                for (int i = 0; i < nameTagSet.size(); i++) {
+                                    if (mNameGrid.equals(nameTagSet.get(i))) {
+                                        simpleGridName = false;
+                                    }
+                                }
+                                if (simpleGridName) {
+                                    hashMapTitleIdGrid.put(mNameGrid, idGrid);
+                                    nameTagSet.add(mNameGrid);
+                                    simpleGridName = true;
+                                }
 
                             }
                             adapterSpinner.notifyDataSetChanged();
@@ -271,8 +282,6 @@ public class StartActivity extends AppCompatActivity {
                 final Intent intent = new Intent(StartActivity.this, RecordActivity.class);
                 final String titleSession = mEtVideoTitle.getText().toString();
                 intent.putExtra(TITLE_VIDEO, titleSession);
-
-
 
 
                 if (radioButtonNew.isChecked()) {

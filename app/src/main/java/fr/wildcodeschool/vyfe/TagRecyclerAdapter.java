@@ -18,10 +18,12 @@ public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.
     private ArrayList<TagModel> mTagedList;
     private String mFrom;
 
+
     public TagRecyclerAdapter(ArrayList<TagModel> observations, String from) {
         mTagModelList = observations;
         mFrom = from;
     }
+
 
     public TagRecyclerAdapter(ArrayList<TagModel> mTagModelList, ArrayList<TagModel> mTagedList, String mFrom) {
         this.mTagModelList = mTagModelList;
@@ -38,35 +40,35 @@ public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.
     }
 
     @Override
-    public void onBindViewHolder(TagRecyclerAdapter.ViewHolder holder, int position) {
-        TagModel tagModel = mTagModelList.get(position);
+    public void onBindViewHolder(final TagRecyclerAdapter.ViewHolder holder, int position) {
+        final TagModel tagModel = mTagModelList.get(position);
         holder.tvName.setText(tagModel.getName());
         holder.ivColor.setBackgroundColor(tagModel.getColor());
 
 
-
-
-            if (mFrom.equals("start")) {
+        if (mFrom.equals("start")) {
             holder.tvNum.setVisibility(View.GONE);
         } else if (mFrom.equals("record")) {
-            holder.tvNum.setVisibility(View.GONE);
+
+                holder.tvNum.setVisibility(View.VISIBLE);
+
         } else if (mFrom.equals("timelines")) {
             holder.tvNum.setVisibility(View.GONE);
         } else if (mFrom.equals("count")) {
             holder.tvNum.setVisibility(View.VISIBLE);
-                for (TagModel taged : mTagedList) {
-                    ArrayList<TimeModel> timeList = taged.getTimes();
-                    String tagedName = taged.getName();
-                    if (tagedName.equals(tagModel.getName())) {
-                        tagModel.setTimes(timeList);
-                    }
+            for (TagModel taged : mTagedList) {
+                ArrayList<TimeModel> timeList = taged.getTimes();
+                String tagedName = taged.getName();
+                if (tagedName.equals(tagModel.getName())) {
+                    tagModel.setTimes(timeList);
                 }
-                if (!(tagModel.getTimes() == null)) {
-                    int count = tagModel.getTimes().size();
-                    holder.tvNum.setText(String.valueOf(count));
-                } else {
-                    holder.tvNum.setText("0");
-                }
+            }
+            if (!(tagModel.getTimes() == null)) {
+                int count = tagModel.getTimes().size();
+                holder.tvNum.setText(String.valueOf(count));
+            } else {
+                holder.tvNum.setText("0");
+            }
         }
     }
 

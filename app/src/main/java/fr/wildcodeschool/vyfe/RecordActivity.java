@@ -29,15 +29,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Date;
-import java.util.Map;
 
 
 public class RecordActivity extends AppCompatActivity {
@@ -56,9 +53,10 @@ public class RecordActivity extends AppCompatActivity {
     private boolean mBack;
     private boolean mActiveTag = false;
 
-
     HashMap<String, RelativeLayout> mTimelines = new HashMap<>();
     HashMap<String, ArrayList<Pair<Integer, Integer>>> newTagList = new HashMap<>();
+
+    TagRecyclerAdapter mAdapterTags;
 
 
     public static final String TITLE_VIDEO = "titleVideo";
@@ -124,7 +122,7 @@ public class RecordActivity extends AppCompatActivity {
                 chronometer.setBase(SystemClock.elapsedRealtime());
                 chronometer.start();
 
-                mRecord.setImageResource(R.drawable.icons8_arr_ter_96);
+               /* mRecord.setImageResource(R.drawable.icons8_arr_ter_96);
                 recyclerTags.setAlpha(1);
 
                 mPreview = new CameraPreview(RecordActivity.this, mCamera,
@@ -141,14 +139,14 @@ public class RecordActivity extends AppCompatActivity {
                             }
                         });
 
-                preview.addView(mPreview);
+                preview.addView(mPreview);*/
 
                 mRecord.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         mActiveTag = false;
                         chronometer.stop();
-                        stopRecording();
+                       /* stopRecording();
                         mRecord.setClickable(false);
                         sessionRecord.setVisibility(View.VISIBLE);
                         Date date = new Date();
@@ -203,8 +201,8 @@ public class RecordActivity extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManagerTags = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         recyclerTags.setLayoutManager(layoutManagerTags);
 
-        final TagRecyclerAdapter adapterTags = new TagRecyclerAdapter(mTagModels, "record");
-        recyclerTags.setAdapter(adapterTags);
+        mAdapterTags = new TagRecyclerAdapter(mTagModels, "record");
+        recyclerTags.setAdapter(mAdapterTags);
 
         btnBackMain.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -294,7 +292,6 @@ public class RecordActivity extends AppCompatActivity {
     private void initTimeline(final ArrayList<TagModel> listTag, RecyclerView rv) {
         //Init variable
         final Chronometer chronometer = findViewById(R.id.chronometer);
-
         //Ajout des differentes timelines au conteneur principal
         LinearLayout llMain = findViewById(R.id.ll_main);
         for (TagModel tagModel : listTag) {
@@ -304,14 +301,20 @@ public class RecordActivity extends AppCompatActivity {
             timeline.setBackgroundColor(getResources().getColor(R.color.colorCharcoal));
             llMain.addView(timeline);
             mTimelines.put(name, timeline);
+
         }
 
 
-            rv.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(),
-                    rv, new RecyclerTouchListener.ClickListener() {
-                @Override
-                public void onClick(View view, int position) {
-                    if(mActiveTag){
+
+        rv.addOnItemTouchListener(new RecyclerTouchListener(getApplicationContext(),
+                rv, new RecyclerTouchListener.ClickListener() {
+            @Override
+            public void onClick(View view, int position) {
+                /*
+                TagModel tagModel = listTag.get(position);
+                tagModel.setTimes(tagModel.getTimes().add(new TimeModel(0,0)));*/
+
+                if (mActiveTag) {
                     String nameTag = listTag.get(position).getName();
                     //init name Tag
                     TextView tvNameTimeline = new TextView(RecordActivity.this);
@@ -373,13 +376,13 @@ public class RecordActivity extends AppCompatActivity {
                         }
                     });
                 }
-                }
+            }
 
-                @Override
-                public void onLongClick(View view, int position) {
+            @Override
+            public void onLongClick(View view, int position) {
 
-                }
-            }));
+            }
+        }));
 
     }
 
