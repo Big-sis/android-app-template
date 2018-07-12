@@ -145,8 +145,6 @@ public class RecordActivity extends AppCompatActivity {
                 recyclerTags.setAlpha(1);
 
 
-
-
                 mRecord.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
