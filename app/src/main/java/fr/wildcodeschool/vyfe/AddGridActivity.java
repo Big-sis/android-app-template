@@ -34,8 +34,6 @@ public class AddGridActivity extends AppCompatActivity {
     private static ArrayList<TagModel> mTagModelListAdd = mSingletonTags.getmTagsListAdd();
     private static TagRecyclerAdapter mAdapter = new TagRecyclerAdapter(mTagModelListAdd, "start");
 
-   // private static ArrayList<TagModel> mTagModelList = mSingletonTags.getmTagsList();
-   // private static TagRecyclerAdapter mAdapter = new TagRecyclerAdapter(mTagModelList, "start");
     private static ArrayList<String> colors = new ArrayList<>();
     private static ImageView ivColor;
     private static ArrayList<String> nameDouble = new ArrayList<>();

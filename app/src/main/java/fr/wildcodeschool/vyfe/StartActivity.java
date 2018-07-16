@@ -40,7 +40,6 @@ import java.util.List;
 public class StartActivity extends AppCompatActivity {
 
     private SingletonTags mSingletonTags = SingletonTags.getInstance();
-    private ArrayList<TagModel> mTagModelList = mSingletonTags.getmTagsList();
     private ArrayList<TagModel> mTagModelListAdd = mSingletonTags.getmTagsListAdd();
 
     private SingletonTagsSets mSingletonTagsSets = SingletonTagsSets.getInstance();
@@ -241,7 +240,6 @@ public class StartActivity extends AppCompatActivity {
                                             String name = (String) snapshot.child("name").getValue();
                                             int color = Integer.parseInt(snapshot.child("color").getValue().toString());
                                             mTagModelListAdd.add(new TagModel(color, name, null, null));
-                                            //mSingletonTags.setmTagsListAdd(mTagModelListAdd);
                                         }
                                     }
                                     adapterImport.notifyDataSetChanged();
