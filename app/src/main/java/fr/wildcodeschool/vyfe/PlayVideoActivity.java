@@ -84,10 +84,7 @@ public class PlayVideoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_video);
 
-        ScrollView scrollTimeline = findViewById(R.id.scroll_timeline);
         mIdSession = getIntent().getStringExtra(ID_SESSION);
-        LinearLayout linear = findViewById(R.id.linear_re_tags);
-
 
         mDatabase = SingletonFirebase.getInstance().getDatabase();
         final String titleSession = getIntent().getStringExtra(TITLE_VIDEO);
@@ -105,8 +102,8 @@ public class PlayVideoActivity extends AppCompatActivity {
         linearTags.setLayoutParams(new FrameLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
         // Applique les paramètres à la seekBar
-        RelativeLayout.LayoutParams seekBarParams = new RelativeLayout.LayoutParams(mWidth - 200, LinearLayout.LayoutParams.MATCH_PARENT);
-        seekBarParams.setMargins(200, 0, 0, 0);
+        RelativeLayout.LayoutParams seekBarParams = new RelativeLayout.LayoutParams(mWidth - 190, LinearLayout.LayoutParams.MATCH_PARENT);
+        seekBarParams.setMargins(190, 0, 0, 0);
         mSeekBar = findViewById(R.id.seek_bar_selected);
         mSeekBar.setLayoutParams(seekBarParams);
 
