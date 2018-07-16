@@ -62,6 +62,7 @@ public class StartActivity extends AppCompatActivity {
     private EditText mEtVideoTitle;
 
     private int mWidth;
+    private int mHeigth;
     String titleTagSet = "";
 
     @Override
@@ -87,6 +88,7 @@ public class StartActivity extends AppCompatActivity {
         mEtVideoTitle = findViewById(R.id.et_video_title2);
         Display display = getWindowManager().getDefaultDisplay();
         mWidth = display.getWidth();
+        mHeigth = display.getHeight();
 
         final String[] str = {getString(R.string.arrow)};
         spinner.setMinimumWidth((int) (0.2 * mWidth));

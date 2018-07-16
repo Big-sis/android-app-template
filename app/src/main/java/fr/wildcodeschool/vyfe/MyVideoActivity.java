@@ -76,16 +76,16 @@ public class MyVideoActivity extends AppCompatActivity {
         });
 
         final ScrollView scroll = findViewById(R.id.scroll_grid);
-
-        Display display = getWindowManager().getDefaultDisplay();
-        int windowHeigth = display.getHeight();
-        gridView.setAdapter(mGridAdapter);
-        gridView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, windowHeigth));
         scroll.post(new Runnable() {
             public void run() {
                 scroll.fullScroll(View.FOCUS_UP);
             }
         });
+        Display display = getWindowManager().getDefaultDisplay();
+        int windowHeigth = display.getHeight();
+        gridView.setAdapter(mGridAdapter);
+        gridView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, windowHeigth));
+
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
