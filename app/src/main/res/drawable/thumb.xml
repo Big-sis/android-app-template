@@ -4,10 +4,13 @@
     android:fromDegrees="90">
     <shape android:shape="line">
         <size
-            android:width="200dp"
-            android:height="200dp" />
+            android:height="300dp"
+            android:width="300dp"
+
+            />
         <stroke
             android:width="3dp"
-            android:color="@color/colorTiffanyBlue" />
+            android:color="@color/colorTiffanyBlue"
+            />
     </shape>
 </rotate>

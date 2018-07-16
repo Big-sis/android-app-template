@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class SingletonSessions {
     public static SingletonSessions sInstance = null;
 
-
     private ArrayList<SessionsModel> mSessionsList = new ArrayList<>();
     private String idSession;
     private String titleSession;

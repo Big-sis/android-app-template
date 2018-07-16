@@ -46,7 +46,7 @@
 
                         <VideoView
                             android:id="@+id/video_view_selected"
-                            android:layout_width="0dp"
+                            android:layout_width="700dp"
                             android:layout_height="350dp"
                             android:layout_margin="8dp"
                             android:layout_marginStart="8dp"
@@ -63,7 +63,7 @@
                             android:layout_marginTop="92dp"
                             android:clickable="true"
                             android:src="@android:drawable/ic_media_play"
-                            app:backgroundTint="@color/colorLightGreenishBlue"
+                            app:backgroundTint="@color/color12"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent" />
 
@@ -76,7 +76,7 @@
                             android:layout_marginTop="16dp"
                             android:clickable="true"
                             android:longClickable="false"
-                            app:backgroundTint="@color/colorTiffanyBlue"
+                            app:backgroundTint="@color/color2"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/bt_play_selected"
                             app:srcCompat="@drawable/replay_black" />
