@@ -13,6 +13,16 @@ public class SingletonTags {
     private String rigthOffset;
     private ArrayList<TagModel> mTagsList = new ArrayList<>();
 
+    public ArrayList<TagModel> getmTagsListAdd() {
+        return mTagsListAdd;
+    }
+
+    public void setmTagsListAdd(ArrayList<TagModel> mTagsListAdd) {
+        this.mTagsListAdd = mTagsListAdd;
+    }
+
+    private ArrayList<TagModel> mTagsListAdd = new ArrayList<>();
+
     private SingletonTags() {
     }
 

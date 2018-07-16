@@ -29,9 +29,11 @@ import petrov.kristiyan.colorpicker.ColorPicker;
 
 public class AddGridActivity extends AppCompatActivity {
     private static int mfinalcolor = 0;
+
     private static SingletonTags mSingletonTags = SingletonTags.getInstance();
-    private static ArrayList<TagModel> mTagModelList = mSingletonTags.getmTagsList();
-    private static TagRecyclerAdapter mAdapter = new TagRecyclerAdapter(mTagModelList, "start");
+    private static ArrayList<TagModel> mTagModelListAdd = mSingletonTags.getmTagsListAdd();
+    private static TagRecyclerAdapter mAdapter = new TagRecyclerAdapter(mTagModelListAdd, "start");
+
     private static ArrayList<String> colors = new ArrayList<>();
     private static ImageView ivColor;
     private static ArrayList<String> nameDouble = new ArrayList<>();
@@ -97,7 +99,7 @@ public class AddGridActivity extends AppCompatActivity {
         recyclerTagList.setHasFixedSize(true);
         recyclerTagList.setItemAnimator(new DefaultItemAnimator());
 
-        if (mTagModelList != null) {
+        if (mTagModelListAdd != null) {
             recyclerTagList.setAdapter(mAdapter);
 
         }
@@ -120,7 +122,7 @@ public class AddGridActivity extends AppCompatActivity {
                     Toast.makeText(AddGridActivity.this, R.string.def_colot, Toast.LENGTH_SHORT).show();
                 } else {
                     TagModel tagModel = new TagModel(mfinalcolor, valueName, null, null);
-                    mTagModelList.add(tagModel);
+                    mTagModelListAdd.add(tagModel);
                     mAdapter.notifyDataSetChanged();
                     mfinalcolor = 0;
                     etName.setText("");
@@ -139,7 +141,7 @@ public class AddGridActivity extends AppCompatActivity {
         btnEnd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mSingletonTags.setmTagsList(mTagModelList);
+                mSingletonTags.setmTagsListAdd(mTagModelListAdd);
                 colors.clear();
 
                 Intent intent = new Intent(AddGridActivity.this, StartActivity.class);
@@ -171,18 +173,18 @@ public class AddGridActivity extends AppCompatActivity {
 
         if (oldPos < newPos) {
             for (int i = oldPos; i < newPos; i++) {
-                Collections.swap(mTagModelList, i, i + 1);
+                Collections.swap(mTagModelListAdd, i, i + 1);
             }
         } else {
             for (int i = oldPos; i > newPos; i--) {
-                Collections.swap(mTagModelList, i, i - 1);
+                Collections.swap(mTagModelListAdd, i, i - 1);
             }
         }
         mAdapter.notifyItemMoved(oldPos, newPos);
     }
 
     public void deleteItem(final int position) {
-        mTagModelList.remove(position);
+        mTagModelListAdd.remove(position);
         mAdapter.notifyItemRemoved(position);
         nameDouble.remove(position);
 

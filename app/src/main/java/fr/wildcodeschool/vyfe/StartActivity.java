@@ -35,11 +35,12 @@ import com.google.firebase.database.ValueEventListener;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class StartActivity extends AppCompatActivity {
 
     private SingletonTags mSingletonTags = SingletonTags.getInstance();
-    private ArrayList<TagModel> mTagModelList = mSingletonTags.getmTagsList();
+    private ArrayList<TagModel> mTagModelListAdd = mSingletonTags.getmTagsListAdd();
 
     private SingletonTagsSets mSingletonTagsSets = SingletonTagsSets.getInstance();
     private ArrayList<TagSetsModel> mTagsSetsList = mSingletonTagsSets.getmTagsSetsList();
@@ -99,11 +100,13 @@ public class StartActivity extends AppCompatActivity {
 
         //tagSetShared des données
         String tagSetShared = mSharedPrefTagSet.getString("TAGSET", "");
-        if(!tagSetShared.isEmpty()){
-        mEtTagSet.setText(tagSetShared);}
+        if (!tagSetShared.isEmpty()) {
+            mEtTagSet.setText(tagSetShared);
+        }
         String videoTitleShared = mSharedPrefVideoTitle.getString("VIDEOTITLE", "");
-        if(!videoTitleShared.isEmpty()){
-        mEtVideoTitle.setText(videoTitleShared);}
+        if (!videoTitleShared.isEmpty()) {
+            mEtVideoTitle.setText(videoTitleShared);
+        }
 
 
         final HashMap<String, String> hashMapTitleIdGrid = new HashMap<>();
@@ -129,14 +132,14 @@ public class StartActivity extends AppCompatActivity {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false);
         recyclerTagList.setLayoutManager(layoutManager);
-        final TagRecyclerAdapter adapter = new TagRecyclerAdapter(mTagModelList, "start");
+        final TagRecyclerAdapter adapter = new TagRecyclerAdapter(mTagModelListAdd, "start");
         recyclerTagList.setAdapter(adapter);
 
 
         RecyclerView.LayoutManager layoutManagerImport = new LinearLayoutManager(StartActivity.this,
                 LinearLayoutManager.VERTICAL, false);
         recyclerViewImport.setLayoutManager(layoutManagerImport);
-        final TagRecyclerAdapter adapterImport = new TagRecyclerAdapter(mTagModelList, "start");
+        final TagRecyclerAdapter adapterImport = new TagRecyclerAdapter(mTagModelListAdd, "start");
         recyclerViewImport.setAdapter(adapterImport);
 
         recyclerViewImport.setVisibility(View.INVISIBLE);
@@ -147,7 +150,7 @@ public class StartActivity extends AppCompatActivity {
             public void onClick(View view) {
                 spinner.setVisibility(View.VISIBLE);
                 if (radioButtonImport.isChecked()) {
-                    mTagModelList.clear();
+                    mTagModelListAdd.clear();
 
                     adapterNotifyDataChange(adapter, adapterImport);
 
@@ -218,7 +221,7 @@ public class StartActivity extends AppCompatActivity {
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                         String titlenameTagSetImport = nameTagSet.get(i);
                         mIdGridImport = hashMapTitleIdGrid.get(titlenameTagSetImport);
-                        mTagModelList.clear();
+                        mTagModelListAdd.clear();
                         adapterNotifyDataChange(adapter, adapterImport);
 
                         if (mIdGridImport != null && !mIdGridImport.equals(getString(R.string.import_grid_arrow) + str[0])) {
@@ -238,8 +241,7 @@ public class StartActivity extends AppCompatActivity {
                                                 && snapshot.child("fkTagSet").getValue().toString().equals(mIdGridImport)) {
                                             String name = (String) snapshot.child("name").getValue();
                                             int color = Integer.parseInt(snapshot.child("color").getValue().toString());
-                                            mTagModelList.add(new TagModel(color, name, null, null));
-                                            mSingletonTags.setmTagsList(mTagModelList);
+                                            mTagModelListAdd.add(new TagModel(color, name, null, null));
                                         }
                                     }
                                     adapterImport.notifyDataSetChanged();
@@ -268,7 +270,7 @@ public class StartActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (radioButtonNew.isChecked()) {
-                    mTagModelList.clear();
+                    mTagModelListAdd.clear();
                     adapterNotifyDataChange(adapter, adapterImport);
                     recyclerTagList.setVisibility(View.VISIBLE);
                     recyclerViewImport.setVisibility(View.GONE);
@@ -294,15 +296,15 @@ public class StartActivity extends AppCompatActivity {
                 if (radioButtonNew.isChecked()) {
                     titleTagSet = mEtTagSet.getText().toString();
 
-
                 }
                 if (radioButtonNew.isChecked() && titleTagSet.isEmpty()) {
                     Toast.makeText(StartActivity.this, R.string.choose_name_grid, Toast.LENGTH_LONG).show();
                 } else {
-                    if (mTagModelList.isEmpty()) {
-                        Toast.makeText(StartActivity.this, R.string.empty_grid, Toast.LENGTH_SHORT).show();
+                    if (mTagModelListAdd.isEmpty()) {
+                        Toast.makeText(StartActivity.this, R.string.empty_grid, Toast.LENGTH_LONG).show();
                     } else {
-
+                        ArrayList mTagModelFinal = (ArrayList) mTagModelListAdd.clone();
+                        mSingletonTags.setmTagsList(mTagModelFinal);
                         //Firebase TAGSET
 
                         DatabaseReference idTagSetRef = mDatabase.getReference(authUserId).child("tagSets").child("name");
@@ -323,10 +325,10 @@ public class StartActivity extends AppCompatActivity {
 
                         }
                         //Firebase TAG
-                        for (int i = 0; i < mTagModelList.size(); i++) {
+                        for (int i = 0; i < mTagModelListAdd.size(); i++) {
 
-                            int colorTag = mTagModelList.get(i).getColor();
-                            String nameTag = mTagModelList.get(i).getName();
+                            int colorTag = mTagModelListAdd.get(i).getColor();
+                            String nameTag = mTagModelListAdd.get(i).getName();
                             //V2 : choisir le temps, necessaire ???
                             String durationTag = String.valueOf(getResources().getInteger(R.integer.duration_tag));
                             String beforeTag = String.valueOf(getResources().getInteger(R.integer.before_tag));
@@ -366,16 +368,20 @@ public class StartActivity extends AppCompatActivity {
                                 startActivity(intent);
                             }
                         }
+
+
                         mSharedPrefTagSet.edit().putString("TAGSET", "").apply();
                         mEtTagSet.setText("");
                         mSharedPrefVideoTitle.edit().putString("VIDEOTITLE", "").apply();
                         mEtVideoTitle.setText("");
+                        mTagModelListAdd.clear();
+
                     }
                 }
             }
         });
 
-        if (mTagModelList.size() != 0) {
+        if (mTagModelListAdd.size() != 0) {
             tvAddTag.setText(R.string.edit_tags);
         }
 
@@ -439,4 +445,6 @@ public class StartActivity extends AppCompatActivity {
         Intent intent = new Intent(StartActivity.this, MainActivity.class);
         startActivity(intent);
     }
+
+
 }
