@@ -52,11 +52,17 @@ public class SelectedVideoActivity extends AppCompatActivity {
     FirebaseDatabase mDatabase;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     final String mAuthUserId = SingletonFirebase.getInstance().getUid();
-    private String mIdSession = "";
     private String mIdTagSet;
+    private SingletonSessions mSingletonSessions = SingletonSessions.getInstance();
+    private String mIdSession = mSingletonSessions.getIdSession();
+    private String mFilename = mSingletonSessions.getFileName();
+    private String mTitleVideo = mSingletonSessions.getTitleSession();
+
 
     private byte[] inputData = new byte[0];
     private InputStream iStream = null;
+
+    private TagRecyclerAdapter mAdapterTags = new TagRecyclerAdapter(mTagModels, "record");
 
     public static final String TITLE_VIDEO = "titleVideo";
     public static final String FILE_NAME = "filename";
@@ -66,7 +72,6 @@ public class SelectedVideoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selected_video);
-        mIdSession = getIntent().getStringExtra(ID_SESSION);
 
 
         mDatabase = SingletonFirebase.getInstance().getDatabase();
@@ -79,16 +84,12 @@ public class SelectedVideoActivity extends AppCompatActivity {
 
         final DatabaseReference ref = mDatabase.getInstance().getReference(mAuthUserId).child("sessions");
 
-        final String titleSession = getIntent().getStringExtra(TITLE_VIDEO);
-        final String fileName = getIntent().getStringExtra(FILE_NAME);
-        tvTitle.setText(titleSession);
+        tvTitle.setText(mTitleVideo);
 
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(SelectedVideoActivity.this, InfoVideoActivity.class);
-                intent.putExtra(FILE_NAME, fileName);
-                intent.putExtra(TITLE_VIDEO, titleSession);
                 startActivity(intent);
             }
         });
@@ -164,9 +165,6 @@ public class SelectedVideoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(SelectedVideoActivity.this, PlayVideoActivity.class);
-                intent.putExtra(ID_SESSION, mIdSession);
-                intent.putExtra(FILE_NAME, fileName);
-                intent.putExtra(TITLE_VIDEO, titleSession);
                 startActivity(intent);
             }
         });
@@ -175,9 +173,6 @@ public class SelectedVideoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(SelectedVideoActivity.this, PlayVideoActivity.class);
-                intent.putExtra(ID_SESSION, mIdSession);
-                intent.putExtra(FILE_NAME, fileName);
-                intent.putExtra(TITLE_VIDEO, titleSession);
                 startActivity(intent);
             }
         });
@@ -246,14 +241,14 @@ public class SelectedVideoActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(titleSession);
+        getSupportActionBar().setTitle(mTitleVideo);
 
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot video: dataSnapshot.getChildren()) {
                     SessionsModel model = video.getValue(SessionsModel.class);
-                    if (fileName.equals(model.getVideoLink())) {
+                    if (mFilename.equals(model.getVideoLink())) {
                         if (video.hasChild("description")) {
                             tvDescription.setText(model.getDescription());
                         } else {

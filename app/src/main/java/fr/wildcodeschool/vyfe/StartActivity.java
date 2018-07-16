@@ -70,6 +70,8 @@ public class StartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
+        final SingletonSessions singletonSessions = SingletonSessions.getInstance();
+
         mDatabase = SingletonFirebase.getInstance().getDatabase();
 
         final Button buttonBack = findViewById(R.id.button_back);
@@ -289,7 +291,8 @@ public class StartActivity extends AppCompatActivity {
 
                 final Intent intent = new Intent(StartActivity.this, RecordActivity.class);
                 final String titleSession = mEtVideoTitle.getText().toString();
-                intent.putExtra(TITLE_VIDEO, titleSession);
+                singletonSessions.setTitleSession(titleSession);
+                //intent.putExtra(TITLE_VIDEO, titleSession);
 
 
                 if (radioButtonNew.isChecked()) {

@@ -24,6 +24,8 @@ public class GridAdapter extends BaseAdapter implements Filterable {
     private ArrayList<SessionsModel> filterList;
     private CustomFilterVideo filter;
 
+    private SingletonSessions mSingletonSessions = SingletonSessions.getInstance();
+
     public static final String TITLE_VIDEO = "titleVideo";
     public final static String FILE_NAME = "filename";
     public static final String ID_SESSION = "idSession";
@@ -74,13 +76,14 @@ public class GridAdapter extends BaseAdapter implements Filterable {
             videoStatus.setImageResource(R.drawable.icons8_cloud_v_rifi__96);
         }
 
+        mSingletonSessions.setFileName(video.getVideoLink());
+        mSingletonSessions.setIdSession(video.getIdSession());
+        mSingletonSessions.setTitleSession(video.getName());
+
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, SelectedVideoActivity.class);
-                intent.putExtra(TITLE_VIDEO, video.getName());
-                intent.putExtra(FILE_NAME, video.getVideoLink());
-                intent.putExtra(ID_SESSION, video.getIdSession());
                 mContext.startActivity(intent);
             }
         });
