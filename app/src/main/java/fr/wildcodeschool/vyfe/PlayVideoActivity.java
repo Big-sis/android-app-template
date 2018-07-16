@@ -352,9 +352,9 @@ public class PlayVideoActivity extends AppCompatActivity {
             ViewTreeObserver vto = mSeekBar.getViewTreeObserver();
             vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
                 public boolean onPreDraw() {
-                    Drawable thumb = getResources().getDrawable(R.drawable.icons8_ligne_verticale__paisse_filled);
+                    Drawable thumb = getResources().getDrawable(R.drawable.thumb_blue);
                     int h = llMain.getMeasuredHeight();
-                    int w = 200;
+                    int w = 15;
                     Bitmap bmpOrg = ((BitmapDrawable)thumb).getBitmap();
                     Drawable newThumb = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bmpOrg,w,h,true));
                     newThumb.setBounds(0, 0, newThumb.getIntrinsicWidth(), newThumb.getIntrinsicHeight());
