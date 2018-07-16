@@ -63,8 +63,11 @@ public class PlayVideoActivity extends AppCompatActivity {
     private VideoView mVideoSelected;
     private SeekBar mSeekBar;
     private boolean mIsPlayed = false;
-    private String mIdSession;
-    private String mVideoLink;
+    private boolean mFirstPlay = true;
+    private SingletonSessions mSingletonSessions = SingletonSessions.getInstance();
+    private String mIdSession = mSingletonSessions.getIdSession();
+    private String mVideoLink = mSingletonSessions.getFileName();
+    private String mTitleSession = mSingletonSessions.getTitleSession();
     private String mIdTagSet;
     FirebaseDatabase mDatabase;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -78,26 +81,17 @@ public class PlayVideoActivity extends AppCompatActivity {
     int mWidth;
     private Chronometer mChrono;
 
-    public static final String TITLE_VIDEO = "titleVideo";
-    public static final String FILE_NAME = "filename";
-    public static final String ID_SESSION = "idSession";
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_video);
-
-        ScrollView scrollTimeline = findViewById(R.id.scroll_timeline);
-        mIdSession = getIntent().getStringExtra(ID_SESSION);
-        LinearLayout linear = findViewById(R.id.linear_re_tags);
-
-
+      
         mDatabase = SingletonFirebase.getInstance().getDatabase();
-        final String titleSession = getIntent().getStringExtra(TITLE_VIDEO);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(titleSession);
+        getSupportActionBar().setTitle(mTitleSession);
 
         // Enregistre la taille de l'écran pour la rentrer dans les paramètres des layouts/widgets
         Display display = getWindowManager().getDefaultDisplay();
@@ -109,6 +103,7 @@ public class PlayVideoActivity extends AppCompatActivity {
         linearTags.setLayoutParams(new FrameLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
         // Applique les paramètres à la seekBar
+
         RelativeLayout.LayoutParams seekBarParams = new RelativeLayout.LayoutParams(mWidth - convertToDp(200), LinearLayout.LayoutParams.MATCH_PARENT);
         seekBarParams.setMargins( convertToDp(200), 0, 0, 0);
         mSeekBar = findViewById(R.id.seek_bar_selected);
@@ -117,9 +112,6 @@ public class PlayVideoActivity extends AppCompatActivity {
         // Rend la seekBar incliquable
         mSeekBar.setEnabled(false);
 
-
-
-        mVideoLink = getIntent().getStringExtra(FILE_NAME);
         mVideoSelected = findViewById(R.id.video_view_selected);
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -166,7 +158,6 @@ public class PlayVideoActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mIdTagSet = dataSnapshot.child("idTagSet").getValue(String.class);
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
@@ -427,9 +418,6 @@ public class PlayVideoActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(PlayVideoActivity.this,SelectedVideoActivity.class);
-        intent.putExtra(ID_SESSION,mIdSession);
-        intent.putExtra(FILE_NAME,mVideoLink);
-
         startActivity(intent);
 
     }

@@ -55,6 +55,8 @@ public class RecordActivity extends AppCompatActivity {
     private CameraPreview mPreview;
     private boolean mBack;
     private boolean mActiveTag = false;
+    private String mTitleSession;
+    private SingletonSessions mSingletonSessions = SingletonSessions.getInstance();
     private TagRecyclerAdapter mAdapterTags;
 
 
@@ -63,9 +65,6 @@ public class RecordActivity extends AppCompatActivity {
     HashMap<String, RelativeLayout> mTimelines = new HashMap<>();
     HashMap<String, ArrayList<Pair<Integer, Integer>>> newTagList = new HashMap<>();
 
-    public static final String TITLE_VIDEO = "titleVideo";
-    public final static String FILE_NAME = "filename";
-    public final static String ID_SESSION = "idSession";
     public static final String ID_TAG_SET = "idTagSet";
 
     @Override
@@ -76,9 +75,13 @@ public class RecordActivity extends AppCompatActivity {
 
         mDatabase = SingletonFirebase.getInstance().getDatabase();
 
+        mTitleSession = mSingletonSessions.getTitleSession();
+
         Date d = new Date();
         mFileName = getExternalCacheDir().getAbsolutePath();
         mFileName += "/" + d.getTime() + ".mp4";
+
+        mSingletonSessions.setFileName(mFileName);
 
         int currentCameraId = Camera.CameraInfo.CAMERA_FACING_BACK;
         mCamera = getCameraInstance(currentCameraId);
@@ -89,7 +92,6 @@ public class RecordActivity extends AppCompatActivity {
         final Button btnPlay = findViewById(R.id.btn_play);
         final ConstraintLayout sessionRecord = findViewById(R.id.session_record);
         final RecyclerView recyclerTags = findViewById(R.id.re_tags);
-        final String titleSession = getIntent().getStringExtra(TITLE_VIDEO);
         final String idTagSet = getIntent().getStringExtra(ID_TAG_SET);
 
 
@@ -163,7 +165,8 @@ public class RecordActivity extends AppCompatActivity {
                         DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions");
                         sessionRef.keepSynced(true);
                         mIdSession = sessionRef.push().getKey();
-                        sessionRef.child(mIdSession).child("name").setValue(titleSession);
+                        mSingletonSessions.setIdSession(mIdSession);
+                        sessionRef.child(mIdSession).child("name").setValue(mTitleSession);
                         sessionRef.child(mIdSession).child("author").setValue(mAuthUserId);
                         sessionRef.child(mIdSession).child("videoLink").setValue(mFileName);
                         sessionRef.child(mIdSession).child("date").setValue(stringdate);
@@ -221,9 +224,6 @@ public class RecordActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(RecordActivity.this, SelectedVideoActivity.class);
-                intent.putExtra(TITLE_VIDEO, titleSession);
-                intent.putExtra(FILE_NAME, mFileName);
-                intent.putExtra(ID_SESSION, mIdSession);
                 startActivity(intent);
             }
         });

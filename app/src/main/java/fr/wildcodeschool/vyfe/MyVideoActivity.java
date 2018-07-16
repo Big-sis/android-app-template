@@ -6,11 +6,16 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -70,7 +75,17 @@ public class MyVideoActivity extends AppCompatActivity {
             }
         });
 
+        final ScrollView scroll = findViewById(R.id.scroll_grid);
+        scroll.post(new Runnable() {
+            public void run() {
+                scroll.fullScroll(View.FOCUS_UP);
+            }
+        });
+        Display display = getWindowManager().getDefaultDisplay();
+        int windowHeigth = display.getHeight();
         gridView.setAdapter(mGridAdapter);
+        gridView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, windowHeigth));
+
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
