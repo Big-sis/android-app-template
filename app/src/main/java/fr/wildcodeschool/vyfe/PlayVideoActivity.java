@@ -1,7 +1,10 @@
 package fr.wildcodeschool.vyfe;
 
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.ShapeDrawable;
@@ -29,6 +32,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.Chronometer;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
@@ -99,14 +103,14 @@ public class PlayVideoActivity extends AppCompatActivity {
         linearTags.setLayoutParams(new FrameLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
         // Applique les paramètres à la seekBar
-        RelativeLayout.LayoutParams seekBarParams = new RelativeLayout.LayoutParams(mWidth - 190, LinearLayout.LayoutParams.MATCH_PARENT);
-        seekBarParams.setMargins(190, 0, 0, 0);
+
+        RelativeLayout.LayoutParams seekBarParams = new RelativeLayout.LayoutParams(mWidth - convertToDp(200), LinearLayout.LayoutParams.MATCH_PARENT);
+        seekBarParams.setMargins( convertToDp(200), 0, 0, 0);
         mSeekBar = findViewById(R.id.seek_bar_selected);
         mSeekBar.setLayoutParams(seekBarParams);
 
         // Rend la seekBar incliquable
         mSeekBar.setEnabled(false);
-
 
         mVideoSelected = findViewById(R.id.video_view_selected);
         final Handler handler = new Handler();
@@ -120,6 +124,7 @@ public class PlayVideoActivity extends AppCompatActivity {
                 params.width = previewWidth;
                 params.height = previewHeight;
                 mVideoSelected.setLayoutParams(params);
+
             }
         }, 30);
 
@@ -247,9 +252,9 @@ public class PlayVideoActivity extends AppCompatActivity {
     // Méthode qui créé les layouts et images des timelines en fonction des données des tags
     public void makeTimelines() {
 
-        LinearLayout llMain = findViewById(R.id.ll_main_playvideo);
+        final LinearLayout llMain = findViewById(R.id.ll_main_playvideo);
         int tagedLineSize = timeLines.getWidth() - getResources().getInteger(R.integer.title_length_timeline);
-        int titleLength = getResources().getInteger(R.integer.title_length_timeline);
+        int titleLength = convertToDp(getResources().getInteger(R.integer.title_length_timeline));
 
         // Créé une timeline par tags utilisés
         for (final TagModel tagModel : mTagedList) {
@@ -260,7 +265,7 @@ public class PlayVideoActivity extends AppCompatActivity {
             TextView tvNameTimeline = new TextView(PlayVideoActivity.this);
             tvNameTimeline.setText(tagName);
             RelativeLayout.LayoutParams layoutParamsTv = new RelativeLayout.LayoutParams(
-                    convertToDp(titleLength), LinearLayout.LayoutParams.WRAP_CONTENT);
+                    titleLength, LinearLayout.LayoutParams.WRAP_CONTENT);
             layoutParamsTv.setMargins(convertToDp(15), convertToDp(8), convertToDp(8), convertToDp(8));
             tvNameTimeline.setLayoutParams(layoutParamsTv);
             tvNameTimeline.setTextSize(convertToDp(10));
@@ -329,10 +334,27 @@ public class PlayVideoActivity extends AppCompatActivity {
                 RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-                layoutParams.setMargins(getResources().getInteger(R.integer.title_length_timeline) + start, 20, 0, 20);
+                layoutParams.setMargins(titleLength + start, 20, 0, 20);
                 timeline.setBackgroundColor(getResources().getColor(R.color.colorCharcoalGrey));
                 timeline.addView(iv, layoutParams);
             }
+
+            //Thumb adapter à la Timeline
+            ViewTreeObserver vto = mSeekBar.getViewTreeObserver();
+            vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                public boolean onPreDraw() {
+                    Drawable thumb = getResources().getDrawable(R.drawable.thumb_blue);
+                    int h = llMain.getMeasuredHeight();
+                    int w = 15;
+                    Bitmap bmpOrg = ((BitmapDrawable)thumb).getBitmap();
+                    Drawable newThumb = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bmpOrg,w,h,true));
+                    newThumb.setBounds(0, 0, newThumb.getIntrinsicWidth(), newThumb.getIntrinsicHeight());
+                    mSeekBar.setThumb(newThumb);
+                    mSeekBar.getViewTreeObserver().removeOnPreDrawListener(this);
+
+                    return true;
+                }
+            });
         }
     }
 

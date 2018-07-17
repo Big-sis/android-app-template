@@ -23,17 +23,18 @@ public class SeekbarAsync extends AsyncTask<Void, Integer, Void> {
         videoView.start();
         duration = videoView.getDuration();
         videoView.pause();
+        seekBar.setMax(duration);
         do {
             current = videoView.getCurrentPosition();
             try {
-                publishProgress((int) (current * 100 / duration));
-                if (seekBar.getProgress() >= 100) {
+                publishProgress((int) current);
+                if (seekBar.getProgress() >= duration) {
 
                     break;
                 }
             } catch (Exception e) {
             }
-        } while (seekBar.getProgress() <= 100);
+        } while (seekBar.getProgress() <= duration);
 
         videoView.pause();
         return null;

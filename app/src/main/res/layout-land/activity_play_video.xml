@@ -163,7 +163,7 @@
                             android:focusable="false"
                             android:longClickable="false"
                             android:progressDrawable="@android:color/transparent"
-                            android:thumb="@drawable/thumb"
+                            android:thumb="@drawable/thumb_blue"
                             android:visibility="visible"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
