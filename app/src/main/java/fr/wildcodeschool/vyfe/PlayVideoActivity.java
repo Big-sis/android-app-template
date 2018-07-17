@@ -118,7 +118,7 @@ public class PlayVideoActivity extends AppCompatActivity {
             @Override
             public void run() {
                 double ratio = 1080d / 1920d;
-                int previewWidth = mWidth * 70 / 100;
+                int previewWidth = mWidth * 50 / 100;
                 int previewHeight = (int) Math.floor(previewWidth * ratio);
                 ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) mVideoSelected.getLayoutParams();
                 params.width = previewWidth;
