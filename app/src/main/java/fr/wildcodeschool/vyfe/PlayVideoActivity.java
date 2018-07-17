@@ -91,7 +91,7 @@ public class PlayVideoActivity extends AppCompatActivity {
 
         mLlMain = findViewById(R.id.ll_main_playvideo);
         mMainWidth = mLlMain.getWidth();
-      
+
         mDatabase = SingletonFirebase.getInstance().getDatabase();
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
