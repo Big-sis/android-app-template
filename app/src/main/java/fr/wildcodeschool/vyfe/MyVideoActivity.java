@@ -66,7 +66,7 @@ public class MyVideoActivity extends AppCompatActivity {
             }
         });*/
 
-        ApiHelperVideo.getVideo(MyVideoActivity.this,gridView, new ApiHelperVideo.ForecastResponse() {
+        ApiHelperVideo.getVideo(MyVideoActivity.this,gridView, new ApiHelperVideo.SessionResponse() {
             @Override
             public void onSuccess(ArrayList<SessionsModel> result) {
                 mSessionsModelList.addAll(result);
