@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.sql.Time;
@@ -79,7 +80,7 @@ public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.
         TextView tvName;
         ImageView ivColor;
         TextView tvNum;
-        ConstraintLayout viewForeground;
+        LinearLayout viewForeground;
 
         public ViewHolder(View v) {
             super(v);
