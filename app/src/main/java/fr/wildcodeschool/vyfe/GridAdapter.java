@@ -76,13 +76,14 @@ public class GridAdapter extends BaseAdapter implements Filterable {
             videoStatus.setImageResource(R.drawable.icons8_cloud_v_rifi__96);
         }
 
-        mSingletonSessions.setFileName(video.getVideoLink());
-        mSingletonSessions.setIdSession(video.getIdSession());
-        mSingletonSessions.setTitleSession(video.getName());
+
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                mSingletonSessions.setFileName(video.getVideoLink());
+                mSingletonSessions.setIdSession(video.getIdSession());
+                mSingletonSessions.setTitleSession(video.getName());
                 Intent intent = new Intent(mContext, SelectedVideoActivity.class);
                 mContext.startActivity(intent);
             }

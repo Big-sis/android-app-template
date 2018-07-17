@@ -80,13 +80,17 @@ public class PlayVideoActivity extends AppCompatActivity {
     int mVideoDuration;
     int mWidth;
     private Chronometer mChrono;
-
+    private LinearLayout mLlMain;
+    private int mMainWidth;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_video);
+
+        mLlMain = findViewById(R.id.ll_main_playvideo);
+        mMainWidth = mLlMain.getWidth();
       
         mDatabase = SingletonFirebase.getInstance().getDatabase();
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -104,8 +108,8 @@ public class PlayVideoActivity extends AppCompatActivity {
 
         // Applique les paramètres à la seekBar
 
-        RelativeLayout.LayoutParams seekBarParams = new RelativeLayout.LayoutParams(mWidth - convertToDp(200), LinearLayout.LayoutParams.MATCH_PARENT);
-        seekBarParams.setMargins( convertToDp(200), 0, 0, 0);
+        RelativeLayout.LayoutParams seekBarParams = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        seekBarParams.setMargins( convertToDp(185), 0, 0, 0);
         mSeekBar = findViewById(R.id.seek_bar_selected);
         mSeekBar.setLayoutParams(seekBarParams);
 
@@ -118,7 +122,7 @@ public class PlayVideoActivity extends AppCompatActivity {
             @Override
             public void run() {
                 double ratio = 1080d / 1920d;
-                int previewWidth = mWidth * 70 / 100;
+                int previewWidth = mWidth * 60 / 100;
                 int previewHeight = (int) Math.floor(previewWidth * ratio);
                 ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) mVideoSelected.getLayoutParams();
                 params.width = previewWidth;
@@ -252,8 +256,7 @@ public class PlayVideoActivity extends AppCompatActivity {
     // Méthode qui créé les layouts et images des timelines en fonction des données des tags
     public void makeTimelines() {
 
-        final LinearLayout llMain = findViewById(R.id.ll_main_playvideo);
-        int tagedLineSize = timeLines.getWidth() - getResources().getInteger(R.integer.title_length_timeline);
+        int tagedLineSize = mWidth - convertToDp(getResources().getInteger(R.integer.title_length_timeline));
         int titleLength = convertToDp(getResources().getInteger(R.integer.title_length_timeline));
 
         // Créé une timeline par tags utilisés
@@ -261,12 +264,12 @@ public class PlayVideoActivity extends AppCompatActivity {
 
             String tagName = tagModel.getName();
             final RelativeLayout timeline = new RelativeLayout(PlayVideoActivity.this);
-            llMain.addView(timeline);
+            mLlMain.addView(timeline);
             TextView tvNameTimeline = new TextView(PlayVideoActivity.this);
             tvNameTimeline.setText(tagName);
             RelativeLayout.LayoutParams layoutParamsTv = new RelativeLayout.LayoutParams(
                     titleLength, LinearLayout.LayoutParams.WRAP_CONTENT);
-            layoutParamsTv.setMargins(convertToDp(15), convertToDp(8), convertToDp(8), convertToDp(8));
+            layoutParamsTv.setMargins(convertToDp(15), convertToDp(8), 0, convertToDp(8));
             tvNameTimeline.setLayoutParams(layoutParamsTv);
             tvNameTimeline.setTextSize(convertToDp(10));
             tvNameTimeline.setTextColor(Color.WHITE);
@@ -344,7 +347,7 @@ public class PlayVideoActivity extends AppCompatActivity {
             vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
                 public boolean onPreDraw() {
                     Drawable thumb = getResources().getDrawable(R.drawable.thumb_blue);
-                    int h = llMain.getMeasuredHeight();
+                    int h = mLlMain.getMeasuredHeight();
                     int w = 15;
                     Bitmap bmpOrg = ((BitmapDrawable)thumb).getBitmap();
                     Drawable newThumb = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bmpOrg,w,h,true));
