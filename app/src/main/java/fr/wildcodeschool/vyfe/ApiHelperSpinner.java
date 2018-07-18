@@ -39,17 +39,6 @@ public class ApiHelperSpinner {
                 } else {
                     hashMapTitleIdGrid.clear();
 
-                    byte spbyte[] = new byte[0];
-                    try {
-                        spbyte = str[0].getBytes("UTF-8");
-                    } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                    }
-                    try {
-                        str[0] = new String(spbyte, "UTF-8");
-                    } catch (UnsupportedEncodingException e) {
-                        e.printStackTrace();
-                    }
 
                     final long[] pendingLoadCount = {dataSnapshot.getChildrenCount()};
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
@@ -58,27 +47,7 @@ public class ApiHelperSpinner {
 
                         hashMapTitleIdGrid.put(idGrid,mNameGrid);
                         Log.d("Spinner", "onDataChange: ");
-                        /*
-                        boolean simpleGridName = true;
 
-                        for (int i = 0; i < nameTagSet.size(); i++) {
-                            if (mNameGrid.equals(nameTagSet.get(i))) {
-                                simpleGridName = false;
-                            }
-                        }
-                        if (simpleGridName) {
-                            hashMapTitleIdGrid.put(mNameGrid, idGrid);
-                            nameTagSet.add(mNameGrid);
-                            simpleGridName = true;
-                        }
-                        pendingLoadCount[0] = pendingLoadCount[0] - 1;
-                        if (pendingLoadCount[0] == 0) {
-                            listener.onFinish("Fin");
-                        }
-                        if (pendingLoadCount[0] != 0 && Wait) {
-                            listener.onWait("Attente");
-                            Wait = false;
-                        }*/
                     }
                     listener.onSuccess(hashMapTitleIdGrid);
 

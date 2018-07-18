@@ -145,6 +145,7 @@ public class AddGridActivity extends AppCompatActivity {
                 colors.clear();
 
                 Intent intent = new Intent(AddGridActivity.this, StartActivity.class);
+                intent.putExtra("fromAdd","fromAdd");
                 startActivity(intent);
                 finish();
             }
