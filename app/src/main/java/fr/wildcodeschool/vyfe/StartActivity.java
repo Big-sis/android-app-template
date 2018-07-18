@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -91,6 +92,7 @@ public class StartActivity extends AppCompatActivity {
         Display display = getWindowManager().getDefaultDisplay();
         mWidth = display.getWidth();
         mHeigth = display.getHeight();
+        final ProgressBar pbLoad = findViewById(R.id.pb_load);
 
         final String[] str = {getString(R.string.arrow)};
         spinner.setMinimumWidth((int) (0.2 * mWidth));
@@ -153,17 +155,39 @@ public class StartActivity extends AppCompatActivity {
                 spinner.setVisibility(View.VISIBLE);
                 if (radioButtonImport.isChecked()) {
                     mTagModelListAdd.clear();
-
                     adapterNotifyDataChange(adapter, adapterImport);
-
                     recyclerTagList.setVisibility(View.GONE);
                     recyclerViewImport.setVisibility(View.VISIBLE);
-
                     radioButtonNew.setChecked(false);
                     spinner.setClickable(true);
                     spinner.setEnabled(true);
                     importGrid(mEtTagSet, fabAddMoment, false);
                 }
+                //TODO: voir pb fonctionne pas
+/*
+                ApiHelperSpinner.getSpinner(StartActivity.this, new ApiHelperSpinner.GridResponse() {
+                    @Override
+                    public void onSuccess(ArrayList<String> result) {
+                        nameTagSet.addAll(result);
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        Toast.makeText(StartActivity.this, " erreur :"+ error, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onWait(String wait) {
+                        Toast.makeText(StartActivity.this, "En cours de chargement", Toast.LENGTH_SHORT).show();
+
+                    }
+
+                    @Override
+                    public void onFinish(String finish) {
+                        Toast.makeText(StartActivity.this, "Fin de téléchargement", Toast.LENGTH_SHORT).show();
+                    }
+                });*/
+                pbLoad.setVisibility(View.VISIBLE);
                 //tagSetShared données pour mettre spinner
                 DatabaseReference myRef = mDatabase.getReference(authUserId).child("tagSets");
                 myRef.keepSynced(true);
@@ -189,7 +213,7 @@ public class StartActivity extends AppCompatActivity {
                             }
                             nameTagSet.add(getString(R.string.import_grid_arrow) + str[0]);
 
-
+                            final long[] pendingLoadCount = {dataSnapshot.getChildrenCount()};
                             for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                                 mNameGrid = (String) snapshot.child("name").getValue().toString();
                                 String idGrid = (String) snapshot.getKey().toString();
@@ -205,7 +229,13 @@ public class StartActivity extends AppCompatActivity {
                                     nameTagSet.add(mNameGrid);
                                     simpleGridName = true;
                                 }
-
+                                pendingLoadCount[0] = pendingLoadCount[0] - 1;
+                                if (pendingLoadCount[0] == 0) {
+                                    pbLoad.setVisibility(View.GONE);
+                                }
+                                if (pendingLoadCount[0] != 0) {
+                                    pbLoad.setVisibility(View.VISIBLE);
+                                }
                             }
                             adapterSpinner.notifyDataSetChanged();
                         }
@@ -446,6 +476,8 @@ public class StartActivity extends AppCompatActivity {
 
         Intent intent = new Intent(StartActivity.this, MainActivity.class);
         startActivity(intent);
+
+
     }
 
 

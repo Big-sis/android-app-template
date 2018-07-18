@@ -240,12 +240,15 @@ public class PlayVideoActivity extends AppCompatActivity {
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            //TODO: arreter la video pour eviter crash
             case R.id.logout:
+                mSeekBar.setProgress(mVideoDuration);
                 Intent intent = new Intent(PlayVideoActivity.this, ConnexionActivity.class);
                 startActivity(intent);
                 mAuth.signOut();
                 return true;
             case R.id.home:
+                mSeekBar.setProgress(mVideoDuration);
                 Intent intentHome = new Intent(PlayVideoActivity.this, MainActivity.class);
                 startActivity(intentHome);
                 return true;
@@ -321,6 +324,7 @@ public class PlayVideoActivity extends AppCompatActivity {
 
                 // Récupère la couleur du tag en cour pour l'appliquer à l'image
                 // TODO (V2) : ajouter les couleurs dans tagModel pour éviter d'avoir à faire une requête
+                //TODO: mettre requete Firebase dans listener eviter plantage
                 final DatabaseReference tagRef = mDatabase.getReference(mAuthUserId).child("tags");
                 tagRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
@@ -369,6 +373,7 @@ public class PlayVideoActivity extends AppCompatActivity {
 
     // Méthode qui récupère les données des tags sur Firebase
     private void initTimeLines() {
+        //TODO: mettre requete Firebase dans listener eviter plantage
         final DatabaseReference tagSessionRef = mDatabase.getReference(mAuthUserId).child("sessions").child(mIdSession).child("tags");
         tagSessionRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -425,6 +430,8 @@ public class PlayVideoActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        //TODO: arreter la video pour eviter crash
+        mSeekBar.setProgress(mVideoDuration);
         Intent intent = new Intent(PlayVideoActivity.this,SelectedVideoActivity.class);
         startActivity(intent);
 

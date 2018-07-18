@@ -22,7 +22,9 @@
         app:defaultQueryHint="@string/search"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appBar" />
+        app:layout_constraintTop_toBottomOf="@+id/appBar" >
+
+    </android.support.v7.widget.SearchView>
 
     <GridView
         android:id="@+id/grid_videos"
@@ -39,7 +41,26 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/search_video"
-        tools:listitem="@layout/item_video" />
+        tools:listitem="@layout/item_video" >
+
+    </GridView>
+
+    <ProgressBar
+        android:id="@+id/progress_bar_loading"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:progressDrawable="@drawable/vyfe_logo"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/grid_videos"
+        app:layout_constraintEnd_toEndOf="@+id/grid_videos"
+        app:layout_constraintStart_toStartOf="@+id/grid_videos"
+        app:layout_constraintTop_toTopOf="@+id/grid_videos" />
 
 
 </android.support.constraint.ConstraintLayout>
