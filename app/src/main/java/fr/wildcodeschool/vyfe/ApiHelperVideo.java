@@ -20,7 +20,7 @@ public class ApiHelperVideo {
     private static boolean Wait = true;
 
 
-    public static void getVideo(final Context context, final GridView gridView, final SessionResponse listener) {
+    public static void getVideo(final Context context, final GridView gridView, final ForecastResponse listener) {
         final GridAdapter mGridAdapter = new GridAdapter(context, mSessionsModelList);
 
         DatabaseReference myRef = mDatabase.getReference(authUserId).child("sessions");
@@ -67,7 +67,7 @@ public class ApiHelperVideo {
 
     }
 
-    interface SessionResponse {
+    interface ForecastResponse {
 
         void onSuccess(ArrayList<SessionsModel> result);
 

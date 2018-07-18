@@ -223,6 +223,8 @@ public class PlayVideoActivity extends AppCompatActivity {
                 mChrono.setBase(0);
                 mChrono.setBase(SystemClock.elapsedRealtime());
                 mChrono.stop();
+
+
             }
         });
     }
@@ -237,11 +239,13 @@ public class PlayVideoActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             //TODO: arreter la video pour eviter crash
             case R.id.logout:
+                mSeekBar.setProgress(mVideoDuration);
                 Intent intent = new Intent(PlayVideoActivity.this, ConnexionActivity.class);
                 startActivity(intent);
                 mAuth.signOut();
                 return true;
             case R.id.home:
+                mSeekBar.setProgress(mVideoDuration);
                 Intent intentHome = new Intent(PlayVideoActivity.this, MainActivity.class);
                 startActivity(intentHome);
                 return true;
@@ -421,6 +425,7 @@ public class PlayVideoActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         //TODO: arreter la video pour eviter crash
+        mSeekBar.setProgress(mVideoDuration);
         Intent intent = new Intent(PlayVideoActivity.this,SelectedVideoActivity.class);
         startActivity(intent);
 

@@ -153,17 +153,39 @@ public class StartActivity extends AppCompatActivity {
                 spinner.setVisibility(View.VISIBLE);
                 if (radioButtonImport.isChecked()) {
                     mTagModelListAdd.clear();
-
                     adapterNotifyDataChange(adapter, adapterImport);
-
                     recyclerTagList.setVisibility(View.GONE);
                     recyclerViewImport.setVisibility(View.VISIBLE);
-
                     radioButtonNew.setChecked(false);
                     spinner.setClickable(true);
                     spinner.setEnabled(true);
                     importGrid(mEtTagSet, fabAddMoment, false);
                 }
+
+                ApiHelperSpinner.getSpinner(StartActivity.this, new ApiHelperSpinner.GridResponse() {
+                    @Override
+                    public void onSuccess(ArrayList<String> result) {
+                        nameTagSet.addAll(result);
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        Toast.makeText(StartActivity.this, " erreur :"+ error, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onWait(String wait) {
+                        Toast.makeText(StartActivity.this, "En cours de chargement", Toast.LENGTH_SHORT).show();
+
+                    }
+
+                    @Override
+                    public void onFinish(String finish) {
+                        Toast.makeText(StartActivity.this, "Fin de téléchargement", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+                /*
                 //tagSetShared données pour mettre spinner
                 DatabaseReference myRef = mDatabase.getReference(authUserId).child("tagSets");
                 myRef.keepSynced(true);
@@ -215,7 +237,7 @@ public class StartActivity extends AppCompatActivity {
                     public void onCancelled(DatabaseError databaseError) {
 
                     }
-                });
+                });*/
 
 
                 spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

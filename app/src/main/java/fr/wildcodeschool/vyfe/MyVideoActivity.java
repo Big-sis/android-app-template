@@ -7,9 +7,11 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -43,6 +45,7 @@ public class MyVideoActivity extends AppCompatActivity {
         closeSearch.setImageResource(android.R.drawable.ic_menu_close_clear_cancel);
         ImageView search = searchView.findViewById(android.support.v7.appcompat.R.id.search_button);
         search.setImageResource(android.R.drawable.ic_menu_search);
+        final ProgressBar pBLoading = findViewById(R.id.progress_bar_loading);
 
         /*
         DatabaseReference myRef = mDatabase.getReference(authUserId).child("sessions");
@@ -66,25 +69,29 @@ public class MyVideoActivity extends AppCompatActivity {
             }
         });*/
 
-        ApiHelperVideo.getVideo(MyVideoActivity.this,gridView, new ApiHelperVideo.SessionResponse() {
+        ApiHelperVideo.getVideo(MyVideoActivity.this,gridView, new ApiHelperVideo.ForecastResponse() {
             @Override
             public void onSuccess(ArrayList<SessionsModel> result) {
                 mSessionsModelList.addAll(result);
+                pBLoading.setVisibility(View.GONE);
             }
 
             @Override
             public void onError(String error) {
                 Toast.makeText(MyVideoActivity.this, " erreur :"+ error, Toast.LENGTH_SHORT).show();
+                pBLoading.setVisibility(View.GONE);
             }
 
             @Override
             public void onWait(String wait) {
                 Toast.makeText(MyVideoActivity.this, "En cours de chargement", Toast.LENGTH_SHORT).show();
+                pBLoading.setVisibility(View.VISIBLE);
             }
 
             @Override
             public void onFinish(String finish) {
                 Toast.makeText(MyVideoActivity.this, "Fin de téléchargement", Toast.LENGTH_SHORT).show();
+                pBLoading.setVisibility(View.GONE);
             }
         });
 
