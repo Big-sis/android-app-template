@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -37,6 +38,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class StartActivity extends AppCompatActivity {
 
@@ -52,7 +54,6 @@ public class StartActivity extends AppCompatActivity {
     private String mIdGridImport;
     private String mNameGrid;
 
-
     public static final String TITLE_VIDEO = "titleVideo";
     public static final String ID_TAG_SET = "idTagSet";
 
@@ -65,6 +66,8 @@ public class StartActivity extends AppCompatActivity {
     private int mWidth;
     private int mHeigth;
     String titleTagSet = "";
+    private ArrayList<String> mNameTagSet = new ArrayList<>();
+    private ArrayList<String> mIdTagSet = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +100,10 @@ public class StartActivity extends AppCompatActivity {
         final String[] str = {getString(R.string.arrow)};
         spinner.setMinimumWidth((int) (0.2 * mWidth));
 
+        String fromAdd = getIntent().getStringExtra("fromAdd");
+        if (fromAdd == null) {
+            mTagModelListAdd.clear();
+        }
 
         //enregistrement données
         mSharedPrefTagSet = this.getSharedPreferences("TAGSET", Context.MODE_PRIVATE);
@@ -113,7 +120,7 @@ public class StartActivity extends AppCompatActivity {
         }
 
 
-        final HashMap<String, String> hashMapTitleIdGrid = new HashMap<>();
+        final HashMap<String, String> tagSetIds = new HashMap<>();
 
         final String authUserId = SingletonFirebase.getInstance().getUid();
 
@@ -121,13 +128,6 @@ public class StartActivity extends AppCompatActivity {
             buttonGo.setText(R.string.next);
         }
 
-        final ArrayList<String> nameTagSet = new ArrayList<>();
-
-        final ArrayAdapter<String> adapterSpinner = new ArrayAdapter<String>(this,
-                R.layout.simple_spinner, nameTagSet);
-
-        adapterSpinner.setDropDownViewResource(R.layout.item_spinner_dropdown);
-        spinner.setAdapter(adapterSpinner);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.start_session);
@@ -148,11 +148,12 @@ public class StartActivity extends AppCompatActivity {
 
         recyclerViewImport.setVisibility(View.INVISIBLE);
 
-        //TODO gerer lapparition des recyclers
         radioButtonImport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 spinner.setVisibility(View.VISIBLE);
+
+
                 if (radioButtonImport.isChecked()) {
                     mTagModelListAdd.clear();
                     adapterNotifyDataChange(adapter, adapterImport);
@@ -163,86 +164,48 @@ public class StartActivity extends AppCompatActivity {
                     spinner.setEnabled(true);
                     importGrid(mEtTagSet, fabAddMoment, false);
                 }
-                //TODO: voir pb fonctionne pas
-/*
+                pbLoad.setVisibility(View.VISIBLE);
+                spinner.setVisibility(View.INVISIBLE);
+
                 ApiHelperSpinner.getSpinner(StartActivity.this, new ApiHelperSpinner.GridResponse() {
                     @Override
-                    public void onSuccess(ArrayList<String> result) {
-                        nameTagSet.addAll(result);
+                    public void onSuccess(HashMap<String, String> hashMapTitleIdGrid) {
+
+                        tagSetIds.putAll(hashMapTitleIdGrid);
+                        mNameTagSet.clear();
+                        mNameTagSet.add(getString(R.string.import_grid_arrow) + str[0]);
+                        mIdTagSet.clear();
+                        mIdTagSet.add("0");
+                        for (Map.Entry<String, String> entry : tagSetIds.entrySet()) {
+                            mNameTagSet.add(entry.getValue());
+                            mIdTagSet.add(entry.getKey());
+                        }
+                        Log.d("Spinner", "onSuccess: " + String.valueOf(mNameTagSet.size()));
+                        adapterImport.notifyDataSetChanged();
+                        pbLoad.setVisibility(View.GONE);
+
+                        ArrayAdapter<String> adapterSpinner = new ArrayAdapter<String>(StartActivity.this,
+                                R.layout.simple_spinner, mNameTagSet);
+
+
+                        adapterSpinner.setDropDownViewResource(R.layout.item_spinner_dropdown);
+                        spinner.setAdapter(adapterSpinner);
+                        spinner.setVisibility(View.VISIBLE);
                     }
 
                     @Override
                     public void onError(String error) {
-                        Toast.makeText(StartActivity.this, " erreur :"+ error, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(StartActivity.this, " erreur :" + error, Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onWait(String wait) {
-                        Toast.makeText(StartActivity.this, "En cours de chargement", Toast.LENGTH_SHORT).show();
+
 
                     }
 
                     @Override
                     public void onFinish(String finish) {
-                        Toast.makeText(StartActivity.this, "Fin de téléchargement", Toast.LENGTH_SHORT).show();
-                    }
-                });*/
-                pbLoad.setVisibility(View.VISIBLE);
-                //tagSetShared données pour mettre spinner
-                DatabaseReference myRef = mDatabase.getReference(authUserId).child("tagSets");
-                myRef.keepSynced(true);
-                myRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        if (dataSnapshot.getChildrenCount() == 0) {
-                            nameTagSet.add(getString(R.string.havent_grid));
-                        } else {
-                            nameTagSet.clear();
-
-
-                            byte spbyte[] = new byte[0];
-                            try {
-                                spbyte = str[0].getBytes("UTF-8");
-                            } catch (UnsupportedEncodingException e) {
-                                e.printStackTrace();
-                            }
-                            try {
-                                str[0] = new String(spbyte, "UTF-8");
-                            } catch (UnsupportedEncodingException e) {
-                                e.printStackTrace();
-                            }
-                            nameTagSet.add(getString(R.string.import_grid_arrow) + str[0]);
-
-                            final long[] pendingLoadCount = {dataSnapshot.getChildrenCount()};
-                            for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                                mNameGrid = (String) snapshot.child("name").getValue().toString();
-                                String idGrid = (String) snapshot.getKey().toString();
-                                boolean simpleGridName = true;
-
-                                for (int i = 0; i < nameTagSet.size(); i++) {
-                                    if (mNameGrid.equals(nameTagSet.get(i))) {
-                                        simpleGridName = false;
-                                    }
-                                }
-                                if (simpleGridName) {
-                                    hashMapTitleIdGrid.put(mNameGrid, idGrid);
-                                    nameTagSet.add(mNameGrid);
-                                    simpleGridName = true;
-                                }
-                                pendingLoadCount[0] = pendingLoadCount[0] - 1;
-                                if (pendingLoadCount[0] == 0) {
-                                    pbLoad.setVisibility(View.GONE);
-                                }
-                                if (pendingLoadCount[0] != 0) {
-                                    pbLoad.setVisibility(View.VISIBLE);
-                                }
-                            }
-                            adapterSpinner.notifyDataSetChanged();
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
 
                     }
                 });
@@ -251,8 +214,12 @@ public class StartActivity extends AppCompatActivity {
                 spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                        String titlenameTagSetImport = nameTagSet.get(i);
-                        mIdGridImport = hashMapTitleIdGrid.get(titlenameTagSetImport);
+
+                        String titlenameTagSetImport = mNameTagSet.get(i);
+                        mIdGridImport = mIdTagSet.get(i);
+                        if (mIdGridImport.equals("0")) {
+                            return;
+                        }
                         mTagModelListAdd.clear();
                         adapterNotifyDataChange(adapter, adapterImport);
 
@@ -338,10 +305,15 @@ public class StartActivity extends AppCompatActivity {
                         ArrayList mTagModelFinal = (ArrayList) mTagModelListAdd.clone();
                         mSingletonTags.setmTagsList(mTagModelFinal);
                         //Firebase TAGSET
+                        String idTagSet = "";
 
                         DatabaseReference idTagSetRef = mDatabase.getReference(authUserId).child("tagSets").child("name");
                         idTagSetRef.keepSynced(true);
-                        String idTagSet = idTagSetRef.push().getKey();
+                        if (radioButtonImport.isChecked()) {
+                            idTagSet = mIdGridImport;
+                        } else {
+                            idTagSet = idTagSetRef.push().getKey();
+                        }
 
                         intent.putExtra(ID_TAG_SET, idTagSet);
 
@@ -351,11 +323,7 @@ public class StartActivity extends AppCompatActivity {
                         mTagsSetsList.add(new TagSetsModel(idTagSet, titleTagSet));
                         mSingletonTagsSets.setmTagsSetsList(mTagsSetsList);
 
-                        for (int i = 0; i < mTagsSetsList.size(); i++) {
-                            nameTagSet.add(mTagsSetsList.get(i).getName());
-                            adapterSpinner.notifyDataSetChanged();
 
-                        }
                         //Firebase TAG
                         for (int i = 0; i < mTagModelListAdd.size(); i++) {
 
