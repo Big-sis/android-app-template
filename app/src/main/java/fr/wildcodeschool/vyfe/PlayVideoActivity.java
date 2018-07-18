@@ -82,6 +82,7 @@ public class PlayVideoActivity extends AppCompatActivity {
     private Chronometer mChrono;
     private LinearLayout mLlMain;
     private int mMainWidth;
+    private  FloatingActionButton mPlay;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -122,18 +123,17 @@ public class PlayVideoActivity extends AppCompatActivity {
             @Override
             public void run() {
                 double ratio = 1080d / 1920d;
-                int previewWidth = mWidth * 60 / 100;
+                int previewWidth = mVideoSelected.getWidth();
                 int previewHeight = (int) Math.floor(previewWidth * ratio);
                 ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) mVideoSelected.getLayoutParams();
                 params.width = previewWidth;
                 params.height = previewHeight;
                 mVideoSelected.setLayoutParams(params);
-
             }
         }, 30);
 
         mChrono = findViewById(R.id.chronometer_play);
-        final FloatingActionButton fbPlay = findViewById(R.id.bt_play_selected);
+        mPlay = findViewById(R.id.bt_play_selected);
 
         // Charge le lien de la vidéo dans la videoView, et enregistre sa durée totale
         // (nécessaire au calculs des positions des tags sur la timeline)
@@ -150,7 +150,7 @@ public class PlayVideoActivity extends AppCompatActivity {
                 mAsync.execute();
                 timeWhenStopped = 0;
                 mChrono.stop();
-                fbPlay.setImageResource(android.R.drawable.ic_media_play);
+                mPlay.setImageResource(android.R.drawable.ic_media_play);
                 mIsPlayed = false;
             }
         });
@@ -168,7 +168,7 @@ public class PlayVideoActivity extends AppCompatActivity {
         });
 
         // Bouton play/pause
-        fbPlay.setOnClickListener(new View.OnClickListener() {
+        mPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mIsPlayed) {
@@ -176,12 +176,12 @@ public class PlayVideoActivity extends AppCompatActivity {
                     timeWhenStopped = mChrono.getBase() - SystemClock.elapsedRealtime();
                     mChrono.stop();
                     mIsPlayed = false;
-                    fbPlay.setBackgroundColor(getResources().getColor(R.color.colorLightGreenishBlue));
-                    fbPlay.setImageResource(android.R.drawable.ic_media_play);
+                    mPlay.setBackgroundColor(getResources().getColor(R.color.colorLightGreenishBlue));
+                    mPlay.setImageResource(android.R.drawable.ic_media_play);
 
                 } else {
-                    fbPlay.setBackgroundColor(getResources().getColor(R.color.colorFadedOrange));
-                    fbPlay.setImageResource(android.R.drawable.ic_media_pause);
+                    mPlay.setBackgroundColor(getResources().getColor(R.color.colorFadedOrange));
+                    mPlay.setImageResource(android.R.drawable.ic_media_pause);
                     mIsPlayed = true;
                     mVideoSelected.start();
                     mChrono.setBase(SystemClock.elapsedRealtime() + timeWhenStopped);
@@ -206,27 +206,28 @@ public class PlayVideoActivity extends AppCompatActivity {
                 mChrono.setBase(0);
                 mChrono.setBase(SystemClock.elapsedRealtime());
                 mChrono.start();
-                fbPlay.setEnabled(true);
-                fbPlay.setVisibility(View.VISIBLE);
-                fbPlay.setImageResource(android.R.drawable.ic_media_pause);
-                fbPlay.setBackgroundColor(getResources().getColor(R.color.color1));
+                mPlay.setVisibility(View.VISIBLE);
+                mPlay.setImageResource(android.R.drawable.ic_media_pause);
+                mPlay.setBackgroundColor(getResources().getColor(R.color.color1));
             }
         });
 
 
-        // Remet la vidéo, la seekBar et le chrono à 0 en fin de lecture de la vidéo
-        // Oblige l'utilisateur à utiliser le bouton replay
         mVideoSelected.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
                 mIsPlayed = false;
-                fbPlay.setVisibility(View.INVISIBLE);
-                mSeekBar.setProgress(0);
+                timeWhenStopped = 0;
                 mVideoSelected.seekTo(0);
-                mVideoSelected.pause();
+                mSeekBar.setProgress(0);
+                mAsync = new SeekbarAsync(mSeekBar, mVideoSelected);
+                mAsync.execute();
                 mChrono.setBase(0);
                 mChrono.setBase(SystemClock.elapsedRealtime());
                 mChrono.stop();
+                mPlay.setVisibility(View.VISIBLE);
+                mPlay.setImageResource(android.R.drawable.ic_media_play);
+                mPlay.setBackgroundColor(getResources().getColor(R.color.color1));
             }
         });
     }
@@ -296,8 +297,9 @@ public class PlayVideoActivity extends AppCompatActivity {
 
                 final ImageView iv = new ImageView(PlayVideoActivity.this);
                 RelativeLayout.LayoutParams layoutParamsIv = new RelativeLayout.LayoutParams(
-                        titleLength, LinearLayout.LayoutParams.WRAP_CONTENT);
-                layoutParamsIv.setMargins(0, convertToDp(8), 0, convertToDp(8));
+                        LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+                layoutParamsIv.setMargins(titleLength + start, 20, 0, 20);
                 iv.setLayoutParams(layoutParamsIv);
                 iv.setMinimumHeight(50);
                 iv.setMinimumWidth(end - start);
@@ -305,11 +307,15 @@ public class PlayVideoActivity extends AppCompatActivity {
                 iv.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        mPlay.setVisibility(View.VISIBLE);
                         Integer millis = first * getResources().getInteger(R.integer.micro_to_milli);
                         long millisLong = first * getResources().getInteger(R.integer.micro_to_milli);
                         mVideoSelected.seekTo(millis);
                         mChrono.setBase(SystemClock.elapsedRealtime() - millisLong);
                         timeWhenStopped = mChrono.getBase() - SystemClock.elapsedRealtime();
+                        mSeekBar.setProgress(millis);
+                        mAsync = new SeekbarAsync(mSeekBar, mVideoSelected);
+                        mAsync.execute();
                     }
                 });
 
@@ -334,12 +340,11 @@ public class PlayVideoActivity extends AppCompatActivity {
                     }
                 });
 
-                RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-                        LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
-                layoutParams.setMargins(titleLength + start, 20, 0, 20);
+                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                timeline.setLayoutParams(layoutParams);
                 timeline.setBackgroundColor(getResources().getColor(R.color.colorCharcoalGrey));
-                timeline.addView(iv, layoutParams);
+                timeline.addView(iv);
             }
 
             //Thumb adapter à la Timeline
