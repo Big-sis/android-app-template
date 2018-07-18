@@ -75,10 +75,11 @@ public class PlayVideoActivity extends AppCompatActivity {
     HashMap<String, Integer> mTagColorList = new HashMap<>();
     TagRecyclerAdapter mAdapterTags;
     RelativeLayout timeLines;
-    SeekbarAsync mAsync;
+    Runnable mRunnable;
     long timeWhenStopped = 0;
     int mVideoDuration;
     int mWidth;
+    int mLastEnd;
     private Chronometer mChrono;
     private LinearLayout mLlMain;
     private int mMainWidth;
@@ -146,8 +147,17 @@ public class PlayVideoActivity extends AppCompatActivity {
                 initTimeLines();
                 mChrono.setBase(SystemClock.elapsedRealtime());
                 mChrono.start();
-                mAsync = new SeekbarAsync(mSeekBar, mVideoSelected);
-                mAsync.execute();
+                final Handler handler = new Handler();
+                mSeekBar.setMax(mVideoDuration);
+                mRunnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        int position = mVideoSelected.getCurrentPosition();
+                        mSeekBar.setProgress(position);
+                        handler.postDelayed(mRunnable, 30);
+                    }
+                };
+                handler.post(mRunnable);
                 timeWhenStopped = 0;
                 mChrono.stop();
                 mPlay.setImageResource(android.R.drawable.ic_media_play);
@@ -200,8 +210,6 @@ public class PlayVideoActivity extends AppCompatActivity {
                 mIsPlayed = true;
                 mVideoSelected.seekTo(0);
                 mSeekBar.setProgress(0);
-                mAsync = new SeekbarAsync(mSeekBar, mVideoSelected);
-                mAsync.execute();
                 mVideoSelected.start();
                 mChrono.setBase(0);
                 mChrono.setBase(SystemClock.elapsedRealtime());
@@ -220,8 +228,6 @@ public class PlayVideoActivity extends AppCompatActivity {
                 timeWhenStopped = 0;
                 mVideoSelected.seekTo(0);
                 mSeekBar.setProgress(0);
-                mAsync = new SeekbarAsync(mSeekBar, mVideoSelected);
-                mAsync.execute();
                 mChrono.setBase(0);
                 mChrono.setBase(SystemClock.elapsedRealtime());
                 mChrono.stop();
@@ -295,17 +301,21 @@ public class PlayVideoActivity extends AppCompatActivity {
                 double startRatio = firstMicro / mVideoDuration;
                 double endRatio = secondMicro / mVideoDuration;
 
-                final int start = (int) (startRatio * tagedLineSize) / getResources().getInteger(R.integer.micro_to_milli);
-                int end = (int) (endRatio * tagedLineSize) / getResources().getInteger(R.integer.micro_to_milli);
+                final double start =  (startRatio * tagedLineSize) / getResources().getInteger(R.integer.micro_to_milli);
+                double end = (endRatio * tagedLineSize) / getResources().getInteger(R.integer.micro_to_milli);
 
                 final ImageView iv = new ImageView(PlayVideoActivity.this);
                 RelativeLayout.LayoutParams layoutParamsIv = new RelativeLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                int margeIv = timeline.getMeasuredHeight() / 2 - 25;
 
-                layoutParamsIv.setMargins(titleLength + start, 20, 0, 20);
+                layoutParamsIv.setMargins((int) Math.floor(titleLength + start), margeIv, 0, margeIv);
+
                 iv.setLayoutParams(layoutParamsIv);
                 iv.setMinimumHeight(50);
-                iv.setMinimumWidth(end - start);
+                iv.setMinimumWidth(50);
+
+                iv.setMaxWidth((int) Math.floor(end - start));
                 // Permet de se déplacer dans la vidéo en cliquant sur les images
                 iv.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -317,8 +327,6 @@ public class PlayVideoActivity extends AppCompatActivity {
                         mChrono.setBase(SystemClock.elapsedRealtime() - millisLong);
                         timeWhenStopped = mChrono.getBase() - SystemClock.elapsedRealtime();
                         mSeekBar.setProgress(millis);
-                        mAsync = new SeekbarAsync(mSeekBar, mVideoSelected);
-                        mAsync.execute();
                     }
                 });
 
@@ -349,7 +357,14 @@ public class PlayVideoActivity extends AppCompatActivity {
                 timeline.setLayoutParams(layoutParams);
                 timeline.setBackgroundColor(getResources().getColor(R.color.colorCharcoalGrey));
                 timeline.addView(iv);
+                mLastEnd = (int) end;
             }
+
+            RelativeLayout lastRelative = new RelativeLayout(PlayVideoActivity.this);
+            RelativeLayout.LayoutParams lastParams = new RelativeLayout.LayoutParams(mVideoDuration - mLastEnd - titleLength, LinearLayout.LayoutParams.MATCH_PARENT);
+            lastParams.setMargins(convertToDp(mLastEnd), 20, 0, 20);
+            lastRelative.setLayoutParams(lastParams);
+            timeline.addView(lastRelative);
 
             //Thumb adapter à la Timeline
             ViewTreeObserver vto = mSeekBar.getViewTreeObserver();
