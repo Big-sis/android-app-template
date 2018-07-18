@@ -1,6 +1,7 @@
 package fr.wildcodeschool.vyfe;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 import android.widget.GridView;
 
@@ -17,15 +18,12 @@ import java.util.HashMap;
 public class ApiHelperSpinner {
     private static FirebaseDatabase mDatabase = SingletonFirebase.getInstance().getDatabase();
     private static final String authUserId = SingletonFirebase.getInstance().getUid();
-    private static final ArrayList<String> nameTagSet = new ArrayList<>();
     private static String mNameGrid;
-    private static final HashMap<String, String> hashMapTitleIdGrid = new HashMap<>();
     private static boolean Wait = true;
 
 
     public static void getSpinner(final Context context, final ApiHelperSpinner.GridResponse listener) {
-        final ArrayAdapter<String> adapterSpinner = new ArrayAdapter<String>(context,
-                R.layout.simple_spinner, nameTagSet);
+
         final String[] str = {context.getString(R.string.arrow)};
         //tagSetShared données pour mettre spinner
         DatabaseReference myRef = mDatabase.getReference(authUserId).child("tagSets");
@@ -33,10 +31,13 @@ public class ApiHelperSpinner {
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
+                HashMap<String, String> hashMapTitleIdGrid = new HashMap<>();
+
                 if (dataSnapshot.getChildrenCount() == 0) {
-                    nameTagSet.add(context.getString(R.string.havent_grid));
+                    hashMapTitleIdGrid.put("0", context.getString(R.string.havent_grid));
                 } else {
-                    nameTagSet.clear();
+                    hashMapTitleIdGrid.clear();
 
                     byte spbyte[] = new byte[0];
                     try {
@@ -49,12 +50,15 @@ public class ApiHelperSpinner {
                     } catch (UnsupportedEncodingException e) {
                         e.printStackTrace();
                     }
-                    nameTagSet.add(context.getString(R.string.import_grid_arrow) + str[0]);
 
                     final long[] pendingLoadCount = {dataSnapshot.getChildrenCount()};
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                         mNameGrid = (String) snapshot.child("name").getValue().toString();
                         String idGrid = (String) snapshot.getKey().toString();
+
+                        hashMapTitleIdGrid.put(idGrid,mNameGrid);
+                        Log.d("Spinner", "onDataChange: ");
+                        /*
                         boolean simpleGridName = true;
 
                         for (int i = 0; i < nameTagSet.size(); i++) {
@@ -74,9 +78,9 @@ public class ApiHelperSpinner {
                         if (pendingLoadCount[0] != 0 && Wait) {
                             listener.onWait("Attente");
                             Wait = false;
-                        }
+                        }*/
                     }
-                    listener.onSuccess(nameTagSet);
+                    listener.onSuccess(hashMapTitleIdGrid);
 
                 }
             }
@@ -91,7 +95,7 @@ public class ApiHelperSpinner {
 
     interface GridResponse {
 
-        void onSuccess(ArrayList<String> result);
+        void onSuccess(HashMap<String, String>  hashMapTitleIdGrid);
 
         void onError(String error);
 
