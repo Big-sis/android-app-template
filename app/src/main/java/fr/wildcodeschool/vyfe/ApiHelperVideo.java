@@ -44,10 +44,10 @@ public class ApiHelperVideo {
 
                     pendingLoadCount[0] = pendingLoadCount[0] - 1;
                     if (pendingLoadCount[0] == 0) {
-                        listener.onFinish("Fin");
+                        listener.onFinish();
                     }
                     if (pendingLoadCount[0] != 0 && Wait) {
-                        listener.onWait("Attente");
+                        listener.onWait();
                         Wait = false;
                     }
 
@@ -73,9 +73,9 @@ public class ApiHelperVideo {
 
         void onError(String error);
 
-        void onWait(String wait);
+        void onWait();
 
-        void onFinish(String finish);
+        void onFinish();
     }
 
 }

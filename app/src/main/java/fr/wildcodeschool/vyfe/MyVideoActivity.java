@@ -83,14 +83,12 @@ public class MyVideoActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onWait(String wait) {
-                Toast.makeText(MyVideoActivity.this, "En cours de chargement", Toast.LENGTH_SHORT).show();
+            public void onWait() {
                 pBLoading.setVisibility(View.VISIBLE);
             }
 
             @Override
-            public void onFinish(String finish) {
-                Toast.makeText(MyVideoActivity.this, "Fin de téléchargement", Toast.LENGTH_SHORT).show();
+            public void onFinish() {
                 pBLoading.setVisibility(View.GONE);
             }
         });
