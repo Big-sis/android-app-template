@@ -1,29 +1,21 @@
 package fr.wildcodeschool.vyfe;
 
 import android.content.Intent;
-import android.media.Image;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
-import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -53,7 +45,9 @@ public class MyVideoActivity extends AppCompatActivity {
         closeSearch.setImageResource(android.R.drawable.ic_menu_close_clear_cancel);
         ImageView search = searchView.findViewById(android.support.v7.appcompat.R.id.search_button);
         search.setImageResource(android.R.drawable.ic_menu_search);
+        final ProgressBar pBLoading = findViewById(R.id.progress_bar_loading);
 
+        /*
         DatabaseReference myRef = mDatabase.getReference(authUserId).child("sessions");
         myRef.keepSynced(true);
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -72,6 +66,30 @@ public class MyVideoActivity extends AppCompatActivity {
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
+            }
+        });*/
+
+        ApiHelperVideo.getVideo(MyVideoActivity.this,gridView, new ApiHelperVideo.ForecastResponse() {
+            @Override
+            public void onSuccess(ArrayList<SessionsModel> result) {
+                mSessionsModelList.addAll(result);
+                pBLoading.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onError(String error) {
+                Toast.makeText(MyVideoActivity.this, " erreur :"+ error, Toast.LENGTH_SHORT).show();
+                pBLoading.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onWait() {
+                pBLoading.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onFinish() {
+                pBLoading.setVisibility(View.GONE);
             }
         });
 
