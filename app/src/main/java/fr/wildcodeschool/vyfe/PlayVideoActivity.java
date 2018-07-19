@@ -63,7 +63,6 @@ public class PlayVideoActivity extends AppCompatActivity {
     private VideoView mVideoSelected;
     private SeekBar mSeekBar;
     private boolean mIsPlayed = false;
-    private boolean mFirstPlay = true;
     private SingletonSessions mSingletonSessions = SingletonSessions.getInstance();
     private String mIdSession = mSingletonSessions.getIdSession();
     private String mVideoLink = mSingletonSessions.getFileName();
@@ -82,7 +81,6 @@ public class PlayVideoActivity extends AppCompatActivity {
     int mLastEnd;
     private Chronometer mChrono;
     private LinearLayout mLlMain;
-    private int mMainWidth;
     private  FloatingActionButton mPlay;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -92,7 +90,6 @@ public class PlayVideoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_play_video);
 
         mLlMain = findViewById(R.id.ll_main_playvideo);
-        mMainWidth = mLlMain.getWidth();
 
         mDatabase = SingletonFirebase.getInstance().getDatabase();
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -144,7 +141,6 @@ public class PlayVideoActivity extends AppCompatActivity {
             @Override
             public void onPrepared(MediaPlayer mp) {
                 mVideoDuration = mVideoSelected.getDuration();
-                initTimeLines();
                 mChrono.setBase(SystemClock.elapsedRealtime());
                 mChrono.start();
                 final Handler handler = new Handler();
@@ -157,25 +153,47 @@ public class PlayVideoActivity extends AppCompatActivity {
                         handler.postDelayed(mRunnable, 30);
                     }
                 };
+
                 handler.post(mRunnable);
                 timeWhenStopped = 0;
                 mChrono.stop();
                 mPlay.setImageResource(android.R.drawable.ic_media_play);
                 mIsPlayed = false;
+
+                // TODO : ajouter écran de chargement
+                ApiHelperPlay.getTags(mTagedList, mTagModels, new ApiHelperPlay.TagsResponse() {
+                    @Override
+                    public void onSuccess() {
+                        makeTimelines();
+                        RecyclerView rvTags = findViewById(R.id.re_tags_selected);
+                        mAdapterTags = new TagRecyclerAdapter(mTagModels, mTagedList, "count");
+                        RecyclerView.LayoutManager layoutManagerTags = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+                        rvTags.setLayoutManager(layoutManagerTags);
+                        rvTags.setAdapter(mAdapterTags);
+
+                    }
+
+                    @Override
+                    public void onError(String error) {
+                        Toast.makeText(PlayVideoActivity.this, error, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onWait() {
+                        mAdapterTags.notifyDataSetChanged();
+
+                    }
+
+                    @Override
+                    public void onFinish() {
+
+
+                    }
+                });
             }
         });
 
-        // Requête qui récupère l'ID de la grille, nécessaire à la récupération des données des tags
-        final DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions").child(mIdSession);
-        sessionRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                mIdTagSet = dataSnapshot.child("idTagSet").getValue(String.class);
-            }
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
+
 
         // Bouton play/pause
         mPlay.setOnClickListener(new View.OnClickListener() {
@@ -196,7 +214,6 @@ public class PlayVideoActivity extends AppCompatActivity {
                     mVideoSelected.start();
                     mChrono.setBase(SystemClock.elapsedRealtime() + timeWhenStopped);
                     mChrono.start();
-
                 }
             }
         });
@@ -330,27 +347,29 @@ public class PlayVideoActivity extends AppCompatActivity {
                     }
                 });
 
-                // Récupère la couleur du tag en cour pour l'appliquer à l'image
-                // TODO (V2) : ajouter les couleurs dans tagModel pour éviter d'avoir à faire une requête
-                //TODO: mettre requete Firebase dans listener eviter plantage
-                final DatabaseReference tagRef = mDatabase.getReference(mAuthUserId).child("tags");
-                tagRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                ApiHelperPlay.getColors(mTagColorList, new ApiHelperPlay.ColorResponse() {
                     @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        for (DataSnapshot tagSnapshot : dataSnapshot.getChildren()) {
-                            TagModel tagModel = tagSnapshot.getValue(TagModel.class);
-                            if (tagModel.getFkTagSet().equals(mIdTagSet)) {
-                                mTagColorList.put(tagModel.getName(), tagModel.getColor());
-                            }
-                        }
+                    public void onSuccess() {
                         iv.setBackgroundColor(mTagColorList.get(tagModel.getName()));
+
                     }
 
                     @Override
-                    public void onCancelled(DatabaseError databaseError) {
+                    public void onError(String error) {
+                        Toast.makeText(PlayVideoActivity.this, "error : " + error, Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onWait() {
+
+                    }
+
+                    @Override
+                    public void onFinish() {
 
                     }
                 });
+
 
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -387,7 +406,7 @@ public class PlayVideoActivity extends AppCompatActivity {
 
 
     // Méthode qui récupère les données des tags sur Firebase
-    private void initTimeLines() {
+    /*private void initTimeLines() {
         //TODO: mettre requete Firebase dans listener eviter plantage
         final DatabaseReference tagSessionRef = mDatabase.getReference(mAuthUserId).child("sessions").child(mIdSession).child("tags");
         tagSessionRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -437,7 +456,8 @@ public class PlayVideoActivity extends AppCompatActivity {
             }
 
         });
-    }
+
+    }*/
 
     private int convertToDp(int size) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, size, getResources().getDisplayMetrics());
