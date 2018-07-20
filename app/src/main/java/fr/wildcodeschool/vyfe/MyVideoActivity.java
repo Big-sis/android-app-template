@@ -72,7 +72,6 @@ public class MyVideoActivity extends AppCompatActivity {
         ApiHelperVideo.getVideo(MyVideoActivity.this,gridView, new ApiHelperVideo.ForecastResponse() {
             @Override
             public void onSuccess(ArrayList<SessionsModel> result) {
-                mSessionsModelList.addAll(result);
                 pBLoading.setVisibility(View.GONE);
             }
 
