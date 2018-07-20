@@ -410,8 +410,8 @@ public class PlayVideoActivity extends AppCompatActivity {
             });
 
         }
-        //mLoadProgressBar.setVisibility(View.INVISIBLE);
-        //mConstraintVideo.setVisibility(View.VISIBLE);
+        mLoadProgressBar.setVisibility(View.INVISIBLE);
+        mConstraintVideo.setVisibility(View.VISIBLE);
     }
 
     private int convertToDp(int size) {
