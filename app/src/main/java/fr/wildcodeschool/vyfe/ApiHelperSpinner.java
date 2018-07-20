@@ -36,6 +36,7 @@ public class ApiHelperSpinner {
 
                 if (dataSnapshot.getChildrenCount() == 0) {
                     hashMapTitleIdGrid.put("0", context.getString(R.string.havent_grid));
+                    listener.onSuccess(hashMapTitleIdGrid);
                 } else {
                     hashMapTitleIdGrid.clear();
 

@@ -298,6 +298,7 @@ public class VolleyMultipartRequest extends Request<NetworkResponse> {
          * Getter mime type.
          *
          * @return mime type
+         *
          */
         public String getType() {
             return type;
