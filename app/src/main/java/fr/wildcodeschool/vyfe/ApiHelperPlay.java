@@ -19,6 +19,7 @@ public class ApiHelperPlay {
 
     public static void getTags(final ArrayList<TagModel> mTagedList, final ArrayList<TagModel> mTagModels, final ApiHelperPlay.TagsResponse listener) {
 
+        listener.onWait();
         final DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions").child(mIdSession);
         sessionRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -53,7 +54,7 @@ public class ApiHelperPlay {
                                         mTagModels.add(tagModel);
                                     }
                                 }
-                                listener.onWait();
+                                listener.onFinish();
                             }
                         }
                         @Override

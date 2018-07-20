@@ -82,6 +82,8 @@ public class PlayVideoActivity extends AppCompatActivity {
     private Chronometer mChrono;
     private LinearLayout mLlMain;
     private  FloatingActionButton mPlay;
+    private ConstraintLayout mConstraintVideo;
+    private ConstraintLayout mConstraintProgress;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -90,6 +92,8 @@ public class PlayVideoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_play_video);
 
         mLlMain = findViewById(R.id.ll_main_playvideo);
+        mConstraintVideo = findViewById(R.id.constraint_video);
+        mConstraintProgress = findViewById(R.id.constraint_progress);
 
         mDatabase = SingletonFirebase.getInstance().getDatabase();
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -180,12 +184,13 @@ public class PlayVideoActivity extends AppCompatActivity {
 
                     @Override
                     public void onWait() {
-                        mAdapterTags.notifyDataSetChanged();
+
 
                     }
 
                     @Override
                     public void onFinish() {
+                        mAdapterTags.notifyDataSetChanged();
 
 
                     }
@@ -367,6 +372,7 @@ public class PlayVideoActivity extends AppCompatActivity {
                     @Override
                     public void onFinish() {
 
+
                     }
                 });
 
@@ -401,7 +407,10 @@ public class PlayVideoActivity extends AppCompatActivity {
                     return true;
                 }
             });
+
         }
+        mConstraintProgress.setVisibility(View.INVISIBLE);
+        mConstraintVideo.setVisibility(View.VISIBLE);
     }
 
 
@@ -466,7 +475,6 @@ public class PlayVideoActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         //TODO: arreter la video pour eviter crash
-        mSeekBar.setProgress(mVideoDuration);
         Intent intent = new Intent(PlayVideoActivity.this,SelectedVideoActivity.class);
         startActivity(intent);
 
