@@ -37,6 +37,7 @@ import android.widget.Chronometer;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
@@ -83,7 +84,7 @@ public class PlayVideoActivity extends AppCompatActivity {
     private LinearLayout mLlMain;
     private  FloatingActionButton mPlay;
     private ConstraintLayout mConstraintVideo;
-    private ConstraintLayout mConstraintProgress;
+    private ProgressBar mLoadProgressBar;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -93,7 +94,8 @@ public class PlayVideoActivity extends AppCompatActivity {
 
         mLlMain = findViewById(R.id.ll_main_playvideo);
         mConstraintVideo = findViewById(R.id.constraint_video);
-        mConstraintProgress = findViewById(R.id.constraint_progress);
+
+        mLoadProgressBar = findViewById(R.id.load_progressbar);
 
         mDatabase = SingletonFirebase.getInstance().getDatabase();
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -329,9 +331,8 @@ public class PlayVideoActivity extends AppCompatActivity {
                 final ImageView iv = new ImageView(PlayVideoActivity.this);
                 RelativeLayout.LayoutParams layoutParamsIv = new RelativeLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                int margeIv = timeline.getMeasuredHeight() / 2 - 25;
 
-                layoutParamsIv.setMargins((int) Math.floor(titleLength + start), margeIv, 0, margeIv);
+                layoutParamsIv.setMargins((int) Math.floor(titleLength + start), 8, 0, 8);
 
                 iv.setLayoutParams(layoutParamsIv);
                 iv.setMinimumHeight(50);
@@ -409,64 +410,9 @@ public class PlayVideoActivity extends AppCompatActivity {
             });
 
         }
-        mConstraintProgress.setVisibility(View.INVISIBLE);
-        mConstraintVideo.setVisibility(View.VISIBLE);
+        //mLoadProgressBar.setVisibility(View.INVISIBLE);
+        //mConstraintVideo.setVisibility(View.VISIBLE);
     }
-
-
-    // Méthode qui récupère les données des tags sur Firebase
-    /*private void initTimeLines() {
-        //TODO: mettre requete Firebase dans listener eviter plantage
-        final DatabaseReference tagSessionRef = mDatabase.getReference(mAuthUserId).child("sessions").child(mIdSession).child("tags");
-        tagSessionRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                mTagedList.clear();
-                for (DataSnapshot tagSnapshot : dataSnapshot.getChildren()) {
-                    TagModel tagModel = tagSnapshot.getValue(TagModel.class);
-                    String tagName = tagSnapshot.child("tagName").getValue(String.class);
-                    tagModel.setName(tagName);
-                    mTagedList.add(tagModel);
-                    final DatabaseReference tagRef = mDatabase.getReference(mAuthUserId).child("tags");
-                    tagRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            mTagModels.clear();
-                            for (DataSnapshot tagsSnapshot : dataSnapshot.getChildren()) {
-                                TagModel tagModel = tagsSnapshot.getValue(TagModel.class);
-                                if (tagModel.getFkTagSet().equals(mIdTagSet)) {
-                                    if (!mTagModels.contains(tagModel)) {
-                                        mTagModels.add(tagModel);
-                                    }
-                                }
-                                mAdapterTags.notifyDataSetChanged();
-                            }
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-                        }
-                    });
-                }
-
-                // Lance la méthode qui créé les timelines losques toutes les données des tags ont été récupérées
-                makeTimelines();
-
-                RecyclerView rvTags = findViewById(R.id.re_tags_selected);
-                mAdapterTags = new TagRecyclerAdapter(mTagModels, mTagedList, "count");
-                RecyclerView.LayoutManager layoutManagerTags = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
-                rvTags.setLayoutManager(layoutManagerTags);
-                rvTags.setAdapter(mAdapterTags);
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-
-        });
-
-    }*/
 
     private int convertToDp(int size) {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, size, getResources().getDisplayMetrics());
