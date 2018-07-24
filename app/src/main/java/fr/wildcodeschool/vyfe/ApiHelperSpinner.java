@@ -2,8 +2,6 @@ package fr.wildcodeschool.vyfe;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.ArrayAdapter;
-import android.widget.GridView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -11,20 +9,18 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ApiHelperSpinner {
-    private static FirebaseDatabase mDatabase = SingletonFirebase.getInstance().getDatabase();
     private static final String authUserId = SingletonFirebase.getInstance().getUid();
+    private static FirebaseDatabase mDatabase = SingletonFirebase.getInstance().getDatabase();
     private static String mNameGrid;
-    private static boolean Wait = true;
+    private static ArrayList<String> mGridNames = new ArrayList<>();
 
 
     public static void getSpinner(final Context context, final ApiHelperSpinner.GridResponse listener) {
 
-        final String[] str = {context.getString(R.string.arrow)};
         //tagSetShared données pour mettre spinner
         DatabaseReference myRef = mDatabase.getReference(authUserId).child("tagSets");
         myRef.keepSynced(true);
@@ -39,19 +35,17 @@ public class ApiHelperSpinner {
                     listener.onSuccess(hashMapTitleIdGrid);
                 } else {
                     hashMapTitleIdGrid.clear();
-
-
-                    final long[] pendingLoadCount = {dataSnapshot.getChildrenCount()};
+                    mGridNames.clear();
                     for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                        mNameGrid = (String) snapshot.child("name").getValue().toString();
-                        String idGrid = (String) snapshot.getKey().toString();
-
-                        hashMapTitleIdGrid.put(idGrid,mNameGrid);
-                        Log.d("Spinner", "onDataChange: ");
-
+                        mNameGrid = snapshot.child("name").getValue().toString();
+                        if (mNameGrid != null && !mGridNames.contains(mNameGrid)) {
+                            mGridNames.add(mNameGrid);
+                            String idGrid = snapshot.getKey();
+                            hashMapTitleIdGrid.put(idGrid, mNameGrid);
+                            Log.d("Spinner", "onDataChange: ");
+                        }
                     }
                     listener.onSuccess(hashMapTitleIdGrid);
-
                 }
             }
 
@@ -65,7 +59,7 @@ public class ApiHelperSpinner {
 
     interface GridResponse {
 
-        void onSuccess(HashMap<String, String>  hashMapTitleIdGrid);
+        void onSuccess(HashMap<String, String> hashMapTitleIdGrid);
 
         void onError(String error);
 
