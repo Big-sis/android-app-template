@@ -14,24 +14,27 @@ public class ApiHelperPlay {
     private static String mAuthUserId = SingletonFirebase.getInstance().getUid();
     private static SingletonSessions mSingletonSessions = SingletonSessions.getInstance();
     private static String mIdTagSet;
-    private static String mIdSession = mSingletonSessions.getIdSession();
+    private static String mIdSession;
     private static HashMap<String, Integer> mTagColorList;
 
     public static void getTags(final ArrayList<TagModel> mTagedList, final ArrayList<TagModel> mTagModels, final ApiHelperPlay.TagsResponse listener) {
-
+    mIdSession = mSingletonSessions.getIdSession();
         listener.onWait();
         final DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions").child(mIdSession);
         sessionRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mIdTagSet = dataSnapshot.child("idTagSet").getValue(String.class);
+                getTagsForSession(mTagedList, mTagModels, listener);
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
         });
 
+    }
+
+    private static void getTagsForSession(final ArrayList<TagModel> mTagedList, final ArrayList<TagModel> mTagModels, final ApiHelperPlay.TagsResponse listener) {
         final DatabaseReference tagSessionRef = mDatabase.getReference(mAuthUserId).child("sessions").child(mIdSession).child("tags");
         tagSessionRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

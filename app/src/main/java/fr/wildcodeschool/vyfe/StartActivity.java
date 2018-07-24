@@ -309,11 +309,14 @@ public class StartActivity extends AppCompatActivity {
 
                         DatabaseReference idTagSetRef = mDatabase.getReference(authUserId).child("tagSets").child("name");
                         idTagSetRef.keepSynced(true);
+                        /*
                         if (radioButtonImport.isChecked()) {
                             idTagSet = mIdGridImport;
                         } else {
                             idTagSet = idTagSetRef.push().getKey();
-                        }
+                        }*/
+                        // TODO : éviter la création de nouvelles grilles à partir d'un import
+                        idTagSet = idTagSetRef.push().getKey();
 
                         intent.putExtra(ID_TAG_SET, idTagSet);
 
