@@ -24,7 +24,7 @@ public class GridAdapter extends BaseAdapter implements Filterable {
     private ArrayList<SessionsModel> filterList;
     private CustomFilterVideo filter;
 
-    private SingletonSessions mSingletonSessions = SingletonSessions.getInstance();
+    private SingletonSessions mSingletonSessions;
 
     public static final String TITLE_VIDEO = "titleVideo";
     public final static String FILE_NAME = "filename";
@@ -55,6 +55,7 @@ public class GridAdapter extends BaseAdapter implements Filterable {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         final SessionsModel video = this.video.get(position);
+        mSingletonSessions = SingletonSessions.getInstance();
 
         if (convertView == null) {
             final LayoutInflater layoutInflater = LayoutInflater.from(mContext);

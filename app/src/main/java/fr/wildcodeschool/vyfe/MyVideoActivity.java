@@ -73,6 +73,7 @@ public class MyVideoActivity extends AppCompatActivity {
             @Override
             public void onSuccess(ArrayList<SessionsModel> result) {
                 pBLoading.setVisibility(View.GONE);
+                gridView.setAdapter(mGridAdapter);
             }
 
             @Override
@@ -89,11 +90,10 @@ public class MyVideoActivity extends AppCompatActivity {
             @Override
             public void onFinish() {
                 pBLoading.setVisibility(View.GONE);
+                gridView.setAdapter(mGridAdapter);
             }
         });
 
-
-        gridView.setAdapter(mGridAdapter);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
