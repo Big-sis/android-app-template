@@ -11,14 +11,15 @@ import java.util.HashMap;
 
 public class ApiHelperPlay {
     private static FirebaseDatabase mDatabase = SingletonFirebase.getInstance().getDatabase();
-    private static String mAuthUserId = SingletonFirebase.getInstance().getUid();
-    private static SingletonSessions mSingletonSessions = SingletonSessions.getInstance();
+    private static String mAuthUserId;
+    private static SingletonSessions mSingletonSessions;
     private static String mIdTagSet;
     private static String mIdSession;
-    private static HashMap<String, Integer> mTagColorList;
 
     public static void getTags(final ArrayList<TagModel> mTagedList, final ArrayList<TagModel> mTagModels, final ApiHelperPlay.TagsResponse listener) {
-    mIdSession = mSingletonSessions.getIdSession();
+        mAuthUserId = SingletonFirebase.getInstance().getUid();
+        mSingletonSessions = SingletonSessions.getInstance();
+        mIdSession = mSingletonSessions.getIdSession();
         listener.onWait();
         final DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions").child(mIdSession);
         sessionRef.addListenerForSingleValueEvent(new ValueEventListener() {
