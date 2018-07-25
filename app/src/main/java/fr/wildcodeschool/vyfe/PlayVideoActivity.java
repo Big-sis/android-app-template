@@ -64,14 +64,11 @@ public class PlayVideoActivity extends AppCompatActivity {
     private VideoView mVideoSelected;
     private SeekBar mSeekBar;
     private boolean mIsPlayed = false;
-    private SingletonSessions mSingletonSessions = SingletonSessions.getInstance();
-    private String mIdSession = mSingletonSessions.getIdSession();
-    private String mVideoLink = mSingletonSessions.getFileName();
-    private String mTitleSession = mSingletonSessions.getTitleSession();
-    private String mIdTagSet;
+    private SingletonSessions mSingletonSessions;
+    private String mVideoLink;
+    private String mTitleSession;
     FirebaseDatabase mDatabase;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    final String mAuthUserId = mAuth.getCurrentUser().getUid();
     HashMap<String, Integer> mTagColorList = new HashMap<>();
     TagRecyclerAdapter mAdapterTags;
     RelativeLayout timeLines;
@@ -91,6 +88,10 @@ public class PlayVideoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_play_video);
+
+        mSingletonSessions = SingletonSessions.getInstance();
+        mVideoLink = mSingletonSessions.getFileName();
+        mTitleSession = mSingletonSessions.getTitleSession();
 
         mLlMain = findViewById(R.id.ll_main_playvideo);
         mConstraintVideo = findViewById(R.id.constraint_video);
@@ -186,8 +187,6 @@ public class PlayVideoActivity extends AppCompatActivity {
 
                     @Override
                     public void onWait() {
-
-
                     }
 
                     @Override
@@ -336,9 +335,8 @@ public class PlayVideoActivity extends AppCompatActivity {
 
                 iv.setLayoutParams(layoutParamsIv);
                 iv.setMinimumHeight(50);
-                iv.setMinimumWidth(50);
+                iv.setMinimumWidth(Math.max(50, (int) (end - start)));
 
-                iv.setMaxWidth((int) Math.floor(end - start));
                 // Permet de se déplacer dans la vidéo en cliquant sur les images
                 iv.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -372,8 +370,6 @@ public class PlayVideoActivity extends AppCompatActivity {
 
                     @Override
                     public void onFinish() {
-
-
                     }
                 });
 

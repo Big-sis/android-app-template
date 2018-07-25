@@ -54,9 +54,9 @@ public class SelectedVideoActivity extends AppCompatActivity {
     final String mAuthUserId = SingletonFirebase.getInstance().getUid();
     private String mIdTagSet;
     private SingletonSessions mSingletonSessions = SingletonSessions.getInstance();
-    private String mIdSession = mSingletonSessions.getIdSession();
-    private String mFilename = mSingletonSessions.getFileName();
-    private String mTitleVideo = mSingletonSessions.getTitleSession();
+    private String mIdSession;
+    private String mFilename;
+    private String mTitleVideo;
 
 
     private byte[] inputData = new byte[0];
@@ -72,6 +72,10 @@ public class SelectedVideoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selected_video);
+
+        mIdSession = mSingletonSessions.getIdSession();
+        mFilename = mSingletonSessions.getFileName();
+        mTitleVideo = mSingletonSessions.getTitleSession();
 
 
         mDatabase = SingletonFirebase.getInstance().getDatabase();
@@ -189,7 +193,6 @@ public class SelectedVideoActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
         });
 
