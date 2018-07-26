@@ -48,11 +48,16 @@ import java.util.Map;
 public class SelectedVideoActivity extends AppCompatActivity {
 
     ArrayList<TagModel> mTagModels = new ArrayList<>();
+    ArrayList<TagModel> mTagedList = new ArrayList<>();
     FirebaseDatabase mDatabase;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     final String mAuthUserId = SingletonFirebase.getInstance().getUid();
-    private String mIdSession = "";
     private String mIdTagSet;
+    private SingletonSessions mSingletonSessions = SingletonSessions.getInstance();
+    private String mIdSession;
+    private String mFilename;
+    private String mTitleVideo;
+
 
     private byte[] inputData = new byte[0];
     private InputStream iStream = null;
@@ -67,7 +72,10 @@ public class SelectedVideoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selected_video);
-        mIdSession = getIntent().getStringExtra(ID_SESSION);
+
+        mIdSession = mSingletonSessions.getIdSession();
+        mFilename = mSingletonSessions.getFileName();
+        mTitleVideo = mSingletonSessions.getTitleSession();
 
 
         mDatabase = SingletonFirebase.getInstance().getDatabase();
@@ -80,16 +88,12 @@ public class SelectedVideoActivity extends AppCompatActivity {
 
         final DatabaseReference ref = mDatabase.getInstance().getReference(mAuthUserId).child("sessions");
 
-        final String titleSession = getIntent().getStringExtra(TITLE_VIDEO);
-        final String fileName = getIntent().getStringExtra(FILE_NAME);
-        tvTitle.setText(titleSession);
+        tvTitle.setText(mTitleVideo);
 
         edit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(SelectedVideoActivity.this, InfoVideoActivity.class);
-                intent.putExtra(FILE_NAME, fileName);
-                intent.putExtra(TITLE_VIDEO, titleSession);
                 startActivity(intent);
             }
         });
@@ -165,9 +169,6 @@ public class SelectedVideoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(SelectedVideoActivity.this, PlayVideoActivity.class);
-                intent.putExtra(ID_SESSION, mIdSession);
-                intent.putExtra(FILE_NAME, fileName);
-                intent.putExtra(TITLE_VIDEO, titleSession);
                 startActivity(intent);
             }
         });
@@ -176,17 +177,11 @@ public class SelectedVideoActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(SelectedVideoActivity.this, PlayVideoActivity.class);
-                intent.putExtra(ID_SESSION, mIdSession);
-                intent.putExtra(FILE_NAME, fileName);
-                intent.putExtra(TITLE_VIDEO, titleSession);
                 startActivity(intent);
             }
         });
 
-        RecyclerView recyclerTags = findViewById(R.id.re_tags);
-        RecyclerView.LayoutManager layoutManagerTags = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
-        recyclerTags.setLayoutManager(layoutManagerTags);
-        recyclerTags.setAdapter(mAdapterTags);
+
 
         final DatabaseReference tagSessionRef = mDatabase.getReference(mAuthUserId).child("sessions").child(mIdSession).child("idTagSet");
 
@@ -198,7 +193,6 @@ public class SelectedVideoActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
             }
         });
 
@@ -213,7 +207,33 @@ public class SelectedVideoActivity extends AppCompatActivity {
                         mTagModels.add(tagModel);
                     }
                 }
-                mAdapterTags.notifyDataSetChanged();
+
+                DatabaseReference tagedRef = mDatabase.getReference(mAuthUserId).child("sessions").child(mIdSession).child("tags");
+                tagedRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot tagedSnapshot : dataSnapshot.getChildren()) {
+                            TagModel taged = tagedSnapshot.getValue(TagModel.class);
+                            // TODO : trouver pourquoi la requête ne récupère pas le tagName avec le modèle
+                            String tagedName = tagedSnapshot.child("tagName").getValue(String.class);
+                            taged.setName(tagedName);
+                            mTagedList.add(taged);
+                        }
+
+                        RecyclerView recyclerTags = findViewById(R.id.re_tags);
+                        TagRecyclerAdapter adapterTags = new TagRecyclerAdapter(mTagModels, mTagedList,"count");
+                        RecyclerView.LayoutManager layoutManagerTags = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+                        recyclerTags.setLayoutManager(layoutManagerTags);
+                        recyclerTags.setAdapter(adapterTags);
+                        adapterTags.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
+
             }
 
             @Override
@@ -224,14 +244,14 @@ public class SelectedVideoActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(titleSession);
+        getSupportActionBar().setTitle(mTitleVideo);
 
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot video: dataSnapshot.getChildren()) {
                     SessionsModel model = video.getValue(SessionsModel.class);
-                    if (fileName.equals(model.getVideoLink())) {
+                    if (mFilename.equals(model.getVideoLink())) {
                         if (video.hasChild("description")) {
                             tvDescription.setText(model.getDescription());
                         } else {
@@ -260,6 +280,11 @@ public class SelectedVideoActivity extends AppCompatActivity {
                 Intent intent = new Intent(SelectedVideoActivity.this, ConnexionActivity.class);
                 startActivity(intent);
                 mAuth.signOut();
+                return true;
+
+            case R.id.home:
+                Intent intentHome = new Intent(SelectedVideoActivity.this, MainActivity.class);
+                startActivity(intentHome);
                 return true;
         }
 

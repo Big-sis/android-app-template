@@ -24,9 +24,8 @@ import com.google.firebase.database.ValueEventListener;
 public class InfoVideoActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    public static final String FILE_NAME = "filename";
-    public static final String TITLE_VIDEO = "titleVideo";
     FirebaseDatabase mDatabase;
+    SingletonSessions mSingletonSessions = SingletonSessions.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +40,8 @@ public class InfoVideoActivity extends AppCompatActivity {
         final EditText etDescription = findViewById(R.id.et_description);
         final EditText etVideoTitle = findViewById(R.id.et_video_title);
         Toolbar toolbar = findViewById(R.id.toolbar);
-        final String fileName = getIntent().getStringExtra(FILE_NAME);
+        final String fileName = mSingletonSessions.getFileName();
+        mSingletonSessions.setFileName(fileName);
         final String uid = mAuth.getCurrentUser().getUid();
         mDatabase = SingletonFirebase.getInstance().getDatabase();
         final DatabaseReference ref = mDatabase.getInstance().getReference(uid).child("sessions");
@@ -86,7 +86,6 @@ public class InfoVideoActivity extends AppCompatActivity {
                             if (fileName.equals(model.getVideoLink())) {
                                 video.getRef().removeValue();
                                 Intent intent = new Intent(InfoVideoActivity.this, MyVideoActivity.class);
-                                intent.putExtra(FILE_NAME, fileName);
                                 startActivity(intent);
                             }
                         }
@@ -111,6 +110,8 @@ public class InfoVideoActivity extends AppCompatActivity {
                             if (fileName.equals(model.getVideoLink())) {
                                 String description = etDescription.getText().toString();
                                 video.getRef().child("description").setValue(description);
+                                String title = etVideoTitle.getText().toString();
+                                video.getRef().child("name").setValue(title);
                                 Toast.makeText(InfoVideoActivity.this, R.string.description_added, Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(InfoVideoActivity.this, MyVideoActivity.class);
                                 startActivity(intent);
@@ -147,6 +148,11 @@ public class InfoVideoActivity extends AppCompatActivity {
                 Intent intent = new Intent(InfoVideoActivity.this, ConnexionActivity.class);
                 startActivity(intent);
                 mAuth.signOut();
+                return true;
+
+            case R.id.home:
+                Intent intentHome = new Intent(InfoVideoActivity.this, MainActivity.class);
+                startActivity(intentHome);
                 return true;
         }
 

@@ -41,7 +41,7 @@
     <string name="name_event">Nom de l\'évènement</string>
     <string name="color_event">Couleur de l\'évènement</string>
     <string name="def_colot">Définissez un nom et une couleur à l\'évènement</string>
-    <string name="grid_import">Importer une grille d\'analyse</string>
+    <string name="grid_import">Ou importer une grille d\'analyse</string>
     <string name="new_grid2">Créer une nouvelle grille d\'analyse</string>
     <string name="move">Événement déplacé</string>
     <string name="delete_tag">Événement supprimé</string>
@@ -84,4 +84,5 @@
     <string name="import_grid_arrow">Importer une grille</string>
     <string name="arrow"> \ \ \ ▼</string>
     <string name="choose_name_grid">Indiquez un titre à votre grille d\'observation</string>
+    <string name="empty_grid">Veuiller indiquer des tags ou une grille d\'analyse</string>
 </resources>

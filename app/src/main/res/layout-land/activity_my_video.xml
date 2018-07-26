@@ -9,58 +9,58 @@
 
     <include
         android:id="@+id/appBar"
-        layout="@layout/toolbar" />
-
-    <ScrollView
+        layout="@layout/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="8dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="50dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.v7.widget.SearchView
+        android:id="@+id/search_video"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:defaultQueryHint="@string/search"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/appBar" >
+
+    </android.support.v7.widget.SearchView>
+
+    <GridView
+        android:id="@+id/grid_videos"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:clipToPadding="false"
+        android:columnWidth="150dp"
+        android:gravity="center"
+        android:horizontalSpacing="16dp"
+        android:numColumns="auto_fit"
+        android:paddingBottom="16dp"
+        android:verticalSpacing="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/search_video"
+        tools:listitem="@layout/item_video" >
 
-        <android.support.constraint.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+    </GridView>
 
+    <ProgressBar
+        android:id="@+id/progress_bar_loading"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:progressDrawable="@drawable/vyfe_logo"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="@+id/grid_videos"
+        app:layout_constraintEnd_toEndOf="@+id/grid_videos"
+        app:layout_constraintStart_toStartOf="@+id/grid_videos"
+        app:layout_constraintTop_toTopOf="@+id/grid_videos" />
 
-            <android.support.v7.widget.SearchView
-                android:id="@+id/search_video"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:defaultQueryHint="@string/search"
-                app:layout_constraintTop_toTopOf="parent">
-
-            </android.support.v7.widget.SearchView>
-
-            <GridView
-                android:id="@+id/grid_videos"
-                android:layout_width="wrap_content"
-                android:layout_height="345dp"
-                android:layout_marginEnd="32dp"
-                android:layout_marginLeft="32dp"
-                android:layout_marginRight="32dp"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="16dp"
-                android:columnWidth="150dp"
-                android:gravity="center"
-                android:horizontalSpacing="16dp"
-                android:numColumns="auto_fit"
-                android:stretchMode="columnWidth"
-                android:verticalSpacing="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/search_video"
-                app:layout_constraintVertical_bias="0.0"
-                tools:listitem="@layout/item_video" />
-
-        </android.support.constraint.ConstraintLayout>
-    </ScrollView>
 
 </android.support.constraint.ConstraintLayout>
