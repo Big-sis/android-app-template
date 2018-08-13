@@ -85,4 +85,6 @@
     <string name="arrow"> \ \ \ ▼</string>
     <string name="choose_name_grid">Indiquez un titre à votre grille d\'observation</string>
     <string name="empty_grid">Veuiller indiquer des tags ou une grille d\'analyse</string>
+    <string name="title_grid">Titre de votre grille d\'observation :</string>
+    <string name="title_session">Titre de votre vidéo :</string>
 </resources>
