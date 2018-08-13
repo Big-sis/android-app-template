@@ -89,6 +89,7 @@ public class StartActivity extends AppCompatActivity {
         final RadioButton radioButtonNew = findViewById(R.id.radio_Button_new);
         final Spinner spinner = (Spinner) findViewById(R.id.spinner_session_infos);
         TextView tvAddTag = findViewById(R.id.tv_add_tag);
+        final TextView tvTitleGridImport = findViewById(R.id.tv_title_grid_import);
         Toolbar toolbar = findViewById(R.id.toolbar);
         mEtTagSet = findViewById(R.id.et_grid_title);
         mEtVideoTitle = findViewById(R.id.et_video_title2);
@@ -159,6 +160,7 @@ public class StartActivity extends AppCompatActivity {
                     adapterNotifyDataChange(adapter, adapterImport);
                     recyclerTagList.setVisibility(View.GONE);
                     recyclerViewImport.setVisibility(View.VISIBLE);
+                    tvTitleGridImport.setVisibility(View.VISIBLE);
                     radioButtonNew.setChecked(false);
                     spinner.setClickable(true);
                     spinner.setEnabled(true);
@@ -269,6 +271,7 @@ public class StartActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (radioButtonNew.isChecked()) {
+                    tvTitleGridImport.setVisibility(View.GONE);
                     mTagModelListAdd.clear();
                     adapterNotifyDataChange(adapter, adapterImport);
                     recyclerTagList.setVisibility(View.VISIBLE);
@@ -277,6 +280,7 @@ public class StartActivity extends AppCompatActivity {
                     spinner.setClickable(false);
                     spinner.setLongClickable(false);
                     spinner.setEnabled(false);
+                    spinner.setVisibility(View.GONE);
                     importGrid(mEtTagSet, fabAddMoment, true);
                 }
             }
