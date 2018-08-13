@@ -71,7 +71,7 @@
                         android:id="@+id/btn_start_session"
                         android:layout_width="0dp"
                         android:layout_height="100dp"
-                        android:layout_margin="5dp"
+                        android:layout_margin="15dp"
                         android:layout_weight="1"
                         android:background="@color/colorCharcoalGrey">
 
@@ -99,7 +99,7 @@
                         android:id="@+id/btn_multi_session"
                         android:layout_width="0dp"
                         android:layout_height="100dp"
-                        android:layout_margin="5dp"
+                        android:layout_margin="15dp"
                         android:layout_weight="1"
                         android:background="@color/colorCharcoalGrey">
 
@@ -130,14 +130,14 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
                     android:layout_marginRight="5dp"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="40dp"
                     android:orientation="horizontal">
 
                     <LinearLayout
                         android:id="@+id/btn_videos"
                         android:layout_width="0dp"
                         android:layout_height="100dp"
-                        android:layout_margin="5dp"
+                        android:layout_margin="15dp"
                         android:layout_weight="1"
                         android:background="@color/colorCharcoalGrey">
 
