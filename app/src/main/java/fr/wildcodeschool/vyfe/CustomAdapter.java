@@ -13,12 +13,14 @@ public class CustomAdapter extends BaseAdapter {
     Context context;
     int color[];
     String[] colorName;
+    String[] nameDrawable;
     LayoutInflater inflter;
 
-    public CustomAdapter(Context applicationContext, int[] color, String[] colorName) {
+    public CustomAdapter(Context applicationContext, int[] color, String[] colorName, String[] nameDrawable) {
         this.context = applicationContext;
         this.color = color;
         this.colorName = colorName;
+        this.nameDrawable =nameDrawable;
         inflter = (LayoutInflater.from(applicationContext));
     }
 

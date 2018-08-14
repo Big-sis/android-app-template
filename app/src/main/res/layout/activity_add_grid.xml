@@ -70,6 +70,7 @@
         <Spinner
             android:id="@+id/simpleSpinner"
             android:layout_width="fill_parent"
+            android:background="@drawable/style_button_white"
             android:layout_height="wrap_content" />
 
         <Button

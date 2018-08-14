@@ -354,7 +354,7 @@ public class PlayVideoActivity extends AppCompatActivity {
                 ApiHelperPlay.getColors(mTagColorList, new ApiHelperPlay.ColorResponse() {
                     @Override
                     public void onSuccess() {
-                        iv.setBackgroundColor(mTagColorList.get(tagModel.getName()));
+                        iv.setBackgroundResource(mTagColorList.get(tagModel.getName()));
 
                     }
 

@@ -1,11 +1,10 @@
 package fr.wildcodeschool.vyfe;
 
-import android.util.Pair;
-
 import java.util.ArrayList;
 
 public class TagModel {
 
+    private String colorName;
     private int color;
     private String tagName;
     private String fkTagSet;
@@ -16,12 +15,12 @@ public class TagModel {
     private ArrayList<TimeModel> times;
     private int count = 0;
 
+
     public TagModel(int color, String tagName, ArrayList<TimeModel> times) {
         this.color = color;
         this.tagName = tagName;
         this.times = times;
     }
-
     public TagModel(int color, String tagName, String fkTagSet, String rigthOffset) {
         this.color = color;
         this.tagName = tagName;
@@ -46,6 +45,21 @@ public class TagModel {
         this.fkTagSet = fkTagSet;
         this.rigthOffset = rigthOffset;
         this.leftOffset = leftOffset;
+    }
+
+    public TagModel(String colorName, String tagName, String fkTagSet, String rigthOffset) {
+        this.colorName = colorName;
+        this.tagName = tagName;
+        this.fkTagSet = fkTagSet;
+        this.rigthOffset = rigthOffset;
+    }
+
+    public String getColorName() {
+        return colorName;
+    }
+
+    public void setColorName(String colorName) {
+        this.colorName = colorName;
     }
 
     public int getColor() {

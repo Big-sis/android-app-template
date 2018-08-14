@@ -9,7 +9,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -19,17 +18,10 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Random;
 
-import petrov.kristiyan.colorpicker.ColorPicker;
-
-public class AddGridActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
+public class AddGridActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     // Création des tags (nom + couleur)
     private static int mfinalcolor = 0;
@@ -43,9 +35,50 @@ public class AddGridActivity extends AppCompatActivity implements AdapterView.On
     private static ImageView ivColor;
     private static ArrayList<String> nameDouble = new ArrayList<>();
     private static boolean repeatName = false;
-    private  String[] colorName={"Choisir une couleur","Bleu","Bleu clair","Orange","Vert","Gris","Rose"};
-    private static int color[] = {0,R.drawable.color_gradient_blue_dark, R.drawable.color_gradient_blue_light, R.drawable.color_gradient_faded_orange, R.drawable.color_gradient_green, R.drawable.color_gradient_grey, R.drawable.color_gradient_rosy};
+    private static int color[] = {R.drawable.icons8_tri_d_croissant_96, R.drawable.color_gradient_blue_dark, R.drawable.color_gradient_blue_light, R.drawable.color_gradient_faded_orange, R.drawable.color_gradient_green, R.drawable.color_gradient_grey, R.drawable.color_gradient_rosy};
+    private static String[] nameDrawable = {"", "color_gradient_blue_dark", "color_gradient_blue_light", "color_gradient_faded_orange", "color_gradient_green", "color_gradient_grey", "color_gradient_rosy"};
+    private static String nameColorTag;
+    private String[] colorName = {"Choisir une couleur", "Bleu", "Bleu clair", "Orange", "Vert", "Gris", "Rose"};
 
+    public static void chooseColor() {
+        int chooserandom = 1 + (int) (Math.random() * (color.length - 1));
+        String nameColor = String.valueOf(color[chooserandom]);
+        ivColor.setBackgroundResource(Integer.parseInt(nameColor));
+        mfinalcolor = Integer.parseInt(nameColor);
+        nameColorTag = nameDrawable[chooserandom];
+        int colorFile = 0;
+
+
+        switch (nameColorTag) {
+            case "color_gradient_blue_dark":
+                colorFile = R.drawable.color_gradient_blue_dark;
+                break;
+            case "color_gradient_blue_ligh":
+                colorFile = R.drawable.color_gradient_blue_light;
+                break;
+            case "color_gradient_faded_orange":
+                colorFile = R.drawable.color_gradient_faded_orange;
+                break;
+            case "color_gradient_green":
+                colorFile = R.drawable.color_gradient_green;
+                break;
+            case "color_gradient_grey":
+                colorFile = R.drawable.color_gradient_grey;
+                break;
+            case "color_gradient_rosy":
+                colorFile = R.drawable.color_gradient_rosy;
+                break;
+
+        }
+        ivColor.setBackgroundResource(colorFile);
+
+/**
+
+ int nbColor = random.nextInt(colors.size());
+ String color = colors.get(nbColor);
+ ivColor.setBackgroundColor(Color.parseColor(color));
+ mfinalcolor = Color.parseColor(color);**/
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,9 +88,8 @@ public class AddGridActivity extends AppCompatActivity implements AdapterView.On
         Spinner spin = (Spinner) findViewById(R.id.simpleSpinner);
         spin.setOnItemSelectedListener(this);
 
-        CustomAdapter customAdapter=new CustomAdapter(getApplicationContext(),color,colorName);
+        CustomAdapter customAdapter = new CustomAdapter(getApplicationContext(), color, colorName, nameDrawable);
         spin.setAdapter(customAdapter);
-
 
 
         final EditText etName = findViewById(R.id.et_name);
@@ -81,32 +113,29 @@ public class AddGridActivity extends AppCompatActivity implements AdapterView.On
 
         // Gestion couleurs
         /**Button btnChooseColor = findViewById(R.id.btn_chosse_color);
-        btnChooseColor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                final ColorPicker colorPicker = new ColorPicker(AddGridActivity.this);
-                colorPicker.setColors(colors);
-                colorPicker.setColumns(4);
-                colorPicker.setRoundColorButton(true);
-                colorPicker.setTitle(getResources().getString(R.string.choose_color));
-                colorPicker.setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
-                    @Override
-                    public void onChooseColor(int position, int color) {
-                        ImageView ivColor = findViewById(R.id.iv_color);
-                        ivColor.setBackgroundColor(color);
-                        mfinalcolor = color;
+         btnChooseColor.setOnClickListener(new View.OnClickListener() {
+        @Override public void onClick(View view) {
+        final ColorPicker colorPicker = new ColorPicker(AddGridActivity.this);
+        colorPicker.setColors(colors);
+        colorPicker.setColumns(4);
+        colorPicker.setRoundColorButton(true);
+        colorPicker.setTitle(getResources().getString(R.string.choose_color));
+        colorPicker.setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
+        @Override public void onChooseColor(int position, int color) {
+        ImageView ivColor = findViewById(R.id.iv_color);
+        ivColor.setBackgroundColor(color);
+        mfinalcolor = color;
 
-                    }
+        }
 
-                    @Override
-                    public void onCancel() {
+        @Override public void onCancel() {
 
-                    }
-                });
-                colorPicker.show();
-            }
+        }
         });
-**/
+        colorPicker.show();
+        }
+        });
+         **/
 
         // Elements du recycler
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(AddGridActivity.this, LinearLayoutManager.VERTICAL, false);
@@ -136,7 +165,7 @@ public class AddGridActivity extends AppCompatActivity implements AdapterView.On
                 } else if ((valueName.equals("") || mfinalcolor == 0)) {
                     Toast.makeText(AddGridActivity.this, R.string.def_colot, Toast.LENGTH_SHORT).show();
                 } else {
-                    TagModel tagModel = new TagModel(mfinalcolor, valueName, null, null);
+                    TagModel tagModel = new TagModel(nameColorTag, valueName, null, null);
                     mTagModelListAdd.add(tagModel);
                     mAdapter.notifyDataSetChanged();
                     mfinalcolor = 0;
@@ -160,7 +189,7 @@ public class AddGridActivity extends AppCompatActivity implements AdapterView.On
                 colors.clear();
 
                 Intent intent = new Intent(AddGridActivity.this, StartActivity.class);
-                intent.putExtra("fromAdd","fromAdd");
+                intent.putExtra("fromAdd", "fromAdd");
                 startActivity(intent);
                 finish();
             }
@@ -184,10 +213,14 @@ public class AddGridActivity extends AppCompatActivity implements AdapterView.On
 
 
     }
+
     @Override
-    public void onItemSelected(AdapterView<?> arg0, View arg1, int position,long id) {
-        if(position!=0){
+    public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
+        if (position != 0) {
             mfinalcolor = color[position];
+            nameColorTag = nameDrawable[position];
+
+
             Toast.makeText(getApplicationContext(), colorName[position], Toast.LENGTH_LONG).show();
         }
 
@@ -217,20 +250,6 @@ public class AddGridActivity extends AppCompatActivity implements AdapterView.On
         mAdapter.notifyItemRemoved(position);
         nameDouble.remove(position);
 
-    }
-
-    public static void chooseColor() {
-        int chooserandom = 1 + (int)(Math.random() * (color.length));
-        String nameColor = String.valueOf(color[chooserandom]);
-        ivColor.setBackgroundResource(Integer.parseInt(nameColor));
-        mfinalcolor = Integer.parseInt(nameColor);
-
-/**
-
-        int nbColor = random.nextInt(colors.size());
-        String color = colors.get(nbColor);
-        ivColor.setBackgroundColor(Color.parseColor(color));
-        mfinalcolor = Color.parseColor(color);**/
     }
 
 }
