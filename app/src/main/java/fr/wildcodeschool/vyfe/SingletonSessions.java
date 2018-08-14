@@ -2,6 +2,8 @@ package fr.wildcodeschool.vyfe;
 
 import java.util.ArrayList;
 
+
+//TODO Revoir le passage de paramètres entre les activités MyVideo et PLayVideo
 public class SingletonSessions {
     public static SingletonSessions sInstance = null;
 

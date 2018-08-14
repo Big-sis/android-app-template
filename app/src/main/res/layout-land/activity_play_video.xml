@@ -23,7 +23,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:progressDrawable="@drawable/vyfe_logo"
-        android:visibility="visible"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -45,7 +45,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="60dp"
             app:layout_constraintEnd_toEndOf="@+id/video_control"
-            app:layout_constraintEnd_toStartOf="@+id/scroll_left"
+            app:layout_constraintEnd_toStartOf="@+id/tag_list_view"
             app:layout_constraintHorizontal_bias="0.053"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -59,8 +59,8 @@
             android:orientation="vertical"
             android:paddingLeft="16dp"
             android:paddingRight="16dp"
-            app:layout_constraintBottom_toTopOf="@+id/scrollView"
-            app:layout_constraintEnd_toStartOf="@+id/scroll_left"
+            app:layout_constraintBottom_toTopOf="@+id/timeline"
+            app:layout_constraintEnd_toStartOf="@+id/tag_list_view"
             app:layout_constraintTop_toTopOf="parent">
 
             <android.support.design.widget.FloatingActionButton
@@ -73,7 +73,9 @@
                 android:src="@android:drawable/ic_media_play"
                 app:backgroundTint="@color/color12"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginRight="40dp"
+                android:focusable="true" />
 
             <android.support.design.widget.FloatingActionButton
                 android:id="@+id/bt_replay"
@@ -86,9 +88,11 @@
                 app:backgroundTint="@color/color2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/bt_play_selected"
-                app:srcCompat="@drawable/replay_black" />
+                app:srcCompat="@drawable/replay_black"
+                android:layout_marginRight="40dp"
+                android:focusable="true" />
 
-            <Chronometer
+            <fr.wildcodeschool.vyfe.StopWatch
                 android:id="@+id/chronometer_play"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -99,11 +103,12 @@
                 android:textColor="@color/colorFadedOrange"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/bt_replay" />
+                app:layout_constraintTop_toBottomOf="@+id/bt_replay"
+                android:layout_marginRight="40dp" />
         </LinearLayout>
 
         <ScrollView
-            android:id="@+id/scrollView"
+            android:id="@+id/timeline"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_marginTop="8dp"
@@ -134,18 +139,18 @@
                     android:longClickable="false"
                     android:progressDrawable="@android:color/transparent"
                     android:thumb="@drawable/thumb_blue"
-                    android:thumbOffset="15dp"
                     android:visibility="visible"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:layout_alignParentRight="true" />
 
             </RelativeLayout>
         </ScrollView>
 
         <ScrollView
-            android:id="@+id/scroll_left"
+            android:id="@+id/tag_list_view"
             android:layout_width="wrap_content"
             android:layout_height="350dp"
             android:layout_marginEnd="8dp"
