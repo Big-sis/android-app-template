@@ -22,7 +22,7 @@ import java.util.Collections;
 
 public class AddGridActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    // Création des tags (nom + couleur)
+    // Create tags (name + color)
     private static int mfinalcolor = 0;
 
 
@@ -37,36 +37,13 @@ public class AddGridActivity extends AppCompatActivity implements AdapterView.On
     private static int color[] = {R.drawable.icons8_tri_d_croissant_96, R.drawable.color_gradient_blue_dark, R.drawable.color_gradient_blue_light, R.drawable.color_gradient_faded_orange, R.drawable.color_gradient_green, R.drawable.color_gradient_grey, R.drawable.color_gradient_rosy};
     private static String[] nameDrawable = {"", "color_gradient_blue_dark", "color_gradient_blue_light", "color_gradient_faded_orange", "color_gradient_green", "color_gradient_grey", "color_gradient_rosy"};
     private static String nameColorTag;
-    private static int colorFile = 0;
     private String[] colorName = {"Choisir une couleur", "Bleu", "Bleu clair", "Orange", "Vert", "Gris", "Rose"};
 
     public static void chooseColor() {
         int chooserandom = 1 + (int) (Math.random() * (color.length - 1));
         nameColorTag = nameDrawable[chooserandom];
+        HelperColor.convertColor(nameColorTag, ivColor);
 
-
-        switch (nameColorTag) {
-            case "color_gradient_blue_dark":
-                colorFile = R.drawable.color_gradient_blue_dark;
-                break;
-            case "color_gradient_blue_ligh":
-                colorFile = R.drawable.color_gradient_blue_light;
-                break;
-            case "color_gradient_faded_orange":
-                colorFile = R.drawable.color_gradient_faded_orange;
-                break;
-            case "color_gradient_green":
-                colorFile = R.drawable.color_gradient_green;
-                break;
-            case "color_gradient_grey":
-                colorFile = R.drawable.color_gradient_grey;
-                break;
-            case "color_gradient_rosy":
-                colorFile = R.drawable.color_gradient_rosy;
-                break;
-
-        }
-        ivColor.setBackgroundResource(colorFile);
     }
 
     @Override

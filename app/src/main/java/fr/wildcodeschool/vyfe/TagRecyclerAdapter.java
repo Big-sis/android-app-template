@@ -40,33 +40,9 @@ public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.
 
     @Override
     public void onBindViewHolder(TagRecyclerAdapter.ViewHolder holder, int position) {
-        int colorFile = 0;
         TagModel tagModel = mTagModelList.get(position);
-        if(tagModel.getColorName()!=null){
-        switch (tagModel.getColorName()){
-            case "color_gradient_blue_dark":
-                colorFile = R.drawable.color_gradient_blue_dark;
-                break;
-            case"color_gradient_blue_ligh":
-                colorFile =R.drawable.color_gradient_blue_light;
-                break;
-            case"color_gradient_faded_orange":
-                colorFile =R.drawable.color_gradient_faded_orange;
-                break;
-            case"color_gradient_green":
-                colorFile =R.drawable.color_gradient_green;
-                break;
-            case"color_gradient_grey":
-                colorFile =R.drawable.color_gradient_grey;
-                break;
-            case"color_gradient_rosy":
-                colorFile =R.drawable.color_gradient_rosy;
-                break;}
-
-        }
-
         holder.tvName.setText(tagModel.getName());
-        holder.ivColor.setBackgroundResource(colorFile);
+        holder.ivColor.setBackgroundResource(HelperColor.convertColor(tagModel.getColorName(),holder.ivColor));
 
 
         if (mFrom.equals("start")) {

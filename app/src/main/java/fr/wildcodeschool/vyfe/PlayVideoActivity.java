@@ -1,36 +1,26 @@
 package fr.wildcodeschool.vyfe;
 
-import android.content.res.ColorStateList;
-import android.content.res.Resources;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.PathShape;
-import android.graphics.drawable.shapes.RectShape;
-import android.graphics.drawable.shapes.Shape;
 import android.media.MediaPlayer;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
-import android.content.Intent;
-import android.support.annotation.DrawableRes;
 import android.support.annotation.RequiresApi;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Pair;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.Chronometer;
@@ -39,34 +29,19 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 
 public class PlayVideoActivity extends AppCompatActivity {
 
-    private ArrayList<TagModel> mTagedList = new ArrayList<>();
-    private ArrayList<TagModel> mTagModels = new ArrayList<>();
-    private VideoView mVideoSelected;
-    private SeekBar mSeekBar;
-    private boolean mIsPlayed = false;
-    private SingletonSessions mSingletonSessions;
-    private String mVideoLink;
-    private String mTitleSession;
     FirebaseDatabase mDatabase;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     HashMap<String, String> mTagColorList = new HashMap<>();
@@ -77,9 +52,17 @@ public class PlayVideoActivity extends AppCompatActivity {
     int mVideoDuration;
     int mWidth;
     int mLastEnd;
+    private ArrayList<TagModel> mTagedList = new ArrayList<>();
+    private ArrayList<TagModel> mTagModels = new ArrayList<>();
+    private VideoView mVideoSelected;
+    private SeekBar mSeekBar;
+    private boolean mIsPlayed = false;
+    private SingletonSessions mSingletonSessions;
+    private String mVideoLink;
+    private String mTitleSession;
     private Chronometer mChrono;
     private LinearLayout mLlMain;
-    private  FloatingActionButton mPlay;
+    private FloatingActionButton mPlay;
     private ConstraintLayout mConstraintVideo;
     private ProgressBar mLoadProgressBar;
 
@@ -115,7 +98,7 @@ public class PlayVideoActivity extends AppCompatActivity {
         // Applique les paramètres à la seekBar
 
         RelativeLayout.LayoutParams seekBarParams = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        seekBarParams.setMargins( convertToDp(185), 0, 0, 0);
+        seekBarParams.setMargins(convertToDp(185), 0, 0, 0);
         mSeekBar = findViewById(R.id.seek_bar_selected);
         mSeekBar.setLayoutParams(seekBarParams);
 
@@ -198,7 +181,6 @@ public class PlayVideoActivity extends AppCompatActivity {
                 });
             }
         });
-
 
 
         // Bouton play/pause
@@ -324,7 +306,7 @@ public class PlayVideoActivity extends AppCompatActivity {
                 double startRatio = firstMicro / mVideoDuration;
                 double endRatio = secondMicro / mVideoDuration;
 
-                final double start =  (startRatio * tagedLineSize) / getResources().getInteger(R.integer.micro_to_milli);
+                final double start = (startRatio * tagedLineSize) / getResources().getInteger(R.integer.micro_to_milli);
                 double end = (endRatio * tagedLineSize) / getResources().getInteger(R.integer.micro_to_milli);
 
                 final ImageView iv = new ImageView(PlayVideoActivity.this);
@@ -354,31 +336,8 @@ public class PlayVideoActivity extends AppCompatActivity {
                 ApiHelperPlay.getColors(mTagColorList, new ApiHelperPlay.ColorResponse() {
                     @Override
                     public void onSuccess() {
-                        //int colorFile = getResources().getIdentifier(mTagColorList.get(tagModel.getName()),"string", getApplicationContext().getPackageName());
+                        HelperColor.convertColor(mTagColorList.get(tagModel.getName()),iv);
 
-int colorFile =0;
-                        switch (mTagColorList.get(tagModel.getName())) {
-                            case "color_gradient_blue_dark":
-                                colorFile = R.drawable.color_gradient_blue_dark;
-                                break;
-                            case "color_gradient_blue_ligh":
-                                colorFile = R.drawable.color_gradient_blue_light;
-                                break;
-                            case "color_gradient_faded_orange":
-                                colorFile = R.drawable.color_gradient_faded_orange;
-                                break;
-                            case "color_gradient_green":
-                                colorFile = R.drawable.color_gradient_green;
-                                break;
-                            case "color_gradient_grey":
-                                colorFile = R.drawable.color_gradient_grey;
-                                break;
-                            case "color_gradient_rosy":
-                                colorFile = R.drawable.color_gradient_rosy;
-                                break;
-
-                        }
-                        iv.setBackgroundResource(colorFile);
                     }
 
                     @Override
@@ -418,8 +377,8 @@ int colorFile =0;
                     Drawable thumb = getResources().getDrawable(R.drawable.thumb_blue);
                     int h = mLlMain.getMeasuredHeight();
                     int w = 15;
-                    Bitmap bmpOrg = ((BitmapDrawable)thumb).getBitmap();
-                    Drawable newThumb = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bmpOrg,w,h,true));
+                    Bitmap bmpOrg = ((BitmapDrawable) thumb).getBitmap();
+                    Drawable newThumb = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bmpOrg, w, h, true));
                     newThumb.setBounds(0, 0, newThumb.getIntrinsicWidth(), newThumb.getIntrinsicHeight());
                     mSeekBar.setThumb(newThumb);
                     mSeekBar.getViewTreeObserver().removeOnPreDrawListener(this);
@@ -440,7 +399,7 @@ int colorFile =0;
     @Override
     public void onBackPressed() {
         //TODO: arreter la video pour eviter crash
-        Intent intent = new Intent(PlayVideoActivity.this,SelectedVideoActivity.class);
+        Intent intent = new Intent(PlayVideoActivity.this, SelectedVideoActivity.class);
         startActivity(intent);
 
     }

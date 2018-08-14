@@ -85,4 +85,16 @@
     <string name="arrow"> \ \ \ ▼</string>
     <string name="choose_name_grid">Indiquez un titre à votre grille d\'observation</string>
     <string name="empty_grid">Veuiller indiquer des tags ou une grille d\'analyse</string>
+
+    <string-array name="color_name">
+
+        <item>Choisir une couleur</item>
+        <item>Bleu</item>
+        <item>Bleu clair</item>
+        <item>Orange</item>
+        <item>Vert</item>
+        <item>Gris</item>
+        <item>Rose</item>
+
+    </string-array>
 </resources>
