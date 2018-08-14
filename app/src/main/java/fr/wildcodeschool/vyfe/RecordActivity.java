@@ -342,7 +342,8 @@ public class RecordActivity extends AppCompatActivity {
                     layoutParamsIv.setMargins(0, convertToDp(8), 0, convertToDp(8));
                     iv.setLayoutParams(layoutParamsIv);
                     iv.setMinimumHeight(50);
-                    iv.setBackgroundColor(listTag.get(position).getColor());
+                    iv.setBackgroundResource(R.drawable.color_gradient_faded_orange);
+                    //iv.setBackgroundColor(listTag.get(position).getColor());
 
                     //init chrono
                     int timeActuel = (int) ((SystemClock.elapsedRealtime() - chronometer.getBase()) / (1000 / rapport));
