@@ -23,7 +23,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import android.widget.Chronometer;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -40,6 +39,9 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * This activity displays the video player with timeline and tag list
+ */
 public class PlayVideoActivity extends AppCompatActivity {
 
     private ArrayList<TagModel> mTagedList = new ArrayList<>();
@@ -60,11 +62,12 @@ public class PlayVideoActivity extends AppCompatActivity {
     int mVideoDuration;
     int mWidth;
     int mLastEnd;
-    private Chronometer mChrono;
+    private StopWatch mChrono;
     private LinearLayout mLlMain;
     private FloatingActionButton mPlay;
     private ConstraintLayout mConstraintVideo;
     private ProgressBar mLoadProgressBar;
+    private boolean isSeekbarTracking = false;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -102,9 +105,6 @@ public class PlayVideoActivity extends AppCompatActivity {
         mSeekBar = findViewById(R.id.seek_bar_selected);
         mSeekBar.setLayoutParams(seekBarParams);
 
-        // Rend la seekBar incliquable
-        mSeekBar.setEnabled(false);
-
         mVideoSelected = findViewById(R.id.video_view_selected);
         final Handler handler = new Handler();
         handler.postDelayed(new Runnable() {
@@ -131,8 +131,6 @@ public class PlayVideoActivity extends AppCompatActivity {
             @Override
             public void onPrepared(MediaPlayer mp) {
                 mVideoDuration = mVideoSelected.getDuration();
-                mChrono.setBase(SystemClock.elapsedRealtime());
-                mChrono.start();
                 final Handler handler = new Handler();
                 mSeekBar.setMax(mVideoDuration);
                 mRunnable = new Runnable() {
@@ -145,8 +143,6 @@ public class PlayVideoActivity extends AppCompatActivity {
                 };
 
                 handler.post(mRunnable);
-                timeWhenStopped = 0;
-                mChrono.stop();
                 mPlay.setImageResource(android.R.drawable.ic_media_play);
                 mIsPlayed = false;
 
@@ -189,7 +185,6 @@ public class PlayVideoActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (mIsPlayed) {
                     mVideoSelected.pause();
-                    timeWhenStopped = mChrono.getBase() - SystemClock.elapsedRealtime();
                     mChrono.stop();
                     mIsPlayed = false;
                     mPlay.setBackgroundColor(getResources().getColor(R.color.colorLightGreenishBlue));
@@ -200,7 +195,6 @@ public class PlayVideoActivity extends AppCompatActivity {
                     mPlay.setImageResource(android.R.drawable.ic_media_pause);
                     mIsPlayed = true;
                     mVideoSelected.start();
-                    mChrono.setBase(SystemClock.elapsedRealtime() + timeWhenStopped);
                     mChrono.start();
                 }
             }
@@ -216,8 +210,7 @@ public class PlayVideoActivity extends AppCompatActivity {
                 mVideoSelected.seekTo(0);
                 mSeekBar.setProgress(0);
                 mVideoSelected.start();
-                mChrono.setBase(0);
-                mChrono.setBase(SystemClock.elapsedRealtime());
+                mChrono.setTime(0);
                 mChrono.start();
                 mPlay.setVisibility(View.VISIBLE);
                 mPlay.setImageResource(android.R.drawable.ic_media_pause);
@@ -233,12 +226,33 @@ public class PlayVideoActivity extends AppCompatActivity {
                 timeWhenStopped = 0;
                 mVideoSelected.seekTo(0);
                 mSeekBar.setProgress(0);
-                mChrono.setBase(0);
-                mChrono.setBase(SystemClock.elapsedRealtime());
+                mChrono.setTime(0);
                 mChrono.stop();
                 mPlay.setVisibility(View.VISIBLE);
                 mPlay.setImageResource(android.R.drawable.ic_media_play);
                 mPlay.setBackgroundColor(getResources().getColor(R.color.color1));
+            }
+        });
+
+        mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                if (isSeekbarTracking) {
+                    mVideoSelected.seekTo(i);
+                    mChrono.setTime(i);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                mVideoSelected.pause();
+                isSeekbarTracking = true;
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                if (mIsPlayed) mVideoSelected.start();
+                isSeekbarTracking = false;
             }
         });
     }
