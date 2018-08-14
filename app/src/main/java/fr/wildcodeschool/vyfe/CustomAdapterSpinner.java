@@ -8,7 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-public class CustomAdapter extends BaseAdapter {
+public class CustomAdapterSpinner extends BaseAdapter {
 
     Context context;
     int color[];
@@ -16,7 +16,7 @@ public class CustomAdapter extends BaseAdapter {
     String[] nameDrawable;
     LayoutInflater inflter;
 
-    public CustomAdapter(Context applicationContext, int[] color, String[] colorName, String[] nameDrawable) {
+    public CustomAdapterSpinner(Context applicationContext, int[] color, String[] colorName, String[] nameDrawable) {
         this.context = applicationContext;
         this.color = color;
         this.colorName = colorName;

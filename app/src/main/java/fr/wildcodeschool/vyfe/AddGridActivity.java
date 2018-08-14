@@ -54,8 +54,8 @@ public class AddGridActivity extends AppCompatActivity implements AdapterView.On
         final Spinner spinner = (Spinner) findViewById(R.id.simpleSpinner);
         spinner.setOnItemSelectedListener(this);
 
-        CustomAdapter customAdapter = new CustomAdapter(getApplicationContext(), color, colorName, nameDrawable);
-        spinner.setAdapter(customAdapter);
+        CustomAdapterSpinner customAdapterSpinner = new CustomAdapterSpinner(getApplicationContext(), color, colorName, nameDrawable);
+        spinner.setAdapter(customAdapterSpinner);
 
 
         final EditText etName = findViewById(R.id.et_name);
@@ -98,7 +98,6 @@ public class AddGridActivity extends AppCompatActivity implements AdapterView.On
                     mfinalcolor = 0;
                     etName.setText("");
                     ivColor.setBackgroundResource(R.color.colorCharcoalGrey);
-                    //ivColor.setBackgroundColor(Color.parseColor("#ffaaaaaa"));
 
                     //Fermer clavier après avoir rentré un tag
                     InputMethodManager imm = (InputMethodManager) AddGridActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -149,7 +148,6 @@ public class AddGridActivity extends AppCompatActivity implements AdapterView.On
             mfinalcolor = color[position];
             nameColorTag = nameDrawable[position];
             ivColor.setBackgroundResource(mfinalcolor);
-
             Toast.makeText(getApplicationContext(), colorName[position], Toast.LENGTH_LONG).show();
         }
 
