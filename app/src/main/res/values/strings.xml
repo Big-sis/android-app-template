@@ -13,7 +13,7 @@
     <string name="my_videos">Mes vidéos</string>
     <string name="search">Rechercher</string>
     <string name="hello_user">Bonjour</string>
-    <string name="connected">Connection</string>
+    <string name="connected">Connexion</string>
     <string name="email">Email</string>
     <string name="password">Mot de passe</string>
     <string name="lost_password">Mot de passe oublié ?</string>
@@ -22,7 +22,7 @@
     <string name="add_description">Ajouter une description</string>
     <string name="my_analyse">Mes grilles d\'analyses</string>
     <string name="grid_title">Titre de la grille</string>
-    <string name="add_evenement">Ajouter un événement</string>
+    <string name="add_evenement">Créer des tags</string>
     <string name="go">Démarrer</string>
     <string name="back">Retour</string>
     <string name="share_url">Partagez l\'adresse URL à vos apprenants</string>
@@ -36,21 +36,21 @@
     <string name="color">Couleur</string>
     <string name="choose">Choisir une couleur</string>
     <string name="aleatory">Couleur aléatoire</string>
-    <string name="add">Ajouter l\'évènement</string>
+    <string name="add">Ajouter un tag</string>
     <string name="end">Terminer</string>
-    <string name="name_event">Nom de l\'évènement</string>
-    <string name="color_event">Couleur de l\'évènement</string>
-    <string name="def_colot">Définissez un nom et une couleur à l\'évènement</string>
-    <string name="grid_import">Ou importer une grille d\'analyse</string>
-    <string name="new_grid2">Créer une nouvelle grille d\'analyse</string>
-    <string name="move">Événement déplacé</string>
-    <string name="delete_tag">Événement supprimé</string>
+    <string name="name_event">Nom du tag</string>
+    <string name="color_event">Couleur du tag</string>
+    <string name="def_colot">Définissez un nom et une couleur au tag</string>
+    <string name="grid_import">Ou importer une grille d\'observation</string>
+    <string name="new_grid2">Créer une nouvelle grille d\'observation</string>
+    <string name="move">Tag déplacé</string>
+    <string name="delete_tag">Tag supprimé</string>
     <string name="infos_video">Informations sur la vidéo</string>
     <string name="video_name">Nom de la vidéo</string>
     <string name="record_session">Enregistrer une session</string>
-    <string name="modif_tags">Ajouter ou modifier les événements</string>
-    <string name="add_tags">Ajouter des événements</string>
-    <string name="edit_tags">Modifier les événements</string>
+    <string name="modif_tags">Ajouter ou modifier les tags</string>
+    <string name="add_tags">Ajouter des tags</string>
+    <string name="edit_tags">Modifier les tags</string>
     <string name="next">Suivant</string>
     <string name="video_save">Session enregistrée dans vos vidéos</string>
     <string name="back_to_main">Retour à l\'accueil</string>
@@ -85,4 +85,6 @@
     <string name="arrow"> \ \ \ ▼</string>
     <string name="choose_name_grid">Indiquez un titre à votre grille d\'observation</string>
     <string name="empty_grid">Veuiller indiquer des tags ou une grille d\'analyse</string>
+    <string name="title_grid">Titre de votre grille d\'observation :</string>
+    <string name="title_session">Titre de votre vidéo :</string>
 </resources>
