@@ -67,6 +67,11 @@
             tools:layout_editor_absoluteX="449dp"
             tools:layout_editor_absoluteY="50dp" />
 
+        <Spinner
+            android:id="@+id/simpleSpinner"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
         <Button
             android:id="@+id/btn_add"
             android:layout_width="100dp"

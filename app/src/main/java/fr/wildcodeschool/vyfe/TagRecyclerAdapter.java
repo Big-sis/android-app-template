@@ -42,7 +42,9 @@ public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.
     public void onBindViewHolder(TagRecyclerAdapter.ViewHolder holder, int position) {
         TagModel tagModel = mTagModelList.get(position);
         holder.tvName.setText(tagModel.getName());
-        holder.ivColor.setBackgroundColor(tagModel.getColor());
+        holder.ivColor.setBackgroundResource(tagModel.getColor());
+        //test
+
 
         if (mFrom.equals("start")) {
             holder.tvNum.setVisibility(View.GONE);

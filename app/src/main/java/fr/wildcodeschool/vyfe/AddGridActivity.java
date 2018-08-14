@@ -12,6 +12,7 @@ import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -28,8 +29,11 @@ import java.util.Random;
 
 import petrov.kristiyan.colorpicker.ColorPicker;
 
-public class AddGridActivity extends AppCompatActivity {
+public class AddGridActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener{
+
+    // Création des tags (nom + couleur)
     private static int mfinalcolor = 0;
+
 
     private static SingletonTags mSingletonTags = SingletonTags.getInstance();
     private static ArrayList<TagModel> mTagModelListAdd = mSingletonTags.getmTagsListAdd();
@@ -39,12 +43,21 @@ public class AddGridActivity extends AppCompatActivity {
     private static ImageView ivColor;
     private static ArrayList<String> nameDouble = new ArrayList<>();
     private static boolean repeatName = false;
+    private  String[] colorName={"Choisir une couleur","Bleu","Bleu clair","Orange","Vert","Gris","Rose"};
+    private static int color[] = {0,R.drawable.color_gradient_blue_dark, R.drawable.color_gradient_blue_light, R.drawable.color_gradient_faded_orange, R.drawable.color_gradient_green, R.drawable.color_gradient_grey, R.drawable.color_gradient_rosy};
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_grid);
+
+        Spinner spin = (Spinner) findViewById(R.id.simpleSpinner);
+        spin.setOnItemSelectedListener(this);
+
+        CustomAdapter customAdapter=new CustomAdapter(getApplicationContext(),color,colorName);
+        spin.setAdapter(customAdapter);
+
 
 
         final EditText etName = findViewById(R.id.et_name);
@@ -67,7 +80,7 @@ public class AddGridActivity extends AppCompatActivity {
         chooseColor();
 
         // Gestion couleurs
-        Button btnChooseColor = findViewById(R.id.btn_chosse_color);
+        /**Button btnChooseColor = findViewById(R.id.btn_chosse_color);
         btnChooseColor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -93,7 +106,7 @@ public class AddGridActivity extends AppCompatActivity {
                 colorPicker.show();
             }
         });
-
+**/
 
         // Elements du recycler
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(AddGridActivity.this, LinearLayoutManager.VERTICAL, false);
@@ -171,6 +184,19 @@ public class AddGridActivity extends AppCompatActivity {
 
 
     }
+    @Override
+    public void onItemSelected(AdapterView<?> arg0, View arg1, int position,long id) {
+        if(position!=0){
+            mfinalcolor = color[position];
+            Toast.makeText(getApplicationContext(), colorName[position], Toast.LENGTH_LONG).show();
+        }
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> arg0) {
+        // TODO Auto-generated method stub
+    }
 
     public void moveItem(int oldPos, int newPos) {
 
@@ -194,11 +220,17 @@ public class AddGridActivity extends AppCompatActivity {
     }
 
     public static void chooseColor() {
-        Random random = new Random();
+        int chooserandom = 1 + (int)(Math.random() * (color.length));
+        String nameColor = String.valueOf(color[chooserandom]);
+        ivColor.setBackgroundResource(Integer.parseInt(nameColor));
+        mfinalcolor = Integer.parseInt(nameColor);
+
+/**
+
         int nbColor = random.nextInt(colors.size());
         String color = colors.get(nbColor);
         ivColor.setBackgroundColor(Color.parseColor(color));
-        mfinalcolor = Color.parseColor(color);
+        mfinalcolor = Color.parseColor(color);**/
     }
 
 }
