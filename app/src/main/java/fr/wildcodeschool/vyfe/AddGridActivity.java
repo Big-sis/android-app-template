@@ -2,7 +2,6 @@ package fr.wildcodeschool.vyfe;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -38,15 +37,12 @@ public class AddGridActivity extends AppCompatActivity implements AdapterView.On
     private static int color[] = {R.drawable.icons8_tri_d_croissant_96, R.drawable.color_gradient_blue_dark, R.drawable.color_gradient_blue_light, R.drawable.color_gradient_faded_orange, R.drawable.color_gradient_green, R.drawable.color_gradient_grey, R.drawable.color_gradient_rosy};
     private static String[] nameDrawable = {"", "color_gradient_blue_dark", "color_gradient_blue_light", "color_gradient_faded_orange", "color_gradient_green", "color_gradient_grey", "color_gradient_rosy"};
     private static String nameColorTag;
+    private static int colorFile = 0;
     private String[] colorName = {"Choisir une couleur", "Bleu", "Bleu clair", "Orange", "Vert", "Gris", "Rose"};
 
     public static void chooseColor() {
         int chooserandom = 1 + (int) (Math.random() * (color.length - 1));
-        String nameColor = String.valueOf(color[chooserandom]);
-        ivColor.setBackgroundResource(Integer.parseInt(nameColor));
-        mfinalcolor = Integer.parseInt(nameColor);
         nameColorTag = nameDrawable[chooserandom];
-        int colorFile = 0;
 
 
         switch (nameColorTag) {
@@ -71,13 +67,6 @@ public class AddGridActivity extends AppCompatActivity implements AdapterView.On
 
         }
         ivColor.setBackgroundResource(colorFile);
-
-/**
-
- int nbColor = random.nextInt(colors.size());
- String color = colors.get(nbColor);
- ivColor.setBackgroundColor(Color.parseColor(color));
- mfinalcolor = Color.parseColor(color);**/
     }
 
     @Override
@@ -85,57 +74,18 @@ public class AddGridActivity extends AppCompatActivity implements AdapterView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_grid);
 
-        Spinner spin = (Spinner) findViewById(R.id.simpleSpinner);
-        spin.setOnItemSelectedListener(this);
+        final Spinner spinner = (Spinner) findViewById(R.id.simpleSpinner);
+        spinner.setOnItemSelectedListener(this);
 
         CustomAdapter customAdapter = new CustomAdapter(getApplicationContext(), color, colorName, nameDrawable);
-        spin.setAdapter(customAdapter);
+        spinner.setAdapter(customAdapter);
 
 
         final EditText etName = findViewById(R.id.et_name);
         final RecyclerView recyclerTagList = findViewById(R.id.recycler_view);
         ivColor = findViewById(R.id.iv_color);
-
-        colors.add("#F57A62");
-        colors.add("#F56290");
-        colors.add("#F562E5");
-        colors.add("#F5EE62");
-        colors.add("#62F5AB");
-        colors.add("#69E3E7");
-        colors.add("#3490E1");
-        colors.add("#6977E7");
-        colors.add("#3F51B5");
-        colors.add("#343F6D");
-        colors.add("#0D1725");
-        colors.add("#d8d8d8");
-
         chooseColor();
 
-        // Gestion couleurs
-        /**Button btnChooseColor = findViewById(R.id.btn_chosse_color);
-         btnChooseColor.setOnClickListener(new View.OnClickListener() {
-        @Override public void onClick(View view) {
-        final ColorPicker colorPicker = new ColorPicker(AddGridActivity.this);
-        colorPicker.setColors(colors);
-        colorPicker.setColumns(4);
-        colorPicker.setRoundColorButton(true);
-        colorPicker.setTitle(getResources().getString(R.string.choose_color));
-        colorPicker.setOnChooseColorListener(new ColorPicker.OnChooseColorListener() {
-        @Override public void onChooseColor(int position, int color) {
-        ImageView ivColor = findViewById(R.id.iv_color);
-        ivColor.setBackgroundColor(color);
-        mfinalcolor = color;
-
-        }
-
-        @Override public void onCancel() {
-
-        }
-        });
-        colorPicker.show();
-        }
-        });
-         **/
 
         // Elements du recycler
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(AddGridActivity.this, LinearLayoutManager.VERTICAL, false);
@@ -162,7 +112,7 @@ public class AddGridActivity extends AppCompatActivity implements AdapterView.On
                 if (repeatName) {
                     Toast.makeText(AddGridActivity.this, R.string.double_name, Toast.LENGTH_SHORT).show();
                     repeatName = false;
-                } else if ((valueName.equals("") || mfinalcolor == 0)) {
+                } else if ((valueName.equals(""))) {
                     Toast.makeText(AddGridActivity.this, R.string.def_colot, Toast.LENGTH_SHORT).show();
                 } else {
                     TagModel tagModel = new TagModel(nameColorTag, valueName, null, null);
@@ -170,12 +120,14 @@ public class AddGridActivity extends AppCompatActivity implements AdapterView.On
                     mAdapter.notifyDataSetChanged();
                     mfinalcolor = 0;
                     etName.setText("");
-                    ivColor.setBackgroundColor(Color.parseColor("#ffaaaaaa"));
+                    ivColor.setBackgroundResource(R.color.colorCharcoalGrey);
+                    //ivColor.setBackgroundColor(Color.parseColor("#ffaaaaaa"));
 
                     //Fermer clavier après avoir rentré un tag
                     InputMethodManager imm = (InputMethodManager) AddGridActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
                     imm.hideSoftInputFromWindow(btnAddEvenement.getWindowToken(), 0);
                     nameDouble.add(valueName);
+                    spinner.setSelection(0);
                     chooseColor();
                 }
             }
@@ -219,7 +171,7 @@ public class AddGridActivity extends AppCompatActivity implements AdapterView.On
         if (position != 0) {
             mfinalcolor = color[position];
             nameColorTag = nameDrawable[position];
-
+            ivColor.setBackgroundResource(mfinalcolor);
 
             Toast.makeText(getApplicationContext(), colorName[position], Toast.LENGTH_LONG).show();
         }

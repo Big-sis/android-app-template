@@ -42,6 +42,7 @@ public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.
     public void onBindViewHolder(TagRecyclerAdapter.ViewHolder holder, int position) {
         int colorFile = 0;
         TagModel tagModel = mTagModelList.get(position);
+        if(tagModel.getColorName()!=null){
         switch (tagModel.getColorName()){
             case "color_gradient_blue_dark":
                 colorFile = R.drawable.color_gradient_blue_dark;
@@ -60,7 +61,7 @@ public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.
                 break;
             case"color_gradient_rosy":
                 colorFile =R.drawable.color_gradient_rosy;
-                break;
+                break;}
 
         }
 

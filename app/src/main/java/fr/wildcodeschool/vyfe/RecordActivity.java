@@ -342,7 +342,33 @@ public class RecordActivity extends AppCompatActivity {
                     layoutParamsIv.setMargins(0, convertToDp(8), 0, convertToDp(8));
                     iv.setLayoutParams(layoutParamsIv);
                     iv.setMinimumHeight(50);
-                    iv.setBackgroundResource(listTag.get(position).getColor());
+
+                    int colorFile = 0;
+
+
+                    switch (listTag.get(position).getColorName()) {
+                        case "color_gradient_blue_dark":
+                            colorFile = R.drawable.color_gradient_blue_dark;
+                            break;
+                        case "color_gradient_blue_ligh":
+                            colorFile = R.drawable.color_gradient_blue_light;
+                            break;
+                        case "color_gradient_faded_orange":
+                            colorFile = R.drawable.color_gradient_faded_orange;
+                            break;
+                        case "color_gradient_green":
+                            colorFile = R.drawable.color_gradient_green;
+                            break;
+                        case "color_gradient_grey":
+                            colorFile = R.drawable.color_gradient_grey;
+                            break;
+                        case "color_gradient_rosy":
+                            colorFile = R.drawable.color_gradient_rosy;
+                            break;
+
+                    }
+
+                    iv.setBackgroundResource(colorFile);
 
                     //init chrono
                     int timeActuel = (int) ((SystemClock.elapsedRealtime() - chronometer.getBase()) / (1000 / rapport));

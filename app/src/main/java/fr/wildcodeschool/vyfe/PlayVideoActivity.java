@@ -69,7 +69,7 @@ public class PlayVideoActivity extends AppCompatActivity {
     private String mTitleSession;
     FirebaseDatabase mDatabase;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    HashMap<String, Integer> mTagColorList = new HashMap<>();
+    HashMap<String, String> mTagColorList = new HashMap<>();
     TagRecyclerAdapter mAdapterTags;
     RelativeLayout timeLines;
     Runnable mRunnable;
@@ -354,8 +354,31 @@ public class PlayVideoActivity extends AppCompatActivity {
                 ApiHelperPlay.getColors(mTagColorList, new ApiHelperPlay.ColorResponse() {
                     @Override
                     public void onSuccess() {
-                        iv.setBackgroundResource(mTagColorList.get(tagModel.getName()));
+                        //int colorFile = getResources().getIdentifier(mTagColorList.get(tagModel.getName()),"string", getApplicationContext().getPackageName());
 
+int colorFile =0;
+                        switch (mTagColorList.get(tagModel.getName())) {
+                            case "color_gradient_blue_dark":
+                                colorFile = R.drawable.color_gradient_blue_dark;
+                                break;
+                            case "color_gradient_blue_ligh":
+                                colorFile = R.drawable.color_gradient_blue_light;
+                                break;
+                            case "color_gradient_faded_orange":
+                                colorFile = R.drawable.color_gradient_faded_orange;
+                                break;
+                            case "color_gradient_green":
+                                colorFile = R.drawable.color_gradient_green;
+                                break;
+                            case "color_gradient_grey":
+                                colorFile = R.drawable.color_gradient_grey;
+                                break;
+                            case "color_gradient_rosy":
+                                colorFile = R.drawable.color_gradient_rosy;
+                                break;
+
+                        }
+                        iv.setBackgroundResource(colorFile);
                     }
 
                     @Override
