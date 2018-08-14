@@ -180,7 +180,7 @@
             <TextView
                 android:id="@+id/tv_video_save"
                 android:layout_width="wrap_content"
-                android:layout_height="26dp"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
@@ -209,7 +209,7 @@
                 <Button
                     android:id="@+id/btn_back_main"
                     android:layout_width="wrap_content"
-                    android:layout_height="30dp"
+                    android:layout_height="wrap_content"
                     android:background="@null"
                     android:text="@string/back_to_main"
                     android:textColor="@color/white"
@@ -219,9 +219,10 @@
                 <Button
                     android:id="@+id/btn_play"
                     android:layout_width="wrap_content"
-                    android:layout_height="30dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="36dp"
                     android:background="@drawable/style_button"
+                    android:padding="5dp"
                     android:text="@string/show_video"
                     android:textColor="@color/white"
                     android:textSize="18sp" />
