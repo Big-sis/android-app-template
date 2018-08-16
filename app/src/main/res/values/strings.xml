@@ -88,4 +88,6 @@
     <string name="title_grid">Titre de votre grille d\'observation :</string>
     <string name="title_session">Titre de votre vidéo :</string>
     <string name="active_wifi">Vous devez posséder une connexion internet pour vous identifiez</string>
+    <string name="add_tag">Ajouter un tag</string>
+
 </resources>

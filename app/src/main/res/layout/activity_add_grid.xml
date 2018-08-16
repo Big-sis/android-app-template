@@ -10,7 +10,7 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="16dp">
 
         <LinearLayout
@@ -21,7 +21,8 @@
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            tools:layout_editor_absoluteY="8dp">
+            tools:layout_editor_absoluteY="8dp"
+            tools:ignore="MissingConstraints">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -52,37 +53,34 @@
                     android:textSize="20sp"
                     app:fontFamily="@font/roboto"
                     tools:layout_editor_absoluteX="116dp"
-                    tools:layout_editor_absoluteY="58dp" />
+                    tools:layout_editor_absoluteY="58dp"
+                    android:layout_marginStart="8dp" />
             </LinearLayout>
 
 
-            <Button
-                android:id="@+id/btn_chosse_color"
-                android:layout_width="wrap_content"
+            <Spinner
+                android:id="@+id/simpleSpinner"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
                 android:layout_marginLeft="16dp"
-                android:layout_weight="1"
                 android:background="@drawable/style_button_white"
-                android:padding="5dp"
-                android:text="@string/choose"
-                tools:layout_editor_absoluteX="449dp"
-                tools:layout_editor_absoluteY="50dp" />
+                android:layout_marginStart="16dp" />
 
             <Button
                 android:id="@+id/btn_add"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="16dp"
                 android:layout_weight="1"
                 android:background="@drawable/style_button_white"
-                android:padding="5dp"
-                android:text="Ajouter un tag"
+                android:text="@string/add_tag"
                 tools:layout_editor_absoluteX="449dp"
-                tools:layout_editor_absoluteY="50dp" />
+                tools:layout_editor_absoluteY="50dp"
+                android:layout_marginStart="16dp" />
 
         </LinearLayout>
+
 
 
         <android.support.v7.widget.RecyclerView

@@ -1,16 +1,18 @@
 package fr.wildcodeschool.vyfe;
 
 
-import android.support.constraint.ConstraintLayout;
+import android.app.ApplicationErrorReport;
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import java.sql.Time;
 import java.util.ArrayList;
 
 public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.ViewHolder> {
@@ -42,7 +44,15 @@ public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.
     public void onBindViewHolder(TagRecyclerAdapter.ViewHolder holder, int position) {
         TagModel tagModel = mTagModelList.get(position);
         holder.tvName.setText(tagModel.getName());
-        holder.ivColor.setBackgroundColor(tagModel.getColor());
+        try {
+            holder.ivColor.setBackgroundResource(ColorHelper.convertColor(tagModel.getColorName()));
+        } catch (Exception e) {
+
+            e.getMessage();
+            Log.d("BEUG", "onBindViewHolder: "+ e.getMessage());
+           // e.printStackTrace();
+        }
+
 
         if (mFrom.equals("start")) {
             holder.tvNum.setVisibility(View.GONE);
