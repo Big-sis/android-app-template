@@ -38,6 +38,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Date;
 import java.util.Map;
+/**
+ * This activity records in real time session with tags
+ */
 
 
 public class RecordActivity extends AppCompatActivity {
@@ -295,7 +298,7 @@ public class RecordActivity extends AppCompatActivity {
 
     private void initTimeline(final ArrayList<TagModel> listTag, RecyclerView rv) {
         //Init variable
-        final Chronometer chronometer = findViewById(R.id.chronometer);
+        final StopWatch chronometer = findViewById(R.id.chronometer);
 
         //Ajout des differentes timelines au conteneur principal
         LinearLayout llMain = findViewById(R.id.ll_main);
@@ -342,36 +345,14 @@ public class RecordActivity extends AppCompatActivity {
                     layoutParamsIv.setMargins(0, convertToDp(8), 0, convertToDp(8));
                     iv.setLayoutParams(layoutParamsIv);
                     iv.setMinimumHeight(50);
-
-                    int colorFile = 0;
-
-
-                    switch (listTag.get(position).getColorName()) {
-                        case "color_gradient_blue_dark":
-                            colorFile = R.drawable.color_gradient_blue_dark;
-                            break;
-                        case "color_gradient_blue_ligh":
-                            colorFile = R.drawable.color_gradient_blue_light;
-                            break;
-                        case "color_gradient_faded_orange":
-                            colorFile = R.drawable.color_gradient_faded_orange;
-                            break;
-                        case "color_gradient_green":
-                            colorFile = R.drawable.color_gradient_green;
-                            break;
-                        case "color_gradient_grey":
-                            colorFile = R.drawable.color_gradient_grey;
-                            break;
-                        case "color_gradient_rosy":
-                            colorFile = R.drawable.color_gradient_rosy;
-                            break;
-
+                    try {
+                        iv.setBackgroundResource(ColorHelper.convertColor(listTag.get(position).getColorName()));
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
 
-                    iv.setBackgroundResource(colorFile);
-
                     //init chrono
-                    int timeActuel = (int) ((SystemClock.elapsedRealtime() - chronometer.getBase()) / (1000 / rapport));
+                    int timeActuel = (int) ((chronometer.getTime() / (1000 / rapport)));
                     int startTime = Math.max(0, timeActuel - beforeTag);
                     int endTime = timeActuel + durationTag;
                     iv.setMinimumWidth(endTime - startTime);

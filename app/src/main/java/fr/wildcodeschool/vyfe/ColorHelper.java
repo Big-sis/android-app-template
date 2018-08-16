@@ -1,17 +1,18 @@
 package fr.wildcodeschool.vyfe;
+/**
+ * This class convert color (name Firebase) to Drawable (int)
+ */
 
-import android.widget.ImageView;
+public class ColorHelper extends Exception {
 
-public class HelperColor {
-
-    public static int convertColor(String nameColor, ImageView iv){
+    public static int convertColor(String nameColor) throws Exception {
 
         int colorFile = 0;
         switch (nameColor) {
             case "color_gradient_blue_dark":
                 colorFile = R.drawable.color_gradient_blue_dark;
                 break;
-            case "color_gradient_blue_ligh":
+            case "color_gradient_blue_light":
                 colorFile = R.drawable.color_gradient_blue_light;
                 break;
             case "color_gradient_faded_orange":
@@ -26,10 +27,14 @@ public class HelperColor {
             case "color_gradient_rosy":
                 colorFile = R.drawable.color_gradient_rosy;
                 break;
+            default:
+
+                throw new Exception("Couleur non trouvée");
 
         }
-        iv.setBackgroundResource(colorFile);
 
         return colorFile;
     }
+
+
 }

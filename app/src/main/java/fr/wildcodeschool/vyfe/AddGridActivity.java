@@ -19,10 +19,12 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Collections;
-
+/**
+ * This activity create Tags (name + color)
+ */
 public class AddGridActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-    // Create tags (name + color)
+
     private static int mfinalcolor = 0;
 
 
@@ -37,12 +39,16 @@ public class AddGridActivity extends AppCompatActivity implements AdapterView.On
     private static int color[] = {R.drawable.icons8_tri_d_croissant_96, R.drawable.color_gradient_blue_dark, R.drawable.color_gradient_blue_light, R.drawable.color_gradient_faded_orange, R.drawable.color_gradient_green, R.drawable.color_gradient_grey, R.drawable.color_gradient_rosy};
     private static String[] nameDrawable = {"", "color_gradient_blue_dark", "color_gradient_blue_light", "color_gradient_faded_orange", "color_gradient_green", "color_gradient_grey", "color_gradient_rosy"};
     private static String nameColorTag;
-    private String[] colorName = {"Choisir une couleur", "Bleu", "Bleu clair", "Orange", "Vert", "Gris", "Rose"};
+    private String[] colorName = {"Choisir une couleur", "Dégradé violet", "Déradé bleu clair", "Dégradé orange", "Dégradé vert", "Dégradé gris", "Dégradé rose"};
 
     public static void chooseColor() {
         int chooserandom = 1 + (int) (Math.random() * (color.length - 1));
         nameColorTag = nameDrawable[chooserandom];
-        HelperColor.convertColor(nameColorTag, ivColor);
+        try {
+            ivColor.setBackgroundResource(ColorHelper.convertColor(nameColorTag));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -97,8 +103,6 @@ public class AddGridActivity extends AppCompatActivity implements AdapterView.On
                     mAdapter.notifyDataSetChanged();
                     mfinalcolor = 0;
                     etName.setText("");
-                    ivColor.setBackgroundResource(R.color.colorCharcoalGrey);
-                    //ivColor.setBackgroundColor(Color.parseColor("#ffaaaaaa"));
 
                     //Fermer clavier après avoir rentré un tag
                     InputMethodManager imm = (InputMethodManager) AddGridActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
