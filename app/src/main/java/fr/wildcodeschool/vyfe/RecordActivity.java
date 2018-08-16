@@ -35,27 +35,22 @@ import com.google.firebase.database.FirebaseDatabase;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
+import java.util.Date;
 import java.util.Map;
 
 
 public class RecordActivity extends AppCompatActivity {
-    // record Session + Connetion Firebase : Sessions
 
-    public static final String ID_TAG_SET = "idTagSet";
-    private static String mFileName = null;
-    private static String mIdSession = null;
-    final String mAuthUserId = SingletonFirebase.getInstance().getUid();
-    FirebaseDatabase mDatabase;
-    FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    int mWidth;
-    HashMap<String, RelativeLayout> mTimelines = new HashMap<>();
-    HashMap<String, ArrayList<Pair<Integer, Integer>>> newTagList = new HashMap<>();
     private ArrayList<TagModel> mTagModels = new ArrayList<>();
     private Camera mCamera;
     private boolean mCamCondition = false;
     private FloatingActionButton mRecord;
+    FirebaseDatabase mDatabase;
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    final String mAuthUserId = SingletonFirebase.getInstance().getUid();
+    private static String mFileName = null;
+    private static String mIdSession = null;
     private MediaRecorder mRecorder = null;
     private CameraPreview mPreview;
     private boolean mBack;
@@ -64,16 +59,13 @@ public class RecordActivity extends AppCompatActivity {
     private SingletonSessions mSingletonSessions = SingletonSessions.getInstance();
     private TagRecyclerAdapter mAdapterTags;
 
-    // Pour obtenir une instance de la caméra
-    public static Camera getCameraInstance(int currentCameraId) {
-        Camera c = null;
-        try {
-            c = Camera.open(currentCameraId);
-        } catch (Exception e) {
-            e.getMessage();
-        }
-        return c;
-    }
+
+    int mWidth;
+
+    HashMap<String, RelativeLayout> mTimelines = new HashMap<>();
+    HashMap<String, ArrayList<Pair<Integer, Integer>>> newTagList = new HashMap<>();
+
+    public static final String ID_TAG_SET = "idTagSet";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -263,6 +255,17 @@ public class RecordActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    // Pour obtenir une instance de la caméra
+    public static Camera getCameraInstance(int currentCameraId) {
+        Camera c = null;
+        try {
+            c = Camera.open(currentCameraId);
+        } catch (Exception e) {
+            e.getMessage();
+        }
+        return c;
+    }
+
     private void startRecording() {
         mRecorder = new MediaRecorder();
         mCamera.unlock();
@@ -310,7 +313,7 @@ public class RecordActivity extends AppCompatActivity {
                 rv, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                if (mActiveTag) {
+                if(mActiveTag){
                     String nameTag = listTag.get(position).getName();
                     //init name Tag
                     TextView tvNameTimeline = new TextView(RecordActivity.this);
@@ -340,7 +343,32 @@ public class RecordActivity extends AppCompatActivity {
                     iv.setLayoutParams(layoutParamsIv);
                     iv.setMinimumHeight(50);
 
-                    HelperColor.convertColor(listTag.get(position).getColorName(), iv);
+                    int colorFile = 0;
+
+
+                    switch (listTag.get(position).getColorName()) {
+                        case "color_gradient_blue_dark":
+                            colorFile = R.drawable.color_gradient_blue_dark;
+                            break;
+                        case "color_gradient_blue_ligh":
+                            colorFile = R.drawable.color_gradient_blue_light;
+                            break;
+                        case "color_gradient_faded_orange":
+                            colorFile = R.drawable.color_gradient_faded_orange;
+                            break;
+                        case "color_gradient_green":
+                            colorFile = R.drawable.color_gradient_green;
+                            break;
+                        case "color_gradient_grey":
+                            colorFile = R.drawable.color_gradient_grey;
+                            break;
+                        case "color_gradient_rosy":
+                            colorFile = R.drawable.color_gradient_rosy;
+                            break;
+
+                    }
+
+                    iv.setBackgroundResource(colorFile);
 
                     //init chrono
                     int timeActuel = (int) ((SystemClock.elapsedRealtime() - chronometer.getBase()) / (1000 / rapport));
