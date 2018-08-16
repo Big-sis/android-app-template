@@ -203,6 +203,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
                 mTagModels.clear();
                 for (DataSnapshot tagSnapshot : dataSnapshot.getChildren()) {
                     TagModel tagModel = tagSnapshot.getValue(TagModel.class);
+
                     if (tagModel.getFkTagSet().equals(mIdTagSet)) {
                         mTagModels.add(tagModel);
                     }

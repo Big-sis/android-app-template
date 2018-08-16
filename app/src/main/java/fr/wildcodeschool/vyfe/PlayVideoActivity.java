@@ -44,6 +44,17 @@ import java.util.HashMap;
  */
 public class PlayVideoActivity extends AppCompatActivity {
 
+    FirebaseDatabase mDatabase;
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    HashMap<String, String> mTagColorList = new HashMap<>();
+    TagRecyclerAdapter mAdapterTags;
+    RelativeLayout timeLines;
+    Runnable mRunnable;
+    long timeWhenStopped = 0;
+    int mVideoDuration;
+    int mWidth;
+    int mLastEnd;
+
     private ArrayList<TagModel> mTagedList = new ArrayList<>();
     private ArrayList<TagModel> mTagModels = new ArrayList<>();
     private VideoView mVideoSelected;
@@ -52,17 +63,8 @@ public class PlayVideoActivity extends AppCompatActivity {
     private SingletonSessions mSingletonSessions;
     private String mVideoLink;
     private String mTitleSession;
-    FirebaseDatabase mDatabase;
-    FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    HashMap<String, Integer> mTagColorList = new HashMap<>();
-    TagRecyclerAdapter mAdapterTags;
-    RelativeLayout timeLines;
-    Runnable mRunnable;
-    long timeWhenStopped = 0;
-    int mVideoDuration;
-    int mWidth;
-    int mLastEnd;
     private StopWatch mChrono;
+
     private LinearLayout mLlMain;
     private FloatingActionButton mPlay;
     private ConstraintLayout mConstraintVideo;
@@ -350,7 +352,11 @@ public class PlayVideoActivity extends AppCompatActivity {
                 ApiHelperPlay.getColors(mTagColorList, new ApiHelperPlay.ColorResponse() {
                     @Override
                     public void onSuccess() {
-                        iv.setBackgroundColor(mTagColorList.get(tagModel.getName()));
+                        try {
+                           iv.setBackgroundResource(ColorHelper.convertColor(mTagColorList.get(tagModel.getName())));
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
 
                     }
 

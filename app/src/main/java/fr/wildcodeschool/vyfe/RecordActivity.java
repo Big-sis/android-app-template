@@ -38,6 +38,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Date;
 import java.util.Map;
+/**
+ * This activity records in real time session with tags
+ */
 
 
 public class RecordActivity extends AppCompatActivity {
@@ -295,7 +298,7 @@ public class RecordActivity extends AppCompatActivity {
 
     private void initTimeline(final ArrayList<TagModel> listTag, RecyclerView rv) {
         //Init variable
-        final Chronometer chronometer = findViewById(R.id.chronometer);
+        final StopWatch chronometer = findViewById(R.id.chronometer);
 
         //Ajout des differentes timelines au conteneur principal
         LinearLayout llMain = findViewById(R.id.ll_main);
@@ -342,10 +345,14 @@ public class RecordActivity extends AppCompatActivity {
                     layoutParamsIv.setMargins(0, convertToDp(8), 0, convertToDp(8));
                     iv.setLayoutParams(layoutParamsIv);
                     iv.setMinimumHeight(50);
-                    iv.setBackgroundColor(listTag.get(position).getColor());
+                    try {
+                        iv.setBackgroundResource(ColorHelper.convertColor(listTag.get(position).getColorName()));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
 
                     //init chrono
-                    int timeActuel = (int) ((SystemClock.elapsedRealtime() - chronometer.getBase()) / (1000 / rapport));
+                    int timeActuel = (int) ((chronometer.getTime() / (1000 / rapport)));
                     int startTime = Math.max(0, timeActuel - beforeTag);
                     int endTime = timeActuel + durationTag;
                     iv.setMinimumWidth(endTime - startTime);

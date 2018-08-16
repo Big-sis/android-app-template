@@ -26,5 +26,23 @@
     <color name="colorCharcoal">#222a2c</color>
 
 
+    <!--
+    <color name="colorFadedOrange">#F57A62</color>
+    <color name="colorYellowish">#F5EE62</color>
+    -->
+    <color name="colorRosy">#FF3FA5</color>
+    <color name="colorOrange">#FF6D78</color>
+    <color name="colorGreen">#00C5C2</color>
+    <color name="colorGreenLight">#00EC8F</color>
+    <color name="colorBlueDark">#3023AE</color>
+    <color name="colorMagenta">#C86DD7</color>
+    <color name="colorBlueLight">#A2F3F5</color>
+    <color name="colorBlue">#69E3E7</color>
+    <color name="colorGrey">#5A6C70</color>
+    <color name="colorGreyDrak">#3B4648</color>
+
+
+
+
 
 </resources>

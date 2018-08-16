@@ -1,12 +1,19 @@
 package fr.wildcodeschool.vyfe;
 
-import android.util.Pair;
-
 import java.util.ArrayList;
 
 public class TagModel {
 
-    private int color;
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    private String color;
+    //private int color;
     private String tagName;
     private String fkTagSet;
     private String rigthOffset;
@@ -16,6 +23,7 @@ public class TagModel {
     private ArrayList<TimeModel> times;
     private int count = 0;
 
+    /**
     public TagModel(int color, String tagName, ArrayList<TimeModel> times) {
         this.color = color;
         this.tagName = tagName;
@@ -37,24 +45,41 @@ public class TagModel {
         this.end = end;
     }
 
+     public TagModel(int color, String tagName, String fkTagSet, String rigthOffset, String leftOffset) {
+     this.color = color;
+     this.tagName = tagName;
+     this.fkTagSet = fkTagSet;
+     this.rigthOffset = rigthOffset;
+     this.leftOffset = leftOffset;
+     }**/
+
     public TagModel() {
     }
 
-    public TagModel(int color, String tagName, String fkTagSet, String rigthOffset, String leftOffset) {
+
+
+    public TagModel(String color, String tagName, String fkTagSet, String rigthOffset) {
         this.color = color;
         this.tagName = tagName;
         this.fkTagSet = fkTagSet;
         this.rigthOffset = rigthOffset;
-        this.leftOffset = leftOffset;
     }
 
+    public String getColorName() {
+        return color;
+    }
+
+    public void setColorName(String colorName) {
+        this.color = colorName;
+    }
+/**
     public int getColor() {
         return color;
     }
 
     public void setColor(int color) {
         this.color = color;
-    }
+    }**/
 
     public String getName() {
         return tagName;

@@ -241,7 +241,7 @@ public class StartActivity extends AppCompatActivity {
                                         if (snapshot.child("fkTagSet").getValue().toString() != null
                                                 && snapshot.child("fkTagSet").getValue().toString().equals(mIdGridImport)) {
                                             String name = (String) snapshot.child("name").getValue();
-                                            int color = Integer.parseInt(snapshot.child("color").getValue().toString());
+                                            String color = (snapshot.child("color").getValue().toString());
                                             mTagModelListAdd.add(new TagModel(color, name, null, null));
                                         }
                                     }
@@ -334,7 +334,7 @@ public class StartActivity extends AppCompatActivity {
                         //Firebase TAG
                         for (int i = 0; i < mTagModelListAdd.size(); i++) {
 
-                            int colorTag = mTagModelListAdd.get(i).getColor();
+                            String colorTag = mTagModelListAdd.get(i).getColorName();
                             String nameTag = mTagModelListAdd.get(i).getName();
                             //V2 : choisir le temps, necessaire ???
                             String durationTag = String.valueOf(getResources().getInteger(R.integer.duration_tag));
