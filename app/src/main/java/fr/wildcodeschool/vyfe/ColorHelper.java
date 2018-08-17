@@ -1,13 +1,13 @@
 package fr.wildcodeschool.vyfe;
+
 /**
- * This class convert color (name Firebase) to Drawable (int)
+ * This class converts color (name Firebase) to Drawable (int)
  */
+public class ColorHelper {
 
-public class ColorHelper extends Exception {
+    public static int convertColor(String nameColor) throws ColorNotFoundException {
 
-    public static int convertColor(String nameColor) throws Exception {
-
-        int colorFile = 0;
+        int colorFile;
         switch (nameColor) {
             case "color_gradient_blue_dark":
                 colorFile = R.drawable.color_gradient_blue_dark;
@@ -28,9 +28,7 @@ public class ColorHelper extends Exception {
                 colorFile = R.drawable.color_gradient_rosy;
                 break;
             default:
-
-                throw new Exception("Couleur non trouvée");
-
+                throw new ColorNotFoundException(nameColor);
         }
 
         return colorFile;

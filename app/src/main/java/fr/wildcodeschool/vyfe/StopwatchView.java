@@ -13,19 +13,19 @@ import android.widget.Chronometer;
  * for example, when you run stop method and then start, the stop watch resume form the time you
  * stopped it.
  */
-public class StopWatch extends Chronometer {
+public class StopwatchView extends Chronometer {
 
     private long latestStop;
 
-    public StopWatch(Context context) {
+    public StopwatchView(Context context) {
         this(context, null, 0);
     }
 
-    public StopWatch(Context context, AttributeSet attrs) {
+    public StopwatchView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public StopWatch(Context context, AttributeSet attrs, int defStyleAttr) {
+    public StopwatchView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         this.setTime(0);
         latestStop = getTime();
