@@ -62,7 +62,7 @@
                         app:layout_constraintTop_toTopOf="parent" />
 
 
-                    <fr.wildcodeschool.vyfe.StopWatch
+                    <fr.wildcodeschool.vyfe.StopwatchView
                         android:id="@+id/chronometer"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

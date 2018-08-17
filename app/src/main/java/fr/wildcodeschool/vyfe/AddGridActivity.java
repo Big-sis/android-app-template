@@ -46,7 +46,7 @@ public class AddGridActivity extends AppCompatActivity implements AdapterView.On
         nameColorTag = nameDrawable[chooserandom];
         try {
             ivColor.setBackgroundResource(ColorHelper.convertColor(nameColorTag));
-        } catch (Exception e) {
+        } catch (ColorNotFoundException e) {
             e.printStackTrace();
         }
 

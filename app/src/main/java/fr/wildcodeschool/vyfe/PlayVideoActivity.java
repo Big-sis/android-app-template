@@ -63,7 +63,7 @@ public class PlayVideoActivity extends AppCompatActivity {
     private SingletonSessions mSingletonSessions;
     private String mVideoLink;
     private String mTitleSession;
-    private StopWatch mChrono;
+    private StopwatchView mChrono;
 
     private LinearLayout mLlMain;
     private FloatingActionButton mPlay;
@@ -354,7 +354,7 @@ public class PlayVideoActivity extends AppCompatActivity {
                     public void onSuccess() {
                         try {
                            iv.setBackgroundResource(ColorHelper.convertColor(mTagColorList.get(tagModel.getName())));
-                        } catch (Exception e) {
+                        } catch (ColorNotFoundException e) {
                             e.printStackTrace();
                         }
 

@@ -92,7 +92,7 @@
                 android:layout_marginRight="40dp"
                 android:focusable="true" />
 
-            <fr.wildcodeschool.vyfe.StopWatch
+            <fr.wildcodeschool.vyfe.StopwatchView
                 android:id="@+id/chronometer_play"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
