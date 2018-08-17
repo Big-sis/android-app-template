@@ -148,8 +148,8 @@
 
                             <ImageView
                                 android:id="@+id/fab_add_moment"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
                                 android:clickable="true"
                                 android:src="@drawable/icons8_plus_96"
                                 app:layout_constraintStart_toStartOf="parent"

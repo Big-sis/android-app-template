@@ -90,6 +90,7 @@ public class RecordActivity extends AppCompatActivity {
         mCamera = getCameraInstance(currentCameraId);
 
         mRecord = findViewById(R.id.bt_record);
+        mRecord.setImageResource(R.drawable.record);
 
         final Button btnBackMain = findViewById(R.id.btn_back_main);
         final Button btnPlay = findViewById(R.id.btn_play);

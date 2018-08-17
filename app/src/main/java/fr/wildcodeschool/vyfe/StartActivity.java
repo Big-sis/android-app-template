@@ -14,30 +14,25 @@ import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class StartActivity extends AppCompatActivity {
@@ -98,6 +93,8 @@ public class StartActivity extends AppCompatActivity {
         mHeigth = display.getHeight();
         final ProgressBar pbLoad = findViewById(R.id.pb_load);
 
+
+
         final String[] str = {getString(R.string.arrow)};
         spinner.setMinimumWidth((int) (0.2 * mWidth));
 
@@ -153,7 +150,8 @@ public class StartActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 spinner.setVisibility(View.VISIBLE);
-
+                InputMethodManager imm = (InputMethodManager) StartActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(radioButtonImport.getWindowToken(), 0);
 
                 if (radioButtonImport.isChecked()) {
                     mTagModelListAdd.clear();
@@ -271,6 +269,8 @@ public class StartActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if (radioButtonNew.isChecked()) {
+                    InputMethodManager imm = (InputMethodManager) StartActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(radioButtonNew.getWindowToken(), 0);
                     tvTitleGridImport.setVisibility(View.GONE);
                     mTagModelListAdd.clear();
                     adapterNotifyDataChange(adapter, adapterImport);

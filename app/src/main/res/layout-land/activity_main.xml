@@ -63,8 +63,8 @@
                     android:id="@+id/line1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="50dp"
+                    android:layout_marginRight="50dp"
                     android:orientation="horizontal">
 
                     <LinearLayout
@@ -101,7 +101,8 @@
                         android:layout_height="100dp"
                         android:layout_margin="15dp"
                         android:layout_weight="1"
-                        android:background="@color/colorCharcoalGrey">
+                        android:background="@color/colorCharcoalGrey"
+                        android:visibility="gone">
 
                         <ImageView
                             android:id="@+id/logo_multi_session"
@@ -128,14 +129,14 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp"
+                    android:layout_marginLeft="50dp"
+                    android:layout_marginRight="50dp"
                     android:layout_marginTop="40dp"
                     android:orientation="horizontal">
 
                     <LinearLayout
                         android:id="@+id/btn_videos"
-                        android:layout_width="0dp"
+                        android:layout_width="match_parent"
                         android:layout_height="100dp"
                         android:layout_margin="15dp"
                         android:layout_weight="1"
