@@ -25,42 +25,37 @@ import android.widget.RadioButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class StartActivity extends AppCompatActivity {
 
-    private SingletonTags mSingletonTags = SingletonTags.getInstance();
-    private ArrayList<TagModel> mTagModelListAdd = mSingletonTags.getmTagsListAdd();
-
-    private SingletonTagsSets mSingletonTagsSets = SingletonTagsSets.getInstance();
-    private ArrayList<TagSetsModel> mTagsSetsList = mSingletonTagsSets.getmTagsSetsList();
-
-    private FirebaseDatabase mDatabase;
-    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
-
-    private String mIdGridImport;
-    private String mNameGrid;
-
     public static final String TITLE_VIDEO = "titleVideo";
     public static final String ID_TAG_SET = "idTagSet";
-
+    String titleTagSet = "";
+    private SingletonTags mSingletonTags = SingletonTags.getInstance();
+    private ArrayList<TagModel> mTagModelListAdd = mSingletonTags.getmTagsListAdd();
+    private SingletonTagsSets mSingletonTagsSets = SingletonTagsSets.getInstance();
+    private ArrayList<TagSetsModel> mTagsSetsList = mSingletonTagsSets.getmTagsSetsList();
+    private FirebaseDatabase mDatabase;
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private String mIdGridImport;
+    private String mNameGrid;
     private SharedPreferences mSharedPrefTagSet;
     private SharedPreferences mSharedPrefVideoTitle;
-
     private EditText mEtTagSet;
     private EditText mEtVideoTitle;
-
     private int mWidth;
     private int mHeigth;
-    String titleTagSet = "";
     private ArrayList<String> mNameTagSet = new ArrayList<>();
     private ArrayList<String> mIdTagSet = new ArrayList<>();
 
@@ -93,8 +88,6 @@ public class StartActivity extends AppCompatActivity {
         mHeigth = display.getHeight();
         final ProgressBar pbLoad = findViewById(R.id.pb_load);
 
-
-
         final String[] str = {getString(R.string.arrow)};
         spinner.setMinimumWidth((int) (0.2 * mWidth));
 
@@ -102,6 +95,15 @@ public class StartActivity extends AppCompatActivity {
         if (fromAdd == null) {
             mTagModelListAdd.clear();
         }
+
+        RestartSession user = getIntent().getParcelableExtra("restartSession");
+        if (user != null) {
+            radioButtonImport.setChecked(true);
+            radioButtonNew.setChecked(false);
+            mEtVideoTitle.setText(user.getNameTitleSession());
+
+        }
+
 
         //enregistrement données
         mSharedPrefTagSet = this.getSharedPreferences("TAGSET", Context.MODE_PRIVATE);
@@ -170,6 +172,20 @@ public class StartActivity extends AppCompatActivity {
                 ApiHelperSpinner.getSpinner(StartActivity.this, new ApiHelperSpinner.GridResponse() {
                     @Override
                     public void onSuccess(HashMap<String, String> hashMapTitleIdGrid) {
+                        if (user != null) {
+                            for (String mapKey : hashMapTitleIdGrid.keySet()) {
+                                String namesGrid = hashMapTitleIdGrid.get(mapKey) ;
+                                if(namesGrid.equals(user.getNameTitleSession())){
+                                    String idGrille= hashMapTitleIdGrid.getOrDefault(namesGrid,mapKey);
+                                    Toast.makeText(StartActivity.this, "egal", Toast.LENGTH_SHORT).show();}
+
+                                else Toast.makeText(StartActivity.this, "non", Toast.LENGTH_SHORT).show();
+
+                            }
+
+                        }
+
+
 
                         tagSetIds.putAll(hashMapTitleIdGrid);
                         mNameTagSet.clear();
