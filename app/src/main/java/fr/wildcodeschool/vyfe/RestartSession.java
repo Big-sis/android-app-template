@@ -7,16 +7,16 @@ import android.util.Log;
 public class RestartSession implements Parcelable {
 
     private String nameTitleSession;
-    private String nameTitleGrid;
+    private String idTagSet;
 
     protected RestartSession(Parcel in) {
         nameTitleSession = in.readString();
-        nameTitleGrid = in.readString();
+        idTagSet = in.readString();
     }
 
-    public RestartSession(String nameTitleSession, String nameTitleGrid) {
+    public RestartSession(String nameTitleSession, String idTagSet) {
         this.nameTitleSession = nameTitleSession;
-        this.nameTitleGrid = nameTitleGrid;
+        this.idTagSet = idTagSet;
     }
 
     public static final Creator<RestartSession> CREATOR = new Creator<RestartSession>() {
@@ -65,7 +65,7 @@ public class RestartSession implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(nameTitleSession);
-        dest.writeString(nameTitleGrid);
+        dest.writeString(idTagSet);
     }
 
     public String getNameTitleSession() {
@@ -76,11 +76,11 @@ public class RestartSession implements Parcelable {
         this.nameTitleSession = nameTitleSession;
     }
 
-    public String getNameTitleGrid() {
-        return nameTitleGrid;
+    public String getIdTagSet() {
+        return idTagSet;
     }
 
-    public void setNameTitleGrid(String nameTitleGrid) {
-        this.nameTitleGrid = nameTitleGrid;
+    public void setIdTagSet(String idTagSet) {
+        this.idTagSet = idTagSet;
     }
 }

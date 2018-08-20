@@ -96,14 +96,6 @@ public class StartActivity extends AppCompatActivity {
             mTagModelListAdd.clear();
         }
 
-        RestartSession user = getIntent().getParcelableExtra("restartSession");
-        if (user != null) {
-            radioButtonImport.setChecked(true);
-            radioButtonNew.setChecked(false);
-            mEtVideoTitle.setText(user.getNameTitleSession());
-
-        }
-
 
         //enregistrement données
         mSharedPrefTagSet = this.getSharedPreferences("TAGSET", Context.MODE_PRIVATE);
@@ -171,20 +163,10 @@ public class StartActivity extends AppCompatActivity {
 
                 ApiHelperSpinner.getSpinner(StartActivity.this, new ApiHelperSpinner.GridResponse() {
                     @Override
-                    public void onSuccess(HashMap<String, String> hashMapTitleIdGrid) {
-                        if (user != null) {
-                            for (String mapKey : hashMapTitleIdGrid.keySet()) {
-                                String namesGrid = hashMapTitleIdGrid.get(mapKey) ;
-                                if(namesGrid.equals(user.getNameTitleSession())){
-                                    String idGrille= hashMapTitleIdGrid.getOrDefault(namesGrid,mapKey);
-                                    Toast.makeText(StartActivity.this, "egal", Toast.LENGTH_SHORT).show();}
+                    public void onSuccess(final HashMap<String, String> hashMapTitleIdGrid) {
 
-                                else Toast.makeText(StartActivity.this, "non", Toast.LENGTH_SHORT).show();
-
-                            }
-
-                        }
-
+                        adapterImport.notifyDataSetChanged();
+                        pbLoad.setVisibility(View.GONE);
 
 
                         tagSetIds.putAll(hashMapTitleIdGrid);
@@ -196,22 +178,87 @@ public class StartActivity extends AppCompatActivity {
                             mNameTagSet.add(entry.getValue());
                             mIdTagSet.add(entry.getKey());
                         }
+
+
                         Log.d("Spinner", "onSuccess: " + String.valueOf(mNameTagSet.size()));
                         adapterImport.notifyDataSetChanged();
                         pbLoad.setVisibility(View.GONE);
 
-                        ArrayAdapter<String> adapterSpinner = new ArrayAdapter<String>(StartActivity.this,
-                                R.layout.simple_spinner, mNameTagSet);
 
-
-                        adapterSpinner.setDropDownViewResource(R.layout.item_spinner_dropdown);
+                        AdapterSpinnerTagSet adapterSpinner = new AdapterSpinnerTagSet(StartActivity.this, hashMapTitleIdGrid);
                         spinner.setAdapter(adapterSpinner);
                         spinner.setVisibility(View.VISIBLE);
+
+
+                        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+
+                                mIdGridImport = mIdTagSet.get(i);
+                                mTagModelListAdd = ApiHelperSpinner.getTags(StartActivity.this, i);
+                                String titlenameTagSetImport = "0";
+                                titlenameTagSetImport = mNameTagSet.get(i);
+
+                                if (mIdGridImport.equals("0")) {
+                                    return;
+                                }
+
+                                adapterNotifyDataChange(adapter, adapterImport);
+                                adapterImport.notifyDataSetChanged();
+
+                                Toast.makeText(StartActivity.this, "touché", Toast.LENGTH_SHORT).show();
+                                /** ancien code
+                                 * String titlenameTagSetImport = mNameTagSet.get(i);
+                                 mIdGridImport = mIdTagSet.get(i);
+                                 if (mIdGridImport.equals("0")) {
+                                 return;
+                                 }
+                                 mTagModelListAdd.clear();
+                                 adapterNotifyDataChange(adapter, adapterImport);
+
+                                 if (mIdGridImport != null && !mIdGridImport.equals(getString(R.string.import_grid_arrow) + str[0])) {
+                                 //tagSetShared des tags
+                                 DatabaseReference myRefTag = mDatabase.getReference(authUserId).child("tags");
+                                 myRefTag.keepSynced(true);
+                                 myRefTag.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override public void onDataChange(DataSnapshot dataSnapshot) {
+                                if (dataSnapshot.getChildrenCount() == 0) {
+                                Toast.makeText(StartActivity.this, R.string.havent_tag,
+                                Toast.LENGTH_SHORT).show();
+                                }
+                                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+
+                                if (snapshot.child("fkTagSet").getValue().toString() != null
+                                && snapshot.child("fkTagSet").getValue().toString().equals(mIdGridImport)) {
+                                String name = (String) snapshot.child("name").getValue();
+                                String color = (snapshot.child("color").getValue().toString());
+                                mTagModelListAdd.add(new TagModel(color, name, null, null));
+                                }
+                                }
+                                adapterImport.notifyDataSetChanged();
+                                }
+
+                                @Override public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                                });
+                                 titleTagSet = titlenameTagSetImport;
+                                 }**/
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> adapterView) {
+
+                            }
+                        });
+
+
                     }
 
                     @Override
                     public void onError(String error) {
-                        Toast.makeText(StartActivity.this, " erreur :" + error, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(StartActivity.this, " Erreur :" + error, Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
@@ -227,58 +274,64 @@ public class StartActivity extends AppCompatActivity {
                 });
 
 
-                spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                    @Override
-                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
-                        String titlenameTagSetImport = mNameTagSet.get(i);
-                        mIdGridImport = mIdTagSet.get(i);
-                        if (mIdGridImport.equals("0")) {
-                            return;
-                        }
-                        mTagModelListAdd.clear();
-                        adapterNotifyDataChange(adapter, adapterImport);
-
-                        if (mIdGridImport != null && !mIdGridImport.equals(getString(R.string.import_grid_arrow) + str[0])) {
-                            //tagSetShared des tags
-                            DatabaseReference myRefTag = mDatabase.getReference(authUserId).child("tags");
-                            myRefTag.keepSynced(true);
-                            myRefTag.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    if (dataSnapshot.getChildrenCount() == 0) {
-                                        Toast.makeText(StartActivity.this, R.string.havent_tag,
-                                                Toast.LENGTH_SHORT).show();
-                                    }
-                                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-
-                                        if (snapshot.child("fkTagSet").getValue().toString() != null
-                                                && snapshot.child("fkTagSet").getValue().toString().equals(mIdGridImport)) {
-                                            String name = (String) snapshot.child("name").getValue();
-                                            String color = (snapshot.child("color").getValue().toString());
-                                            mTagModelListAdd.add(new TagModel(color, name, null, null));
-                                        }
-                                    }
-                                    adapterImport.notifyDataSetChanged();
-                                }
-
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-
-                                }
-                            });
-                            titleTagSet = titlenameTagSetImport;
-                        }
-                    }
-
-                    @Override
-                    public void onNothingSelected(AdapterView<?> adapterView) {
-
-                    }
-                });
-
             }
         });
+
+        final RestartSession restartSession = getIntent().getParcelableExtra("restartSession");
+        if (restartSession != null) {
+
+            radioButtonImport.setChecked(true);
+            radioButtonNew.setChecked(false);
+            tvTitleGridImport.setVisibility(View.VISIBLE);
+
+
+            ArrayAdapter<String> adapterSpinner = new ArrayAdapter<String>(StartActivity.this,
+                    R.layout.simple_spinner, mNameTagSet);
+
+
+            adapterSpinner.setDropDownViewResource(R.layout.item_spinner_dropdown);
+            spinner.setAdapter(adapterSpinner);
+            spinner.setVisibility(View.VISIBLE);
+
+            adapterNotifyDataChange(adapter, adapterImport);
+            recyclerViewImport.setVisibility(View.VISIBLE);
+            spinner.setVisibility(View.VISIBLE);
+            spinner.setClickable(true);
+            spinner.setEnabled(true);
+            importGrid(mEtTagSet, fabAddMoment, false);
+
+
+            mEtVideoTitle.setText(restartSession.getNameTitleSession());
+            final String idTagSetRestartSession = restartSession.getIdTagSet();
+
+            DatabaseReference myRefTag = mDatabase.getReference(authUserId).child("tags");
+            myRefTag.keepSynced(true);
+            myRefTag.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if (dataSnapshot.getChildrenCount() == 0) {
+                        Toast.makeText(StartActivity.this, R.string.havent_tag,
+                                Toast.LENGTH_SHORT).show();
+                    }
+                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+
+                        if (snapshot.child("fkTagSet").getValue().toString() != null
+                                && snapshot.child("fkTagSet").getValue().toString().equals(idTagSetRestartSession)) {
+                            String name = (String) snapshot.child("name").getValue();
+                            String color = (snapshot.child("color").getValue().toString());
+                            mTagModelListAdd.add(new TagModel(color, name, null, null));
+                        }
+                    }
+                    adapterImport.notifyDataSetChanged();
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+        }
 
 
         radioButtonNew.setOnClickListener(new View.OnClickListener() {
@@ -298,6 +351,7 @@ public class StartActivity extends AppCompatActivity {
                     spinner.setEnabled(false);
                     spinner.setVisibility(View.GONE);
                     importGrid(mEtTagSet, fabAddMoment, true);
+
                 }
             }
         });
@@ -417,6 +471,8 @@ public class StartActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+
     }
 
     @Override

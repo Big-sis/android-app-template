@@ -250,7 +250,7 @@ public class RecordActivity extends AppCompatActivity {
                 //TODO: Modif lors du changement du Singleton
                 String nameTitleSession = RestartSession.implementTitleGrid(mSingletonSessions.getTitleSession());
 
-                RestartSession restartSession = new RestartSession(nameTitleSession,"test");
+                RestartSession restartSession = new RestartSession(nameTitleSession,idTagSet);
                 Intent intent = new Intent(RecordActivity.this, StartActivity.class);
                 intent.putExtra("restartSession",restartSession );
 
