@@ -5,12 +5,15 @@ import android.provider.Settings;
 import android.widget.GridView;
 import android.widget.Toast;
 
+import com.google.common.hash.HashCode;
+import com.google.common.hash.Hashing;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 
 public class ApiHelperVideo {
@@ -23,6 +26,7 @@ public class ApiHelperVideo {
 
     public static void getVideo(final Context context, final GridView gridView, final ForecastResponse listener) {
         final String idAndroid = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
+        final HashCode hashCode = Hashing.sha256().hashString(idAndroid, Charset.defaultCharset());
         final GridAdapter mGridAdapter = new GridAdapter(context, mSessionsModelList);
 
         DatabaseReference myRef = mDatabase.getReference(authUserId).child("sessions");
@@ -41,7 +45,7 @@ public class ApiHelperVideo {
 
                     SessionsModel sessionsModel = snapshot.getValue(SessionsModel.class);
 
-                    if (idAndroid.equals(sessionsModel.getIdAndroid())) {
+                    if (hashCode.toString().equals(sessionsModel.getIdAndroid())) {
                         mSessionsModelList.add(sessionsModel);
                     }
                     GridAdapter adapter = new GridAdapter(context, mSessionsModelList);

@@ -31,11 +31,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.common.hash.HashCode;
+import com.google.common.hash.Hashing;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -178,7 +181,7 @@ public class RecordActivity extends AppCompatActivity {
                         String stringdate = dt.format(newDate);
 
                         String idAndroid = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-
+                        HashCode hashCode = Hashing.sha256().hashString(idAndroid, Charset.defaultCharset());
 
                         //Firebase SESSION
                         DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions");
@@ -193,7 +196,7 @@ public class RecordActivity extends AppCompatActivity {
                         sessionRef.child(mIdSession).child("idTagSet").setValue(idTagSet);
 
                         //TODO rajout firebase
-                        sessionRef.child(mIdSession).child("idAndroid").setValue(idAndroid);
+                        sessionRef.child(mIdSession).child("idAndroid").setValue(hashCode.toString());
 
 
 
