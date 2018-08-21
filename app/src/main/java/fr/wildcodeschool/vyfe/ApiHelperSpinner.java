@@ -21,6 +21,8 @@ public class ApiHelperSpinner {
     private static ArrayList<String> mGridNames = new ArrayList<>();
     private static HashMap<String, String> hashMapTitleIdGrid = new HashMap<>();
 
+    private static ArrayList<TagModel> mTagModelListAdd = new ArrayList<>();
+
     public static void getSpinner(final Context context, final ApiHelperSpinner.GridResponse listener) {
 
         //tagSetShared données pour mettre spinner
@@ -29,7 +31,6 @@ public class ApiHelperSpinner {
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
 
                 if (dataSnapshot.getChildrenCount() == 0) {
                     hashMapTitleIdGrid.put("0", context.getString(R.string.havent_grid));
@@ -57,72 +58,6 @@ public class ApiHelperSpinner {
         });
     }
 
-    public static ArrayList<TagModel> getTags(final Context context, int i) {
-        final ArrayList<TagModel> mTagModelListAdd = new ArrayList<>();
-        final String[] str = {context.getString(R.string.arrow)};
-        final ArrayList<String> mNameTagSet = new ArrayList<>();
-        final ArrayList<String> mIdTagSet = new ArrayList<>();
-        String titleTagSet = "";
-
-
-        mNameTagSet.clear();
-        mNameTagSet.add(context.getString(R.string.import_grid_arrow) + str[0]);
-        mIdTagSet.clear();
-        mIdTagSet.add("0");
-        for (Map.Entry<String, String> entry : hashMapTitleIdGrid.entrySet()) {
-            mNameTagSet.add(entry.getValue());
-            mIdTagSet.add(entry.getKey());
-        }
-
-        final String mIdGridImport = mIdTagSet.get(i);
-        final String titlenameTagSetImport = mNameTagSet.get(i);
-
-        if (mIdGridImport != null && mIdGridImport.equals("0")) {
-            return null;
-        }
-        mTagModelListAdd.clear();
-        //adapterNotifyDataChange(adapter, adapterImport);
-        if (mIdGridImport != null && !mIdGridImport.equals(context.getString(R.string.import_grid_arrow) + str[0])) {
-
-            DatabaseReference myRefTag = mDatabase.getReference(authUserId).child("tags");
-            myRefTag.keepSynced(true);
-            myRefTag.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    if (dataSnapshot.getChildrenCount() == 0) {
-                        Toast.makeText(context, R.string.havent_tag,
-                                Toast.LENGTH_SHORT).show();
-                    }
-                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-
-                        if (snapshot.child("fkTagSet").getValue().toString() != null
-                                && snapshot.child("fkTagSet").getValue().toString().equals(mIdGridImport)) {
-                            String name = (String) snapshot.child("name").getValue();
-                            String color = (snapshot.child("color").getValue().toString());
-                            mTagModelListAdd.add(new TagModel(color, name, null, null));
-                        }
-                    }
-                    //adapterImport.notifyDataSetChanged();
-                }
-
-                @Override
-                public void onCancelled(DatabaseError databaseError) {
-
-                }
-            });
-            titleTagSet = titlenameTagSetImport;
-        }
-        return mTagModelListAdd;
-
-
-
-
-
-
-
-    }
-
-
     interface GridResponse {
 
         void onSuccess(HashMap<String, String> hashMapTitleIdGrid);
@@ -133,5 +68,44 @@ public class ApiHelperSpinner {
 
         void onFinish(String finish);
     }
+
+    //TODO: Liste chargement ok mais retourne une liste vide : a corriger
+    public static ArrayList<TagModel> getTag(final Context context, final String mIdGridImport){
+        DatabaseReference myRefTag = mDatabase.getReference(authUserId).child("tags");
+        myRefTag.keepSynced(true);
+        myRefTag.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getChildrenCount() == 0) {
+                    Toast.makeText(context, R.string.havent_tag,
+                            Toast.LENGTH_SHORT).show();
+                }
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+
+                    if (snapshot.child("fkTagSet").getValue().toString() != null
+                            && snapshot.child("fkTagSet").getValue().toString().equals(mIdGridImport)) {
+                        String name = (String) snapshot.child("name").getValue();
+                        String color = (snapshot.child("color").getValue().toString());
+                        mTagModelListAdd.add(new TagModel(color, name, null, null));
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+
+        });
+
+        return mTagModelListAdd;
+
+
+    }
+
+    //TODO: creer une methode pour laffichage du nom dans spinner
+
+
 }
 

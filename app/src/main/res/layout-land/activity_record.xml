@@ -141,7 +141,7 @@
         android:id="@+id/session_record"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="visible">
+        android:visibility="invisible">
 
         <ImageView
             android:layout_width="match_parent"
@@ -216,24 +216,25 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="36dp"
+                    android:layout_marginStart="36dp"
                     android:background="@drawable/style_button"
                     android:padding="5dp"
                     android:text="@string/show_video"
                     android:textColor="@color/white"
-                    android:textSize="18sp"
-                    android:layout_marginStart="36dp" />
+                    android:textSize="18sp" />
 
                 <Button
                     android:id="@+id/btn_restart"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="36dp"
+                    android:layout_marginStart="36dp"
                     android:background="@drawable/style_button"
                     android:padding="5dp"
                     android:text="@string/restart_session"
                     android:textColor="@color/white"
                     android:textSize="18sp"
-                    android:layout_marginStart="36dp" />
+                    android:visibility="gone" />
             </LinearLayout>
         </android.support.constraint.ConstraintLayout>
     </android.support.constraint.ConstraintLayout>

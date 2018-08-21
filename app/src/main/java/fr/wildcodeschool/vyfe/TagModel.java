@@ -24,26 +24,26 @@ public class TagModel {
     private int count = 0;
 
     /**
-    public TagModel(int color, String tagName, ArrayList<TimeModel> times) {
-        this.color = color;
-        this.tagName = tagName;
-        this.times = times;
-    }
+     public TagModel(int color, String tagName, ArrayList<TimeModel> times) {
+     this.color = color;
+     this.tagName = tagName;
+     this.times = times;
+     }
 
-    public TagModel(int color, String tagName, String fkTagSet, String rigthOffset) {
-        this.color = color;
-        this.tagName = tagName;
-        this.fkTagSet = fkTagSet;
-        this.rigthOffset = rigthOffset;
-    }
+     public TagModel(int color, String tagName, String fkTagSet, String rigthOffset) {
+     this.color = color;
+     this.tagName = tagName;
+     this.fkTagSet = fkTagSet;
+     this.rigthOffset = rigthOffset;
+     }
 
-    public TagModel(int color, String tagName, String fkTagSet, int start, int end) {
-        this.color = color;
-        this.tagName = tagName;
-        this.fkTagSet = fkTagSet;
-        this.start = start;
-        this.end = end;
-    }
+     public TagModel(int color, String tagName, String fkTagSet, int start, int end) {
+     this.color = color;
+     this.tagName = tagName;
+     this.fkTagSet = fkTagSet;
+     this.start = start;
+     this.end = end;
+     }
 
      public TagModel(int color, String tagName, String fkTagSet, String rigthOffset, String leftOffset) {
      this.color = color;
@@ -72,14 +72,14 @@ public class TagModel {
     public void setColorName(String colorName) {
         this.color = colorName;
     }
-/**
-    public int getColor() {
-        return color;
-    }
+    /**
+     public int getColor() {
+     return color;
+     }
 
-    public void setColor(int color) {
-        this.color = color;
-    }**/
+     public void setColor(int color) {
+     this.color = color;
+     }**/
 
     public String getName() {
         return tagName;
@@ -145,6 +145,5 @@ public class TagModel {
         this.count = count;
     }
 }
-
 
 
