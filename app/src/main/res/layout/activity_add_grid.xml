@@ -69,16 +69,16 @@
 
             <Button
                 android:id="@+id/btn_add"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
                 android:layout_weight="1"
                 android:background="@drawable/style_button_white"
                 android:text="@string/add_tag"
                 tools:layout_editor_absoluteX="449dp"
-                tools:layout_editor_absoluteY="50dp"
-                android:layout_marginStart="16dp" />
+                tools:layout_editor_absoluteY="50dp" />
 
         </LinearLayout>
 

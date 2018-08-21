@@ -25,6 +25,7 @@ public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
                     clickListener.onLongClick(child, recyclerView.getChildPosition(child));
                     child.setAlpha((float) 0.3);
 
+
                     recyclerView.postDelayed(new Runnable() {
                         @Override
                         public void run() {
@@ -40,7 +41,7 @@ public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
 
             @Override
             public void onLongPress(MotionEvent e) {
-                View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
+                final View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
                 if (child != null && clickListener != null) {
                     clickListener.onLongClick(child, recyclerView.getChildPosition(child));
                     child.setAlpha((float) 0.3);
