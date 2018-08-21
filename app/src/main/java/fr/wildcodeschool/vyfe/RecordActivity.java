@@ -292,7 +292,7 @@ public class RecordActivity extends AppCompatActivity {
         mCamera.unlock();
 
         mRecorder.setCamera(mCamera);
-        mRecorder.setAudioSource(MediaRecorder.AudioSource.CAMCORDER);
+        mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
 
         mRecorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_1080P));

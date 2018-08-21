@@ -6,6 +6,7 @@ import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
+import android.media.MediaRecorder;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -219,6 +220,7 @@ public class PlayVideoActivity extends AppCompatActivity {
                 mPlay.setBackgroundColor(getResources().getColor(R.color.color1));
             }
         });
+
 
 
         mVideoSelected.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
