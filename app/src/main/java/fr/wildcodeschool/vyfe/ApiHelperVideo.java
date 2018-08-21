@@ -1,6 +1,7 @@
 package fr.wildcodeschool.vyfe;
 
 import android.content.Context;
+import android.provider.Settings;
 import android.widget.GridView;
 import android.widget.Toast;
 
@@ -21,6 +22,7 @@ public class ApiHelperVideo {
 
 
     public static void getVideo(final Context context, final GridView gridView, final ForecastResponse listener) {
+        final String idAndroid = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
         final GridAdapter mGridAdapter = new GridAdapter(context, mSessionsModelList);
 
         DatabaseReference myRef = mDatabase.getReference(authUserId).child("sessions");
@@ -38,7 +40,10 @@ public class ApiHelperVideo {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
                     SessionsModel sessionsModel = snapshot.getValue(SessionsModel.class);
-                    mSessionsModelList.add(sessionsModel);
+
+                    if (idAndroid.equals(sessionsModel.getIdAndroid())) {
+                        mSessionsModelList.add(sessionsModel);
+                    }
                     GridAdapter adapter = new GridAdapter(context, mSessionsModelList);
                     gridView.setAdapter(adapter);
 

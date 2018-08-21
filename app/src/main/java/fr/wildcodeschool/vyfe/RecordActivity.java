@@ -8,6 +8,7 @@ import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.provider.Settings;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -28,6 +29,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
@@ -175,6 +177,8 @@ public class RecordActivity extends AppCompatActivity {
                         SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yy HH:mm");
                         String stringdate = dt.format(newDate);
 
+                        String idAndroid = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+
 
                         //Firebase SESSION
                         DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions");
@@ -187,6 +191,10 @@ public class RecordActivity extends AppCompatActivity {
                         sessionRef.child(mIdSession).child("date").setValue(stringdate);
                         sessionRef.child(mIdSession).child("idSession").setValue(mIdSession);
                         sessionRef.child(mIdSession).child("idTagSet").setValue(idTagSet);
+
+                        //TODO rajout firebase
+                        sessionRef.child(mIdSession).child("idAndroid").setValue(idAndroid);
+
 
 
                         for (Map.Entry<String, ArrayList<Pair<Integer, Integer>>> entry : newTagList.entrySet()) {
