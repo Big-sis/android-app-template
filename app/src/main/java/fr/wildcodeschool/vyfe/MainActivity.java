@@ -91,11 +91,25 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.logout:
-                Intent intent = new Intent(MainActivity.this, ConnexionActivity.class);
-                startActivity(intent);
-                mAuth.signOut();
-                return true;
+                final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage(R.string.deconnected)
+                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent(MainActivity.this, ConnexionActivity.class);
+                                startActivity(intent);
+                                mAuth.signOut();
 
+                            }
+                        })
+                        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        })
+                        .show();
+                return true;
 
         }
 

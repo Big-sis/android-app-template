@@ -88,4 +88,5 @@
     <string name="title_session">Titre de votre vidéo :</string>
     <string name="add_tag">Ajouter le tag</string>
     <string name="restart_session">Relancer une Session</string>
+    <string name="deconnected">Etes-vous sûr(e) de vouloir vous déconnecter ?</string>
 </resources>

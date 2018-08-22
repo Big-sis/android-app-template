@@ -1,6 +1,8 @@
 package fr.wildcodeschool.vyfe;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -213,7 +215,8 @@ public class StartActivity extends AppCompatActivity {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
-                        String titlenameTagSetImport = mNameTagSet.get(i);
+
+                        final String titlenameTagSetImport = mNameTagSet.get(i);
                         mIdGridImport = mIdTagSet.get(i);
                         if (mIdGridImport.equals("0")) {
                             return;
@@ -230,6 +233,7 @@ public class StartActivity extends AppCompatActivity {
                                   mTagModelListAdd = tagModelArrayList;
                                   adapterImport.notifyDataSetChanged();
 
+
                               }
 
                               @Override
@@ -239,7 +243,7 @@ public class StartActivity extends AppCompatActivity {
                           });
 
 
-                        /** Ancien code (fonctionnel)
+                        /**
                             DatabaseReference myRefTag = mDatabase.getReference(authUserId).child("tags");
                             myRefTag.keepSynced(true);
                             myRefTag.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -308,13 +312,21 @@ public class StartActivity extends AppCompatActivity {
             spinner.setEnabled(true);
             importGrid(mEtTagSet, fabAddMoment, false);
 
-            //TODO: charger les tags à partir de idTagSet (pour linstant code non fonctionnel: apl ApiHelperSpinner.getTag )
-            /*
-            Code non fonctionnel ???
-            mTagModelListAdd.clear();
-            mTagModelListAdd.add(new TagModel( ApiHelperSpinner.getTag(StartActivity.this,idTagSetRestartSession)));
-            adapterImport.notifyDataSetChanged();
-             */
+            //TODO: faire marcher laffichage
+            ApiHelperSpinner.getTag(StartActivity.this, idTagSetRestartSession, new ApiHelperSpinner.TagsResponse() {
+                @Override
+                public void onSuccess(ArrayList<TagModel> tagModelArrayList) {
+                    mTagModelListAdd = tagModelArrayList;
+                    adapterImport.notifyDataSetChanged();
+
+                }
+
+                @Override
+                public void onError(String error) {
+
+                }
+            });
+
 
             //TODO: indiquer qu'il faut garder l'identifiant de la grille pour envoyer les données sur firebase
 
@@ -466,9 +478,23 @@ public class StartActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.logout:
-                Intent intent = new Intent(StartActivity.this, ConnexionActivity.class);
-                startActivity(intent);
-                mAuth.signOut();
+                final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage(R.string.deconnected)
+                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent(StartActivity.this, ConnexionActivity.class);
+                                startActivity(intent);
+                                mAuth.signOut();
+                            }
+                        })
+                        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        })
+                        .show();
                 return true;
 
             case R.id.home:

@@ -1,5 +1,7 @@
 package fr.wildcodeschool.vyfe;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.hardware.Camera;
@@ -287,10 +289,23 @@ public class RecordActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.logout:
-                Intent intent = new Intent(RecordActivity.this, ConnexionActivity.class);
-                startActivity(intent);
-                mAuth.signOut();
-                return true;
+                final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setMessage(R.string.deconnected)
+                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                Intent intent = new Intent(RecordActivity.this, ConnexionActivity.class);
+                                startActivity(intent);
+                                mAuth.signOut();
+                            }
+                        })
+                        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        })
+                        .show();
 
             case R.id.home:
                 Intent intentHome = new Intent(RecordActivity.this, MainActivity.class);
