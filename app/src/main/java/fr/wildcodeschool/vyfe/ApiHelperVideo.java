@@ -32,7 +32,6 @@ public class ApiHelperVideo {
         final HashCode hashCode = Hashing.sha256().hashString(idAndroid, Charset.defaultCharset());
         final File[] sessionsCacheDirs = ContextCompat.getExternalCacheDirs(context);
 
-
         final GridAdapter mGridAdapter = new GridAdapter(context, mSessionsModelList);
 
         DatabaseReference myRef = mDatabase.getReference(authUserId).child("sessions");

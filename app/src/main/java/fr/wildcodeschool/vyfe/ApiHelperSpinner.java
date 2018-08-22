@@ -70,7 +70,7 @@ public class ApiHelperSpinner {
     }
 
     //TODO: Liste chargement ok mais retourne une liste vide : a corriger
-    public static ArrayList<TagModel> getTag(final Context context, final String mIdGridImport){
+    public static ArrayList<TagModel> getTag(final Context context, final String mIdGridImport,final ApiHelperSpinner.TagsResponse listener){
         DatabaseReference myRefTag = mDatabase.getReference(authUserId).child("tags");
         myRefTag.keepSynced(true);
         myRefTag.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -89,6 +89,7 @@ public class ApiHelperSpinner {
                         mTagModelListAdd.add(new TagModel(color, name, null, null));
                     }
                 }
+                listener.onSuccess(mTagModelListAdd);
             }
 
             @Override
@@ -102,9 +103,12 @@ public class ApiHelperSpinner {
 
 
     }
+    interface TagsResponse {
 
-    //TODO: creer une methode pour laffichage du nom dans spinner
+        void onSuccess(ArrayList<TagModel> tagModelArrayList);
 
+        //TODO: creer une methode pour laffichage du nom dans spinner
 
+    }
 }
 

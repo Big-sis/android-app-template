@@ -223,6 +223,9 @@ public class StartActivity extends AppCompatActivity {
 
                         if (mIdGridImport != null && !mIdGridImport.equals(getString(R.string.import_grid_arrow) + str[0])) {
 
+
+                          //  ApiHelperSpinner.getTag(StartActivity.this,mIdGridImport, new Tags)
+
                             DatabaseReference myRefTag = mDatabase.getReference(authUserId).child("tags");
                             myRefTag.keepSynced(true);
                             myRefTag.addListenerForSingleValueEvent(new ValueEventListener() {
