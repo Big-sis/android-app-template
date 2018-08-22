@@ -13,6 +13,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.io.File;
@@ -34,12 +35,14 @@ public class ApiHelperVideo {
 
         final GridAdapter mGridAdapter = new GridAdapter(context, mSessionsModelList);
 
-        DatabaseReference myRef = mDatabase.getReference(authUserId).child("sessions");
-        myRef.keepSynced(true);
-        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference myRef = mDatabase.getReference(authUserId);
+        Query query = myRef.child("sessions").orderByChild("idAndroid").equalTo(hashCode.toString());
+        query.keepSynced(true);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mSessionsModelList.clear();
+
 
                 if (dataSnapshot.getChildrenCount() == 0) {
                     Toast.makeText(context, R.string.havent_video, Toast.LENGTH_LONG).show();
@@ -50,9 +53,9 @@ public class ApiHelperVideo {
 
                     SessionsModel sessionsModel = snapshot.getValue(SessionsModel.class);
 
-                    if (hashCode.toString().equals(sessionsModel.getIdAndroid())) {
+
                         mSessionsModelList.add(sessionsModel);
-                    }}
+                    }
                     GridAdapter adapter = new GridAdapter(context, mSessionsModelList);
                     gridView.setAdapter(adapter);
 
