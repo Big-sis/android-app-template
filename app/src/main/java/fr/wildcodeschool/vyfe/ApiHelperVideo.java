@@ -3,7 +3,6 @@ package fr.wildcodeschool.vyfe;
 import android.content.Context;
 import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.widget.GridView;
 import android.widget.Toast;
 
@@ -31,7 +30,10 @@ public class ApiHelperVideo {
     public static void getVideo(final Context context, final GridView gridView, final ForecastResponse listener) {
         final String idAndroid = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
         final HashCode hashCode = Hashing.sha256().hashString(idAndroid, Charset.defaultCharset());
+
         final File[] sessionsCacheDirs = ContextCompat.getExternalCacheDirs(context);
+        final String racineFile = String.valueOf(sessionsCacheDirs[0].getAbsoluteFile());
+        final String[] numbersFiles = sessionsCacheDirs[0].list();
 
         final GridAdapter mGridAdapter = new GridAdapter(context, mSessionsModelList);
 
@@ -43,7 +45,6 @@ public class ApiHelperVideo {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mSessionsModelList.clear();
 
-
                 if (dataSnapshot.getChildrenCount() == 0) {
                     Toast.makeText(context, R.string.havent_video, Toast.LENGTH_LONG).show();
                 }
@@ -53,19 +54,25 @@ public class ApiHelperVideo {
 
                     SessionsModel sessionsModel = snapshot.getValue(SessionsModel.class);
 
-
-                        mSessionsModelList.add(sessionsModel);
+                    for (String numberFile : numbersFiles) {
+                        String nameCache = racineFile +"/"+ numberFile;
+                        if (sessionsModel.getVideoLink().equals(nameCache)) {
+                            mSessionsModelList.add(sessionsModel);
+                            //TODO: mettre un message a utilisateur plus dispo ou les faire apparaitre en plus clair
+                        }
                     }
-                    GridAdapter adapter = new GridAdapter(context, mSessionsModelList);
-                    gridView.setAdapter(adapter);
 
-                    pendingLoadCount[0] = pendingLoadCount[0] - 1;
-                    if (pendingLoadCount[0] == 0) {
-                        listener.onFinish();
-                    }
-                    if (pendingLoadCount[0] != 0 && Wait) {
-                        listener.onWait();
-                        Wait = false;
+                }
+                GridAdapter adapter = new GridAdapter(context, mSessionsModelList);
+                gridView.setAdapter(adapter);
+
+                pendingLoadCount[0] = pendingLoadCount[0] - 1;
+                if (pendingLoadCount[0] == 0) {
+                    listener.onFinish();
+                }
+                if (pendingLoadCount[0] != 0 && Wait) {
+                    listener.onWait();
+                    Wait = false;
 
 
                 }
