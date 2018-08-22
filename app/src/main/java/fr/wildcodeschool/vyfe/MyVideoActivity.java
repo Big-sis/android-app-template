@@ -2,9 +2,11 @@ package fr.wildcodeschool.vyfe;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,8 +19,13 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.File;
 import java.util.ArrayList;
 
+/**
+ * Activity presents cache memory videos and device videos
+ * The user can select one and view it
+ */
 public class MyVideoActivity extends AppCompatActivity {
     SingletonSessions mSingletonSessions = SingletonSessions.getInstance();
     ArrayList<SessionsModel> mSessionsModelList = mSingletonSessions.getmSessionsList();

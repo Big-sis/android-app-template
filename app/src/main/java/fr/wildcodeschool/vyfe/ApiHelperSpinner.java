@@ -89,7 +89,6 @@ public class ApiHelperSpinner {
                         mTagModelListAdd.add(new TagModel(color, name, null, null));
                     }
                 }
-
             }
 
             @Override

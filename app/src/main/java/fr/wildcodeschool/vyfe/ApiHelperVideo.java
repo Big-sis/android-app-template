@@ -2,6 +2,8 @@ package fr.wildcodeschool.vyfe;
 
 import android.content.Context;
 import android.provider.Settings;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.widget.GridView;
 import android.widget.Toast;
 
@@ -13,6 +15,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.File;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 
@@ -27,6 +30,9 @@ public class ApiHelperVideo {
     public static void getVideo(final Context context, final GridView gridView, final ForecastResponse listener) {
         final String idAndroid = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
         final HashCode hashCode = Hashing.sha256().hashString(idAndroid, Charset.defaultCharset());
+        final File[] sessionsCacheDirs = ContextCompat.getExternalCacheDirs(context);
+
+
         final GridAdapter mGridAdapter = new GridAdapter(context, mSessionsModelList);
 
         DatabaseReference myRef = mDatabase.getReference(authUserId).child("sessions");
@@ -47,7 +53,7 @@ public class ApiHelperVideo {
 
                     if (hashCode.toString().equals(sessionsModel.getIdAndroid())) {
                         mSessionsModelList.add(sessionsModel);
-                    }
+                    }}
                     GridAdapter adapter = new GridAdapter(context, mSessionsModelList);
                     gridView.setAdapter(adapter);
 
@@ -58,7 +64,7 @@ public class ApiHelperVideo {
                     if (pendingLoadCount[0] != 0 && Wait) {
                         listener.onWait();
                         Wait = false;
-                    }
+
 
                 }
                 listener.onSuccess(mSessionsModelList);
