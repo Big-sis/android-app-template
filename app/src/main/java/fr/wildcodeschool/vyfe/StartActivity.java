@@ -223,9 +223,23 @@ public class StartActivity extends AppCompatActivity {
 
                         if (mIdGridImport != null && !mIdGridImport.equals(getString(R.string.import_grid_arrow) + str[0])) {
 
+                            // Nouveau code avec une interface,
+                          ApiHelperSpinner.getTag(StartActivity.this, mIdGridImport, new ApiHelperSpinner.TagsResponse() {
+                              @Override
+                              public void onSuccess(ArrayList<TagModel> tagModelArrayList) {
+                                  mTagModelListAdd = tagModelArrayList;
+                                  adapterImport.notifyDataSetChanged();
 
-                          //  ApiHelperSpinner.getTag(StartActivity.this,mIdGridImport, new Tags)
+                              }
 
+                              @Override
+                              public void onError(String error) {
+
+                              }
+                          });
+
+
+                        /** Ancien code (fonctionnel)
                             DatabaseReference myRefTag = mDatabase.getReference(authUserId).child("tags");
                             myRefTag.keepSynced(true);
                             myRefTag.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -251,14 +265,9 @@ public class StartActivity extends AppCompatActivity {
                                 public void onCancelled(DatabaseError databaseError) {
 
                                 }
-                            });
+                            });**/
 
-                            //TODO: remplacer le precedent code par l'appel ApiHelperSpinner.getTag
-                            /**
-                             * Code non fonctionnel ????
-                             *  mTagModelListAdd.add(new TagModel(ApiHelperSpinner.getTag(StartActivity.this,mIdGridImport)));
-                             adapterImport.notifyDataSetChanged();
-                             */
+
 
                             titleTagSet = titlenameTagSetImport;
                         }
