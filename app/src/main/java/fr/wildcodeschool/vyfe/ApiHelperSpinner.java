@@ -1,6 +1,7 @@
 package fr.wildcodeschool.vyfe;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -70,12 +71,15 @@ public class ApiHelperSpinner {
     }
 
     //TODO: Liste chargement ok mais retourne une liste vide : a corriger
-    public static void getTag(final Context context, final String mIdGridImport,final ApiHelperSpinner.TagsResponse listener){
+    public static void getTag(final Context context, final RecyclerView recyclerView, final String mIdGridImport, final ApiHelperSpinner.TagsResponse listener){
         DatabaseReference myRefTag = mDatabase.getReference(authUserId).child("tags");
         myRefTag.keepSynced(true);
         myRefTag.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                mTagModelListAdd.clear();
+                final TagRecyclerAdapter adapter = new TagRecyclerAdapter(mTagModelListAdd, "start");
+                recyclerView.setAdapter(adapter);
                 if (dataSnapshot.getChildrenCount() == 0) {
                     Toast.makeText(context, R.string.havent_tag,
                             Toast.LENGTH_SHORT).show();
@@ -90,6 +94,7 @@ public class ApiHelperSpinner {
                     }
                 }
                 listener.onSuccess(mTagModelListAdd);
+                adapter.notifyDataSetChanged();
             }
 
             @Override

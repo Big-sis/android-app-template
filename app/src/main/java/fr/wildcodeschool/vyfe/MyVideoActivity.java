@@ -64,7 +64,7 @@ public class MyVideoActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 mSessionsModelList.clear();
                 if (dataSnapshot.getChildrenCount() == 0) {
-                    Toast.makeText(MyVideoActivity.this, R.string.havent_video, Toast.LENGTH_LONG).show();
+                    Toast.makeText(MyVideoActivity.this, R.string.havent_video, Toast.LENGTH_LONG).DisconnectionAlert();
                 }
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
@@ -132,24 +132,7 @@ public class MyVideoActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.logout:
-                final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage(R.string.deconnected)
-                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Intent intent = new Intent(MyVideoActivity.this, ConnexionActivity.class);
-                                startActivity(intent);
-                                mAuth.signOut();
-
-                            }
-                        })
-                        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        })
-                        .show();
+                DisconnectionAlert.confirmedDisconnection(MyVideoActivity.this);
                 return true;
             case R.id.home:
                 Intent intentHome = new Intent(MyVideoActivity.this, MainActivity.class);

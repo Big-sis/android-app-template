@@ -163,8 +163,6 @@ public class StartActivity extends AppCompatActivity {
                 ApiHelperSpinner.getSpinner(StartActivity.this, new ApiHelperSpinner.GridResponse() {
                     @Override
                     public void onSuccess(HashMap<String, String> hashMapTitleIdGrid) {
-                        hashMapTitleIdGrid.put("0", getString(R.string.import_grid_arrow) + str[0]);
-
                         tagSetIds.putAll(hashMapTitleIdGrid);
                         mNameTagSet.clear();
                         mNameTagSet.add(getString(R.string.import_grid_arrow) + str[0]);
@@ -178,18 +176,14 @@ public class StartActivity extends AppCompatActivity {
                         adapterImport.notifyDataSetChanged();
                         pbLoad.setVisibility(View.GONE);
 
-                        //TODO: nouveau spinner : A améliorer / affichage
-                        /**
-                         *  AdapterSpinnerTagSet adapterSpinnerTagSet = new AdapterSpinnerTagSet(StartActivity.this, hashMapTitleIdGrid);
-                         spinner.setAdapter(adapterSpinnerTagSet);
-                         spinner.setVisibility(View.VISIBLE);
-                         **/
+                        ArrayAdapter<String> adapterSpinner = new ArrayAdapter<String>(StartActivity.this,
+                                R.layout.simple_spinner, mNameTagSet);
 
-                         ArrayAdapter<String> adapterSpinner = new ArrayAdapter<String>(StartActivity.this,
-                         R.layout.simple_spinner, mNameTagSet);
-                         adapterSpinner.setDropDownViewResource(R.layout.item_spinner_dropdown);
-                         spinner.setAdapter(adapterSpinner);
-                         spinner.setVisibility(View.VISIBLE);
+
+                        adapterSpinner.setDropDownViewResource(R.layout.item_spinner_dropdown);
+                        spinner.setAdapter(adapterSpinner);
+                        spinner.setVisibility(View.VISIBLE);
+
 
                     }
 
@@ -224,15 +218,14 @@ public class StartActivity extends AppCompatActivity {
                         mTagModelListAdd.clear();
                         adapterNotifyDataChange(adapter, adapterImport);
 
+
                         if (mIdGridImport != null && !mIdGridImport.equals(getString(R.string.import_grid_arrow) + str[0])) {
 
-                            // Nouveau code avec une interface,
-                          ApiHelperSpinner.getTag(StartActivity.this, mIdGridImport, new ApiHelperSpinner.TagsResponse() {
+                          ApiHelperSpinner.getTag(StartActivity.this, recyclerViewImport,mIdGridImport, new ApiHelperSpinner.TagsResponse() {
                               @Override
                               public void onSuccess(ArrayList<TagModel> tagModelArrayList) {
                                   mTagModelListAdd = tagModelArrayList;
                                   adapterImport.notifyDataSetChanged();
-
 
                               }
 
@@ -241,37 +234,6 @@ public class StartActivity extends AppCompatActivity {
 
                               }
                           });
-
-
-                        /**
-                            DatabaseReference myRefTag = mDatabase.getReference(authUserId).child("tags");
-                            myRefTag.keepSynced(true);
-                            myRefTag.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    if (dataSnapshot.getChildrenCount() == 0) {
-                                        Toast.makeText(StartActivity.this, R.string.havent_tag,
-                                                Toast.LENGTH_SHORT).show();
-                                    }
-                                    for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-
-                                        if (snapshot.child("fkTagSet").getValue().toString() != null
-                                                && snapshot.child("fkTagSet").getValue().toString().equals(mIdGridImport)) {
-                                            String name = (String) snapshot.child("name").getValue();
-                                            String color = (snapshot.child("color").getValue().toString());
-                                            mTagModelListAdd.add(new TagModel(color, name, null, null));
-                                        }
-                                    }
-                                    adapterImport.notifyDataSetChanged();
-                                }
-
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-
-                                }
-                            });**/
-
-
 
                             titleTagSet = titlenameTagSetImport;
                         }
@@ -313,11 +275,11 @@ public class StartActivity extends AppCompatActivity {
             importGrid(mEtTagSet, fabAddMoment, false);
 
             //TODO: faire marcher laffichage
-            ApiHelperSpinner.getTag(StartActivity.this, idTagSetRestartSession, new ApiHelperSpinner.TagsResponse() {
+            ApiHelperSpinner.getTag(StartActivity.this, recyclerViewImport,idTagSetRestartSession, new ApiHelperSpinner.TagsResponse() {
                 @Override
                 public void onSuccess(ArrayList<TagModel> tagModelArrayList) {
                     mTagModelListAdd = tagModelArrayList;
-                    adapterImport.notifyDataSetChanged();
+                   // adapterImport.notifyDataSetChanged();
 
                 }
 
@@ -478,23 +440,7 @@ public class StartActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.logout:
-                final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage(R.string.deconnected)
-                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Intent intent = new Intent(StartActivity.this, ConnexionActivity.class);
-                                startActivity(intent);
-                                mAuth.signOut();
-                            }
-                        })
-                        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        })
-                        .show();
+                DisconnectionAlert.confirmedDisconnection(StartActivity.this);
                 return true;
 
             case R.id.home:

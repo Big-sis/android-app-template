@@ -274,23 +274,7 @@ public class PlayVideoActivity extends AppCompatActivity {
             //TODO: arreter la video pour eviter crash
             case R.id.logout:
                 mSeekBar.setProgress(mVideoDuration);
-                final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage(R.string.deconnected)
-                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Intent intent = new Intent(PlayVideoActivity.this, ConnexionActivity.class);
-                                startActivity(intent);
-                                mAuth.signOut();
-                            }
-                        })
-                        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        })
-                        .show();
+                DisconnectionAlert.confirmedDisconnection(PlayVideoActivity.this);
                 return true;
             case R.id.home:
                 mSeekBar.setProgress(mVideoDuration);

@@ -139,7 +139,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.d("Volley", "onError: " + error);
-                        Toast.makeText(SelectedVideoActivity.this, "erreur :" + error.toString(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SelectedVideoActivity.this, "erreur :" + error.toString(), Toast.LENGTH_SHORT).DisconnectionAlert();
                     }
                 }) {
                     @Override
@@ -280,23 +280,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.logout:
-                final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setMessage(R.string.deconnected)
-                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Intent intent = new Intent(SelectedVideoActivity.this, ConnexionActivity.class);
-                                startActivity(intent);
-                                mAuth.signOut();
-                            }
-                        })
-                        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        })
-                        .show();
+                DisconnectionAlert.confirmedDisconnection(SelectedVideoActivity.this);
                 return true;
 
             case R.id.home:
@@ -313,7 +297,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
         VolleyMultipartRequest sr2 = new VolleyMultipartRequest(Request.Method.POST, url, new Response.Listener<NetworkResponse>() {
             @Override
             public void onResponse(NetworkResponse response) {
-                // Toast.makeText(ApiActivity.this, " response: " + response.data, Toast.LENGTH_LONG).show();
+                // Toast.makeText(ApiActivity.this, " response: " + response.data, Toast.LENGTH_LONG).DisconnectionAlert();
                 Toast.makeText(SelectedVideoActivity.this, R.string.upload_video, Toast.LENGTH_SHORT).show();
                 Log.d("Volley", "onResponse: " + response);
             }
