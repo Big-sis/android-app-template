@@ -331,7 +331,7 @@ public class RecordActivity extends AppCompatActivity {
 
     private void initTimeline(final ArrayList<TagModel> listTag, RecyclerView rv) {
         //Init variable
-        final StopWatch chronometer = findViewById(R.id.chronometer);
+        final StopwatchView chronometer = findViewById(R.id.chronometer);
 
         //Ajout des differentes timelines au conteneur principal
         LinearLayout llMain = findViewById(R.id.ll_main);
@@ -380,7 +380,7 @@ public class RecordActivity extends AppCompatActivity {
                     iv.setMinimumHeight(50);
                     try {
                         iv.setBackgroundResource(ColorHelper.convertColor(listTag.get(position).getColorName()));
-                    } catch (Exception e) {
+                    } catch (ColorNotFoundException e) {
                         e.printStackTrace();
                     }
 

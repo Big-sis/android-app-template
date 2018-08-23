@@ -88,7 +88,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/bt_play_selected"
                 app:srcCompat="@drawable/replay_black" />
 
-            <fr.wildcodeschool.vyfe.StopWatch
+            <fr.wildcodeschool.vyfe.StopwatchView
                 android:id="@+id/chronometer_play"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

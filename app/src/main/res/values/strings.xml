@@ -89,4 +89,8 @@
     <string name="add_tag">Ajouter le tag</string>
     <string name="restart_session">Relancer une Session</string>
     <string name="deconnected">Etes-vous sûr(e) de vouloir vous déconnecter ?</string>
+    <string name="active_wifi">Vous devez posséder une connexion internet pour vous identifiez</string>
+    <string name="add_tag">Ajouter un tag</string>
+
+
 </resources>

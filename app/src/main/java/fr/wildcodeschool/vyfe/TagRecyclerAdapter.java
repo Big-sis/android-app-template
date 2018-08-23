@@ -46,7 +46,7 @@ public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.
         holder.tvName.setText(tagModel.getName());
         try {
             holder.ivColor.setBackgroundResource(ColorHelper.convertColor(tagModel.getColorName()));
-        } catch (Exception e) {
+        } catch (ColorNotFoundException e) {
 
             e.getMessage();
             Log.d("BEUG", "onBindViewHolder: "+ e.getMessage());
