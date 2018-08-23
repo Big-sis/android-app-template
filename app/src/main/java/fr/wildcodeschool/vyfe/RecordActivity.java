@@ -1,5 +1,7 @@
 package fr.wildcodeschool.vyfe;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.hardware.Camera;
@@ -8,8 +10,10 @@ import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.provider.Settings;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,12 +32,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.common.hash.HashCode;
+import com.google.common.hash.Hashing;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -93,6 +102,7 @@ public class RecordActivity extends AppCompatActivity {
         Date d = new Date();
         mFileName = getExternalCacheDir().getAbsolutePath();
         mFileName += "/" + d.getTime() + ".mp4";
+
 
         mSingletonSessions.setFileName(mFileName);
 
@@ -175,6 +185,8 @@ public class RecordActivity extends AppCompatActivity {
                         SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yy HH:mm");
                         String stringdate = dt.format(newDate);
 
+                        String idAndroid = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+                        HashCode hashCode = Hashing.sha256().hashString(idAndroid, Charset.defaultCharset());
 
                         //Firebase SESSION
                         DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions");
@@ -187,6 +199,10 @@ public class RecordActivity extends AppCompatActivity {
                         sessionRef.child(mIdSession).child("date").setValue(stringdate);
                         sessionRef.child(mIdSession).child("idSession").setValue(mIdSession);
                         sessionRef.child(mIdSession).child("idTagSet").setValue(idTagSet);
+
+                        //TODO rajout firebase
+                        sessionRef.child(mIdSession).child("idAndroid").setValue(hashCode.toString());
+
 
 
                         for (Map.Entry<String, ArrayList<Pair<Integer, Integer>>> entry : newTagList.entrySet()) {
@@ -273,10 +289,7 @@ public class RecordActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.logout:
-                Intent intent = new Intent(RecordActivity.this, ConnexionActivity.class);
-                startActivity(intent);
-                mAuth.signOut();
-                return true;
+                DisconnectionAlert.confirmedDisconnection(RecordActivity.this);
 
             case R.id.home:
                 Intent intentHome = new Intent(RecordActivity.this, MainActivity.class);

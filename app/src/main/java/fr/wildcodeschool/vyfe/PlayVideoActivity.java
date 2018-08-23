@@ -1,5 +1,7 @@
 package fr.wildcodeschool.vyfe;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -272,9 +274,7 @@ public class PlayVideoActivity extends AppCompatActivity {
             //TODO: arreter la video pour eviter crash
             case R.id.logout:
                 mSeekBar.setProgress(mVideoDuration);
-                Intent intent = new Intent(PlayVideoActivity.this, ConnexionActivity.class);
-                startActivity(intent);
-                mAuth.signOut();
+                DisconnectionAlert.confirmedDisconnection(PlayVideoActivity.this);
                 return true;
             case R.id.home:
                 mSeekBar.setProgress(mVideoDuration);

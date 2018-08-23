@@ -39,7 +39,7 @@ public class AddGridActivity extends AppCompatActivity implements AdapterView.On
     private static int color[] = {R.drawable.icons8_tri_d_croissant_96, R.drawable.color_gradient_blue_dark, R.drawable.color_gradient_blue_light, R.drawable.color_gradient_faded_orange, R.drawable.color_gradient_green, R.drawable.color_gradient_grey, R.drawable.color_gradient_rosy};
     private static String[] nameDrawable = {"", "color_gradient_blue_dark", "color_gradient_blue_light", "color_gradient_faded_orange", "color_gradient_green", "color_gradient_grey", "color_gradient_rosy"};
     private static String nameColorTag;
-    private String[] colorName = {"Choisir une couleur", "Dégradé violet", "Déradé bleu clair", "Dégradé orange", "Dégradé vert", "Dégradé gris", "Dégradé rose"};
+    private String[] colorName = {"Choisir une couleur", "Violet", "Bleu", "Orange", "Vert", "Gris", "Rose"};
 
     public static void chooseColor() {
         int chooserandom = 1 + (int) (Math.random() * (color.length - 1));
