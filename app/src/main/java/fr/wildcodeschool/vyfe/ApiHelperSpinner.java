@@ -25,7 +25,7 @@ public class ApiHelperSpinner {
     private static ArrayList<TagModel> mTagModelListAdd = new ArrayList<>();
 
     public static void getSpinner(final Context context, final ApiHelperSpinner.GridResponse listener) {
-
+        hashMapTitleIdGrid.clear();
         //tagSetShared données pour mettre spinner
         DatabaseReference myRef = mDatabase.getReference(authUserId).child("tagSets");
         myRef.keepSynced(true);
