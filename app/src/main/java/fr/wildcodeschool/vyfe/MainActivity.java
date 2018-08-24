@@ -107,8 +107,15 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         MainActivity.super.onBackPressed();
-                        System.exit(0);
-                        finish();
+
+                        Intent intent = new Intent();
+                        intent.setAction(Intent.ACTION_MAIN);
+                        intent.addCategory(Intent.CATEGORY_HOME);
+                        MainActivity.this.startActivity(intent);
+
+                       // System.exit(0);
+                        //finish();
+
                     }
                 })
                 .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
@@ -118,5 +125,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 })
                 .show();
+
     }
 }

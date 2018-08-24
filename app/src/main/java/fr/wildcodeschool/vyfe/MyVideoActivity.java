@@ -147,5 +147,6 @@ public class MyVideoActivity extends AppCompatActivity {
     public void onBackPressed() {
         Intent intent = new Intent(MyVideoActivity.this, MainActivity.class);
         startActivity(intent);
+
     }
 }
