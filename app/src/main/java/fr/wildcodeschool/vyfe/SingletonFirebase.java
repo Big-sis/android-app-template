@@ -22,6 +22,18 @@ public class SingletonFirebase {
         return sInstance;
     }
 
+    public static void setsInstance(SingletonFirebase sInstance) {
+        SingletonFirebase.sInstance = sInstance;
+    }
+
+    public void setmDatabase(FirebaseDatabase mDatabase) {
+        this.mDatabase = mDatabase;
+    }
+
+    public void setmUid(String mUid) {
+        this.mUid = mUid;
+    }
+
     public FirebaseDatabase getDatabase() {
         return mDatabase;
     }

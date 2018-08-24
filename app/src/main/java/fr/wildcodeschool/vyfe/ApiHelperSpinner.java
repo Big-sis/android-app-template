@@ -16,7 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ApiHelperSpinner {
-    private static final String authUserId = SingletonFirebase.getInstance().getUid();
+
     private static FirebaseDatabase mDatabase = SingletonFirebase.getInstance().getDatabase();
     private static String mNameGrid;
     private static ArrayList<String> mGridNames = new ArrayList<>();
@@ -25,6 +25,7 @@ public class ApiHelperSpinner {
     private static ArrayList<TagModel> mTagModelListAdd = new ArrayList<>();
 
     public static void getSpinner(final Context context, final ApiHelperSpinner.GridResponse listener) {
+        String authUserId = SingletonFirebase.getInstance().getUid();
         hashMapTitleIdGrid.clear();
         //tagSetShared données pour mettre spinner
         DatabaseReference myRef = mDatabase.getReference(authUserId).child("tagSets");
@@ -72,6 +73,7 @@ public class ApiHelperSpinner {
 
     //TODO: Liste chargement ok mais retourne une liste vide : a corriger
     public static void getTag(final Context context, final RecyclerView recyclerView, final String mIdGridImport, final ApiHelperSpinner.TagsResponse listener){
+        String authUserId = SingletonFirebase.getInstance().getUid();
         DatabaseReference myRefTag = mDatabase.getReference(authUserId).child("tags");
         myRefTag.keepSynced(true);
         myRefTag.addListenerForSingleValueEvent(new ValueEventListener() {
