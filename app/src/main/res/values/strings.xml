@@ -36,7 +36,6 @@
     <string name="color">Couleur</string>
     <string name="choose">Choisir une couleur</string>
     <string name="aleatory">Couleur aléatoire</string>
-    <string name="add">Ajouter un tag</string>
     <string name="end">Terminer</string>
     <string name="name_event">Nom du tag</string>
     <string name="color_event">Couleur du tag</string>
@@ -87,7 +86,11 @@
     <string name="empty_grid">Veuiller indiquer des tags ou une grille d\'analyse</string>
     <string name="title_grid">Titre de votre grille d\'observation :</string>
     <string name="title_session">Titre de votre vidéo :</string>
+    <string name="add_tag">Ajouter le tag</string>
+    <string name="restart_session">Relancer une Session</string>
+    <string name="deconnected">Etes-vous sûr(e) de vouloir vous déconnecter ?</string>
     <string name="active_wifi">Vous devez posséder une connexion internet pour vous identifiez</string>
     <string name="add_tag">Ajouter un tag</string>
+
 
 </resources>

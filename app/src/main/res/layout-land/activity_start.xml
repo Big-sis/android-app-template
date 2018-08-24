@@ -148,8 +148,8 @@
 
                             <ImageView
                                 android:id="@+id/fab_add_moment"
-                                android:layout_width="50dp"
-                                android:layout_height="50dp"
+                                android:layout_width="60dp"
+                                android:layout_height="60dp"
                                 android:clickable="true"
                                 android:src="@drawable/icons8_plus_96"
                                 app:layout_constraintStart_toStartOf="parent"
@@ -220,8 +220,8 @@
                             android:cursorVisible="false"
                             android:text="@string/grid_import"
                             android:textColor="@color/white"
-                            android:textSize="20sp"
 
+                            android:textSize="20sp"
                             app:fontFamily="@font/roboto"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/tv_my_analyse" />

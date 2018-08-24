@@ -1,5 +1,7 @@
 package fr.wildcodeschool.vyfe;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.hardware.Camera;
@@ -8,12 +10,15 @@ import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
+import android.provider.Settings;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.util.Pair;
 import android.util.TypedValue;
 import android.view.Menu;
@@ -27,17 +32,23 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.common.hash.HashCode;
+import com.google.common.hash.Hashing;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
+
 /**
  * This activity records in real time session with tags
  */
@@ -45,15 +56,20 @@ import java.util.Map;
 
 public class RecordActivity extends AppCompatActivity {
 
+    public static final String ID_TAG_SET = "idTagSet";
+    public static boolean RESTART = false;
+    private static String mFileName = null;
+    private static String mIdSession = null;
+    final String mAuthUserId = SingletonFirebase.getInstance().getUid();
+    FirebaseDatabase mDatabase;
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    int mWidth;
+    HashMap<String, RelativeLayout> mTimelines = new HashMap<>();
+    HashMap<String, ArrayList<Pair<Integer, Integer>>> newTagList = new HashMap<>();
     private ArrayList<TagModel> mTagModels = new ArrayList<>();
     private Camera mCamera;
     private boolean mCamCondition = false;
     private FloatingActionButton mRecord;
-    FirebaseDatabase mDatabase;
-    FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    final String mAuthUserId = SingletonFirebase.getInstance().getUid();
-    private static String mFileName = null;
-    private static String mIdSession = null;
     private MediaRecorder mRecorder = null;
     private CameraPreview mPreview;
     private boolean mBack;
@@ -62,13 +78,16 @@ public class RecordActivity extends AppCompatActivity {
     private SingletonSessions mSingletonSessions = SingletonSessions.getInstance();
     private TagRecyclerAdapter mAdapterTags;
 
-
-    int mWidth;
-
-    HashMap<String, RelativeLayout> mTimelines = new HashMap<>();
-    HashMap<String, ArrayList<Pair<Integer, Integer>>> newTagList = new HashMap<>();
-
-    public static final String ID_TAG_SET = "idTagSet";
+    // Pour obtenir une instance de la caméra
+    public static Camera getCameraInstance(int currentCameraId) {
+        Camera c = null;
+        try {
+            c = Camera.open(currentCameraId);
+        } catch (Exception e) {
+            e.getMessage();
+        }
+        return c;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,15 +103,18 @@ public class RecordActivity extends AppCompatActivity {
         mFileName = getExternalCacheDir().getAbsolutePath();
         mFileName += "/" + d.getTime() + ".mp4";
 
+
         mSingletonSessions.setFileName(mFileName);
 
         int currentCameraId = Camera.CameraInfo.CAMERA_FACING_BACK;
         mCamera = getCameraInstance(currentCameraId);
 
         mRecord = findViewById(R.id.bt_record);
+        mRecord.setImageResource(R.drawable.icons8_appel_video_60);
 
         final Button btnBackMain = findViewById(R.id.btn_back_main);
         final Button btnPlay = findViewById(R.id.btn_play);
+        Button btnRestart = findViewById(R.id.btn_restart);
         final ConstraintLayout sessionRecord = findViewById(R.id.session_record);
         final RecyclerView recyclerTags = findViewById(R.id.re_tags);
         final String idTagSet = getIntent().getStringExtra(ID_TAG_SET);
@@ -163,6 +185,8 @@ public class RecordActivity extends AppCompatActivity {
                         SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yy HH:mm");
                         String stringdate = dt.format(newDate);
 
+                        String idAndroid = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+                        HashCode hashCode = Hashing.sha256().hashString(idAndroid, Charset.defaultCharset());
 
                         //Firebase SESSION
                         DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions");
@@ -175,6 +199,10 @@ public class RecordActivity extends AppCompatActivity {
                         sessionRef.child(mIdSession).child("date").setValue(stringdate);
                         sessionRef.child(mIdSession).child("idSession").setValue(mIdSession);
                         sessionRef.child(mIdSession).child("idTagSet").setValue(idTagSet);
+
+                        //TODO rajout firebase
+                        sessionRef.child(mIdSession).child("idAndroid").setValue(hashCode.toString());
+
 
 
                         for (Map.Entry<String, ArrayList<Pair<Integer, Integer>>> entry : newTagList.entrySet()) {
@@ -231,7 +259,24 @@ public class RecordActivity extends AppCompatActivity {
             }
         });
 
+        btnRestart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RESTART = true;
+                //TODO: Modif lors du changement du Singleton
+                String nameTitleSession = RestartSession.implementTitleGrid(mSingletonSessions.getTitleSession());
+
+                RestartSession restartSession = new RestartSession(nameTitleSession,idTagSet);
+                Intent intent = new Intent(RecordActivity.this, StartActivity.class);
+                intent.putExtra("restartSession",restartSession );
+
+                startActivity(intent);
+
+            }
+        });
+
         initTimeline(mTagModels, recyclerTags);
+
 
     }
 
@@ -244,10 +289,7 @@ public class RecordActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.logout:
-                Intent intent = new Intent(RecordActivity.this, ConnexionActivity.class);
-                startActivity(intent);
-                mAuth.signOut();
-                return true;
+                DisconnectionAlert.confirmedDisconnection(RecordActivity.this);
 
             case R.id.home:
                 Intent intentHome = new Intent(RecordActivity.this, MainActivity.class);
@@ -258,23 +300,12 @@ public class RecordActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    // Pour obtenir une instance de la caméra
-    public static Camera getCameraInstance(int currentCameraId) {
-        Camera c = null;
-        try {
-            c = Camera.open(currentCameraId);
-        } catch (Exception e) {
-            e.getMessage();
-        }
-        return c;
-    }
-
     private void startRecording() {
         mRecorder = new MediaRecorder();
         mCamera.unlock();
 
         mRecorder.setCamera(mCamera);
-        mRecorder.setAudioSource(MediaRecorder.AudioSource.CAMCORDER);
+        mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
 
         mRecorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_1080P));
@@ -294,6 +325,8 @@ public class RecordActivity extends AppCompatActivity {
         mRecorder.release();
         mRecorder = null;
     }
+
+
 
 
     private void initTimeline(final ArrayList<TagModel> listTag, RecyclerView rv) {
@@ -316,7 +349,7 @@ public class RecordActivity extends AppCompatActivity {
                 rv, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-                if(mActiveTag){
+                if (mActiveTag) {
                     String nameTag = listTag.get(position).getName();
                     //init name Tag
                     TextView tvNameTimeline = new TextView(RecordActivity.this);

@@ -91,11 +91,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.logout:
-                Intent intent = new Intent(MainActivity.this, ConnexionActivity.class);
-                startActivity(intent);
-                mAuth.signOut();
+                DisconnectionAlert.confirmedDisconnection(MainActivity.this);
                 return true;
-
 
         }
 

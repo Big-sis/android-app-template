@@ -24,6 +24,7 @@ public class ConnexionActivity extends AppCompatActivity {
      * This activity allows the user to log in
      */
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
