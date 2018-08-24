@@ -113,9 +113,6 @@ public class MainActivity extends AppCompatActivity {
                         intent.addCategory(Intent.CATEGORY_HOME);
                         MainActivity.this.startActivity(intent);
 
-                       // System.exit(0);
-                        //finish();
-
                     }
                 })
                 .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
