@@ -21,13 +21,13 @@ import java.util.ArrayList;
 
 public class ApiHelperVideo {
     private static FirebaseDatabase mDatabase = SingletonFirebase.getInstance().getDatabase();
-    private static String authUserId = SingletonFirebase.getInstance().getUid();
     private static SingletonSessions mSingletonSessions = SingletonSessions.getInstance();
     private static ArrayList<SessionsModel> mSessionsModelList = mSingletonSessions.getmSessionsList();
     private static boolean Wait = true;
 
 
     public static void getVideo(final Context context, final GridView gridView, final ForecastResponse listener) {
+        String authUserId = SingletonFirebase.getInstance().getUid();
         final String idAndroid = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
         final HashCode hashCode = Hashing.sha256().hashString(idAndroid, Charset.defaultCharset());
 
