@@ -67,11 +67,9 @@ public class PlayVideoActivity extends AppCompatActivity {
     private String mVideoLink;
     private String mTitleSession;
     private StopwatchView mChrono;
-
     private LinearLayout mLlMain;
     private FloatingActionButton mPlay;
     private ConstraintLayout mConstraintVideo;
-    private ProgressBar mLoadProgressBar;
     private boolean isSeekbarTracking = false;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -86,7 +84,6 @@ public class PlayVideoActivity extends AppCompatActivity {
 
         mLlMain = findViewById(R.id.ll_main_playvideo);
         mConstraintVideo = findViewById(R.id.constraint_video);
-        //mLoadProgressBar = findViewById(R.id.load_progressbar);
 
         mDatabase = SingletonFirebase.getInstance().getDatabase();
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -393,7 +390,6 @@ public class PlayVideoActivity extends AppCompatActivity {
             });
 
         }
-//        mLoadProgressBar.setVisibility(View.INVISIBLE);
         mConstraintVideo.setVisibility(View.VISIBLE);
     }
 
