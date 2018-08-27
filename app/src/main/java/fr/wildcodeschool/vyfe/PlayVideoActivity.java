@@ -86,8 +86,7 @@ public class PlayVideoActivity extends AppCompatActivity {
 
         mLlMain = findViewById(R.id.ll_main_playvideo);
         mConstraintVideo = findViewById(R.id.constraint_video);
-
-        mLoadProgressBar = findViewById(R.id.load_progressbar);
+        //mLoadProgressBar = findViewById(R.id.load_progressbar);
 
         mDatabase = SingletonFirebase.getInstance().getDatabase();
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -100,8 +99,6 @@ public class PlayVideoActivity extends AppCompatActivity {
         timeLines = findViewById(R.id.time_lines_container);
         timeLines.setLayoutParams(new FrameLayout.LayoutParams(mWidth, LinearLayout.LayoutParams.WRAP_CONTENT));
 
-        LinearLayout linearTags = findViewById(R.id.linear_re_tags);
-        linearTags.setLayoutParams(new FrameLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
         // Applique les paramètres à la seekBar
 
@@ -111,20 +108,6 @@ public class PlayVideoActivity extends AppCompatActivity {
         mSeekBar.setLayoutParams(seekBarParams);
 
         mVideoSelected = findViewById(R.id.video_view_selected);
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                double ratio = 1080d / 1920d;
-                int previewWidth = mVideoSelected.getWidth();
-                int previewHeight = (int) Math.floor(previewWidth * ratio);
-                ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) mVideoSelected.getLayoutParams();
-                params.width = previewWidth;
-                params.height = previewHeight;
-                mVideoSelected.setLayoutParams(params);
-            }
-        }, 30);
-
         mChrono = findViewById(R.id.chronometer_play);
         mPlay = findViewById(R.id.bt_play_selected);
 
@@ -410,7 +393,7 @@ public class PlayVideoActivity extends AppCompatActivity {
             });
 
         }
-        mLoadProgressBar.setVisibility(View.INVISIBLE);
+//        mLoadProgressBar.setVisibility(View.INVISIBLE);
         mConstraintVideo.setVisibility(View.VISIBLE);
     }
 
