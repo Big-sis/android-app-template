@@ -1,160 +1,90 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg"
+    android:orientation="vertical"
     tools:context=".PlayVideoActivity">
 
     <include
         android:id="@+id/appBar"
-        layout="@layout/toolbar" />
+        layout="@layout/toolbar"
+        />
 
-
-    <ProgressBar
-        android:id="@+id/load_progressbar"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:progressDrawable="@drawable/vyfe_logo"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/constraint_video"
+    <ScrollView
+        android:id="@+id/scroolVideo"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <VideoView
-            android:id="@+id/video_view_selected"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="60dp"
-            app:layout_constraintEnd_toEndOf="@+id/video_control"
-            app:layout_constraintEnd_toStartOf="@+id/tag_list_view"
-            app:layout_constraintHorizontal_bias="0.053"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        android:layout_height="0dp"
+        android:layout_weight="0.8">
 
         <LinearLayout
-            android:id="@+id/video_control"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            app:layout_constraintBottom_toBottomOf="@+id/video_view_selected"
-            app:layout_constraintEnd_toStartOf="@+id/tag_list_view"
-            app:layout_constraintTop_toTopOf="@+id/video_view_selected">
+            android:orientation="horizontal">
 
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/bt_play_selected"
-                android:layout_width="wrap_content"
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/constraint_video"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:layout_marginEnd="40dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:src="@android:drawable/ic_media_play"
-                app:backgroundTint="@color/color12"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:layout_weight="0.8"
+                android:visibility="visible">
 
-            <android.support.design.widget.FloatingActionButton
-                android:id="@+id/bt_replay"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:layout_marginEnd="40dp"
-                android:clickable="true"
-                android:focusable="true"
-                android:longClickable="false"
-                app:backgroundTint="@color/color2"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/bt_play_selected"
-                app:srcCompat="@drawable/replay_black" />
-
-            <fr.wildcodeschool.vyfe.StopwatchView
-                android:id="@+id/chronometer_play"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                android:layout_marginEnd="40dp"
-                android:background="@color/colorCharcoal"
-                android:padding="10dp"
-                android:textColor="@color/colorFadedOrange"
-                android:textStyle="bold"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/bt_replay" />
-        </LinearLayout>
-
-        <ScrollView
-            android:id="@+id/timeline"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:layout_marginTop="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/video_view_selected">
-
-            <RelativeLayout
-                android:id="@+id/time_lines_container"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <LinearLayout
-                    android:id="@+id/ll_main_playvideo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical" />
-
-                <SeekBar
-                    android:id="@+id/seek_bar_selected"
+                <VideoView
+                    android:id="@+id/video_view_selected"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentTop="true"
-                    android:clickable="false"
-                    android:focusable="false"
-                    android:longClickable="false"
-                    android:progressDrawable="@android:color/transparent"
-                    android:thumb="@drawable/thumb_blue"
-                    android:visibility="visible"
+                    android:layout_height="0dp"
                     app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintDimensionRatio="1920:1080"
                     app:layout_constraintTop_toTopOf="parent" />
 
-            </RelativeLayout>
-        </ScrollView>
+                <LinearLayout
+                    android:id="@+id/video_control"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="8dp"
+                    android:orientation="vertical"
+                    app:layout_constraintBottom_toBottomOf="@+id/video_view_selected"
+                    app:layout_constraintEnd_toEndOf="@+id/video_view_selected"
+                    app:layout_constraintTop_toTopOf="@+id/video_view_selected">
 
-        <ScrollView
-            android:id="@+id/tag_list_view"
-            android:layout_width="wrap_content"
-            android:layout_height="350dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="60dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0">
+                    <android.support.design.widget.FloatingActionButton
+                        android:id="@+id/bt_play_selected"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:src="@android:drawable/ic_media_play"
+                        app:backgroundTint="@color/color12" />
+
+                    <android.support.design.widget.FloatingActionButton
+                        android:id="@+id/bt_replay"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:longClickable="false"
+                        app:backgroundTint="@color/color2"
+                        app:srcCompat="@drawable/replay_black" />
+
+                    <fr.wildcodeschool.vyfe.StopwatchView
+                        android:id="@+id/chronometer_play"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="5dp"
+                        android:background="@color/colorCharcoal"
+                        android:padding="10dp"
+                        android:textColor="@color/colorFadedOrange"
+                        android:textStyle="bold" />
+                </LinearLayout>
+            </android.support.constraint.ConstraintLayout>
+
 
             <LinearLayout
                 android:id="@+id/linear_re_tags"
@@ -165,17 +95,61 @@
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/re_tags_selected"
-                    android:layout_width="300dp"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_horizontal"
                     android:padding="8dp" />
             </LinearLayout>
-        </ScrollView>
 
 
-    </android.support.constraint.ConstraintLayout>
+        </LinearLayout>
+
+    </ScrollView>
+
+    <ScrollView
+        android:id="@+id/scroolTimeline"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.2">
+
+        <RelativeLayout
+            android:id="@+id/time_lines_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/ll_main_playvideo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical" />
+
+            <SeekBar
+                android:id="@+id/seek_bar_selected"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:clickable="false"
+                android:focusable="false"
+                android:longClickable="false"
+                android:progressDrawable="@android:color/transparent"
+                android:thumb="@drawable/thumb_blue"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </RelativeLayout>
+
+    </ScrollView>
+</LinearLayout>
 
 
-</android.support.constraint.ConstraintLayout>
+
+
+
+
 
 
