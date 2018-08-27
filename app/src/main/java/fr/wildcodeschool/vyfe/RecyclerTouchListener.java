@@ -32,7 +32,7 @@ public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
 
                 }
 
-                return false;
+                return true;
             }
 
             @Override
