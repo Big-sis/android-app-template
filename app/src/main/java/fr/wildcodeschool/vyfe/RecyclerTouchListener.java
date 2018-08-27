@@ -6,13 +6,11 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
 
-import java.util.Timer;
-import java.util.logging.Handler;
-
 public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
 
     private GestureDetector gestureDetector;
     private ClickListener clickListener;
+
 
 
     public RecyclerTouchListener(final Context context, final RecyclerView recyclerView, final ClickListener clickListener) {
@@ -34,7 +32,7 @@ public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
 
                 }
 
-                return true;
+                return false;
             }
 
             @Override
@@ -42,14 +40,14 @@ public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
                 final View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
                 if (child != null && clickListener != null) {
                     clickListener.onLongClick(child, recyclerView.getChildPosition(child));
-                    child.setAlpha((float) 0.3);
+                    child.setBackgroundColor(context.getResources().getColor(R.color.colorWhiteTwo));
 
                     recyclerView.postDelayed(new Runnable() {
                         @Override
                         public void run() {
-                            child.setAlpha(1);
+                            child.setBackgroundColor(context.getResources().getColor(R.color.colorSlateGrey));
                         }
-                    },600);
+                    },100);
                 }
             }
         });
