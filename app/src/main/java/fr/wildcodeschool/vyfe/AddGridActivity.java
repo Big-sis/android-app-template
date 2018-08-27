@@ -30,7 +30,7 @@ public class AddGridActivity extends AppCompatActivity implements AdapterView.On
 
     private static SingletonTags mSingletonTags = SingletonTags.getInstance();
     private static ArrayList<TagModel> mTagModelListAdd = mSingletonTags.getmTagsListAdd();
-    private static TagRecyclerAdapter mAdapter = new TagRecyclerAdapter(mTagModelListAdd, "start");
+    private static TagRecyclerAdapter mAdapter = new TagRecyclerAdapter(mTagModelListAdd, "create");
 
     private static ArrayList<String> colors = new ArrayList<>();
     private static ImageView ivColor;
