@@ -72,6 +72,8 @@ public class PlayVideoActivity extends AppCompatActivity {
     private ConstraintLayout mConstraintVideo;
     private boolean isSeekbarTracking = false;
 
+    private boolean mFIRST = true;
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,7 +137,7 @@ public class PlayVideoActivity extends AppCompatActivity {
                 ApiHelperPlay.getTags(mTagedList, mTagModels, new ApiHelperPlay.TagsResponse() {
                     @Override
                     public void onSuccess() {
-                        makeTimelines();
+                        if (mFIRST)makeTimelines();
                         RecyclerView rvTags = findViewById(R.id.re_tags_selected);
                         mAdapterTags = new TagRecyclerAdapter(mTagModels, mTagedList, "count");
                         RecyclerView.LayoutManager layoutManagerTags = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
@@ -268,6 +270,7 @@ public class PlayVideoActivity extends AppCompatActivity {
 
     // Méthode qui créé les layouts et images des timelines en fonction des données des tags
     public void makeTimelines() {
+        mFIRST = false;
 
         int tagedLineSize = mWidth - convertToDp(getResources().getInteger(R.integer.title_length_timeline));
         int titleLength = convertToDp(getResources().getInteger(R.integer.title_length_timeline));
