@@ -55,7 +55,11 @@ public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.
 
         if (mFrom.equals("start")) {
             holder.tvNum.setVisibility(View.GONE);
-        } else if (mFrom.equals("record")) {
+        } else if (mFrom.equals("create")){
+            holder.tvNum.setVisibility(View.GONE);
+            holder.ivMenu.setVisibility(View.VISIBLE);
+        }
+        else if (mFrom.equals("record")) {
             holder.tvNum.setVisibility(View.VISIBLE);
             int count = tagModel.getCount();
             holder.tvNum.setText(String.valueOf(count));
@@ -90,6 +94,7 @@ public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.
         ImageView ivColor;
         TextView tvNum;
         LinearLayout viewForeground;
+        ImageView ivMenu;
 
         public ViewHolder(View v) {
             super(v);
@@ -97,6 +102,7 @@ public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.
             this.ivColor = v.findViewById(R.id.iv_color);
             this.tvNum = v.findViewById(R.id.tv_stats);
             this.viewForeground = v.findViewById(R.id.view_foreground);
+            this.ivMenu =v.findViewById(R.id.iv_menu);
         }
     }
 }
