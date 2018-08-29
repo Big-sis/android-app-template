@@ -1,6 +1,5 @@
 package fr.wildcodeschool.vyfe;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -9,7 +8,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -41,9 +39,11 @@ public class AddGridActivity extends AppCompatActivity implements AdapterView.On
     private static String nameColorTag;
     private String[] colorName = {"Choisir une couleur", "Violet", "Bleu", "Orange", "Vert", "Gris", "Rose"};
 
+
     public static void chooseColor() {
         int chooserandom = 1 + (int) (Math.random() * (color.length - 1));
         nameColorTag = nameDrawable[chooserandom];
+
         try {
             ivColor.setBackgroundResource(ColorHelper.convertColor(nameColorTag));
         } catch (ColorNotFoundException e) {
@@ -105,8 +105,7 @@ public class AddGridActivity extends AppCompatActivity implements AdapterView.On
                     etName.setText("");
 
                     //Fermer clavier après avoir rentré un tag
-                    InputMethodManager imm = (InputMethodManager) AddGridActivity.this.getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(btnAddEvenement.getWindowToken(), 0);
+                    KeyboardHelper.CloseKeyboard(AddGridActivity.this,btnAddEvenement);
                     nameDouble.add(valueName);
                     spinner.setSelection(0);
                     chooseColor();
@@ -120,7 +119,6 @@ public class AddGridActivity extends AppCompatActivity implements AdapterView.On
             public void onClick(View view) {
                 mSingletonTags.setmTagsListAdd(mTagModelListAdd);
                 colors.clear();
-
                 Intent intent = new Intent(AddGridActivity.this, StartActivity.class);
                 intent.putExtra("fromAdd", "fromAdd");
                 startActivity(intent);

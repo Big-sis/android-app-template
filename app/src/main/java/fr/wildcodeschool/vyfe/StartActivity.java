@@ -22,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +40,7 @@ public class StartActivity extends AppCompatActivity {
     public static final String TITLE_VIDEO = "titleVideo";
     public static final String ID_TAG_SET = "idTagSet";
     String titleTagSet = "";
+    ScrollView scrollMain;
     private SingletonTags mSingletonTags = SingletonTags.getInstance();
     private ArrayList<TagModel> mTagModelListAdd = mSingletonTags.getmTagsListAdd();
     private SingletonTagsSets mSingletonTagsSets = SingletonTagsSets.getInstance();
@@ -78,6 +80,7 @@ public class StartActivity extends AppCompatActivity {
         TextView tvAddTag = findViewById(R.id.tv_add_tag);
         final TextView tvTitleGridImport = findViewById(R.id.tv_title_grid_import);
         final ImageView ivAddTags = findViewById(R.id.fab_add_moment);
+        scrollMain = findViewById(R.id.scrool_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         mEtTagSet = findViewById(R.id.et_grid_title);
         mEtVideoTitle = findViewById(R.id.et_video_title2);
@@ -140,6 +143,8 @@ public class StartActivity extends AppCompatActivity {
         radioButtonImport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                KeyboardHelper.CloseKeyboard(StartActivity.this, radioButtonImport);
+                ScrollHelper.DownScroll(scrollMain);
                 spinner.setVisibility(View.VISIBLE);
 
 
@@ -205,7 +210,7 @@ public class StartActivity extends AppCompatActivity {
                 spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
+                        ScrollHelper.DownScroll(scrollMain);
 
                         final String titlenameTagSetImport = mNameTagSet.get(i);
                         mIdGridImport = mIdTagSet.get(i);
@@ -223,6 +228,7 @@ public class StartActivity extends AppCompatActivity {
                                 public void onSuccess(ArrayList<TagModel> tagModelArrayList) {
                                     mTagModelListAdd = tagModelArrayList;
                                     adapterImport.notifyDataSetChanged();
+                                    ScrollHelper.DownScroll(scrollMain);
 
                                 }
 
@@ -234,13 +240,17 @@ public class StartActivity extends AppCompatActivity {
 
                             titleTagSet = titlenameTagSetImport;
                         }
+
                     }
 
                     @Override
                     public void onNothingSelected(AdapterView<?> adapterView) {
 
                     }
+
+
                 });
+
 
             }
         });
@@ -295,6 +305,7 @@ public class StartActivity extends AppCompatActivity {
         radioButtonNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                KeyboardHelper.CloseKeyboard(StartActivity.this, radioButtonNew);
                 if (radioButtonNew.isChecked()) {
                     tvTitleGridImport.setVisibility(View.GONE);
                     mTagModelListAdd.clear();
@@ -308,6 +319,7 @@ public class StartActivity extends AppCompatActivity {
                     spinner.setVisibility(View.GONE);
                     importGrid(mEtTagSet, fabAddMoment, ivAddTags, true);
                 }
+                ScrollHelper.DownScroll(scrollMain);
             }
         });
 

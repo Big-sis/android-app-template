@@ -307,10 +307,8 @@ public class RecordActivity extends AppCompatActivity {
         mCamera.unlock();
 
         mRecorder.setCamera(mCamera);
-
         mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
-
         mRecorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_1080P));
         mRecorder.setOutputFile(mFileName);
 
@@ -419,11 +417,8 @@ public class RecordActivity extends AppCompatActivity {
 
                     //Scrool automatiquement suit l'ajout des tags
                     final HorizontalScrollView scrollView = findViewById(R.id.horizontal_scroll_view);
-                    scrollView.post(new Runnable() {
-                        public void run() {
-                            scrollView.fullScroll(View.FOCUS_RIGHT);
-                        }
-                    });
+                    ScrollHelper.RigthScroll(scrollView);
+
                 }
             }
 
