@@ -1,8 +1,6 @@
 package fr.wildcodeschool.vyfe;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -28,11 +26,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -143,6 +138,8 @@ public class StartActivity extends AppCompatActivity {
         radioButtonImport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                KeyboardHelper.CloseKeyboard(StartActivity.this,radioButtonImport);
+
                 spinner.setVisibility(View.VISIBLE);
 
 
@@ -298,6 +295,7 @@ public class StartActivity extends AppCompatActivity {
         radioButtonNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                KeyboardHelper.CloseKeyboard(StartActivity.this,radioButtonNew);
                 if (radioButtonNew.isChecked()) {
                     tvTitleGridImport.setVisibility(View.GONE);
                     mTagModelListAdd.clear();
