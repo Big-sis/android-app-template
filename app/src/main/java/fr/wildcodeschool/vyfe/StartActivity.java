@@ -138,7 +138,7 @@ public class StartActivity extends AppCompatActivity {
         radioButtonImport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CloseKeyboard.closeKeyboardWindows(StartActivity.this,radioButtonImport);
+                KeyboardHelper.CloseKeyboard(StartActivity.this,radioButtonImport);
 
                 spinner.setVisibility(View.VISIBLE);
 
@@ -295,7 +295,7 @@ public class StartActivity extends AppCompatActivity {
         radioButtonNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                CloseKeyboard.closeKeyboardWindows(StartActivity.this,radioButtonNew);
+                KeyboardHelper.CloseKeyboard(StartActivity.this,radioButtonNew);
                 if (radioButtonNew.isChecked()) {
                     tvTitleGridImport.setVisibility(View.GONE);
                     mTagModelListAdd.clear();

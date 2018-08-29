@@ -105,7 +105,7 @@ public class AddGridActivity extends AppCompatActivity implements AdapterView.On
                     etName.setText("");
 
                     //Fermer clavier après avoir rentré un tag
-                    CloseKeyboard.closeKeyboardWindows(AddGridActivity.this,btnAddEvenement);
+                    KeyboardHelper.CloseKeyboard(AddGridActivity.this,btnAddEvenement);
                     nameDouble.add(valueName);
                     spinner.setSelection(0);
                     chooseColor();
