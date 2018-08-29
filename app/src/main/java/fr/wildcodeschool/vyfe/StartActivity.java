@@ -1,8 +1,6 @@
 package fr.wildcodeschool.vyfe;
 
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -20,6 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioButton;
@@ -28,11 +27,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -81,6 +77,7 @@ public class StartActivity extends AppCompatActivity {
         final Spinner spinner = (Spinner) findViewById(R.id.spinner_session_infos);
         TextView tvAddTag = findViewById(R.id.tv_add_tag);
         final TextView tvTitleGridImport = findViewById(R.id.tv_title_grid_import);
+        final ImageView ivAddTags = findViewById(R.id.fab_add_moment);
         Toolbar toolbar = findViewById(R.id.toolbar);
         mEtTagSet = findViewById(R.id.et_grid_title);
         mEtVideoTitle = findViewById(R.id.et_video_title2);
@@ -155,7 +152,7 @@ public class StartActivity extends AppCompatActivity {
                     radioButtonNew.setChecked(false);
                     spinner.setClickable(true);
                     spinner.setEnabled(true);
-                    importGrid(mEtTagSet, fabAddMoment, false);
+                    importGrid(mEtTagSet, fabAddMoment, ivAddTags, false);
                 }
                 pbLoad.setVisibility(View.VISIBLE);
                 spinner.setVisibility(View.INVISIBLE);
@@ -221,19 +218,19 @@ public class StartActivity extends AppCompatActivity {
 
                         if (mIdGridImport != null && !mIdGridImport.equals(getString(R.string.import_grid_arrow) + str[0])) {
 
-                          ApiHelperSpinner.getTag(StartActivity.this, recyclerViewImport,mIdGridImport, new ApiHelperSpinner.TagsResponse() {
-                              @Override
-                              public void onSuccess(ArrayList<TagModel> tagModelArrayList) {
-                                  mTagModelListAdd = tagModelArrayList;
-                                  adapterImport.notifyDataSetChanged();
+                            ApiHelperSpinner.getTag(StartActivity.this, recyclerViewImport, mIdGridImport, new ApiHelperSpinner.TagsResponse() {
+                                @Override
+                                public void onSuccess(ArrayList<TagModel> tagModelArrayList) {
+                                    mTagModelListAdd = tagModelArrayList;
+                                    adapterImport.notifyDataSetChanged();
 
-                              }
+                                }
 
-                              @Override
-                              public void onError(String error) {
+                                @Override
+                                public void onError(String error) {
 
-                              }
-                          });
+                                }
+                            });
 
                             titleTagSet = titlenameTagSetImport;
                         }
@@ -272,14 +269,14 @@ public class StartActivity extends AppCompatActivity {
 
             spinner.setClickable(true);
             spinner.setEnabled(true);
-            importGrid(mEtTagSet, fabAddMoment, false);
+            importGrid(mEtTagSet, fabAddMoment, ivAddTags, false);
 
             //TODO: faire marcher laffichage
-            ApiHelperSpinner.getTag(StartActivity.this, recyclerViewImport,idTagSetRestartSession, new ApiHelperSpinner.TagsResponse() {
+            ApiHelperSpinner.getTag(StartActivity.this, recyclerViewImport, idTagSetRestartSession, new ApiHelperSpinner.TagsResponse() {
                 @Override
                 public void onSuccess(ArrayList<TagModel> tagModelArrayList) {
                     mTagModelListAdd = tagModelArrayList;
-                   // adapterImport.notifyDataSetChanged();
+                    // adapterImport.notifyDataSetChanged();
 
                 }
 
@@ -309,7 +306,7 @@ public class StartActivity extends AppCompatActivity {
                     spinner.setLongClickable(false);
                     spinner.setEnabled(false);
                     spinner.setVisibility(View.GONE);
-                    importGrid(mEtTagSet, fabAddMoment, true);
+                    importGrid(mEtTagSet, fabAddMoment, ivAddTags, true);
                 }
             }
         });
@@ -423,10 +420,14 @@ public class StartActivity extends AppCompatActivity {
         fabAddMoment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mSharedPrefTagSet.edit().putString("TAGSET", mEtTagSet.getText().toString()).apply();
-                mSharedPrefVideoTitle.edit().putString("VIDEOTITLE", mEtVideoTitle.getText().toString()).apply();
-                Intent intent = new Intent(StartActivity.this, AddGridActivity.class);
-                startActivity(intent);
+                onPressAddTags();
+            }
+        });
+
+        ivAddTags.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onPressAddTags();
             }
         });
     }
@@ -435,6 +436,13 @@ public class StartActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.settings, menu);
         return true;
+    }
+
+    public void onPressAddTags() {
+        mSharedPrefTagSet.edit().putString("TAGSET", mEtTagSet.getText().toString()).apply();
+        mSharedPrefVideoTitle.edit().putString("VIDEOTITLE", mEtVideoTitle.getText().toString()).apply();
+        Intent intent = new Intent(StartActivity.this, AddGridActivity.class);
+        startActivity(intent);
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -452,13 +460,14 @@ public class StartActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void importGrid(EditText titleGrid, LinearLayout fabAdd, Boolean bolean) {
+    public void importGrid(EditText titleGrid, LinearLayout fabAdd, ImageView ivAddTags, Boolean bolean) {
         titleGrid.setClickable(bolean);
         titleGrid.setLongClickable(bolean);
         titleGrid.setEnabled(bolean);
         fabAdd.setClickable(bolean);
         fabAdd.setLongClickable(bolean);
         fabAdd.setFocusable(bolean);
+        ivAddTags.setClickable(bolean);
     }
 
     public void adapterNotifyDataChange(TagRecyclerAdapter adapterImport, TagRecyclerAdapter adapternew) {
