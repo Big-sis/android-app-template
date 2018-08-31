@@ -152,7 +152,6 @@ public class AddGridActivity extends AppCompatActivity implements AdapterView.On
             nameColorTag = nameDrawable[position];
             ivColor.setBackgroundResource(mfinalcolor);
 
-            Toast.makeText(getApplicationContext(), colorName[position], Toast.LENGTH_LONG).show();
         }
 
     }
