@@ -1,6 +1,7 @@
 package fr.wildcodeschool.vyfe;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -9,6 +10,7 @@ import android.media.AudioManager;
 import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.provider.MediaStore;
@@ -50,6 +52,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import static android.os.Environment.DIRECTORY_MOVIES;
 
 /**
  * This activity records in real time session with tags
@@ -102,6 +106,9 @@ public class RecordActivity extends AppCompatActivity {
         mTitleSession = mSingletonSessions.getTitleSession();
 
         Date d = new Date();
+        //TODO: changer le mode denregistrement
+       // mettre memoire tel a la source:  mFileName= String.valueOf(Environment.getExternalStorageDirectory());
+       // enregistrement dans dossier interne -> movies mFileName = String.valueOf(Environment.getExternalStoragePublicDirectory(DIRECTORY_MOVIES));
         mFileName = getExternalCacheDir().getAbsolutePath();
         mFileName += "/" + d.getTime() + ".mp4";
 
