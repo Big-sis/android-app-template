@@ -29,15 +29,14 @@ public class AddGridActivity extends AppCompatActivity implements AdapterView.On
     private static SingletonTags mSingletonTags = SingletonTags.getInstance();
     private static ArrayList<TagModel> mTagModelListAdd = mSingletonTags.getmTagsListAdd();
     private static TagRecyclerAdapter mAdapter = new TagRecyclerAdapter(mTagModelListAdd, "create");
-
     private static ArrayList<String> colors = new ArrayList<>();
     private static ImageView ivColor;
     private static ArrayList<String> nameDouble = new ArrayList<>();
     private static boolean repeatName = false;
-    private static int color[] = {R.drawable.icons8_tri_d_croissant_96, R.drawable.color_gradient_blue_dark, R.drawable.color_gradient_blue_light, R.drawable.color_gradient_faded_orange, R.drawable.color_gradient_green, R.drawable.color_gradient_grey, R.drawable.color_gradient_rosy};
-    private static String[] nameDrawable = {"", "color_gradient_blue_dark", "color_gradient_blue_light", "color_gradient_faded_orange", "color_gradient_green", "color_gradient_grey", "color_gradient_rosy"};
+    private static int color[] = {R.drawable.icons8_tri_d_croissant_96, R.drawable.color_gradient_blue_dark, R.drawable.color_gradient_blue_light, R.drawable.color_gradient_faded_orange, R.drawable.color_gradient_green,  R.drawable.color_gradient_rosy, R.drawable.color_gradient_red, R.drawable.color_gradient_blue,R.drawable.color_gradient_yellow,R.drawable.color_gradient_magenta_light,R.drawable.color_gradient_green_lightgreen};
+    private static String[] nameDrawable = {"", "color_gradient_blue_dark", "color_gradient_blue_light", "color_gradient_faded_orange", "color_gradient_green", "color_gradient_rosy","color_gradient_red","color_gradient_blue","color_gradient_yellow","color_gradient_magenta_light","color_gradient_green_lightgreen"};
     private static String nameColorTag;
-    private String[] colorName = {"Choisir une couleur", "Violet", "Bleu", "Orange", "Vert", "Gris", "Rose"};
+    private String[] colorName = {"Choisir une couleur", "Violet","Bleu clair", "Orange", "Vert clair", "Rose","Rouge","Bleu","Jaune","Violet clair","Vert"};
 
 
     public static void chooseColor() {

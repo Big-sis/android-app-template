@@ -27,6 +27,21 @@ public class ColorHelper {
             case "color_gradient_rosy":
                 colorFile = R.drawable.color_gradient_rosy;
                 break;
+            case "color_gradient_red":
+                colorFile = R.drawable.color_gradient_red;
+                break;
+            case "color_gradient_blue":
+                colorFile = R.drawable.color_gradient_blue;
+                break;
+            case "color_gradient_yellow":
+                colorFile = R.drawable.color_gradient_yellow;
+                break;
+            case "color_gradient_magenta_light":
+                colorFile = R.drawable.color_gradient_magenta_light;
+                break;
+            case "color_gradient_green_lightgreen":
+                colorFile = R.drawable.color_gradient_green_lightgreen;
+                break;
             default:
                 throw new ColorNotFoundException(nameColor);
         }
