@@ -24,23 +24,23 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="landscape"/>
+            android:screenOrientation="userLandscape"/>
         <activity
             android:name=".RecordActivity"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="userLandscape" />
         <activity
             android:name=".InfoVideoActivity"
-            android:screenOrientation="landscape"
+            android:screenOrientation="userLandscape"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".SelectedVideoActivity"
-            android:screenOrientation="landscape">
+            android:screenOrientation="userLandscape">
 
         </activity>
 
         <activity
             android:name=".ConnexionActivity"
-            android:screenOrientation="landscape"
+            android:screenOrientation="userLandscape"
             android:windowSoftInputMode="stateHidden|adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -51,27 +51,26 @@
         </activity>
         <activity
             android:name=".MyVideoActivity"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="userLandscape" />
         <activity
             android:name=".StartActivity"
-            android:screenOrientation="landscape"
+            android:screenOrientation="userLandscape"
             android:windowSoftInputMode="stateHidden|adjustPan"
             >
-
         </activity>
 
         <activity
             android:name=".PlayVideoActivity"
-            android:screenOrientation="landscape" />
+            android:screenOrientation="userLandscape" />
         <activity
             android:name=".ForgotPassword"
-            android:screenOrientation="landscape"
+            android:screenOrientation="userLandscape"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <activity
             android:name=".AddGridActivity"
-            android:screenOrientation="landscape"
+            android:screenOrientation="userLandscape"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <meta-data
