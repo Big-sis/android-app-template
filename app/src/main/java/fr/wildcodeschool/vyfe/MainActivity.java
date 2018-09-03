@@ -14,22 +14,34 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
     private static final int PERMISSIONS_REQUEST = 1;
+    public static boolean mMulti = false;
+    private static FirebaseDatabase mDatabase;
+    private static String authUserId;
     private String[] permissions = {
             Manifest.permission.RECORD_AUDIO,
             Manifest.permission.CAMERA,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_EXTERNAL_STORAGE
     };
-
-    public static boolean mMulti = false;
     private boolean mPermission;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    private String stringDate;
+    private DatabaseReference endLicence;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +55,42 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout btnStartSession = findViewById(R.id.btn_start_session);
         LinearLayout btnMultiSession = findViewById(R.id.btn_multi_session);
         LinearLayout btnVideos = findViewById(R.id.btn_videos);
+
+        mDatabase = SingletonFirebase.getInstance().getDatabase();
+        authUserId = SingletonFirebase.getInstance().getUid();
+
+        Date date = new Date();
+        Date newDate = new Date(date.getTime());
+        SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yy");
+        stringDate = dt.format(newDate);
+        final String[] endLicenceFirebase = {};
+
+        endLicence = mDatabase.getReference(authUserId).child("endLicence");
+
+        final DatabaseReference earlyLicence = mDatabase.getReference(authUserId).child("earlyLicence");
+        earlyLicence.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.getChildrenCount() == 0) {
+                    earlyLicence.keepSynced(true);
+                    earlyLicence.setValue(stringDate);
+                    WriteExpireLicence();
+                } else {
+                    String value = dataSnapshot.getValue().toString();
+                    if (value.equals(ReadExpireLicence(endLicenceFirebase))) {
+                        Toast.makeText(MainActivity.this, "Votre licence a expirée, veuillez contacter Vyfe", Toast.LENGTH_SHORT).show();
+                        DisconnectionAlert.confirmedDisconnection(MainActivity.this);
+                    }
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
+
 
         btnStartSession.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -123,5 +171,35 @@ public class MainActivity extends AppCompatActivity {
                 })
                 .show();
 
+    }
+
+    public void WriteExpireLicence() {
+        // Par défaut expirer dans un an
+        String[] parts = stringDate.split("-");
+        String years = parts[0];
+        String month = parts[1];
+        String day = parts[2];
+        int yearsNew = Integer.parseInt(years)+1;
+
+        endLicence.keepSynced(true);
+        endLicence.setValue(String.valueOf(yearsNew)+"-"+month+"-"+day);
+
+    }
+
+    public String ReadExpireLicence(final String[] endLicenceFirebase){
+        final DatabaseReference endLicence = mDatabase.getReference(authUserId).child("endLicence");
+        endLicence.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                endLicenceFirebase[0] = dataSnapshot.getValue().toString();
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+        return endLicenceFirebase[0];
     }
 }

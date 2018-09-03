@@ -350,6 +350,8 @@ public class RecordActivity extends AppCompatActivity {
                 rv, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
+                view.setBackgroundResource(R.drawable.color_gradient_faded_orange);
+
                 if (mActiveTag) {
                     String nameTag = listTag.get(position).getName();
                     //init name Tag
