@@ -38,17 +38,18 @@ public class AddGridActivity extends AppCompatActivity implements AdapterView.On
     private static String[] nameDrawable = {"", "color_gradient_blue_dark", "color_gradient_blue_light", "color_gradient_faded_orange", "color_gradient_green", "color_gradient_rosy", "color_gradient_red", "color_gradient_blue", "color_gradient_yellow", "color_gradient_magenta_light", "color_gradient_green_lightgreen"};
     private static String nameColorTag;
     private static ArrayList<Integer> existColor = new ArrayList<>();
+    private static int random;
     private String[] colorName = {"Choisir une couleur", "Violet", "Bleu clair", "Orange", "Vert clair", "Rose", "Rouge", "Bleu", "Jaune", "Violet clair", "Vert"};
 
     public static void randomColor() {
 
-        if(existColor.size()==0){
+        if (existColor.size() == 0) {
             for (int i = 1; i < color.length; i++) {
                 existColor.add(i);
             }
         }
 
-        int random = (int) (Math.random() * (existColor.size() - 1));
+        random = (int) (Math.random() * (existColor.size() - 1));
 
         nameColorTag = nameDrawable[existColor.get(random)];
         try {
@@ -56,8 +57,6 @@ public class AddGridActivity extends AppCompatActivity implements AdapterView.On
         } catch (ColorNotFoundException e) {
             e.printStackTrace();
         }
-        existColor.remove(random);
-
 
     }
 
@@ -113,11 +112,24 @@ public class AddGridActivity extends AppCompatActivity implements AdapterView.On
                     mfinalcolor = 0;
                     etName.setText("");
 
+                    //Couleur proposée une seule fois
+                    if (spinner.getSelectedItemPosition() != 0) {
+
+                        for (int i = 0; i < existColor.size(); i++) {
+                            if (existColor.get(i) == spinner.getSelectedItemPosition()) {
+                                existColor.remove(i);
+                            }
+                        }
+                    } else existColor.remove(random);
+
+
                     //Fermer clavier après avoir rentré un tag
                     KeyboardHelper.CloseKeyboard(AddGridActivity.this, btnAddEvenement);
                     nameDouble.add(valueName);
                     spinner.setSelection(0);
                     randomColor();
+
+
                 }
             }
         });
@@ -157,7 +169,6 @@ public class AddGridActivity extends AppCompatActivity implements AdapterView.On
     @Override
     public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
         if (position != 0) {
-            //TODO a gerer : // couleur aleatoire
 
 
             mfinalcolor = color[position];
