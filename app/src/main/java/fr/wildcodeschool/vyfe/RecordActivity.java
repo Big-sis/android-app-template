@@ -285,6 +285,7 @@ public class RecordActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.settings, menu);
+        OptionsMenuView.invisibleLogout(menu,RecordActivity.this);
         return true;
     }
 

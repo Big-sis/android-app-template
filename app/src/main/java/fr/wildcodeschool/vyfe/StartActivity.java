@@ -63,6 +63,8 @@ public class StartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
+
+
         final SingletonSessions singletonSessions = SingletonSessions.getInstance();
 
         mDatabase = SingletonFirebase.getInstance().getDatabase();
@@ -447,6 +449,7 @@ public class StartActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.settings, menu);
+        OptionsMenuView.invisibleLogout(menu,StartActivity.this);
         return true;
     }
 
