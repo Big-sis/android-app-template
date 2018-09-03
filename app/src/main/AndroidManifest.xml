@@ -24,7 +24,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="userLandscape"/>
+            android:screenOrientation="userLandscape"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
         <activity
             android:name=".RecordActivity"
             android:screenOrientation="userLandscape" />

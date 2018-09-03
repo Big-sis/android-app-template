@@ -41,7 +41,8 @@ public class MainActivity extends AppCompatActivity {
     private boolean mPermission;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private String stringDate;
-    private DatabaseReference endLicence;
+
+     DatabaseReference licence;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,28 +66,28 @@ public class MainActivity extends AppCompatActivity {
         stringDate = dt.format(newDate);
         final String[] endLicenceFirebase = {};
 
-        endLicence = mDatabase.getReference(authUserId).child("endLicence");
 
-        final DatabaseReference earlyLicence = mDatabase.getReference(authUserId).child("earlyLicence");
-        earlyLicence.addListenerForSingleValueEvent(new ValueEventListener() {
+        licence = mDatabase.getReference(authUserId).child("licence");
+        licence.keepSynced(true);
+        licence.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getChildrenCount() == 0) {
-                    earlyLicence.keepSynced(true);
-                    earlyLicence.setValue(stringDate);
+                    licence.child("earlyLicence").setValue(stringDate);
                     WriteExpireLicence();
                 } else {
                     String value = dataSnapshot.getValue().toString();
                     if (value.equals(ReadExpireLicence(endLicenceFirebase))) {
                         Toast.makeText(MainActivity.this, "Votre licence a expirée, veuillez contacter Vyfe", Toast.LENGTH_SHORT).show();
                         DisconnectionAlert.confirmedDisconnection(MainActivity.this);
-                    }
+                    }else Toast.makeText(MainActivity.this, "Licence valide", Toast.LENGTH_SHORT).show();
                 }
 
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
+                Toast.makeText(MainActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -176,23 +177,27 @@ public class MainActivity extends AppCompatActivity {
     public void WriteExpireLicence() {
         // Par défaut expirer dans un an
         String[] parts = stringDate.split("-");
-        String years = parts[0];
+        String day = parts[0];
         String month = parts[1];
-        String day = parts[2];
+        String years = parts[2];
+
         int yearsNew = Integer.parseInt(years)+1;
 
-        endLicence.keepSynced(true);
-        endLicence.setValue(String.valueOf(yearsNew)+"-"+month+"-"+day);
+        licence.keepSynced(true);
+        licence.child("endLicence").setValue(day+"-"+month+"-"+String.valueOf(yearsNew));
 
     }
 
     public String ReadExpireLicence(final String[] endLicenceFirebase){
-        final DatabaseReference endLicence = mDatabase.getReference(authUserId).child("endLicence");
-        endLicence.addListenerForSingleValueEvent(new ValueEventListener() {
+        licence.child("endLicence");
+        licence.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
-                endLicenceFirebase[0] = dataSnapshot.getValue().toString();
+                if(dataSnapshot.getChildrenCount()==0){
+                    endLicenceFirebase[0]="null";
+                }
+                else endLicenceFirebase[0] = dataSnapshot.getValue().toString();
 
             }
 
@@ -200,6 +205,7 @@ public class MainActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError databaseError) {
             }
         });
+
         return endLicenceFirebase[0];
     }
 }
