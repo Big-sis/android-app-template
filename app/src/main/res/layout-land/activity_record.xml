@@ -32,8 +32,9 @@
 
                 <FrameLayout
                     android:id="@+id/video_view"
-                    android:layout_width="0dp"
-                    android:layout_height="200dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    app:layout_constraintDimensionRatio="1920:1080"
                     app:layout_constraintEnd_toEndOf="@+id/video_control"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -56,13 +57,10 @@
                         android:id="@+id/bt_record"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:clickable="true"
-                        app:backgroundTint="@android:color/holo_red_dark"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:backgroundTint="@color/color4" />
 
 
-                    <Chronometer
+                    <fr.wildcodeschool.vyfe.StopwatchView
                         android:id="@+id/chronometer"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -106,8 +104,6 @@
 
 
 
-
-
         <ScrollView
             android:id="@+id/scroll_view_left"
             android:layout_width="wrap_content"
@@ -146,7 +142,7 @@
         android:id="@+id/session_record"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone">
+        android:visibility="invisible">
 
         <ImageView
             android:layout_width="match_parent"
@@ -180,7 +176,7 @@
             <TextView
                 android:id="@+id/tv_video_save"
                 android:layout_width="wrap_content"
-                android:layout_height="26dp"
+                android:layout_height="wrap_content"
                 android:layout_marginEnd="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
@@ -209,7 +205,7 @@
                 <Button
                     android:id="@+id/btn_back_main"
                     android:layout_width="wrap_content"
-                    android:layout_height="30dp"
+                    android:layout_height="wrap_content"
                     android:background="@null"
                     android:text="@string/back_to_main"
                     android:textColor="@color/white"
@@ -219,12 +215,27 @@
                 <Button
                     android:id="@+id/btn_play"
                     android:layout_width="wrap_content"
-                    android:layout_height="30dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginLeft="36dp"
+                    android:layout_marginStart="36dp"
                     android:background="@drawable/style_button"
+                    android:padding="5dp"
                     android:text="@string/show_video"
                     android:textColor="@color/white"
                     android:textSize="18sp" />
+
+                <Button
+                    android:id="@+id/btn_restart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="36dp"
+                    android:layout_marginStart="36dp"
+                    android:background="@drawable/style_button"
+                    android:padding="5dp"
+                    android:text="@string/restart_session"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:visibility="gone" />
             </LinearLayout>
         </android.support.constraint.ConstraintLayout>
     </android.support.constraint.ConstraintLayout>

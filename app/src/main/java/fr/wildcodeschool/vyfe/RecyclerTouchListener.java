@@ -8,23 +8,40 @@ import android.view.View;
 
 public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
 
+    private final int FLASH_DURATION_MS = 100;
     private GestureDetector gestureDetector;
     private ClickListener clickListener;
 
-    public RecyclerTouchListener(Context context, final RecyclerView recyclerView, final ClickListener clickListener) {
+
+    public RecyclerTouchListener(final Context context, final RecyclerView recyclerView, final ClickListener clickListener) {
         this.clickListener = clickListener;
         gestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
             @Override
             public boolean onSingleTapUp(MotionEvent e) {
+
+                final View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
+                if (child != null && clickListener != null) {
+
+                    clickListener.onLongClick(child, recyclerView.getChildPosition(child));
+                    child.setBackgroundColor(context.getResources().getColor(R.color.colorWhiteTwo));
+
+                    recyclerView.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            child.setBackgroundColor(context.getResources().getColor(R.color.colorSlateGrey));
+                        }
+                    }, FLASH_DURATION_MS);
+
+                }
+
+
                 return true;
             }
 
+
             @Override
             public void onLongPress(MotionEvent e) {
-                View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
-                if (child != null && clickListener != null) {
-                    clickListener.onLongClick(child, recyclerView.getChildPosition(child));
-                }
+
             }
         });
     }
@@ -54,7 +71,6 @@ public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
         void onLongClick(View view, int position);
     }
 }
-
 
 
 

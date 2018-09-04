@@ -1,5 +1,7 @@
 package fr.wildcodeschool.vyfe;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -145,9 +147,7 @@ public class InfoVideoActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
             case R.id.logout:
-                Intent intent = new Intent(InfoVideoActivity.this, ConnexionActivity.class);
-                startActivity(intent);
-                mAuth.signOut();
+                DisconnectionAlert.confirmedDisconnection(InfoVideoActivity.this);
                 return true;
 
             case R.id.home:

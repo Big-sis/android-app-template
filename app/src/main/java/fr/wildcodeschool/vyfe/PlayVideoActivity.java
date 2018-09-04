@@ -1,63 +1,62 @@
 package fr.wildcodeschool.vyfe;
 
-import android.content.res.ColorStateList;
-import android.content.res.Resources;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.PathShape;
-import android.graphics.drawable.shapes.RectShape;
-import android.graphics.drawable.shapes.Shape;
 import android.media.MediaPlayer;
+import android.media.MediaRecorder;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
-import android.content.Intent;
-import android.support.annotation.DrawableRes;
 import android.support.annotation.RequiresApi;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Pair;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import android.widget.Chronometer;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.VideoView;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 
+/**
+ * This activity displays the video player with timeline and tag list
+ */
 public class PlayVideoActivity extends AppCompatActivity {
+
+    FirebaseDatabase mDatabase;
+    FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    HashMap<String, String> mTagColorList = new HashMap<>();
+    TagRecyclerAdapter mAdapterTags;
+    RelativeLayout timeLines;
+    Runnable mRunnable;
+    long timeWhenStopped = 0;
+    int mVideoDuration;
+    int mWidth;
+    int mLastEnd;
 
     private ArrayList<TagModel> mTagedList = new ArrayList<>();
     private ArrayList<TagModel> mTagModels = new ArrayList<>();
@@ -67,21 +66,13 @@ public class PlayVideoActivity extends AppCompatActivity {
     private SingletonSessions mSingletonSessions;
     private String mVideoLink;
     private String mTitleSession;
-    FirebaseDatabase mDatabase;
-    FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    HashMap<String, Integer> mTagColorList = new HashMap<>();
-    TagRecyclerAdapter mAdapterTags;
-    RelativeLayout timeLines;
-    Runnable mRunnable;
-    long timeWhenStopped = 0;
-    int mVideoDuration;
-    int mWidth;
-    int mLastEnd;
-    private Chronometer mChrono;
+    private StopwatchView mChrono;
     private LinearLayout mLlMain;
-    private  FloatingActionButton mPlay;
+    private FloatingActionButton mPlay;
     private ConstraintLayout mConstraintVideo;
-    private ProgressBar mLoadProgressBar;
+    private boolean isSeekbarTracking = false;
+
+    private boolean mFIRST = true;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -96,8 +87,6 @@ public class PlayVideoActivity extends AppCompatActivity {
         mLlMain = findViewById(R.id.ll_main_playvideo);
         mConstraintVideo = findViewById(R.id.constraint_video);
 
-        mLoadProgressBar = findViewById(R.id.load_progressbar);
-
         mDatabase = SingletonFirebase.getInstance().getDatabase();
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -109,34 +98,15 @@ public class PlayVideoActivity extends AppCompatActivity {
         timeLines = findViewById(R.id.time_lines_container);
         timeLines.setLayoutParams(new FrameLayout.LayoutParams(mWidth, LinearLayout.LayoutParams.WRAP_CONTENT));
 
-        LinearLayout linearTags = findViewById(R.id.linear_re_tags);
-        linearTags.setLayoutParams(new FrameLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT));
 
         // Applique les paramètres à la seekBar
 
         RelativeLayout.LayoutParams seekBarParams = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        seekBarParams.setMargins( convertToDp(185), 0, 0, 0);
+        seekBarParams.setMargins(convertToDp(185), 0, 0, 0);
         mSeekBar = findViewById(R.id.seek_bar_selected);
         mSeekBar.setLayoutParams(seekBarParams);
 
-        // Rend la seekBar incliquable
-        mSeekBar.setEnabled(false);
-
         mVideoSelected = findViewById(R.id.video_view_selected);
-        final Handler handler = new Handler();
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                double ratio = 1080d / 1920d;
-                int previewWidth = mVideoSelected.getWidth();
-                int previewHeight = (int) Math.floor(previewWidth * ratio);
-                ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) mVideoSelected.getLayoutParams();
-                params.width = previewWidth;
-                params.height = previewHeight;
-                mVideoSelected.setLayoutParams(params);
-            }
-        }, 30);
-
         mChrono = findViewById(R.id.chronometer_play);
         mPlay = findViewById(R.id.bt_play_selected);
 
@@ -148,8 +118,6 @@ public class PlayVideoActivity extends AppCompatActivity {
             @Override
             public void onPrepared(MediaPlayer mp) {
                 mVideoDuration = mVideoSelected.getDuration();
-                mChrono.setBase(SystemClock.elapsedRealtime());
-                mChrono.start();
                 final Handler handler = new Handler();
                 mSeekBar.setMax(mVideoDuration);
                 mRunnable = new Runnable() {
@@ -162,8 +130,6 @@ public class PlayVideoActivity extends AppCompatActivity {
                 };
 
                 handler.post(mRunnable);
-                timeWhenStopped = 0;
-                mChrono.stop();
                 mPlay.setImageResource(android.R.drawable.ic_media_play);
                 mIsPlayed = false;
 
@@ -171,7 +137,7 @@ public class PlayVideoActivity extends AppCompatActivity {
                 ApiHelperPlay.getTags(mTagedList, mTagModels, new ApiHelperPlay.TagsResponse() {
                     @Override
                     public void onSuccess() {
-                        makeTimelines();
+                        if (mFIRST)makeTimelines();
                         RecyclerView rvTags = findViewById(R.id.re_tags_selected);
                         mAdapterTags = new TagRecyclerAdapter(mTagModels, mTagedList, "count");
                         RecyclerView.LayoutManager layoutManagerTags = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
@@ -200,14 +166,12 @@ public class PlayVideoActivity extends AppCompatActivity {
         });
 
 
-
         // Bouton play/pause
         mPlay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (mIsPlayed) {
                     mVideoSelected.pause();
-                    timeWhenStopped = mChrono.getBase() - SystemClock.elapsedRealtime();
                     mChrono.stop();
                     mIsPlayed = false;
                     mPlay.setBackgroundColor(getResources().getColor(R.color.colorLightGreenishBlue));
@@ -218,7 +182,6 @@ public class PlayVideoActivity extends AppCompatActivity {
                     mPlay.setImageResource(android.R.drawable.ic_media_pause);
                     mIsPlayed = true;
                     mVideoSelected.start();
-                    mChrono.setBase(SystemClock.elapsedRealtime() + timeWhenStopped);
                     mChrono.start();
                 }
             }
@@ -234,14 +197,14 @@ public class PlayVideoActivity extends AppCompatActivity {
                 mVideoSelected.seekTo(0);
                 mSeekBar.setProgress(0);
                 mVideoSelected.start();
-                mChrono.setBase(0);
-                mChrono.setBase(SystemClock.elapsedRealtime());
+                mChrono.setTime(0);
                 mChrono.start();
                 mPlay.setVisibility(View.VISIBLE);
                 mPlay.setImageResource(android.R.drawable.ic_media_pause);
                 mPlay.setBackgroundColor(getResources().getColor(R.color.color1));
             }
         });
+
 
 
         mVideoSelected.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -251,12 +214,33 @@ public class PlayVideoActivity extends AppCompatActivity {
                 timeWhenStopped = 0;
                 mVideoSelected.seekTo(0);
                 mSeekBar.setProgress(0);
-                mChrono.setBase(0);
-                mChrono.setBase(SystemClock.elapsedRealtime());
+                mChrono.setTime(0);
                 mChrono.stop();
                 mPlay.setVisibility(View.VISIBLE);
                 mPlay.setImageResource(android.R.drawable.ic_media_play);
                 mPlay.setBackgroundColor(getResources().getColor(R.color.color1));
+            }
+        });
+
+        mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                if (isSeekbarTracking) {
+                    mVideoSelected.seekTo(i);
+                    mChrono.setTime(i);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+                mVideoSelected.pause();
+                isSeekbarTracking = true;
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+                if (mIsPlayed) mVideoSelected.start();
+                isSeekbarTracking = false;
             }
         });
     }
@@ -272,9 +256,7 @@ public class PlayVideoActivity extends AppCompatActivity {
             //TODO: arreter la video pour eviter crash
             case R.id.logout:
                 mSeekBar.setProgress(mVideoDuration);
-                Intent intent = new Intent(PlayVideoActivity.this, ConnexionActivity.class);
-                startActivity(intent);
-                mAuth.signOut();
+                DisconnectionAlert.confirmedDisconnection(PlayVideoActivity.this);
                 return true;
             case R.id.home:
                 mSeekBar.setProgress(mVideoDuration);
@@ -288,6 +270,7 @@ public class PlayVideoActivity extends AppCompatActivity {
 
     // Méthode qui créé les layouts et images des timelines en fonction des données des tags
     public void makeTimelines() {
+        mFIRST = false;
 
         int tagedLineSize = mWidth - convertToDp(getResources().getInteger(R.integer.title_length_timeline));
         int titleLength = convertToDp(getResources().getInteger(R.integer.title_length_timeline));
@@ -324,7 +307,7 @@ public class PlayVideoActivity extends AppCompatActivity {
                 double startRatio = firstMicro / mVideoDuration;
                 double endRatio = secondMicro / mVideoDuration;
 
-                final double start =  (startRatio * tagedLineSize) / getResources().getInteger(R.integer.micro_to_milli);
+                final double start = (startRatio * tagedLineSize) / getResources().getInteger(R.integer.micro_to_milli);
                 double end = (endRatio * tagedLineSize) / getResources().getInteger(R.integer.micro_to_milli);
 
                 final ImageView iv = new ImageView(PlayVideoActivity.this);
@@ -354,7 +337,11 @@ public class PlayVideoActivity extends AppCompatActivity {
                 ApiHelperPlay.getColors(mTagColorList, new ApiHelperPlay.ColorResponse() {
                     @Override
                     public void onSuccess() {
-                        iv.setBackgroundColor(mTagColorList.get(tagModel.getName()));
+                        try {
+                           iv.setBackgroundResource(ColorHelper.convertColor(mTagColorList.get(tagModel.getName())));
+                        } catch (ColorNotFoundException e) {
+                            e.printStackTrace();
+                        }
 
                     }
 
@@ -395,8 +382,8 @@ public class PlayVideoActivity extends AppCompatActivity {
                     Drawable thumb = getResources().getDrawable(R.drawable.thumb_blue);
                     int h = mLlMain.getMeasuredHeight();
                     int w = 15;
-                    Bitmap bmpOrg = ((BitmapDrawable)thumb).getBitmap();
-                    Drawable newThumb = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bmpOrg,w,h,true));
+                    Bitmap bmpOrg = ((BitmapDrawable) thumb).getBitmap();
+                    Drawable newThumb = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bmpOrg, w, h, true));
                     newThumb.setBounds(0, 0, newThumb.getIntrinsicWidth(), newThumb.getIntrinsicHeight());
                     mSeekBar.setThumb(newThumb);
                     mSeekBar.getViewTreeObserver().removeOnPreDrawListener(this);
@@ -406,7 +393,6 @@ public class PlayVideoActivity extends AppCompatActivity {
             });
 
         }
-        mLoadProgressBar.setVisibility(View.INVISIBLE);
         mConstraintVideo.setVisibility(View.VISIBLE);
     }
 
@@ -417,7 +403,7 @@ public class PlayVideoActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         //TODO: arreter la video pour eviter crash
-        Intent intent = new Intent(PlayVideoActivity.this,SelectedVideoActivity.class);
+        Intent intent = new Intent(PlayVideoActivity.this, SelectedVideoActivity.class);
         startActivity(intent);
 
     }

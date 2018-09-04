@@ -91,11 +91,8 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.logout:
-                Intent intent = new Intent(MainActivity.this, ConnexionActivity.class);
-                startActivity(intent);
-                mAuth.signOut();
+                DisconnectionAlert.confirmedDisconnection(MainActivity.this);
                 return true;
-
 
         }
 
@@ -110,8 +107,12 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         MainActivity.super.onBackPressed();
-                        System.exit(0);
-                        finish();
+
+                        Intent intent = new Intent();
+                        intent.setAction(Intent.ACTION_MAIN);
+                        intent.addCategory(Intent.CATEGORY_HOME);
+                        MainActivity.this.startActivity(intent);
+
                     }
                 })
                 .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
@@ -121,5 +122,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 })
                 .show();
+
     }
 }

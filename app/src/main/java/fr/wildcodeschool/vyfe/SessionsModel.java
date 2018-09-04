@@ -1,6 +1,5 @@
 package fr.wildcodeschool.vyfe;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class SessionsModel {
@@ -12,6 +11,7 @@ public class SessionsModel {
     private String idTagSet;
     private HashMap<String, TagModel> tags;
     private String description;
+    private String idAndroid;
 
 
     public SessionsModel(String name, String author, String videoLink, String date, String idSession, String idTagSet) {
@@ -25,6 +25,16 @@ public class SessionsModel {
     }
 
     public SessionsModel(){}
+
+    public SessionsModel(String name, String author, String videoLink, String date, String idSession, String idTagSet, String idAndroid) {
+        this.name = name;
+        this.author = author;
+        this.videoLink = videoLink;
+        this.date = date;
+        this.idSession = idSession;
+        this.idTagSet = idTagSet;
+        this.idAndroid = idAndroid;
+    }
 
 
     public String getName() {
@@ -88,5 +98,13 @@ public class SessionsModel {
 
     public void setTags(HashMap<String, TagModel> tags) {
         this.tags = tags;
+    }
+
+    public String getIdAndroid() {
+        return idAndroid;
+    }
+
+    public void setIdAndroid(String idAndroid) {
+        this.idAndroid = idAndroid;
     }
 }

@@ -1,8 +1,9 @@
 package fr.wildcodeschool.vyfe;
 
 
-import android.support.constraint.ConstraintLayout;
+
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.sql.Time;
+
 import java.util.ArrayList;
 
 public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.ViewHolder> {
@@ -42,11 +43,23 @@ public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.
     public void onBindViewHolder(TagRecyclerAdapter.ViewHolder holder, int position) {
         TagModel tagModel = mTagModelList.get(position);
         holder.tvName.setText(tagModel.getName());
-        holder.ivColor.setBackgroundColor(tagModel.getColor());
+        try {
+            holder.ivColor.setBackgroundResource(ColorHelper.convertColor(tagModel.getColorName()));
+        } catch (ColorNotFoundException e) {
+
+            e.getMessage();
+            Log.d("BEUG", "onBindViewHolder: "+ e.getMessage());
+           // e.printStackTrace();
+        }
+
 
         if (mFrom.equals("start")) {
             holder.tvNum.setVisibility(View.GONE);
-        } else if (mFrom.equals("record")) {
+        } else if (mFrom.equals("create")){
+            holder.tvNum.setVisibility(View.GONE);
+            holder.ivMenu.setVisibility(View.VISIBLE);
+        }
+        else if (mFrom.equals("record")) {
             holder.tvNum.setVisibility(View.VISIBLE);
             int count = tagModel.getCount();
             holder.tvNum.setText(String.valueOf(count));
@@ -81,6 +94,7 @@ public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.
         ImageView ivColor;
         TextView tvNum;
         LinearLayout viewForeground;
+        ImageView ivMenu;
 
         public ViewHolder(View v) {
             super(v);
@@ -88,6 +102,7 @@ public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.
             this.ivColor = v.findViewById(R.id.iv_color);
             this.tvNum = v.findViewById(R.id.tv_stats);
             this.viewForeground = v.findViewById(R.id.view_foreground);
+            this.ivMenu =v.findViewById(R.id.iv_menu);
         }
     }
 }

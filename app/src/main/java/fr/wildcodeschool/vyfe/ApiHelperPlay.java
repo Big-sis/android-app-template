@@ -28,6 +28,7 @@ public class ApiHelperPlay {
                 mIdTagSet = dataSnapshot.child("idTagSet").getValue(String.class);
                 getTagsForSession(mTagedList, mTagModels, listener);
             }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
@@ -61,11 +62,33 @@ public class ApiHelperPlay {
                                 listener.onFinish();
                             }
                         }
+
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
                             listener.onError(databaseError.getMessage());
                         }
                     });
+                }
+                listener.onSuccess();
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                listener.onError(databaseError.getMessage());
+            }
+        });
+    }
+
+    public static void getColors(final HashMap<String, String> mTagColorList, final ApiHelperPlay.ColorResponse listener) {
+        final DatabaseReference tagRef = mDatabase.getReference(mAuthUserId).child("tags");
+        tagRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot tagSnapshot : dataSnapshot.getChildren()) {
+                    TagModel tagModel = tagSnapshot.getValue(TagModel.class);
+                    if (tagModel.getFkTagSet().equals(mIdTagSet)) {
+                        mTagColorList.put(tagModel.getName(), tagModel.getColorName());
+                    }
                 }
                 listener.onSuccess();
             }
@@ -86,27 +109,6 @@ public class ApiHelperPlay {
         void onWait();
 
         void onFinish();
-    }
-
-    public static void getColors(final HashMap<String, Integer> mTagColorList, final ApiHelperPlay.ColorResponse listener) {
-        final DatabaseReference tagRef = mDatabase.getReference(mAuthUserId).child("tags");
-        tagRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot tagSnapshot : dataSnapshot.getChildren()) {
-                    TagModel tagModel = tagSnapshot.getValue(TagModel.class);
-                    if (tagModel.getFkTagSet().equals(mIdTagSet)) {
-                        mTagColorList.put(tagModel.getName(), tagModel.getColor());
-                    }
-                }
-                listener.onSuccess();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                listener.onError(databaseError.getMessage());
-            }
-        });
     }
 
     interface ColorResponse {
