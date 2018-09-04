@@ -63,6 +63,8 @@ public class StartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
+
+
         final SingletonSessions singletonSessions = SingletonSessions.getInstance();
 
         mDatabase = SingletonFirebase.getInstance().getDatabase();
