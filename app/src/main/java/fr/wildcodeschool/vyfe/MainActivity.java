@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
                             Toast.makeText(MainActivity.this, R.string.expired_day, Toast.LENGTH_SHORT).show();
                             break;
                         default:
-                            Toast.makeText(MainActivity.this, R.string.invalid_date, Toast.LENGTH_SHORT).show();
+
 
                     }
 
