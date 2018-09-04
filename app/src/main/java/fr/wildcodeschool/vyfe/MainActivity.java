@@ -32,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     public static boolean mMulti = false;
     private static FirebaseDatabase mDatabase;
     private static String authUserId;
+    private DatabaseReference licence;
+    private Date date;
     private String[] permissions = {
             Manifest.permission.RECORD_AUDIO,
             Manifest.permission.CAMERA,
@@ -41,8 +43,6 @@ public class MainActivity extends AppCompatActivity {
     private boolean mPermission;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private String stringDate;
-
-     DatabaseReference licence;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,11 +60,10 @@ public class MainActivity extends AppCompatActivity {
         mDatabase = SingletonFirebase.getInstance().getDatabase();
         authUserId = SingletonFirebase.getInstance().getUid();
 
-        Date date = new Date();
+        date = new Date();
         Date newDate = new Date(date.getTime());
         SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yy");
         stringDate = dt.format(newDate);
-        final String[] endLicenceFirebase = {};
 
 
         licence = mDatabase.getReference(authUserId).child("licence");
@@ -74,13 +73,36 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getChildrenCount() == 0) {
                     licence.child("earlyLicence").setValue(stringDate);
-                    WriteExpireLicence();
+                    licence.child("durationLicence").setValue("365");
+
                 } else {
-                    String value = dataSnapshot.getValue().toString();
-                    if (value.equals(ReadExpireLicence(endLicenceFirebase))) {
-                        Toast.makeText(MainActivity.this, "Votre licence a expirée, veuillez contacter Vyfe", Toast.LENGTH_SHORT).show();
-                        DisconnectionAlert.confirmedDisconnection(MainActivity.this);
-                    }else Toast.makeText(MainActivity.this, "Licence valide", Toast.LENGTH_SHORT).show();
+
+                    String valueEarlyLicence = dataSnapshot.child("earlyLicence").getValue().toString();
+                    String valueDurationLicence = dataSnapshot.child("durationLicence").getValue().toString();
+
+                    int restDays = countEarlyDuration(valueEarlyLicence) - Integer.parseInt(valueDurationLicence);
+
+                    switch (restDays) {
+                        case 30:
+                            Toast.makeText(MainActivity.this, R.string.expired_month, Toast.LENGTH_SHORT).show();
+                            break;
+                        case 7:
+                            Toast.makeText(MainActivity.this, R.string.expired_7_days, Toast.LENGTH_SHORT).show();
+                            break;
+                        case 1:
+                            Toast.makeText(MainActivity.this, R.string.expired_day, Toast.LENGTH_SHORT).show();
+                            break;
+                        default:
+                            Toast.makeText(MainActivity.this, R.string.invalid_date, Toast.LENGTH_SHORT).show();
+
+                    }
+
+                    if (restDays < 0) {
+                        Toast.makeText(MainActivity.this, R.string.expired_licence, Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(MainActivity.this, ConnexionActivity.class);
+                        MainActivity.this.startActivity(intent);
+                        mAuth.signOut();
+                    }
                 }
 
             }
@@ -90,7 +112,6 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-
 
 
         btnStartSession.setOnClickListener(new View.OnClickListener() {
@@ -174,38 +195,32 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void WriteExpireLicence() {
-        // Par défaut expirer dans un an
-        String[] parts = stringDate.split("-");
-        String day = parts[0];
-        String month = parts[1];
-        String years = parts[2];
 
-        int yearsNew = Integer.parseInt(years)+1;
+    public int countEarlyDuration(String dateEarly) {
+        String[] parts = dateEarly.split("-");
+        int dayEarly = Integer.parseInt(parts[0]);
+        int monthEarly = Integer.parseInt(parts[1]);
+        int yearsEarly = Integer.parseInt(parts[2]);
 
-        licence.keepSynced(true);
-        licence.child("endLicence").setValue(day+"-"+month+"-"+String.valueOf(yearsNew));
 
-    }
+        String[] parts2 = stringDate.split("-");
+        int dayToday = Integer.parseInt(parts2[0]);
+        int monthToday = Integer.parseInt(parts2[1]);
+        int yearsToday = Integer.parseInt(parts2[2]);
 
-    public String ReadExpireLicence(final String[] endLicenceFirebase){
-        licence.child("endLicence");
-        licence.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
 
-                if(dataSnapshot.getChildrenCount()==0){
-                    endLicenceFirebase[0]="null";
-                }
-                else endLicenceFirebase[0] = dataSnapshot.getValue().toString();
+        int years = yearsToday - yearsEarly;
+        int month = monthToday - monthEarly;
+        int day = dayToday - dayEarly;
+        if (monthToday < monthEarly) {
+            month = 12 - monthEarly + monthToday;
+        }
+        if (dayToday < dayEarly) {
+            day = 31 - dayEarly + dayToday;
+        }
 
-            }
+        return (years * 365) + (month * 31) + day;
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-            }
-        });
 
-        return endLicenceFirebase[0];
     }
 }

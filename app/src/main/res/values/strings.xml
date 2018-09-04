@@ -90,5 +90,10 @@
     <string name="restart_session">Relancer une Session</string>
     <string name="deconnected">Etes-vous sûr(e) de vouloir vous déconnecter ?</string>
     <string name="active_wifi">Vous devez posséder une connexion internet pour vous identifiez</string>
+    <string name="expired_month">Attention votre licence expire dans 1 mois, Pensez à la renouveller</string>
+    <string name="expired_7_days">Attention votre licence expire dans 7 jours</string>
+    <string name="expired_day">Il ne vous reste qu\'un jour d\'utilidation</string>
+    <string name="invalid_date">Date invalide</string>
+    <string name="expired_licence">Votre licence a expiré, veuillez contacter Vyfe</string>
 
 </resources>
