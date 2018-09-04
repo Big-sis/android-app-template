@@ -6,5 +6,4 @@
     <integer name="rapport_timeline">10</integer>
     <integer name="second_to_micro">1000000</integer>
     <integer name="micro_to_milli">1000</integer>
-    <integer name="width_thumb">15</integer>
 </resources>

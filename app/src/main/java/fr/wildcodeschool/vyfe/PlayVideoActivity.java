@@ -74,6 +74,8 @@ public class PlayVideoActivity extends AppCompatActivity {
 
     private boolean mFIRST = true;
 
+    private static final int WIDTH_THUMB = 15;
+
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,7 +104,7 @@ public class PlayVideoActivity extends AppCompatActivity {
         // Applique les paramètres à la seekBar
 
         RelativeLayout.LayoutParams seekBarParams = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        seekBarParams.setMargins(convertToDp(-getResources().getInteger(R.integer.width_thumb)), 0, 0, 0);
+        seekBarParams.setMargins(convertToDp(-WIDTH_THUMB), 0, 0, 0);
         mSeekBar = findViewById(R.id.seek_bar_selected);
         mSeekBar.setLayoutParams(seekBarParams);
 
@@ -391,9 +393,8 @@ public class PlayVideoActivity extends AppCompatActivity {
                 public boolean onPreDraw() {
                     Drawable thumb = getResources().getDrawable(R.drawable.thumb_blue);
                     int h = mLlMain.getMeasuredHeight();
-                    int w = getResources().getInteger(R.integer.width_thumb);
                     Bitmap bmpOrg = ((BitmapDrawable) thumb).getBitmap();
-                    Drawable newThumb = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bmpOrg, w, h, true));
+                    Drawable newThumb = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bmpOrg, WIDTH_THUMB, h, true));
                     newThumb.setBounds(0, 0, newThumb.getIntrinsicWidth(), newThumb.getIntrinsicHeight());
                     mSeekBar.setThumb(newThumb);
                     mSeekBar.getViewTreeObserver().removeOnPreDrawListener(this);
