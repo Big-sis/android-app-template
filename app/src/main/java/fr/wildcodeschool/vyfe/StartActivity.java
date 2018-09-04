@@ -449,7 +449,6 @@ public class StartActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.settings, menu);
-        OptionsMenuView.invisibleLogout(menu,StartActivity.this);
         return true;
     }
 

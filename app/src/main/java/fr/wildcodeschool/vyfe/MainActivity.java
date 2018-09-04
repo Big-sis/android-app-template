@@ -85,6 +85,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.settings, menu);
+        MenuItem itemLogout = menu.findItem(R.id.logout);
+        itemLogout.setVisible(true);
         return true;
     }
 

@@ -126,7 +126,7 @@ public class MyVideoActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.settings, menu);
-        OptionsMenuView.invisibleLogout(menu,MyVideoActivity.this);
+
         return true;
     }
 
