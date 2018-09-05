@@ -44,6 +44,10 @@ public class MainActivity extends AppCompatActivity {
     private boolean mPermission;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private String todayDate;
+    // Operation = 24(day) * 60(hour) * 60(minute) * 1000 (millis)
+    private static final int TIME_IN_DAYS  = 86400000;
+    private boolean firstMessage;
+    private boolean secondMessage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,28 +90,22 @@ public class MainActivity extends AppCompatActivity {
                         d1 = format.parse(valueEarlyLicence);
                         d2 = format.parse(todayDate);
                         long difference = d2.getTime() - d1.getTime();
-                        numberDaysUsed[0] = difference / (24 * 60 * 60 * 1000);
+                        numberDaysUsed[0] = difference / TIME_IN_DAYS;
 
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
 
                     long restDays = Long.parseLong(valueDurationLicence) - numberDaysUsed[0];
-                    switch ((int) restDays) {
-                        case 30:
-                            Toast.makeText(MainActivity.this, R.string.expired_month, Toast.LENGTH_SHORT).show();
-                            break;
-                        case 7:
-                            Toast.makeText(MainActivity.this, R.string.expired_7_days, Toast.LENGTH_SHORT).show();
-                            break;
-                        case 1:
-                            Toast.makeText(MainActivity.this, R.string.expired_day, Toast.LENGTH_SHORT).show();
-                            break;
-                        default:
-                            break;
-
+                    if(restDays<30 && firstMessage){
+                        Toast.makeText(MainActivity.this, R.string.expired_month, Toast.LENGTH_SHORT).show();
+                        firstMessage =false;
+                    }if(restDays<7 && secondMessage) {
+                        Toast.makeText(MainActivity.this, R.string.expired_7_days, Toast.LENGTH_SHORT).show();
+                        secondMessage =false;
+                    }if (restDays<=1){
+                        Toast.makeText(MainActivity.this, R.string.expired_7_days, Toast.LENGTH_SHORT).show();
                     }
-
                     if (restDays < 0) {
                         Toast.makeText(MainActivity.this, R.string.expired_licence, Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(MainActivity.this, ConnexionActivity.class);

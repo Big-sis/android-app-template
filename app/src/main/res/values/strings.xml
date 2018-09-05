@@ -90,8 +90,8 @@
     <string name="restart_session">Relancer une Session</string>
     <string name="deconnected">Etes-vous sûr(e) de vouloir vous déconnecter ?</string>
     <string name="active_wifi">Vous devez posséder une connexion internet pour vous identifiez</string>
-    <string name="expired_month">Il vous reste 1 mois de licence pour profiter de cette fabuleuse application</string>
-    <string name="expired_7_days">Attention, cette application s\ 'autodétruira dans 7jours ;)</string>
+    <string name="expired_month">Il vous reste moins d\' 1 mois de licence pour profiter de cette fabuleuse application</string>
+    <string name="expired_7_days">Attention, cette application s\'autodétruira dans moins de 7jours ;)</string>
     <string name="expired_day">Attention, il ne vous reste qu\'un jour d\'utilidation</string>
     <string name="invalid_date">Date invalide</string>
     <string name="expired_licence">Votre licence a expiré, merci de nous contacter pour la prolonger</string>
