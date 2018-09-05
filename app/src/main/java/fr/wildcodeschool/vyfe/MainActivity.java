@@ -10,6 +10,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -42,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     };
     private boolean mPermission;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    private String stringDate;
+    private String todayDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,9 +63,9 @@ public class MainActivity extends AppCompatActivity {
 
         date = new Date();
         Date newDate = new Date(date.getTime());
-        SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yy");
-        stringDate = dt.format(newDate);
-
+        final SimpleDateFormat format = new SimpleDateFormat("dd-MM-yy");
+        todayDate = format.format(newDate);
+        final long[] numberDaysUsed = {0};
 
         licence = mDatabase.getReference(authUserId).child("licence");
         licence.keepSynced(true);
@@ -72,17 +73,27 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getChildrenCount() == 0) {
-                    licence.child("earlyLicence").setValue(stringDate);
+                    licence.child("earlyLicence").setValue(todayDate);
                     licence.child("durationLicence").setValue("365");
 
                 } else {
-
                     String valueEarlyLicence = dataSnapshot.child("earlyLicence").getValue().toString();
                     String valueDurationLicence = dataSnapshot.child("durationLicence").getValue().toString();
 
-                    int restDays = countEarlyDuration(valueEarlyLicence) - Integer.parseInt(valueDurationLicence);
+                    Date d1 = null;
+                    Date d2 = null;
+                    try {
+                        d1 = format.parse(valueEarlyLicence);
+                        d2 = format.parse(todayDate);
+                        long difference = d2.getTime() - d1.getTime();
+                        numberDaysUsed[0] = difference / (24 * 60 * 60 * 1000);
 
-                    switch (restDays) {
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    long restDays = Long.parseLong(valueDurationLicence) - numberDaysUsed[0];
+                    switch ((int) restDays) {
                         case 30:
                             Toast.makeText(MainActivity.this, R.string.expired_month, Toast.LENGTH_SHORT).show();
                             break;
@@ -93,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
                             Toast.makeText(MainActivity.this, R.string.expired_day, Toast.LENGTH_SHORT).show();
                             break;
                         default:
-
+                            break;
 
                     }
 
@@ -195,32 +206,4 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-
-    public int countEarlyDuration(String dateEarly) {
-        String[] parts = dateEarly.split("-");
-        int dayEarly = Integer.parseInt(parts[0]);
-        int monthEarly = Integer.parseInt(parts[1]);
-        int yearsEarly = Integer.parseInt(parts[2]);
-
-
-        String[] parts2 = stringDate.split("-");
-        int dayToday = Integer.parseInt(parts2[0]);
-        int monthToday = Integer.parseInt(parts2[1]);
-        int yearsToday = Integer.parseInt(parts2[2]);
-
-
-        int years = yearsToday - yearsEarly;
-        int month = monthToday - monthEarly;
-        int day = dayToday - dayEarly;
-        if (monthToday < monthEarly) {
-            month = 12 - monthEarly + monthToday;
-        }
-        if (dayToday < dayEarly) {
-            day = 31 - dayEarly + dayToday;
-        }
-
-        return (years * 365) + (month * 31) + day;
-
-
-    }
 }
