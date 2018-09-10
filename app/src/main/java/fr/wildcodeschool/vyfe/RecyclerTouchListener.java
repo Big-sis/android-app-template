@@ -23,14 +23,7 @@ public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
                 if (child != null && clickListener != null) {
 
                     clickListener.onLongClick(child, recyclerView.getChildPosition(child));
-                    child.setBackgroundColor(context.getResources().getColor(R.color.colorWhiteTwo));
 
-                    recyclerView.postDelayed(new Runnable() {
-                        @Override
-                        public void run() {
-                            child.setBackgroundColor(context.getResources().getColor(R.color.colorSlateGrey));
-                        }
-                    }, FLASH_DURATION_MS);
 
                 }
 
