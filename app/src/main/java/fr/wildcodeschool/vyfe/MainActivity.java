@@ -34,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
     public static boolean mMulti = false;
     private static FirebaseDatabase mDatabase;
     private static String authUserId;
-    private DatabaseReference licence;
+    private DatabaseReference referenceLicence;
     private Date date;
     private String[] permissions = {
             Manifest.permission.RECORD_AUDIO,
@@ -68,45 +68,45 @@ public class MainActivity extends AppCompatActivity {
         Date newDate = new Date(date.getTime());
         final SimpleDateFormat format = new SimpleDateFormat("dd-MM-yy");
         todayDate = format.format(newDate);
-        final long[] numberDaysUsed = {0};
+        final long[] remainingDays = {0};
 
-        licence = mDatabase.getReference(authUserId).child("licence");
-        licence.keepSynced(true);
-        licence.addListenerForSingleValueEvent(new ValueEventListener() {
+        referenceLicence = mDatabase.getReference(authUserId).child("licence");
+        referenceLicence.keepSynced(true);
+        referenceLicence.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getChildrenCount() == 0) {
-                    licence.child("startLicence").setValue(todayDate);
+                    referenceLicence.child("startLicence").setValue(todayDate);
                     String endLicence = endLicence(todayDate);
-                    licence.child("endLicence").setValue(endLicence);
+                    referenceLicence.child("endLicence").setValue(endLicence);
 
                 } else {
                     String valueStartLicence = dataSnapshot.child("startLicence").getValue().toString();
                     String valueEndLicence = dataSnapshot.child("endLicence").getValue().toString();
-                    Date d1 = null;
-                    Date d2 = null;
+                    Date dateStartLicence = null;
+                    Date dateEndLicence = null;
                     try {
-                        d1 = format.parse(valueStartLicence);
-                        d2 = format.parse(valueEndLicence);
-                        long difference = d2.getTime() - d1.getTime();
-                        numberDaysUsed[0] = difference / TIME_IN_DAYS;
+                        dateStartLicence = format.parse(valueStartLicence);
+                        dateEndLicence = format.parse(valueEndLicence);
+                        long difference = dateEndLicence.getTime() - dateStartLicence.getTime();
+                        remainingDays[0] = difference / TIME_IN_DAYS;
 
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
 
-                    if (numberDaysUsed[0] < 30 && firstMessage) {
+                    if (remainingDays[0] < 30 && firstMessage) {
                         Toast.makeText(MainActivity.this, R.string.expired_month, Toast.LENGTH_SHORT).show();
                         firstMessage = false;
                     }
-                    if (numberDaysUsed[0] < 7 && secondMessage) {
+                    if (remainingDays[0] < 7 && secondMessage) {
                         Toast.makeText(MainActivity.this, R.string.expired_7_days, Toast.LENGTH_SHORT).show();
                         secondMessage = false;
                     }
-                    if (numberDaysUsed[0] <= 1) {
+                    if (remainingDays[0] <= 1) {
                         Toast.makeText(MainActivity.this, R.string.expired_7_days, Toast.LENGTH_SHORT).show();
                     }
-                    if (numberDaysUsed[0] < 0) {
+                    if (remainingDays[0] < 0) {
                         Toast.makeText(MainActivity.this, R.string.expired_licence, Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(MainActivity.this, ConnexionActivity.class);
                         MainActivity.this.startActivity(intent);
