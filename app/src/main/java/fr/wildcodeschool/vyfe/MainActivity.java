@@ -10,7 +10,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -30,6 +29,8 @@ import java.util.Date;
 public class MainActivity extends AppCompatActivity {
 
     private static final int PERMISSIONS_REQUEST = 1;
+    // Operation = 24(day) * 60(hour) * 60(minute) * 1000 (millis)
+    private static final int TIME_IN_DAYS = 86400000;
     public static boolean mMulti = false;
     private static FirebaseDatabase mDatabase;
     private static String authUserId;
@@ -44,8 +45,6 @@ public class MainActivity extends AppCompatActivity {
     private boolean mPermission;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private String todayDate;
-    // Operation = 24(day) * 60(hour) * 60(minute) * 1000 (millis)
-    private static final int TIME_IN_DAYS  = 86400000;
     private boolean firstMessage;
     private boolean secondMessage;
 
@@ -77,18 +76,18 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.getChildrenCount() == 0) {
-                    licence.child("earlyLicence").setValue(todayDate);
-                    licence.child("durationLicence").setValue("365");
+                    licence.child("startLicence").setValue(todayDate);
+                    String endLicence = endLicence(todayDate);
+                    licence.child("endLicence").setValue(endLicence);
 
                 } else {
-                    String valueEarlyLicence = dataSnapshot.child("earlyLicence").getValue().toString();
-                    String valueDurationLicence = dataSnapshot.child("durationLicence").getValue().toString();
-
+                    String valueStartLicence = dataSnapshot.child("startLicence").getValue().toString();
+                    String valueEndLicence = dataSnapshot.child("endLicence").getValue().toString();
                     Date d1 = null;
                     Date d2 = null;
                     try {
-                        d1 = format.parse(valueEarlyLicence);
-                        d2 = format.parse(todayDate);
+                        d1 = format.parse(valueStartLicence);
+                        d2 = format.parse(valueEndLicence);
                         long difference = d2.getTime() - d1.getTime();
                         numberDaysUsed[0] = difference / TIME_IN_DAYS;
 
@@ -96,17 +95,18 @@ public class MainActivity extends AppCompatActivity {
                         e.printStackTrace();
                     }
 
-                    long restDays = Long.parseLong(valueDurationLicence) - numberDaysUsed[0];
-                    if(restDays<30 && firstMessage){
+                    if (numberDaysUsed[0] < 30 && firstMessage) {
                         Toast.makeText(MainActivity.this, R.string.expired_month, Toast.LENGTH_SHORT).show();
-                        firstMessage =false;
-                    }if(restDays<7 && secondMessage) {
+                        firstMessage = false;
+                    }
+                    if (numberDaysUsed[0] < 7 && secondMessage) {
                         Toast.makeText(MainActivity.this, R.string.expired_7_days, Toast.LENGTH_SHORT).show();
-                        secondMessage =false;
-                    }if (restDays<=1){
+                        secondMessage = false;
+                    }
+                    if (numberDaysUsed[0] <= 1) {
                         Toast.makeText(MainActivity.this, R.string.expired_7_days, Toast.LENGTH_SHORT).show();
                     }
-                    if (restDays < 0) {
+                    if (numberDaysUsed[0] < 0) {
                         Toast.makeText(MainActivity.this, R.string.expired_licence, Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(MainActivity.this, ConnexionActivity.class);
                         MainActivity.this.startActivity(intent);
@@ -201,6 +201,16 @@ public class MainActivity extends AppCompatActivity {
                     }
                 })
                 .show();
+
+    }
+
+    public String endLicence(String date) {
+        String[] parts = date.split("-");
+        String day = parts[0];
+        String month = parts[1];
+        String years = parts[2];
+        int yearsNew = Integer.parseInt(years) + 1;
+        return day + "-" + month + "-" + String.valueOf(yearsNew);
 
     }
 
