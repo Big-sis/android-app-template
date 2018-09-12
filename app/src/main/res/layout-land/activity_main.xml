@@ -14,6 +14,7 @@
         android:layout_height="wrap_content" />
 
     <ScrollView
+        android:id="@+id/scrollView2"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -48,8 +49,8 @@
                     android:layout_gravity="center_vertical"
                     android:layout_marginBottom="32dp"
 
-                    android:layout_marginTop="32dp"
                     android:layout_marginLeft="8dp"
+                    android:layout_marginTop="32dp"
 
                     android:text="@string/hello_user"
                     android:textColor="@color/white"
@@ -102,7 +103,7 @@
                         android:layout_margin="15dp"
                         android:layout_weight="1"
                         android:background="@color/colorCharcoalGrey"
-                        android:visibility="gone">
+                        android:visibility="visible">
 
                         <ImageView
                             android:id="@+id/logo_multi_session"

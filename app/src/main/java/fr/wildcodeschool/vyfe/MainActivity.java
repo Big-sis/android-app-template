@@ -2,22 +2,48 @@ package fr.wildcodeschool.vyfe;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.location.LocationManager;
+import android.net.wifi.ScanResult;
+import android.net.wifi.WifiConfiguration;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
+
+    private WifiManager wifiManager;
+    private ListView listView;
+    private Button buttonScan;
+    private int size = 0;
+    private List<ScanResult> results;
+    private ArrayList<String> arrayList = new ArrayList<>();
+    private ArrayAdapter adapter;
+
+
 
     private static final int PERMISSIONS_REQUEST = 1;
     private String[] permissions = {
@@ -35,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setLogo(R.drawable.vyfe_blanc);
         setSupportActionBar(toolbar);
@@ -55,11 +81,40 @@ public class MainActivity extends AppCompatActivity {
         btnMultiSession.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mMulti = true;
-                Intent intent = new Intent(MainActivity.this, StartActivity.class);
-                startActivity(intent);
+
+                String networkSSID = "raspi-webgui";
+                String networkPass = "ChangeMe";
+
+                WifiConfiguration conf = new WifiConfiguration();
+                conf.SSID = "\"" + networkSSID + "\"";
+
+                conf.wepKeys[0] = "\"" + networkPass + "\"";
+                conf.wepTxKeyIndex = 0;
+                conf.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
+                conf.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP40);
+
+                WifiManager wifiManager = (WifiManager)getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+                wifiManager.addNetwork(conf);
+
+                List<WifiConfiguration> list = wifiManager.getConfiguredNetworks();
+                for( WifiConfiguration i : list ) {
+                    if(i.SSID != null && i.SSID.equals("\"" + networkSSID + "\"")) {
+                        wifiManager.disconnect();
+                        wifiManager.enableNetwork(i.networkId, true);
+                        wifiManager.reconnect();
+
+                        break;
+                    }
+                }
+
             }
         });
+
+
+
+
+
+
 
         btnVideos.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,6 +135,8 @@ public class MainActivity extends AppCompatActivity {
                     PERMISSIONS_REQUEST);
         }
     }
+
+
 
 
     @Override
