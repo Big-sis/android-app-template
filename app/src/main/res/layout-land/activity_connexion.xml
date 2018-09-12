@@ -19,19 +19,28 @@
             android:orientation="vertical">
 
             <ImageView
+                android:id="@+id/iv_flag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/icons8_france_96" />
+
+            <ImageView
                 android:id="@+id/iv_logo"
                 android:layout_width="202dp"
                 android:layout_height="85dp"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginEnd="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="56dp"
+                android:layout_marginTop="10dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/vyfe_blanc"
-                android:layout_gravity="center_horizontal"/>
+                app:srcCompat="@drawable/vyfe_blanc" />
 
             <LinearLayout
                 android:id="@+id/linear_layout_add"
