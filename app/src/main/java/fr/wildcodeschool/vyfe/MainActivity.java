@@ -81,14 +81,13 @@ public class MainActivity extends AppCompatActivity {
                     referenceLicence.child("endLicence").setValue(endLicence);
 
                 } else {
-                    String valueStartLicence = dataSnapshot.child("startLicence").getValue().toString();
                     String valueEndLicence = dataSnapshot.child("endLicence").getValue().toString();
-                    Date dateStartLicence = null;
+                    Date dateToday = null;
                     Date dateEndLicence = null;
                     try {
-                        dateStartLicence = format.parse(valueStartLicence);
+                        dateToday = format.parse(todayDate);
                         dateEndLicence = format.parse(valueEndLicence);
-                        long difference = dateEndLicence.getTime() - dateStartLicence.getTime();
+                        long difference = dateEndLicence.getTime() - dateToday.getTime();
                         remainingDays[0] = difference / TIME_IN_DAYS;
 
                     } catch (Exception e) {
@@ -104,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
                         secondMessage = false;
                     }
                     if (remainingDays[0] <= 1) {
-                        Toast.makeText(MainActivity.this, R.string.expired_7_days, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, R.string.expired_day, Toast.LENGTH_SHORT).show();
                     }
                     if (remainingDays[0] < 0) {
                         Toast.makeText(MainActivity.this, R.string.expired_licence, Toast.LENGTH_SHORT).show();
