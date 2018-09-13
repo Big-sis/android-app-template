@@ -75,42 +75,36 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 long remainingDays = 0;
-                if (dataSnapshot.getChildrenCount() == 0) {
-                    // TODO throw NoLicenceFoundException
+                String valueEndLicence = dataSnapshot.child("endLicence").getValue().toString();
+                Date dateToday = null;
+                Date dateEndLicence = null;
+                try {
+                    dateToday = format.parse(todayDate);
+                    dateEndLicence = format.parse(valueEndLicence);
+                    long difference = dateEndLicence.getTime() - dateToday.getTime();
+                    remainingDays = difference / TIME_IN_DAYS;
 
-                } else {
-                    String valueEndLicence = dataSnapshot.child("endLicence").getValue().toString();
-                    Date dateToday = null;
-                    Date dateEndLicence = null;
-                    try {
-                        dateToday = format.parse(todayDate);
-                        dateEndLicence = format.parse(valueEndLicence);
-                        long difference = dateEndLicence.getTime() - dateToday.getTime();
-                        remainingDays = difference / TIME_IN_DAYS;
-
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-
-                    if (remainingDays < 30 && firstMessage) {
-                        Toast.makeText(MainActivity.this, R.string.expired_month, Toast.LENGTH_SHORT).show();
-                        firstMessage = false;
-                    }
-                    if (remainingDays < 7 && secondMessage) {
-                        Toast.makeText(MainActivity.this, R.string.expired_7_days, Toast.LENGTH_SHORT).show();
-                        secondMessage = false;
-                    }
-                    if (remainingDays <= 1) {
-                        Toast.makeText(MainActivity.this, R.string.expired_day, Toast.LENGTH_SHORT).show();
-                    }
-                    if (remainingDays < 0) {
-                        Toast.makeText(MainActivity.this, R.string.expired_licence, Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(MainActivity.this, ConnexionActivity.class);
-                        MainActivity.this.startActivity(intent);
-                        mAuth.signOut();
-                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
 
+                if (remainingDays < 30 && firstMessage) {
+                    Toast.makeText(MainActivity.this, R.string.expired_month, Toast.LENGTH_SHORT).show();
+                    firstMessage = false;
+                }
+                if (remainingDays < 7 && secondMessage) {
+                    Toast.makeText(MainActivity.this, R.string.expired_7_days, Toast.LENGTH_SHORT).show();
+                    secondMessage = false;
+                }
+                if (remainingDays <= 1) {
+                    Toast.makeText(MainActivity.this, R.string.expired_day, Toast.LENGTH_SHORT).show();
+                }
+                if (remainingDays < 0) {
+                    Toast.makeText(MainActivity.this, R.string.expired_licence, Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(MainActivity.this, ConnexionActivity.class);
+                    MainActivity.this.startActivity(intent);
+                    mAuth.signOut();
+                }
             }
 
             @Override
