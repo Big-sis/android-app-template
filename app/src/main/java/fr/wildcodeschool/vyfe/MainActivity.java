@@ -5,7 +5,10 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -25,24 +28,21 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
+@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
 public class MainActivity extends AppCompatActivity {
 
     private static final int PERMISSIONS_REQUEST = 1;
     // Operation = 24(day) * 60(hour) * 60(minute) * 1000 (millis)
     private static final int TIME_IN_DAYS = 86400000;
     public static boolean mMulti = false;
-    private static FirebaseDatabase mDatabase;
-    private static String authUserId;
-    private DatabaseReference referenceLicence;
-    private Date date;
     private String[] permissions = {
             Manifest.permission.RECORD_AUDIO,
             Manifest.permission.CAMERA,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_EXTERNAL_STORAGE
     };
-    private boolean mPermission;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private String todayDate;
     private boolean firstMessage;
@@ -61,24 +61,22 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout btnMultiSession = findViewById(R.id.btn_multi_session);
         LinearLayout btnVideos = findViewById(R.id.btn_videos);
 
-        mDatabase = SingletonFirebase.getInstance().getDatabase();
-        authUserId = SingletonFirebase.getInstance().getUid();
+        FirebaseDatabase mDatabase = SingletonFirebase.getInstance().getDatabase();
+        String authUserId = SingletonFirebase.getInstance().getUid();
 
-        date = new Date();
+        Date date = new Date();
         Date newDate = new Date(date.getTime());
-        final SimpleDateFormat format = new SimpleDateFormat("dd-MM-yy");
+        final SimpleDateFormat format = new SimpleDateFormat("dd-MM-yy", Locale.FRENCH);
         todayDate = format.format(newDate);
-        final long[] remainingDays = {0};
 
-        referenceLicence = mDatabase.getReference(authUserId).child("licence");
+        DatabaseReference referenceLicence = mDatabase.getReference(authUserId).child("licence");
         referenceLicence.keepSynced(true);
         referenceLicence.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                long remainingDays = 0;
                 if (dataSnapshot.getChildrenCount() == 0) {
-                    referenceLicence.child("startLicence").setValue(todayDate);
-                    String endLicence = endLicence(todayDate);
-                    referenceLicence.child("endLicence").setValue(endLicence);
+                    // TODO throw NoLicenceFoundException
 
                 } else {
                     String valueEndLicence = dataSnapshot.child("endLicence").getValue().toString();
@@ -88,24 +86,24 @@ public class MainActivity extends AppCompatActivity {
                         dateToday = format.parse(todayDate);
                         dateEndLicence = format.parse(valueEndLicence);
                         long difference = dateEndLicence.getTime() - dateToday.getTime();
-                        remainingDays[0] = difference / TIME_IN_DAYS;
+                        remainingDays = difference / TIME_IN_DAYS;
 
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
 
-                    if (remainingDays[0] < 30 && firstMessage) {
+                    if (remainingDays < 30 && firstMessage) {
                         Toast.makeText(MainActivity.this, R.string.expired_month, Toast.LENGTH_SHORT).show();
                         firstMessage = false;
                     }
-                    if (remainingDays[0] < 7 && secondMessage) {
+                    if (remainingDays < 7 && secondMessage) {
                         Toast.makeText(MainActivity.this, R.string.expired_7_days, Toast.LENGTH_SHORT).show();
                         secondMessage = false;
                     }
-                    if (remainingDays[0] <= 1) {
+                    if (remainingDays <= 1) {
                         Toast.makeText(MainActivity.this, R.string.expired_day, Toast.LENGTH_SHORT).show();
                     }
-                    if (remainingDays[0] < 0) {
+                    if (remainingDays < 0) {
                         Toast.makeText(MainActivity.this, R.string.expired_licence, Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(MainActivity.this, ConnexionActivity.class);
                         MainActivity.this.startActivity(intent);
@@ -116,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onCancelled(DatabaseError databaseError) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
                 Toast.makeText(MainActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
@@ -200,16 +198,6 @@ public class MainActivity extends AppCompatActivity {
                     }
                 })
                 .show();
-
-    }
-
-    public String endLicence(String date) {
-        String[] parts = date.split("-");
-        String day = parts[0];
-        String month = parts[1];
-        String years = parts[2];
-        int yearsNew = Integer.parseInt(years) + 1;
-        return day + "-" + month + "-" + String.valueOf(yearsNew);
 
     }
 
