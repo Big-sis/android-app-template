@@ -350,6 +350,7 @@ public class RecordActivity extends AppCompatActivity {
                 rv, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
+
                 if (mActiveTag) {
                     String nameTag = listTag.get(position).getName();
                     //init name Tag
