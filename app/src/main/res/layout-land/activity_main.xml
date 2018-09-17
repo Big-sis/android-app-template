@@ -102,7 +102,7 @@
                         android:layout_margin="15dp"
                         android:layout_weight="1"
                         android:background="@color/colorCharcoalGrey"
-                        android:visibility="visible">
+                        android:visibility="gone">
 
                         <ImageView
                             android:id="@+id/logo_multi_session"
