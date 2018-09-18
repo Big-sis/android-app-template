@@ -390,7 +390,7 @@ public class StartActivity extends AppCompatActivity {
                             tagsRef.child(idTag).child("fkTagSet").setValue(idTagSet);
 
                         }
-
+                    //TODO: enlever la variable mMulti la remplacer par un intent (plus stable)
                         if (MainActivity.mMulti) {
                             share.setVisibility(View.VISIBLE);
                             buttonBack.setOnClickListener(new View.OnClickListener() {
@@ -402,6 +402,12 @@ public class StartActivity extends AppCompatActivity {
                             buttonGoMulti.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
+                                    //TODO: tout mettre dans une fonction ICI
+                                    mSharedPrefTagSet.edit().putString("TAGSET", "").apply();
+                                    mEtTagSet.setText("");
+                                    mSharedPrefVideoTitle.edit().putString("VIDEOTITLE", "").apply();
+                                    mEtVideoTitle.setText("");
+                                    mTagModelListAdd.clear();
 
                                     startActivity(intent);
                                 }
@@ -411,16 +417,19 @@ public class StartActivity extends AppCompatActivity {
                             if (titleSession.isEmpty()) {
                                 Toast.makeText(StartActivity.this, R.string.title, Toast.LENGTH_SHORT).show();
                             } else {
+                                //TODO ICI
+                                mSharedPrefTagSet.edit().putString("TAGSET", "").apply();
+                                mEtTagSet.setText("");
+                                mSharedPrefVideoTitle.edit().putString("VIDEOTITLE", "").apply();
+                                mEtVideoTitle.setText("");
+                                mTagModelListAdd.clear();
+
                                 startActivity(intent);
                             }
                         }
 
 
-                        mSharedPrefTagSet.edit().putString("TAGSET", "").apply();
-                        mEtTagSet.setText("");
-                        mSharedPrefVideoTitle.edit().putString("VIDEOTITLE", "").apply();
-                        mEtVideoTitle.setText("");
-                        mTagModelListAdd.clear();
+
 
                     }
                 }
@@ -492,7 +501,7 @@ public class StartActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-
+        //TODO ICI
         mSharedPrefTagSet.edit().putString("TAGSET", null).apply();
         mEtTagSet.setText("");
         mSharedPrefVideoTitle.edit().putString("VIDEOTITLE", null).apply();
