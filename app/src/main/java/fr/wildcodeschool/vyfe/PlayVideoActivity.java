@@ -1,14 +1,11 @@
 package fr.wildcodeschool.vyfe;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
-import android.media.MediaRecorder;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -29,7 +26,6 @@ import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
@@ -47,6 +43,7 @@ import java.util.HashMap;
  */
 public class PlayVideoActivity extends AppCompatActivity {
 
+    private static final int WIDTH_THUMB = 15;
     FirebaseDatabase mDatabase;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
     HashMap<String, String> mTagColorList = new HashMap<>();
@@ -57,7 +54,6 @@ public class PlayVideoActivity extends AppCompatActivity {
     int mVideoDuration;
     int mWidth;
     int mLastEnd;
-
     private ArrayList<TagModel> mTagedList = new ArrayList<>();
     private ArrayList<TagModel> mTagModels = new ArrayList<>();
     private VideoView mVideoSelected;
@@ -71,10 +67,7 @@ public class PlayVideoActivity extends AppCompatActivity {
     private FloatingActionButton mPlay;
     private ConstraintLayout mConstraintVideo;
     private boolean isSeekbarTracking = false;
-
     private boolean mFIRST = true;
-
-    private static final int WIDTH_THUMB = 15;
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -139,7 +132,7 @@ public class PlayVideoActivity extends AppCompatActivity {
                 ApiHelperPlay.getTags(mTagedList, mTagModels, new ApiHelperPlay.TagsResponse() {
                     @Override
                     public void onSuccess() {
-                        if (mFIRST)makeTimelines();
+                        if (mFIRST) makeTimelines();
                         RecyclerView rvTags = findViewById(R.id.re_tags_selected);
                         mAdapterTags = new TagRecyclerAdapter(mTagModels, mTagedList, "count");
                         RecyclerView.LayoutManager layoutManagerTags = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
@@ -208,7 +201,6 @@ public class PlayVideoActivity extends AppCompatActivity {
         });
 
 
-
         mVideoSelected.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
@@ -275,33 +267,29 @@ public class PlayVideoActivity extends AppCompatActivity {
     public void makeTimelines() {
         mFIRST = false;
 
-        int tagedLineSize = mWidth - convertToDp(getResources().getInteger(R.integer.title_length_timeline));
+        int tagedLineSize = mWidth;
         int titleLength = convertToDp(15);
 
         // Créé une timeline par tags utilisés
         for (final TagModel tagModel : mTagedList) {
 
             String tagName = tagModel.getName();
-            //charge LinearLayout1 avec image tags
-            final RelativeLayout timelineIvTags = new RelativeLayout(PlayVideoActivity.this);
-            mLlMain.addView(timelineIvTags);
+            //Creation de chaque etage de tags sur la timeline
+            final RelativeLayout timelineTag = new RelativeLayout(PlayVideoActivity.this);
+            mLlMain.addView(timelineTag);
 
             TextView tvNameTimeline = new TextView(PlayVideoActivity.this);
             tvNameTimeline.setText(tagName);
 
-            // Charge LinearLayout2 avec noms tags
-            final RelativeLayout timelineNameTags = new RelativeLayout(PlayVideoActivity.this);
-            LinearLayout mLLmainNameTags = findViewById(R.id.ll_name_tags);
+
+            //Creation des noms pour chaque timeline
             RelativeLayout.LayoutParams layoutParamsTv = new RelativeLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             layoutParamsTv.setMargins(convertToDp(15), convertToDp(8), 0, convertToDp(8));
             tvNameTimeline.setLayoutParams(layoutParamsTv);
             tvNameTimeline.setTextColor(Color.WHITE);
             tvNameTimeline.setMinimumHeight(convertToDp(25));
-
-            mLLmainNameTags.setMinimumHeight(mLlMain.getMeasuredHeight());
-            mLLmainNameTags.addView(timelineNameTags);
-            timelineNameTags.addView(tvNameTimeline, layoutParamsTv);
+            timelineTag.addView(tvNameTimeline, layoutParamsTv);
 
             ArrayList<TimeModel> timeList = tagModel.getTimes();
 
@@ -326,11 +314,11 @@ public class PlayVideoActivity extends AppCompatActivity {
                 RelativeLayout.LayoutParams layoutParamsIv = new RelativeLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-                layoutParamsIv.setMargins(convertToDp((int) Math.floor( start)), convertToDp(8), 0, convertToDp(8));
+                layoutParamsIv.setMargins((int) Math.floor(start), convertToDp(8), 0, convertToDp(8));
 
                 iv.setLayoutParams(layoutParamsIv);
                 iv.setMinimumHeight(convertToDp(25));
-                iv.setMinimumWidth(Math.max(50, (int) (end - start)));
+                iv.setMinimumWidth(Math.max(convertToDp(50), (int) (end - start)));
 
                 // Permet de se déplacer dans la vidéo en cliquant sur les images
                 iv.setOnClickListener(new View.OnClickListener() {
@@ -375,18 +363,18 @@ public class PlayVideoActivity extends AppCompatActivity {
 
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                timelineIvTags.setLayoutParams(layoutParams);
-                timelineIvTags.setBackgroundColor(getResources().getColor(R.color.colorCharcoalGrey));
-                timelineIvTags.addView(iv);
+                timelineTag.setLayoutParams(layoutParams);
+                timelineTag.setBackgroundColor(getResources().getColor(R.color.colorCharcoalGrey));
+                timelineTag.addView(iv);
                 mLastEnd = (int) end;
             }
 
             // ???
             RelativeLayout lastRelative = new RelativeLayout(PlayVideoActivity.this);
             RelativeLayout.LayoutParams lastParams = new RelativeLayout.LayoutParams(mVideoDuration - mLastEnd, LinearLayout.LayoutParams.MATCH_PARENT);
-            lastParams.setMargins(convertToDp(mLastEnd), convertToDp(20), 0, convertToDp(20));
+            lastParams.setMargins(mLastEnd, convertToDp(20), 0, convertToDp(20));
             lastRelative.setLayoutParams(lastParams);
-            timelineIvTags.addView(lastRelative);
+            timelineTag.addView(lastRelative);
 
             //Thumb adapter à la Timeline
             ViewTreeObserver vto = mSeekBar.getViewTreeObserver();
