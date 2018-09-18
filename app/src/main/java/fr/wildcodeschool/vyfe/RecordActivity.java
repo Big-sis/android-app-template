@@ -1,26 +1,20 @@
 package fr.wildcodeschool.vyfe;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.hardware.Camera;
-import android.media.AudioManager;
 import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.SystemClock;
-import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.util.Pair;
 import android.util.TypedValue;
 import android.view.Menu;
@@ -34,7 +28,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
@@ -42,7 +35,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
@@ -98,7 +90,7 @@ public class RecordActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
-         chronometer = findViewById(R.id.chronometer);
+        chronometer = findViewById(R.id.chronometer);
 
         mDatabase = SingletonFirebase.getInstance().getDatabase();
 
@@ -122,7 +114,7 @@ public class RecordActivity extends AppCompatActivity {
         Button btnRestart = findViewById(R.id.btn_restart);
         sessionRecord = findViewById(R.id.session_record);
         final RecyclerView recyclerTags = findViewById(R.id.re_tags);
-         idTagSet = getIntent().getStringExtra(ID_TAG_SET);
+        idTagSet = getIntent().getStringExtra(ID_TAG_SET);
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -227,9 +219,9 @@ public class RecordActivity extends AppCompatActivity {
                 //TODO: Modif lors du changement du Singleton
                 String nameTitleSession = RestartSession.implementTitleGrid(mSingletonSessions.getTitleSession());
 
-                RestartSession restartSession = new RestartSession(nameTitleSession,idTagSet);
+                RestartSession restartSession = new RestartSession(nameTitleSession, idTagSet);
                 Intent intent = new Intent(RecordActivity.this, StartActivity.class);
-                intent.putExtra("restartSession",restartSession );
+                intent.putExtra("restartSession", restartSession);
 
                 startActivity(intent);
 
@@ -286,8 +278,6 @@ public class RecordActivity extends AppCompatActivity {
         mRecorder.release();
         mRecorder = null;
     }
-
-
 
 
     private void initTimeline(final ArrayList<TagModel> listTag, RecyclerView rv) {
@@ -353,7 +343,7 @@ public class RecordActivity extends AppCompatActivity {
 
                     RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                             LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                    layoutParams.setMargins(convertToDp( startTime ), convertToDp(10), 0, convertToDp(10));
+                    layoutParams.setMargins(convertToDp(startTime), convertToDp(10), 0, convertToDp(10));
                     RelativeLayout timeline = mTimelines.get(nameTag);
 
 
@@ -403,51 +393,54 @@ public class RecordActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public void StopRecord(){
-        mActiveTag = false;
-        chronometer.stop();
-        stopRecording();
-        mRecord.setClickable(false);
-        sessionRecord.setVisibility(View.VISIBLE);
-        Date date = new Date();
-        Date newDate = new Date(date.getTime());
-        SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yy HH:mm");
-        String stringdate = dt.format(newDate);
+    public void StopRecord() {
+        //TODO si l'enregistrement a été lancé
 
-        String idAndroid = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-        HashCode hashCode = Hashing.sha256().hashString(idAndroid, Charset.defaultCharset());
+        if (chronometer.callOnClick()) {
+            mActiveTag = false;
+            chronometer.stop();
+            stopRecording();
+            mRecord.setClickable(false);
+            sessionRecord.setVisibility(View.VISIBLE);
+            Date date = new Date();
+            Date newDate = new Date(date.getTime());
+            SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yy HH:mm");
+            String stringdate = dt.format(newDate);
 
-        //Firebase SESSION
-        DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions");
-        sessionRef.keepSynced(true);
-        mIdSession = sessionRef.push().getKey();
-        mSingletonSessions.setIdSession(mIdSession);
-        sessionRef.child(mIdSession).child("name").setValue(mTitleSession);
-        sessionRef.child(mIdSession).child("author").setValue(mAuthUserId);
-        sessionRef.child(mIdSession).child("videoLink").setValue(mFileName);
-        sessionRef.child(mIdSession).child("date").setValue(stringdate);
-        sessionRef.child(mIdSession).child("idSession").setValue(mIdSession);
-        sessionRef.child(mIdSession).child("idTagSet").setValue(idTagSet);
+            String idAndroid = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+            HashCode hashCode = Hashing.sha256().hashString(idAndroid, Charset.defaultCharset());
 
-        //TODO rajout firebase
-        sessionRef.child(mIdSession).child("idAndroid").setValue(hashCode.toString());
+            //Firebase SESSION
+            DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions");
+            sessionRef.keepSynced(true);
+            mIdSession = sessionRef.push().getKey();
+            mSingletonSessions.setIdSession(mIdSession);
+            sessionRef.child(mIdSession).child("name").setValue(mTitleSession);
+            sessionRef.child(mIdSession).child("author").setValue(mAuthUserId);
+            sessionRef.child(mIdSession).child("videoLink").setValue(mFileName);
+            sessionRef.child(mIdSession).child("date").setValue(stringdate);
+            sessionRef.child(mIdSession).child("idSession").setValue(mIdSession);
+            sessionRef.child(mIdSession).child("idTagSet").setValue(idTagSet);
+
+            //TODO rajout firebase
+            sessionRef.child(mIdSession).child("idAndroid").setValue(hashCode.toString());
 
 
+            for (Map.Entry<String, ArrayList<Pair<Integer, Integer>>> entry : newTagList.entrySet()) {
 
-        for (Map.Entry<String, ArrayList<Pair<Integer, Integer>>> entry : newTagList.entrySet()) {
+                String tagKey = sessionRef.child(mIdSession).child("tags").push().getKey();
+                sessionRef.child(mIdSession).child("tags").child(tagKey).child("tagName").setValue(entry.getKey());
+                ArrayList<TimeModel> times = new ArrayList<>();
 
-            String tagKey = sessionRef.child(mIdSession).child("tags").push().getKey();
-            sessionRef.child(mIdSession).child("tags").child(tagKey).child("tagName").setValue(entry.getKey());
-            ArrayList<TimeModel> times = new ArrayList<>();
+                for (Pair<Integer, Integer> pair : entry.getValue()) {
 
-            for (Pair<Integer, Integer> pair : entry.getValue()) {
+                    times.add(new TimeModel(pair.first, pair.second));
 
-                times.add(new TimeModel(pair.first, pair.second));
 
+                }
+                sessionRef.child(mIdSession).child("tags").child(tagKey).child("times").setValue(times);
 
             }
-            sessionRef.child(mIdSession).child("tags").child(tagKey).child("times").setValue(times);
-
         }
     }
 }
