@@ -82,8 +82,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String networkSSID = "raspi-webgui";
-                String networkPass = "ChangeMe";
+                //TODO: Le faire gerer a firebase 
+                String networkSSID = "Vyfe-HotSpot";
+                String networkPass = "dietpihotspot";
 
                 WifiConfiguration conf = new WifiConfiguration();
                 conf.SSID = "\"" + networkSSID + "\"";
@@ -97,15 +98,24 @@ public class MainActivity extends AppCompatActivity {
                 wifiManager.addNetwork(conf);
 
                 List<WifiConfiguration> list = wifiManager.getConfiguredNetworks();
-                for( WifiConfiguration i : list ) {
-                    if(i.SSID != null && i.SSID.equals("\"" + networkSSID + "\"")) {
-                        wifiManager.disconnect();
-                        wifiManager.enableNetwork(i.networkId, true);
-                        wifiManager.reconnect();
+                if(list ==null){
+                    Toast.makeText(MainActivity.this, "Veuillez brancher votre wifi pour commencer une session collaborative", Toast.LENGTH_LONG).show();
+                }else{
+                    for( WifiConfiguration i : list ) {
+                        if(i.SSID != null && i.SSID.equals("\"" + networkSSID + "\"")) {
+                            wifiManager.disconnect();
+                            wifiManager.enableNetwork(i.networkId, true);
+                            wifiManager.reconnect();
 
-                        break;
+                            break;
+                        } if(i.SSID == null){
+                            Toast.makeText(MainActivity.this, "Veuillez brancher le boitier de connexion", Toast.LENGTH_LONG).show();
+                        }
                     }
+
                 }
+
+
 
             }
         });
