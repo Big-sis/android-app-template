@@ -104,7 +104,7 @@ public class PlayVideoActivity extends AppCompatActivity {
         // Applique les paramètres à la seekBar
 
         RelativeLayout.LayoutParams seekBarParams = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        seekBarParams.setMargins(convertToDp(-WIDTH_THUMB), 0, 0, 0);
+        seekBarParams.setMargins(-WIDTH_THUMB, 0, 0, 0);
         mSeekBar = findViewById(R.id.seek_bar_selected);
         mSeekBar.setLayoutParams(seekBarParams);
 
@@ -294,10 +294,10 @@ public class PlayVideoActivity extends AppCompatActivity {
             LinearLayout mLLmainNameTags = findViewById(R.id.ll_name_tags);
             RelativeLayout.LayoutParams layoutParamsTv = new RelativeLayout.LayoutParams(
                     LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            layoutParamsTv.setMargins(convertToDp(15), 8, 0, 8);
+            layoutParamsTv.setMargins(convertToDp(15), convertToDp(8), 0, convertToDp(8));
             tvNameTimeline.setLayoutParams(layoutParamsTv);
             tvNameTimeline.setTextColor(Color.WHITE);
-            tvNameTimeline.setMinimumHeight(50);
+            tvNameTimeline.setMinimumHeight(convertToDp(25));
 
             mLLmainNameTags.setMinimumHeight(mLlMain.getMeasuredHeight());
             mLLmainNameTags.addView(timelineNameTags);
@@ -326,10 +326,10 @@ public class PlayVideoActivity extends AppCompatActivity {
                 RelativeLayout.LayoutParams layoutParamsIv = new RelativeLayout.LayoutParams(
                         LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-                layoutParamsIv.setMargins((int) Math.floor( start), 8, 0, 8);
+                layoutParamsIv.setMargins(convertToDp((int) Math.floor( start)), convertToDp(8), 0, convertToDp(8));
 
                 iv.setLayoutParams(layoutParamsIv);
-                iv.setMinimumHeight(50);
+                iv.setMinimumHeight(convertToDp(25));
                 iv.setMinimumWidth(Math.max(50, (int) (end - start)));
 
                 // Permet de se déplacer dans la vidéo en cliquant sur les images
@@ -350,7 +350,7 @@ public class PlayVideoActivity extends AppCompatActivity {
                     @Override
                     public void onSuccess() {
                         try {
-                           iv.setBackgroundResource(ColorHelper.convertColor(mTagColorList.get(tagModel.getName())));
+                            iv.setBackgroundResource(ColorHelper.convertColor(mTagColorList.get(tagModel.getName())));
                         } catch (ColorNotFoundException e) {
                             e.printStackTrace();
                         }
@@ -384,7 +384,7 @@ public class PlayVideoActivity extends AppCompatActivity {
             // ???
             RelativeLayout lastRelative = new RelativeLayout(PlayVideoActivity.this);
             RelativeLayout.LayoutParams lastParams = new RelativeLayout.LayoutParams(mVideoDuration - mLastEnd, LinearLayout.LayoutParams.MATCH_PARENT);
-            lastParams.setMargins(convertToDp(mLastEnd), 20, 0, 20);
+            lastParams.setMargins(convertToDp(mLastEnd), convertToDp(20), 0, convertToDp(20));
             lastRelative.setLayoutParams(lastParams);
             timelineIvTags.addView(lastRelative);
 
