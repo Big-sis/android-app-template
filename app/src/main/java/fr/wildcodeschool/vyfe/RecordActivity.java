@@ -350,7 +350,6 @@ public class RecordActivity extends AppCompatActivity {
                 rv, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-            //TODO: enlever la marge du titre
                 if (mActiveTag) {
                     String nameTag = listTag.get(position).getName();
                     //init name Tag
@@ -394,9 +393,11 @@ public class RecordActivity extends AppCompatActivity {
 
                     RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                             LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                    layoutParams.setMargins(convertToDp(titleLength + startTime + convertToDp(15)), convertToDp(10), 0, convertToDp(10));
+                    layoutParams.setMargins(convertToDp( startTime ), convertToDp(10), 0, convertToDp(10));
                     RelativeLayout timeline = mTimelines.get(nameTag);
 
+
+                    timeline.addView(iv, layoutParams);
                     if (isFirstTitle) {
                         tvNameTimeline.setText(listTag.get(position).getName());
                         tvNameTimeline.setMinimumHeight(convertToDp(25));
@@ -406,7 +407,7 @@ public class RecordActivity extends AppCompatActivity {
                         tvNameTimeline.setLayoutParams(layoutParamsTv);
                         timeline.addView(tvNameTimeline, layoutParamsTv);
                     }
-                    timeline.addView(iv, layoutParams);
+
 
                     //Pour envoit sur firebase
                     Pair<Integer, Integer> timePair = new Pair<>(startTime / rapport, endTime / rapport);
