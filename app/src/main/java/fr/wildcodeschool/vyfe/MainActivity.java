@@ -82,9 +82,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                //TODO: Le faire gerer a firebase 
-                String networkSSID = "Vyfe-HotSpot";
-                String networkPass = "dietpihotspot";
+                String networkSSID = MainActivity.this.getString(R.string.networkSSID);
+                String networkPass = MainActivity.this.getString(R.string.networkPass);
 
                 WifiConfiguration conf = new WifiConfiguration();
                 conf.SSID = "\"" + networkSSID + "\"";
@@ -94,12 +93,27 @@ public class MainActivity extends AppCompatActivity {
                 conf.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
                 conf.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP40);
 
-                WifiManager wifiManager = (WifiManager)getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+                final WifiManager wifiManager = (WifiManager)getApplicationContext().getSystemService(Context.WIFI_SERVICE);
                 wifiManager.addNetwork(conf);
 
                 List<WifiConfiguration> list = wifiManager.getConfiguredNetworks();
                 if(list ==null){
-                    Toast.makeText(MainActivity.this, "Veuillez brancher votre wifi pour commencer une session collaborative", Toast.LENGTH_LONG).show();
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                    builder.setMessage(R.string.wifi_active)
+                            .setPositiveButton(R.string.start_wifi, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    wifiManager.setWifiEnabled(true);
+                                }
+                            })
+                            .setNegativeButton(R.string.back, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            })
+                            .show();
+
                 }else{
                     for( WifiConfiguration i : list ) {
                         if(i.SSID != null && i.SSID.equals("\"" + networkSSID + "\"")) {

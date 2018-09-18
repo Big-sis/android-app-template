@@ -90,5 +90,7 @@
     <string name="restart_session">Relancer une Session</string>
     <string name="deconnected">Etes-vous sûr(e) de vouloir vous déconnecter ?</string>
     <string name="active_wifi">Vous devez posséder une connexion internet pour vous identifiez</string>
+    <string name="wifi_active">Vous devez activer votre wifi pour lancer une session collaborative</string>
+    <string name="start_wifi">Activer Wifi</string>
 
 </resources>
