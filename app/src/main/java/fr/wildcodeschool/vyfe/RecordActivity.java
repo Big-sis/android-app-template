@@ -350,7 +350,7 @@ public class RecordActivity extends AppCompatActivity {
                 rv, new RecyclerTouchListener.ClickListener() {
             @Override
             public void onClick(View view, int position) {
-
+            //TODO: enlever la marge du titre
                 if (mActiveTag) {
                     String nameTag = listTag.get(position).getName();
                     //init name Tag
@@ -379,7 +379,7 @@ public class RecordActivity extends AppCompatActivity {
                             titleLength, LinearLayout.LayoutParams.WRAP_CONTENT);
                     layoutParamsIv.setMargins(0, convertToDp(8), 0, convertToDp(8));
                     iv.setLayoutParams(layoutParamsIv);
-                    iv.setMinimumHeight(50);
+                    iv.setMinimumHeight(convertToDp(25));
                     try {
                         iv.setBackgroundResource(ColorHelper.convertColor(listTag.get(position).getColorName()));
                     } catch (ColorNotFoundException e) {
@@ -399,11 +399,11 @@ public class RecordActivity extends AppCompatActivity {
 
                     if (isFirstTitle) {
                         tvNameTimeline.setText(listTag.get(position).getName());
+                        tvNameTimeline.setMinimumHeight(convertToDp(25));
                         RelativeLayout.LayoutParams layoutParamsTv = new RelativeLayout.LayoutParams(
                                 convertToDp(titleLength), LinearLayout.LayoutParams.WRAP_CONTENT);
-                        layoutParamsTv.setMargins(convertToDp(15), convertToDp(8), convertToDp(8), convertToDp(8));
+                        layoutParamsTv.setMargins(convertToDp(15), convertToDp(10), convertToDp(8), convertToDp(10));
                         tvNameTimeline.setLayoutParams(layoutParamsTv);
-                        tvNameTimeline.setTextSize(convertToDp(10));
                         timeline.addView(tvNameTimeline, layoutParamsTv);
                     }
                     timeline.addView(iv, layoutParams);
