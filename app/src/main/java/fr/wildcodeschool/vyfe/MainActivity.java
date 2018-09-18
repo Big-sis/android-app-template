@@ -123,6 +123,7 @@ public class MainActivity extends AppCompatActivity {
 
                             break;
                         } if(i.SSID == null){
+                            //TODO: Alerte dialogue
                             Toast.makeText(MainActivity.this, "Veuillez brancher le boitier de connexion", Toast.LENGTH_LONG).show();
                         }
                     }
