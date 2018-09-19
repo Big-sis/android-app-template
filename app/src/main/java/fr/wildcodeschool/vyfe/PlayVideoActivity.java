@@ -367,9 +367,9 @@ public class PlayVideoActivity extends AppCompatActivity {
                 timelineTag.setBackgroundColor(getResources().getColor(R.color.colorCharcoalGrey));
                 timelineTag.addView(iv);
                 mLastEnd = (int) end;
-                timelineTag.addView(tvNameTimeline, layoutParamsTv);
-            }
 
+            }
+            timelineTag.addView(tvNameTimeline, layoutParamsTv);
             // ???
             RelativeLayout lastRelative = new RelativeLayout(PlayVideoActivity.this);
             RelativeLayout.LayoutParams lastParams = new RelativeLayout.LayoutParams(mVideoDuration - mLastEnd, LinearLayout.LayoutParams.MATCH_PARENT);
