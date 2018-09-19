@@ -249,10 +249,10 @@ public class RecordActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.logout:
-                DisconnectionAlert.confirmedDisconnection(RecordActivity.this);
+                DisconnectionAlert.confirmedDisconnection(this);
 
             case R.id.home:
-                final Intent intentHome = new Intent(RecordActivity.this, MainActivity.class);
+                final Intent intentHome = new Intent(this, MainActivity.class);
                 saveAlertDialog(intentHome);
                 
 
@@ -396,7 +396,7 @@ public class RecordActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        final Intent intent = new Intent(RecordActivity.this, StartActivity.class);
+        final Intent intent = new Intent(this, StartActivity.class);
         saveAlertDialog(intent);
 
     }
