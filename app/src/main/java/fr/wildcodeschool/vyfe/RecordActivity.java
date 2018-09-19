@@ -1,5 +1,7 @@
 package fr.wildcodeschool.vyfe;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.hardware.Camera;
@@ -74,6 +76,7 @@ public class RecordActivity extends AppCompatActivity {
     private Chronometer chronometer;
     private ConstraintLayout sessionRecord;
     private String idTagSet;
+    private boolean recordInProgress = false;
 
     // Pour obtenir une instance de la caméra
     public static Camera getCameraInstance(int currentCameraId) {
@@ -159,6 +162,7 @@ public class RecordActivity extends AppCompatActivity {
         mRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                recordInProgress = true;
                 mActiveTag = true;
                 chronometer.setBase(SystemClock.elapsedRealtime());
                 chronometer.start();
@@ -172,7 +176,9 @@ public class RecordActivity extends AppCompatActivity {
                 mRecord.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        StopRecord();
+                        closeRecord();
+                        saveSession();
+                        recordInProgress =false;
 
 /*
                         //FIREBASE TAGSSESSION
@@ -199,6 +205,7 @@ public class RecordActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 sessionRecord.setVisibility(View.GONE);
+
                 Intent intent = new Intent(RecordActivity.this, MainActivity.class);
                 startActivity(intent);
             }
@@ -245,9 +252,10 @@ public class RecordActivity extends AppCompatActivity {
                 DisconnectionAlert.confirmedDisconnection(RecordActivity.this);
 
             case R.id.home:
-                StopRecord();
-                Intent intentHome = new Intent(RecordActivity.this, MainActivity.class);
-                startActivity(intentHome);
+                final Intent intentHome = new Intent(RecordActivity.this, MainActivity.class);
+                saveAlertDialog(intentHome);
+                
+
                 return true;
         }
 
@@ -388,59 +396,89 @@ public class RecordActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        StopRecord();
-        Intent intent = new Intent(RecordActivity.this, StartActivity.class);
-        startActivity(intent);
+        final Intent intent = new Intent(RecordActivity.this, StartActivity.class);
+        saveAlertDialog(intent);
+
     }
 
-    public void StopRecord() {
-        //TODO si l'enregistrement a été lancé
-
-        if (chronometer.callOnClick()) {
+    public void closeRecord() {
             mActiveTag = false;
             chronometer.stop();
             stopRecording();
             mRecord.setClickable(false);
             sessionRecord.setVisibility(View.VISIBLE);
-            Date date = new Date();
-            Date newDate = new Date(date.getTime());
-            SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yy HH:mm");
-            String stringdate = dt.format(newDate);
 
-            String idAndroid = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-            HashCode hashCode = Hashing.sha256().hashString(idAndroid, Charset.defaultCharset());
+    }
 
-            //Firebase SESSION
-            DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions");
-            sessionRef.keepSynced(true);
-            mIdSession = sessionRef.push().getKey();
-            mSingletonSessions.setIdSession(mIdSession);
-            sessionRef.child(mIdSession).child("name").setValue(mTitleSession);
-            sessionRef.child(mIdSession).child("author").setValue(mAuthUserId);
-            sessionRef.child(mIdSession).child("videoLink").setValue(mFileName);
-            sessionRef.child(mIdSession).child("date").setValue(stringdate);
-            sessionRef.child(mIdSession).child("idSession").setValue(mIdSession);
-            sessionRef.child(mIdSession).child("idTagSet").setValue(idTagSet);
+    public void saveAlertDialog(final Intent intent) {
+        if (recordInProgress) {
+            closeRecord();
+            sessionRecord.setVisibility(View.GONE);
+            final AlertDialog.Builder builder = new AlertDialog.Builder(RecordActivity.this);
+            builder.setMessage(R.string.save_session)
+                    .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            saveSession();
+                            startActivity(intent);
+                            
+                        }
+                    })
+                    .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                            startActivity(intent);
+                        }
+                    })
+                    .show();
 
-            //TODO rajout firebase
-            sessionRef.child(mIdSession).child("idAndroid").setValue(hashCode.toString());
+        }else startActivity(intent);
+    }
+
+    public void saveSession() {
+        Date date = new Date();
+        Date newDate = new Date(date.getTime());
+        SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yy HH:mm");
+        String stringdate = dt.format(newDate);
+
+        String idAndroid = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        HashCode hashCode = Hashing.sha256().hashString(idAndroid, Charset.defaultCharset());
+
+        //Firebase SESSION
+        DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions");
+        sessionRef.keepSynced(true);
+        mIdSession = sessionRef.push().getKey();
+        mSingletonSessions.setIdSession(mIdSession);
+        sessionRef.child(mIdSession).child("name").setValue(mTitleSession);
+        sessionRef.child(mIdSession).child("author").setValue(mAuthUserId);
+        sessionRef.child(mIdSession).child("videoLink").setValue(mFileName);
+        sessionRef.child(mIdSession).child("date").setValue(stringdate);
+        sessionRef.child(mIdSession).child("idSession").setValue(mIdSession);
+        sessionRef.child(mIdSession).child("idTagSet").setValue(idTagSet);
+
+        //TODO rajout firebase
+        sessionRef.child(mIdSession).child("idAndroid").setValue(hashCode.toString());
 
 
-            for (Map.Entry<String, ArrayList<Pair<Integer, Integer>>> entry : newTagList.entrySet()) {
+        for (Map.Entry<String, ArrayList<Pair<Integer, Integer>>> entry : newTagList.entrySet()) {
 
-                String tagKey = sessionRef.child(mIdSession).child("tags").push().getKey();
-                sessionRef.child(mIdSession).child("tags").child(tagKey).child("tagName").setValue(entry.getKey());
-                ArrayList<TimeModel> times = new ArrayList<>();
+            String tagKey = sessionRef.child(mIdSession).child("tags").push().getKey();
+            sessionRef.child(mIdSession).child("tags").child(tagKey).child("tagName").setValue(entry.getKey());
+            ArrayList<TimeModel> times = new ArrayList<>();
 
-                for (Pair<Integer, Integer> pair : entry.getValue()) {
+            for (Pair<Integer, Integer> pair : entry.getValue()) {
 
-                    times.add(new TimeModel(pair.first, pair.second));
+                times.add(new TimeModel(pair.first, pair.second));
 
-
-                }
-                sessionRef.child(mIdSession).child("tags").child(tagKey).child("times").setValue(times);
 
             }
+            sessionRef.child(mIdSession).child("tags").child(tagKey).child("times").setValue(times);
+
+
         }
+
     }
+
+
 }
