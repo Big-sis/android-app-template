@@ -289,7 +289,7 @@ public class PlayVideoActivity extends AppCompatActivity {
             tvNameTimeline.setLayoutParams(layoutParamsTv);
             tvNameTimeline.setTextColor(Color.WHITE);
             tvNameTimeline.setMinimumHeight(convertToDp(25));
-            timelineTag.addView(tvNameTimeline, layoutParamsTv);
+
 
             ArrayList<TimeModel> timeList = tagModel.getTimes();
 
@@ -367,6 +367,7 @@ public class PlayVideoActivity extends AppCompatActivity {
                 timelineTag.setBackgroundColor(getResources().getColor(R.color.colorCharcoalGrey));
                 timelineTag.addView(iv);
                 mLastEnd = (int) end;
+                timelineTag.addView(tvNameTimeline, layoutParamsTv);
             }
 
             // ???
