@@ -404,6 +404,7 @@ public class StartActivity extends AppCompatActivity {
                                 @Override
                                 public void onClick(View v) {
                                     cleanSharedPref();
+                                    startActivity(intent);
 
                                 }
                             });
@@ -413,6 +414,7 @@ public class StartActivity extends AppCompatActivity {
                                 Toast.makeText(StartActivity.this, R.string.title, Toast.LENGTH_SHORT).show();
                             } else {
                                 cleanSharedPref();
+                                startActivity(intent);
 
                             }
                         }
@@ -490,11 +492,8 @@ public class StartActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        //TODO ICI
-        mSharedPrefTagSet.edit().putString("TAGSET", null).apply();
-        mEtTagSet.setText("");
-        mSharedPrefVideoTitle.edit().putString("VIDEOTITLE", null).apply();
-        mEtVideoTitle.setText("");
+
+        cleanSharedPref();
 
         Intent intent = new Intent(StartActivity.this, MainActivity.class);
         startActivity(intent);
@@ -509,7 +508,6 @@ public class StartActivity extends AppCompatActivity {
         mEtVideoTitle.setText("");
         mTagModelListAdd.clear();
 
-        startActivity(intent);
     }
 
 

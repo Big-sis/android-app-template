@@ -401,11 +401,5 @@ public class PlayVideoActivity extends AppCompatActivity {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, size, getResources().getDisplayMetrics());
     }
 
-    @Override
-    public void onBackPressed() {
-        //TODO: arreter la video pour eviter crash
-        Intent intent = new Intent(PlayVideoActivity.this, SelectedVideoActivity.class);
-        startActivity(intent);
 
-    }
 }

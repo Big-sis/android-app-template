@@ -333,9 +333,5 @@ public class SelectedVideoActivity extends AppCompatActivity {
         return byteBuffer.toByteArray();
     }
 
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(SelectedVideoActivity.this, MyVideoActivity.class);
-        startActivity(intent);
-    }
+
 }
