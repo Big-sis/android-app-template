@@ -144,10 +144,4 @@ public class MyVideoActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(MyVideoActivity.this, MainActivity.class);
-        startActivity(intent);
-
-    }
 }

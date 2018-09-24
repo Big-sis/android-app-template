@@ -119,7 +119,8 @@ public class StartActivity extends AppCompatActivity {
 
         final String authUserId = SingletonFirebase.getInstance().getUid();
 
-        if (MainActivity.mMulti) {
+        final String multiSession= getIntent().getStringExtra("multiSession");
+        if ("multiSession".equals(multiSession)) {
             buttonGo.setText(R.string.next);
         }
 
@@ -391,8 +392,9 @@ public class StartActivity extends AppCompatActivity {
                             tagsRef.child(idTag).child("fkTagSet").setValue(idTagSet);
 
                         }
-                    //TODO: enlever la variable mMulti la remplacer par un intent (plus stable)
-                        if (MainActivity.mMulti) {
+
+
+                        if ("multiSession".equals(multiSession)) {
                             share.setVisibility(View.VISIBLE);
                             buttonBack.setOnClickListener(new View.OnClickListener() {
                                 @Override
@@ -404,15 +406,17 @@ public class StartActivity extends AppCompatActivity {
                                 @Override
                                 public void onClick(View v) {
                                     cleanSharedPref();
+                                    startActivity(intent);
 
                                 }
                             });
-                            MainActivity.mMulti = false;
+
                         } else {
                             if (titleSession.isEmpty()) {
                                 Toast.makeText(StartActivity.this, R.string.title, Toast.LENGTH_SHORT).show();
                             } else {
                                 cleanSharedPref();
+                                startActivity(intent);
 
                             }
                         }
@@ -490,11 +494,8 @@ public class StartActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        //TODO ICI
-        mSharedPrefTagSet.edit().putString("TAGSET", null).apply();
-        mEtTagSet.setText("");
-        mSharedPrefVideoTitle.edit().putString("VIDEOTITLE", null).apply();
-        mEtVideoTitle.setText("");
+
+        cleanSharedPref();
 
         Intent intent = new Intent(StartActivity.this, MainActivity.class);
         startActivity(intent);
@@ -509,7 +510,6 @@ public class StartActivity extends AppCompatActivity {
         mEtVideoTitle.setText("");
         mTagModelListAdd.clear();
 
-        startActivity(intent);
     }
 
 
