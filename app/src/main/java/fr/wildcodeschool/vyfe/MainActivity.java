@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
     private static final int PERMISSIONS_REQUEST = 1;
     // Operation = 24(day) * 60(hour) * 60(minute) * 1000 (millis)
     private static final int TIME_IN_DAYS = 86400000;
-    public static boolean mMulti = false;
     private String[] permissions = {
             Manifest.permission.RECORD_AUDIO,
             Manifest.permission.CAMERA,
@@ -125,8 +124,10 @@ public class MainActivity extends AppCompatActivity {
         btnMultiSession.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mMulti = true;
+
                 Intent intent = new Intent(MainActivity.this, StartActivity.class);
+                intent.putExtra("multiSession", "multiSession");
+
                 startActivity(intent);
             }
         });
