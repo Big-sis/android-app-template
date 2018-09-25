@@ -39,6 +39,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
@@ -104,11 +105,11 @@ public class RecordActivity extends AppCompatActivity {
         mTitleSession = mSingletonSessions.getTitleSession();
 
         Date d = new Date();
-        //TODO: changer le mode denregistrement
-       // mettre memoire tel a la source:  mFileName= String.valueOf(Environment.getExternalStorageDirectory());
-       // enregistrement dans dossier interne -> movies mFileName = String.valueOf(Environment.getExternalStoragePublicDirectory(DIRECTORY_MOVIES));
-        mFileName = getExternalCacheDir().getAbsolutePath();
-        mFileName += "/" + d.getTime() + ".mp4";
+        File f1 = new File(Environment.getExternalStoragePublicDirectory(DIRECTORY_MOVIES) + "/" + "Vyfe");
+        if (!f1.exists()) { f1.mkdirs(); }
+
+        mFileName= String.valueOf(Environment.getExternalStoragePublicDirectory(DIRECTORY_MOVIES)+"/"+"Vyfe");
+        mFileName += "/" + mTitleSession+" - "+ d.getTime()+".mp4";
 
 
         mSingletonSessions.setFileName(mFileName);
