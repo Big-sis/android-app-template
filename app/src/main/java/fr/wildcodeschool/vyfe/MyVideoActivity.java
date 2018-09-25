@@ -126,6 +126,7 @@ public class MyVideoActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.settings, menu);
+
         return true;
     }
 
@@ -143,10 +144,4 @@ public class MyVideoActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(MyVideoActivity.this, MainActivity.class);
-        startActivity(intent);
-
-    }
 }
