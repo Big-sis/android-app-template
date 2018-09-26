@@ -1,6 +1,7 @@
 package fr.wildcodeschool.vyfe;
 
 import android.content.Context;
+import android.os.Environment;
 import android.provider.Settings;
 import android.support.v4.content.ContextCompat;
 import android.widget.GridView;
@@ -19,6 +20,9 @@ import java.io.File;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 
+import static android.os.Environment.DIRECTORY_MOVIES;
+import static android.os.Environment.getExternalStoragePublicDirectory;
+
 public class ApiHelperVideo {
     private static FirebaseDatabase mDatabase = SingletonFirebase.getInstance().getDatabase();
     private static SingletonSessions mSingletonSessions = SingletonSessions.getInstance();
@@ -27,10 +31,17 @@ public class ApiHelperVideo {
 
 
     public static void getVideo(final Context context, final GridView gridView, final ForecastResponse listener) {
+
+        // Recup vidéo sur mémoire en dure
+         File externalStorage= getExternalStoragePublicDirectory(DIRECTORY_MOVIES+"/"+"Vyfe");
+        final String racineExternalStorage= String.valueOf(externalStorage.getAbsoluteFile());
+        final String [] filesExternalStorage = externalStorage.list();
+
         String authUserId = SingletonFirebase.getInstance().getUid();
         final String idAndroid = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.ANDROID_ID);
         final HashCode hashCode = Hashing.sha256().hashString(idAndroid, Charset.defaultCharset());
 
+        //recup vidéo mémoire cache
         final File[] sessionsCacheDirs = ContextCompat.getExternalCacheDirs(context);
         final String racineFile = String.valueOf(sessionsCacheDirs[0].getAbsoluteFile());
         final String[] numbersFiles = sessionsCacheDirs[0].list();
@@ -50,12 +61,14 @@ public class ApiHelperVideo {
                 }
                 final long[] pendingLoadCount = {dataSnapshot.getChildrenCount()};
 
+                //ancienne version: garde video memoire cache : celle ci disparaitra
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
                     SessionsModel sessionsModel = snapshot.getValue(SessionsModel.class);
 
                     for (String numberFile : numbersFiles) {
                         String nameCache = racineFile +"/"+ numberFile;
+                        assert sessionsModel != null;
                         if (sessionsModel.getVideoLink().equals(nameCache)) {
                             mSessionsModelList.add(sessionsModel);
                             //TODO: mettre un message a utilisateur plus dispo ou les faire apparaitre en plus clair
@@ -63,6 +76,25 @@ public class ApiHelperVideo {
                     }
 
                 }
+
+                //pour la nouvelle
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+
+                    SessionsModel sessionsModel = snapshot.getValue(SessionsModel.class);
+
+                    for (String nameFileExternalStorage : filesExternalStorage) {
+                        String nameCache = racineExternalStorage +"/"+ nameFileExternalStorage;
+                        assert sessionsModel != null;
+                        if (sessionsModel.getVideoLink().equals(nameCache)) {
+                            mSessionsModelList.add(sessionsModel);
+                            //TODO: mettre un message a utilisateur plus dispo ou les faire apparaitre en plus clair
+                        }
+                    }
+
+                }
+
+                //TODO: si le fichier n'est pas trouvé (effacer les données sur firebase)
+
                 GridAdapter adapter = new GridAdapter(context, mSessionsModelList);
                 gridView.setAdapter(adapter);
 

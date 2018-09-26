@@ -1,6 +1,7 @@
 package fr.wildcodeschool.vyfe;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -8,6 +9,7 @@ import android.hardware.Camera;
 import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.SystemClock;
 import android.provider.Settings;
@@ -37,6 +39,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
@@ -44,6 +47,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import static android.os.Environment.DIRECTORY_MOVIES;
 
 /**
  * This activity records in real time session with tags
@@ -100,8 +105,11 @@ public class RecordActivity extends AppCompatActivity {
         mTitleSession = mSingletonSessions.getTitleSession();
 
         Date d = new Date();
-        mFileName = getExternalCacheDir().getAbsolutePath();
-        mFileName += "/" + d.getTime() + ".mp4";
+        File f1 = new File(Environment.getExternalStoragePublicDirectory(DIRECTORY_MOVIES) + "/" + "Vyfe");
+        if (!f1.exists()) { f1.mkdirs(); }
+
+        mFileName= String.valueOf(Environment.getExternalStoragePublicDirectory(DIRECTORY_MOVIES)+"/"+"Vyfe");
+        mFileName += "/" + mTitleSession+" - "+ d.getTime()+".mp4";
 
 
         mSingletonSessions.setFileName(mFileName);
