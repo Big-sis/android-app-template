@@ -112,16 +112,20 @@
         android:layout_height="0dp"
         android:layout_weight="0.2">
 
+        <!--Container général-->
         <RelativeLayout
             android:id="@+id/time_lines_container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+
+            <!--Timeline avec image tag-->
             <LinearLayout
                 android:id="@+id/ll_main_playvideo"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical" />
+
 
             <SeekBar
                 android:id="@+id/seek_bar_selected"

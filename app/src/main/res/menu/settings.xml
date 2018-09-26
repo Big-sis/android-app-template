@@ -13,6 +13,7 @@
         android:id="@+id/logout"
         android:icon="@drawable/icons8_d_connexion_60"
         android:title="@string/logout"
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom"
+        android:visible="false"/>
 
 </menu>
