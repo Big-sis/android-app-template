@@ -14,8 +14,8 @@ android {
         applicationId "fr.wildcodeschool.vyfe"
         minSdkVersion 15
         targetSdkVersion 26
-        versionCode 1
-        versionName "1.0"
+        versionCode 4
+        versionName "1.4"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -34,6 +34,7 @@ android {
     testOptions {
         unitTests.returnDefaultValues = true
     }
+    buildToolsVersion '27.0.3'
 }
 
 repositories {
@@ -55,7 +56,6 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:2.0.5-beta'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.google.guava:guava:24.1-android'
-
 }
 
 

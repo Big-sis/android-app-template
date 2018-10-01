@@ -57,6 +57,7 @@ public class StartActivity extends AppCompatActivity {
     private int mHeigth;
     private ArrayList<String> mNameTagSet = new ArrayList<>();
     private ArrayList<String> mIdTagSet = new ArrayList<>();
+    private  Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,7 +119,8 @@ public class StartActivity extends AppCompatActivity {
 
         final String authUserId = SingletonFirebase.getInstance().getUid();
 
-        if (MainActivity.mMulti) {
+        final String multiSession= getIntent().getStringExtra("multiSession");
+        if ("multiSession".equals(multiSession)) {
             buttonGo.setText(R.string.next);
         }
 
@@ -329,7 +331,7 @@ public class StartActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                final Intent intent = new Intent(StartActivity.this, RecordActivity.class);
+                intent = new Intent(StartActivity.this, RecordActivity.class);
                 final String titleSession = mEtVideoTitle.getText().toString();
                 singletonSessions.setTitleSession(titleSession);
                 //intent.putExtra(TITLE_VIDEO, titleSession);
@@ -391,7 +393,8 @@ public class StartActivity extends AppCompatActivity {
 
                         }
 
-                        if (MainActivity.mMulti) {
+
+                        if ("multiSession".equals(multiSession)) {
                             share.setVisibility(View.VISIBLE);
                             buttonBack.setOnClickListener(new View.OnClickListener() {
                                 @Override
@@ -402,25 +405,24 @@ public class StartActivity extends AppCompatActivity {
                             buttonGoMulti.setOnClickListener(new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
-
+                                    cleanSharedPref();
                                     startActivity(intent);
+
                                 }
                             });
-                            MainActivity.mMulti = false;
+
                         } else {
                             if (titleSession.isEmpty()) {
                                 Toast.makeText(StartActivity.this, R.string.title, Toast.LENGTH_SHORT).show();
                             } else {
+                                cleanSharedPref();
                                 startActivity(intent);
+
                             }
                         }
 
 
-                        mSharedPrefTagSet.edit().putString("TAGSET", "").apply();
-                        mEtTagSet.setText("");
-                        mSharedPrefVideoTitle.edit().putString("VIDEOTITLE", "").apply();
-                        mEtVideoTitle.setText("");
-                        mTagModelListAdd.clear();
+
 
                     }
                 }
@@ -493,14 +495,20 @@ public class StartActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
 
-        mSharedPrefTagSet.edit().putString("TAGSET", null).apply();
-        mEtTagSet.setText("");
-        mSharedPrefVideoTitle.edit().putString("VIDEOTITLE", null).apply();
-        mEtVideoTitle.setText("");
+        cleanSharedPref();
 
         Intent intent = new Intent(StartActivity.this, MainActivity.class);
         startActivity(intent);
 
+
+    }
+
+    public void cleanSharedPref(){
+        mSharedPrefTagSet.edit().putString("TAGSET", "").apply();
+        mEtTagSet.setText("");
+        mSharedPrefVideoTitle.edit().putString("VIDEOTITLE", "").apply();
+        mEtVideoTitle.setText("");
+        mTagModelListAdd.clear();
 
     }
 
