@@ -60,6 +60,7 @@ public class RecordActivity extends AppCompatActivity {
     public static boolean RESTART = false;
     private static String mFileName = null;
     private static String mIdSession = null;
+    private static int SPLASH_TIME_OUT = 5000;
     final String mAuthUserId = SingletonFirebase.getInstance().getUid();
     FirebaseDatabase mDatabase;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -115,8 +116,9 @@ public class RecordActivity extends AppCompatActivity {
 
 
         //Stockage dispo
+
         long totalSpace = Environment.getExternalStoragePublicDirectory(DIRECTORY_MOVIES).getTotalSpace();
-        long freeSpace = Environment.getExternalStoragePublicDirectory(DIRECTORY_MOVIES).getFreeSpace();
+        final long freeSpace = Environment.getExternalStoragePublicDirectory(DIRECTORY_MOVIES).getFreeSpace();
         long sizefreeSpace = freeSpace * 100 / totalSpace;
         tvSpace.setAlpha(.5f);
         tvSpace.setText(String.format("%s%s%s", getString(R.string.storagefree), String.valueOf(sizefreeSpace), getString(R.string.pourcentage)));
@@ -124,7 +126,7 @@ public class RecordActivity extends AppCompatActivity {
         if (sizefreeSpace < 10) {
             tvSpace.setText(String.format("%s%s", tvSpace.getText(), getString(R.string.fullstorage)));
         }
-        //TODO: Gestion erreur si plus de place
+
         //TODO: mettre espace dispo dans futurs parametres
 
         mSingletonSessions.setFileName(mFileName);
@@ -136,9 +138,11 @@ public class RecordActivity extends AppCompatActivity {
         mRecord.setImageResource(R.drawable.icons8_appel_video_60);
 
         final Button btnBackMain = findViewById(R.id.btn_back_main);
+        Button btnBackMainError = findViewById(R.id.btn_back_main_error);
         final Button btnPlay = findViewById(R.id.btn_play);
         Button btnRestart = findViewById(R.id.btn_restart);
         sessionRecord = findViewById(R.id.session_record);
+        final ConstraintLayout sessionErrorSpace = findViewById(R.id.session_error_space);
         final RecyclerView recyclerTags = findViewById(R.id.re_tags);
         idTagSet = getIntent().getStringExtra(ID_TAG_SET);
 
@@ -152,6 +156,13 @@ public class RecordActivity extends AppCompatActivity {
         mTagModels = singletonTags.getmTagsList();
 
         recyclerTags.setAlpha(0.5f);
+
+        btnBackMainError.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(RecordActivity.this, MainActivity.class));
+            }
+        });
 
         final FrameLayout preview = findViewById(R.id.video_view);
         final Handler handler = new Handler();
@@ -200,8 +211,18 @@ public class RecordActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         closeRecord();
-                        saveSession();
                         recordInProgress = false;
+                        File file = new File(mFileName);
+                        long lengthFile = file.length();
+
+                        if (lengthFile >= freeSpace || lengthFile == 0) {
+                            sessionRecord.setVisibility(View.GONE);
+                            sessionErrorSpace.setVisibility(View.VISIBLE);
+                            file.delete();
+
+                        } else {
+                            saveSession();
+                        }
 
 /*
                         //FIREBASE TAGSSESSION
