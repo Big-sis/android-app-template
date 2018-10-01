@@ -37,7 +37,21 @@
                     app:layout_constraintDimensionRatio="1920:1080"
                     app:layout_constraintEnd_toEndOf="@+id/video_control"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent">
+
+                </FrameLayout>
+
+                <TextView
+                    android:id="@+id/tv_space"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:layout_marginBottom="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginRight="8dp"
+                    android:textColor="@color/common_google_signin_btn_text_dark_default"
+                    app:fontFamily="@font/roboto"
+                    app:layout_constraintBottom_toTopOf="@+id/scrollView3"
+                    app:layout_constraintEnd_toEndOf="@+id/video_control" />
 
                 <LinearLayout
                     android:id="@+id/video_control"
@@ -77,6 +91,7 @@
                 </LinearLayout>
 
                 <ScrollView
+                    android:id="@+id/scrollView3"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     app:layout_constraintBottom_toBottomOf="parent"

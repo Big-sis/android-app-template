@@ -103,6 +103,7 @@ public class RecordActivity extends AppCompatActivity {
         mDatabase = SingletonFirebase.getInstance().getDatabase();
 
         mTitleSession = mSingletonSessions.getTitleSession();
+        TextView tvSpace = findViewById(R.id.tv_space);
 
         Date d = new Date();
         File f1 = new File(Environment.getExternalStoragePublicDirectory(DIRECTORY_MOVIES) + "/" + "Vyfe");
@@ -110,6 +111,18 @@ public class RecordActivity extends AppCompatActivity {
 
         mFileName= String.valueOf(Environment.getExternalStoragePublicDirectory(DIRECTORY_MOVIES)+"/"+"Vyfe");
         mFileName += "/" + mTitleSession+" - "+ d.getTime()+".mp4";
+
+
+        //Stockage dispo
+        long totalSpace = Environment.getExternalStoragePublicDirectory(DIRECTORY_MOVIES).getTotalSpace();
+        long freeSpace = Environment.getExternalStoragePublicDirectory(DIRECTORY_MOVIES).getFreeSpace();
+        long sizefreeSpace = freeSpace*100/totalSpace;
+
+        tvSpace.setText("Espace de stockage disponible : "+String.valueOf(sizefreeSpace));
+
+        if(sizefreeSpace>90){
+            tvSpace.setText(tvSpace.getText()+"\nAttention votre stockage est plein");
+        }
 
 
         mSingletonSessions.setFileName(mFileName);
