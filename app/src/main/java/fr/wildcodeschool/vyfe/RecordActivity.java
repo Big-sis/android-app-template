@@ -1,7 +1,6 @@
 package fr.wildcodeschool.vyfe;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -107,23 +106,26 @@ public class RecordActivity extends AppCompatActivity {
 
         Date d = new Date();
         File f1 = new File(Environment.getExternalStoragePublicDirectory(DIRECTORY_MOVIES) + "/" + "Vyfe");
-        if (!f1.exists()) { f1.mkdirs(); }
+        if (!f1.exists()) {
+            f1.mkdirs();
+        }
 
-        mFileName= String.valueOf(Environment.getExternalStoragePublicDirectory(DIRECTORY_MOVIES)+"/"+"Vyfe");
-        mFileName += "/" + mTitleSession+" - "+ d.getTime()+".mp4";
+        mFileName = String.valueOf(Environment.getExternalStoragePublicDirectory(DIRECTORY_MOVIES) + "/" + "Vyfe");
+        mFileName += "/" + mTitleSession + " - " + d.getTime() + ".mp4";
 
 
         //Stockage dispo
         long totalSpace = Environment.getExternalStoragePublicDirectory(DIRECTORY_MOVIES).getTotalSpace();
         long freeSpace = Environment.getExternalStoragePublicDirectory(DIRECTORY_MOVIES).getFreeSpace();
-        long sizefreeSpace = freeSpace*100/totalSpace;
+        long sizefreeSpace = freeSpace * 100 / totalSpace;
+        tvSpace.setAlpha(.5f);
+        tvSpace.setText(String.format("%s%s%s", getString(R.string.storagefree), String.valueOf(sizefreeSpace), getString(R.string.pourcentage)));
 
-        tvSpace.setText("Espace de stockage disponible : "+String.valueOf(sizefreeSpace));
-
-        if(sizefreeSpace>90){
-            tvSpace.setText(tvSpace.getText()+"\nAttention votre stockage est plein");
+        if (sizefreeSpace < 10) {
+            tvSpace.setText(String.format("%s%s", tvSpace.getText(), getString(R.string.fullstorage)));
         }
-
+        //TODO: Gestion erreur si plus de place
+        //TODO: mettre espace dispo dans futurs parametres
 
         mSingletonSessions.setFileName(mFileName);
 
@@ -199,7 +201,7 @@ public class RecordActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         closeRecord();
                         saveSession();
-                        recordInProgress =false;
+                        recordInProgress = false;
 
 /*
                         //FIREBASE TAGSSESSION
@@ -275,7 +277,7 @@ public class RecordActivity extends AppCompatActivity {
             case R.id.home:
                 final Intent intentHome = new Intent(this, MainActivity.class);
                 saveAlertDialog(intentHome);
-                
+
 
                 return true;
         }
@@ -423,11 +425,11 @@ public class RecordActivity extends AppCompatActivity {
     }
 
     public void closeRecord() {
-            mActiveTag = false;
-            chronometer.stop();
-            stopRecording();
-            mRecord.setClickable(false);
-            sessionRecord.setVisibility(View.VISIBLE);
+        mActiveTag = false;
+        chronometer.stop();
+        stopRecording();
+        mRecord.setClickable(false);
+        sessionRecord.setVisibility(View.VISIBLE);
 
     }
 
@@ -442,7 +444,7 @@ public class RecordActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             saveSession();
                             startActivity(intent);
-                            
+
                         }
                     })
                     .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
@@ -454,7 +456,7 @@ public class RecordActivity extends AppCompatActivity {
                     })
                     .show();
 
-        }else startActivity(intent);
+        } else startActivity(intent);
     }
 
     public void saveSession() {
