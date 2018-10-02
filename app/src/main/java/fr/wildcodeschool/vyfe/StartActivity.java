@@ -49,7 +49,7 @@ public class StartActivity extends AppCompatActivity {
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private String mIdGridImport;
     private String mNameGrid;
-    private SharedPreferences mSharedPrefTagSet;
+    //private SharedPreferences mSharedPrefTagSet;
     private SharedPreferences mSharedPrefVideoTitle;
     private EditText mEtTagSet;
     private EditText mEtVideoTitle;
@@ -57,13 +57,12 @@ public class StartActivity extends AppCompatActivity {
     private int mHeigth;
     private ArrayList<String> mNameTagSet = new ArrayList<>();
     private ArrayList<String> mIdTagSet = new ArrayList<>();
-    private  Intent intent;
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
-
 
 
         final SingletonSessions singletonSessions = SingletonSessions.getInstance();
@@ -85,7 +84,7 @@ public class StartActivity extends AppCompatActivity {
         final ImageView ivAddTags = findViewById(R.id.fab_add_moment);
         scrollMain = findViewById(R.id.scrool_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
-        mEtTagSet = findViewById(R.id.et_grid_title);
+       // mEtTagSet = findViewById(R.id.et_grid_title);
         mEtVideoTitle = findViewById(R.id.et_video_title2);
         Display display = getWindowManager().getDefaultDisplay();
         mWidth = display.getWidth();
@@ -100,15 +99,17 @@ public class StartActivity extends AppCompatActivity {
             mTagModelListAdd.clear();
         }
 
+        /**
         //enregistrement données
         mSharedPrefTagSet = this.getSharedPreferences("TAGSET", Context.MODE_PRIVATE);
-        mSharedPrefVideoTitle = this.getSharedPreferences("VIDEOTITLE", Context.MODE_PRIVATE);
+
 
         //tagSetShared des données
         String tagSetShared = mSharedPrefTagSet.getString("TAGSET", "");
         if (!tagSetShared.isEmpty()) {
             mEtTagSet.setText(tagSetShared);
-        }
+        }**/
+        mSharedPrefVideoTitle = this.getSharedPreferences("VIDEOTITLE", Context.MODE_PRIVATE);
         String videoTitleShared = mSharedPrefVideoTitle.getString("VIDEOTITLE", "");
         if (!videoTitleShared.isEmpty()) {
             mEtVideoTitle.setText(videoTitleShared);
@@ -119,7 +120,7 @@ public class StartActivity extends AppCompatActivity {
 
         final String authUserId = SingletonFirebase.getInstance().getUid();
 
-        final String multiSession= getIntent().getStringExtra("multiSession");
+        final String multiSession = getIntent().getStringExtra("multiSession");
         if ("multiSession".equals(multiSession)) {
             buttonGo.setText(R.string.next);
         }
@@ -422,30 +423,12 @@ public class StartActivity extends AppCompatActivity {
                         }
 
 
-
-
                     }
                 }
             }
         });
 
-        if (mTagModelListAdd.size() != 0) {
-            tvAddTag.setText(R.string.edit_tags);
-        }
 
-        fabAddMoment.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onPressAddTags();
-            }
-        });
-
-        ivAddTags.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                onPressAddTags();
-            }
-        });
     }
 
     @Override
@@ -454,12 +437,7 @@ public class StartActivity extends AppCompatActivity {
         return true;
     }
 
-    public void onPressAddTags() {
-        mSharedPrefTagSet.edit().putString("TAGSET", mEtTagSet.getText().toString()).apply();
-        mSharedPrefVideoTitle.edit().putString("VIDEOTITLE", mEtVideoTitle.getText().toString()).apply();
-        Intent intent = new Intent(StartActivity.this, AddGridActivity.class);
-        startActivity(intent);
-    }
+
 
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
@@ -494,17 +472,15 @@ public class StartActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-
         cleanSharedPref();
-
         Intent intent = new Intent(StartActivity.this, MainActivity.class);
         startActivity(intent);
 
 
     }
 
-    public void cleanSharedPref(){
-        mSharedPrefTagSet.edit().putString("TAGSET", "").apply();
+    public void cleanSharedPref() {
+        //mSharedPrefTagSet.edit().putString("TAGSET", "").apply();
         mEtTagSet.setText("");
         mSharedPrefVideoTitle.edit().putString("VIDEOTITLE", "").apply();
         mEtVideoTitle.setText("");
