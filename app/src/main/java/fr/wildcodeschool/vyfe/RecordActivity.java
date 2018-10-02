@@ -1,7 +1,6 @@
 package fr.wildcodeschool.vyfe;
 
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -61,6 +60,7 @@ public class RecordActivity extends AppCompatActivity {
     public static boolean RESTART = false;
     private static String mFileName = null;
     private static String mIdSession = null;
+    private static int SPLASH_TIME_OUT = 5000;
     final String mAuthUserId = SingletonFirebase.getInstance().getUid();
     FirebaseDatabase mDatabase;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -103,14 +103,31 @@ public class RecordActivity extends AppCompatActivity {
         mDatabase = SingletonFirebase.getInstance().getDatabase();
 
         mTitleSession = mSingletonSessions.getTitleSession();
+        TextView tvSpace = findViewById(R.id.tv_space);
 
         Date d = new Date();
         File f1 = new File(Environment.getExternalStoragePublicDirectory(DIRECTORY_MOVIES) + "/" + "Vyfe");
-        if (!f1.exists()) { f1.mkdirs(); }
+        if (!f1.exists()) {
+            f1.mkdirs();
+        }
 
-        mFileName= String.valueOf(Environment.getExternalStoragePublicDirectory(DIRECTORY_MOVIES)+"/"+"Vyfe");
-        mFileName += "/" + mTitleSession+" - "+ d.getTime()+".mp4";
+        mFileName = String.valueOf(Environment.getExternalStoragePublicDirectory(DIRECTORY_MOVIES) + "/" + "Vyfe");
+        mFileName += "/" + mTitleSession + " - " + d.getTime() + ".mp4";
 
+
+        //Stockage dispo
+
+        long totalSpace = Environment.getExternalStoragePublicDirectory(DIRECTORY_MOVIES).getTotalSpace();
+        final long freeSpace = Environment.getExternalStoragePublicDirectory(DIRECTORY_MOVIES).getFreeSpace();
+        long sizefreeSpace = freeSpace * 100 / totalSpace;
+        tvSpace.setAlpha(.5f);
+        tvSpace.setText(String.format("%s%s%s", getString(R.string.storagefree), String.valueOf(sizefreeSpace), getString(R.string.pourcentage)));
+
+        if (sizefreeSpace < 10) {
+            tvSpace.setText(String.format("%s%s", tvSpace.getText(), getString(R.string.fullstorage)));
+        }
+
+        //TODO: mettre espace dispo dans futurs parametres
 
         mSingletonSessions.setFileName(mFileName);
 
@@ -121,9 +138,11 @@ public class RecordActivity extends AppCompatActivity {
         mRecord.setImageResource(R.drawable.icons8_appel_video_60);
 
         final Button btnBackMain = findViewById(R.id.btn_back_main);
+        Button btnBackMainError = findViewById(R.id.btn_back_main_error);
         final Button btnPlay = findViewById(R.id.btn_play);
         Button btnRestart = findViewById(R.id.btn_restart);
         sessionRecord = findViewById(R.id.session_record);
+        final ConstraintLayout sessionErrorSpace = findViewById(R.id.session_error_space);
         final RecyclerView recyclerTags = findViewById(R.id.re_tags);
         idTagSet = getIntent().getStringExtra(ID_TAG_SET);
 
@@ -137,6 +156,13 @@ public class RecordActivity extends AppCompatActivity {
         mTagModels = singletonTags.getmTagsList();
 
         recyclerTags.setAlpha(0.5f);
+
+        btnBackMainError.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(RecordActivity.this, MainActivity.class));
+            }
+        });
 
         final FrameLayout preview = findViewById(R.id.video_view);
         final Handler handler = new Handler();
@@ -185,8 +211,18 @@ public class RecordActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         closeRecord();
-                        saveSession();
-                        recordInProgress =false;
+                        recordInProgress = false;
+                        File file = new File(mFileName);
+                        long lengthFile = file.length();
+
+                        if (lengthFile >= freeSpace || lengthFile == 0) {
+                            sessionRecord.setVisibility(View.GONE);
+                            sessionErrorSpace.setVisibility(View.VISIBLE);
+                            file.delete();
+
+                        } else {
+                            saveSession();
+                        }
 
 /*
                         //FIREBASE TAGSSESSION
@@ -262,7 +298,7 @@ public class RecordActivity extends AppCompatActivity {
             case R.id.home:
                 final Intent intentHome = new Intent(this, MainActivity.class);
                 saveAlertDialog(intentHome);
-                
+
 
                 return true;
         }
@@ -410,11 +446,11 @@ public class RecordActivity extends AppCompatActivity {
     }
 
     public void closeRecord() {
-            mActiveTag = false;
-            chronometer.stop();
-            stopRecording();
-            mRecord.setClickable(false);
-            sessionRecord.setVisibility(View.VISIBLE);
+        mActiveTag = false;
+        chronometer.stop();
+        stopRecording();
+        mRecord.setClickable(false);
+        sessionRecord.setVisibility(View.VISIBLE);
 
     }
 
@@ -429,7 +465,7 @@ public class RecordActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             saveSession();
                             startActivity(intent);
-                            
+
                         }
                     })
                     .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
@@ -441,7 +477,7 @@ public class RecordActivity extends AppCompatActivity {
                     })
                     .show();
 
-        }else startActivity(intent);
+        } else startActivity(intent);
     }
 
     public void saveSession() {

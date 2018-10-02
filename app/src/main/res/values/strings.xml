@@ -96,5 +96,9 @@
     <string name="invalid_date">Date invalide</string>
     <string name="expired_licence">Votre licence a expiré, merci de nous contacter pour la prolonger</string>
     <string name="save_session">Voulez vous sauver la session en cours?</string>
+    <string name="storagefree">Stockage disponible : </string>
+    <string name="pourcentage"> %</string>
+    <string name="fullstorage">\nAttention votre stockage est plein !\nFonctionnalités limitées</string>
+    <string name="dont_save_session">Vous ne disposez pas d\'assez d\'espace de stockage pour enregistrer la Session. \n\n Liberez de l\'espace pour enregistrer une nouvelle session </string>
 
 </resources>
