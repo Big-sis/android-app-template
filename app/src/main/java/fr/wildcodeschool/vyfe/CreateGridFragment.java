@@ -35,25 +35,33 @@ public class CreateGridFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
         //TODO: implenter les elements de creation
-        //mEtTagSet = getView().findViewById(R.id.et_grid_title2);
+        mEtTagSet = getView().findViewById(R.id.et_grid_title2);
         final TextView tvAddTag = getView().findViewById(R.id.tv_add_tag2);
         ImageView fabAddMoment = getView().findViewById(R.id.fab_add_moment2);
+        Button btnSaveGrid = getView().findViewById(R.id.btn_save_session);
 
         createSharedPreferences();
         onPressAddTags(fabAddMoment);
         onPressAddTags(tvAddTag);
+        btnSaveGrid.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cleanSharedPref();
+                startActivity(new Intent(getContext(),MainActivity.class));
+            }
+        });
 
 
-
-        // if (mTagModelListAdd.size() != 0) {
-        //tvAddTag.setText(R.string.edit_tags);
-        //}
+/**
+         if (mTagModelListAdd.size() != 0) {
+        tvAddTag.setText(R.string.edit_tags);
+        }**/
     }
     public void onPressAddTags (View view){
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //  mSharedPrefTagSet.edit().putString("TAGSET", mEtTagSet.getText().toString()).apply();
+                  mSharedPrefTagSet.edit().putString("TAGSET", mEtTagSet.getText().toString()).apply();
                 Intent intent = null;
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
                     intent = new Intent(getContext(), AddGridActivity.class);
@@ -65,8 +73,9 @@ public class CreateGridFragment extends Fragment {
     }
 
     public void createSharedPreferences () {
+
         //Creation sharedPreference
-          mSharedPrefTagSet = this.getSharedPreferences("TAGSET", Context.MODE_PRIVATE);
+          mSharedPrefTagSet = getContext().getSharedPreferences("TAGSET", Context.MODE_PRIVATE);
 
         //tagSetShared des données
         String tagSetShared = mSharedPrefTagSet.getString("TAGSET", "");
@@ -75,6 +84,10 @@ public class CreateGridFragment extends Fragment {
         }
 
     }
+
+    public void cleanSharedPref() {
+        mSharedPrefTagSet.edit().putString("TAGSET", "").apply();
+        mEtTagSet.setText("");}
 
 
 }

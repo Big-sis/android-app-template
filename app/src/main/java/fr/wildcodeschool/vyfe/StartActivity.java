@@ -103,7 +103,6 @@ public class StartActivity extends AppCompatActivity {
         //enregistrement données
         mSharedPrefTagSet = this.getSharedPreferences("TAGSET", Context.MODE_PRIVATE);
 
-
         //tagSetShared des données
         String tagSetShared = mSharedPrefTagSet.getString("TAGSET", "");
         if (!tagSetShared.isEmpty()) {
@@ -481,7 +480,7 @@ public class StartActivity extends AppCompatActivity {
 
     public void cleanSharedPref() {
         //mSharedPrefTagSet.edit().putString("TAGSET", "").apply();
-        mEtTagSet.setText("");
+       // mEtTagSet.setText("");
         mSharedPrefVideoTitle.edit().putString("VIDEOTITLE", "").apply();
         mEtVideoTitle.setText("");
         mTagModelListAdd.clear();

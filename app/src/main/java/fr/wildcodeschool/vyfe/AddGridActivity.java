@@ -140,7 +140,7 @@ public class AddGridActivity extends AppCompatActivity implements AdapterView.On
             public void onClick(View view) {
                 mSingletonTags.setmTagsListAdd(mTagModelListAdd);
                 colors.clear();
-                Intent intent = new Intent(AddGridActivity.this, StartActivity.class);
+                Intent intent = new Intent(AddGridActivity.this, PreparedSessionActivity.class);
                 intent.putExtra("fromAdd", "fromAdd");
                 startActivity(intent);
                 finish();
