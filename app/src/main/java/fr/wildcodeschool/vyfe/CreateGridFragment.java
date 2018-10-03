@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +28,7 @@ import java.util.ArrayList;
 public class CreateGridFragment extends Fragment {
     private SharedPreferences mSharedPrefTagSet;
     private EditText mEtTagSet;
+    private RecyclerView mRecyclerTagList;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -43,6 +46,7 @@ public class CreateGridFragment extends Fragment {
         final TextView tvAddTag = getView().findViewById(R.id.tv_add_tag2);
         ImageView fabAddMoment = getView().findViewById(R.id.fab_add_moment2);
         Button btnSaveGrid = getView().findViewById(R.id.btn_save_session);
+         mRecyclerTagList = getView().findViewById(R.id.recycler_view2);
 
         //Loading data
         SingletonTags mSingletonTags = SingletonTags.getInstance();
@@ -66,8 +70,10 @@ public class CreateGridFragment extends Fragment {
 
         //Display management
         createSharedPreferences();
+        gridRecyclerView(mTagModelListAdd);
          if (mTagModelListAdd.size() != 0) {
         tvAddTag.setText(R.string.edit_tags);
+        visibility(0,mRecyclerTagList,btnSaveGrid);
         }
     }
     public void onPressAddTags (View view){
@@ -96,8 +102,25 @@ public class CreateGridFragment extends Fragment {
 
     }
 
+    public void gridRecyclerView(ArrayList<TagModel> mTagModelListAdd){
+        mRecyclerTagList.setVisibility(View.VISIBLE);
+        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(),
+                LinearLayoutManager.VERTICAL, false);
+        mRecyclerTagList.setLayoutManager(layoutManager);
+        final TagRecyclerAdapter adapter = new TagRecyclerAdapter(mTagModelListAdd, "start");
+        mRecyclerTagList.setAdapter(adapter);
+    }
+
+    public void visibility(int visibility, RecyclerView recyclerView, Button btnSave){
+        recyclerView.setVisibility(visibility);
+        btnSave.setVisibility(visibility);
+
+    }
+
     public void cleanSharedPref() {
         mSharedPrefTagSet.edit().putString("TAGSET", "").apply();
         mEtTagSet.setText("");}
+
+
 
 }

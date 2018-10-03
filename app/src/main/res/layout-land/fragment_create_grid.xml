@@ -112,8 +112,8 @@
 
                 <android.support.v7.widget.RecyclerView
 
-                    android:id="@+id/recycler_view"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/recycler_view2"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginEnd="32dp"
@@ -124,7 +124,7 @@
                     android:padding="10dp"
                     android:scrollbars="vertical"
                     android:visibility="gone"
-                    tools:visibility="visible" />
+                    tools:visibility="invisible" />
 
                 <Button
                     android:id="@+id/btn_save_session"
@@ -137,6 +137,7 @@
                     android:fontFamily="@font/roboto_bold"
                     android:padding="5dp"
                     android:paddingTop="15dp"
+                    android:visibility="invisible"
                     android:text="Enregistrer la nouvelle grille"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
