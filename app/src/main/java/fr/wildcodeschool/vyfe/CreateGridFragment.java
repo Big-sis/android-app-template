@@ -21,9 +21,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class CreateGridFragment extends Fragment {
     private SharedPreferences mSharedPrefTagSet;
     private EditText mEtTagSet;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -34,28 +37,38 @@ public class CreateGridFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
-        //TODO: implenter les elements de creation
+        //TODO: affichage de la grille creer
+        //Elements page
         mEtTagSet = getView().findViewById(R.id.et_grid_title2);
         final TextView tvAddTag = getView().findViewById(R.id.tv_add_tag2);
         ImageView fabAddMoment = getView().findViewById(R.id.fab_add_moment2);
         Button btnSaveGrid = getView().findViewById(R.id.btn_save_session);
 
-        createSharedPreferences();
+        //Loading data
+        SingletonTags mSingletonTags = SingletonTags.getInstance();
+        final ArrayList<TagModel> mTagModelListAdd = mSingletonTags.getmTagsListAdd();
+
+        //Actions management
         onPressAddTags(fabAddMoment);
         onPressAddTags(tvAddTag);
         btnSaveGrid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                String titleGrid = mEtTagSet.getText().toString();
+                if(titleGrid!=null){
+                    ApiHelperGrid.setGrid(titleGrid,mTagModelListAdd,getContext());
+                    startActivity(new Intent(getContext(),MainActivity.class));
+                }
                 cleanSharedPref();
-                startActivity(new Intent(getContext(),MainActivity.class));
             }
         });
 
-
-/**
+        //Display management
+        createSharedPreferences();
          if (mTagModelListAdd.size() != 0) {
         tvAddTag.setText(R.string.edit_tags);
-        }**/
+        }
     }
     public void onPressAddTags (View view){
         view.setOnClickListener(new View.OnClickListener() {
@@ -76,8 +89,6 @@ public class CreateGridFragment extends Fragment {
 
         //Creation sharedPreference
           mSharedPrefTagSet = getContext().getSharedPreferences("TAGSET", Context.MODE_PRIVATE);
-
-        //tagSetShared des données
         String tagSetShared = mSharedPrefTagSet.getString("TAGSET", "");
         if (!tagSetShared.isEmpty()) {
             mEtTagSet.setText(tagSetShared);
@@ -88,6 +99,5 @@ public class CreateGridFragment extends Fragment {
     public void cleanSharedPref() {
         mSharedPrefTagSet.edit().putString("TAGSET", "").apply();
         mEtTagSet.setText("");}
-
 
 }

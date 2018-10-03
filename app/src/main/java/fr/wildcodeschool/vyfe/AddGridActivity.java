@@ -170,7 +170,6 @@ public class AddGridActivity extends AppCompatActivity implements AdapterView.On
     public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
         if (position != 0) {
 
-
             mfinalcolor = color[position];
             nameColorTag = nameDrawable[position];
             ivColor.setBackgroundResource(mfinalcolor);
