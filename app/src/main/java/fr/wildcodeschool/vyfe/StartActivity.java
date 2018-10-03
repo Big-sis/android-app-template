@@ -73,13 +73,13 @@ public class StartActivity extends AppCompatActivity {
         Button buttonGo = findViewById(R.id.button_go);
         final Button buttonGoMulti = findViewById(R.id.button_go_multi);
         final ConstraintLayout share = findViewById(R.id.layout_share);
-        final LinearLayout fabAddMoment = findViewById(R.id.new_event);
-        final RecyclerView recyclerTagList = findViewById(R.id.recycler_view);
+       // final LinearLayout fabAddMoment = findViewById(R.id.new_event);
+        //final RecyclerView recyclerTagList = findViewById(R.id.recycler_view);
         final RecyclerView recyclerViewImport = findViewById(R.id.recycler_view_import);
         final RadioButton radioButtonImport = findViewById(R.id.radio_button_insert);
-        final RadioButton radioButtonNew = findViewById(R.id.radio_Button_new);
+        //final RadioButton radioButtonNew = findViewById(R.id.radio_Button_new);
         final Spinner spinner = (Spinner) findViewById(R.id.spinner_session_infos);
-        TextView tvAddTag = findViewById(R.id.tv_add_tag);
+       // TextView tvAddTag = findViewById(R.id.tv_add_tag);
         final TextView tvTitleGridImport = findViewById(R.id.tv_title_grid_import);
         final ImageView ivAddTags = findViewById(R.id.fab_add_moment);
         scrollMain = findViewById(R.id.scrool_main);
@@ -128,13 +128,14 @@ public class StartActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.start_session);
 
+        /**
         recyclerTagList.setVisibility(View.VISIBLE);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this,
                 LinearLayoutManager.VERTICAL, false);
         recyclerTagList.setLayoutManager(layoutManager);
         final TagRecyclerAdapter adapter = new TagRecyclerAdapter(mTagModelListAdd, "start");
         recyclerTagList.setAdapter(adapter);
-
+**/
 
         RecyclerView.LayoutManager layoutManagerImport = new LinearLayoutManager(StartActivity.this,
                 LinearLayoutManager.VERTICAL, false);
@@ -154,14 +155,14 @@ public class StartActivity extends AppCompatActivity {
 
                 if (radioButtonImport.isChecked()) {
                     mTagModelListAdd.clear();
-                    adapterNotifyDataChange(adapter, adapterImport);
-                    recyclerTagList.setVisibility(View.GONE);
+                    adapterNotifyDataChange(adapterImport, adapterImport);
+                    //recyclerTagList.setVisibility(View.GONE);
                     recyclerViewImport.setVisibility(View.VISIBLE);
                     tvTitleGridImport.setVisibility(View.VISIBLE);
-                    radioButtonNew.setChecked(false);
+                   // radioButtonNew.setChecked(false);
                     spinner.setClickable(true);
                     spinner.setEnabled(true);
-                    importGrid(mEtTagSet, fabAddMoment, ivAddTags, false);
+                    //importGrid(mEtTagSet, fabAddMoment, ivAddTags, false);
                 }
                 pbLoad.setVisibility(View.VISIBLE);
                 spinner.setVisibility(View.INVISIBLE);
@@ -222,7 +223,7 @@ public class StartActivity extends AppCompatActivity {
                             return;
                         }
                         mTagModelListAdd.clear();
-                        adapterNotifyDataChange(adapter, adapterImport);
+                        adapterNotifyDataChange(adapterImport, adapterImport);
 
 
                         if (mIdGridImport != null && !mIdGridImport.equals(getString(R.string.import_grid_arrow) + str[0])) {
@@ -262,7 +263,7 @@ public class StartActivity extends AppCompatActivity {
         final RestartSession restartSession = getIntent().getParcelableExtra("restartSession");
         if (restartSession != null) {
             radioButtonImport.setChecked(true);
-            radioButtonNew.setChecked(false);
+           // radioButtonNew.setChecked(false);
             tvTitleGridImport.setVisibility(View.VISIBLE);
 
             mEtVideoTitle.setText(restartSession.getNameTitleSession());
@@ -277,13 +278,13 @@ public class StartActivity extends AppCompatActivity {
             spinner.setAdapter(adapterSpinner);
             spinner.setVisibility(View.VISIBLE);
 
-            adapterNotifyDataChange(adapter, adapterImport);
+            adapterNotifyDataChange(adapterImport, adapterImport);
             recyclerViewImport.setVisibility(View.VISIBLE);
-            recyclerTagList.setVisibility(View.INVISIBLE);
+           // recyclerTagList.setVisibility(View.INVISIBLE);
 
             spinner.setClickable(true);
             spinner.setEnabled(true);
-            importGrid(mEtTagSet, fabAddMoment, ivAddTags, false);
+           // importGrid(mEtTagSet, fabAddMoment, ivAddTags, false);
 
             //TODO: faire marcher laffichage
             ApiHelperSpinner.getTag(StartActivity.this, recyclerViewImport, idTagSetRestartSession, new ApiHelperSpinner.TagsResponse() {
@@ -305,7 +306,7 @@ public class StartActivity extends AppCompatActivity {
 
 
         }
-
+/**
         radioButtonNew.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -321,12 +322,12 @@ public class StartActivity extends AppCompatActivity {
                     spinner.setLongClickable(false);
                     spinner.setEnabled(false);
                     spinner.setVisibility(View.GONE);
-                    importGrid(mEtTagSet, fabAddMoment, ivAddTags, true);
+                   // importGrid(mEtTagSet, fabAddMoment, ivAddTags, true);
                 }
                 ScrollHelper.DownScroll(scrollMain);
             }
         });
-
+**/
         buttonGo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -337,11 +338,11 @@ public class StartActivity extends AppCompatActivity {
                 //intent.putExtra(TITLE_VIDEO, titleSession);
 
 
-                if (radioButtonNew.isChecked()) {
-                    titleTagSet = mEtTagSet.getText().toString();
+               // if (radioButtonNew.isChecked()) {
+               //     titleTagSet = mEtTagSet.getText().toString();
 
-                }
-                if (radioButtonNew.isChecked() && titleTagSet.isEmpty()) {
+              //  }
+                if (/**radioButtonNew.isChecked() && **/titleTagSet.isEmpty()) {
                     Toast.makeText(StartActivity.this, R.string.choose_name_grid, Toast.LENGTH_LONG).show();
                 } else {
                     if (mTagModelListAdd.isEmpty()) {
@@ -349,6 +350,9 @@ public class StartActivity extends AppCompatActivity {
                     } else {
                         ArrayList mTagModelFinal = (ArrayList) mTagModelListAdd.clone();
                         mSingletonTags.setmTagsList(mTagModelFinal);
+
+                        //TODO enlever envoit firebase tagsSets et titleGrid
+                        //TODO : garder le choix de lutilisateur de la grille a garder  dans singleton
                         //Firebase TAGSET
                         String idTagSet = "";
 

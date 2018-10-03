@@ -75,7 +75,7 @@
                 android:orientation="horizontal"
                 app:layout_constraintTop_toBottomOf="@+id/et_video_title2">
 
-                <LinearLayout
+              <!--  <LinearLayout
                     android:id="@+id/linear_layout_left"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -192,7 +192,7 @@
                     </LinearLayout>
 
                 </LinearLayout>
-
+-->
                 <android.support.constraint.ConstraintLayout
                     android:id="@+id/linear_layout_right"
                     android:layout_width="0dp"
