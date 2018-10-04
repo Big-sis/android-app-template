@@ -72,11 +72,7 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <activity
-            android:name=".PreparedSessionActivity"
-            android:screenOrientation="userLandscape"
-            android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity android:name=".TestFragment"></activity>
+
     </application>
 
 </manifest>
