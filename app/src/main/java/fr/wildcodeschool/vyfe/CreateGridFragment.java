@@ -75,6 +75,7 @@ public class CreateGridFragment extends Fragment {
         tvAddTag.setText(R.string.edit_tags);
         visibility(0,mRecyclerTagList,btnSaveGrid);
         }
+
     }
     public void onPressAddTags (View view){
         view.setOnClickListener(new View.OnClickListener() {

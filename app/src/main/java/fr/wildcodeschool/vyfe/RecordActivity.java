@@ -31,6 +31,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
@@ -221,6 +222,7 @@ public class RecordActivity extends AppCompatActivity {
                             file.delete();
 
                         } else {
+                            Toast.makeText(RecordActivity.this, "save", Toast.LENGTH_SHORT).show();
                             saveSession();
                         }
 

@@ -34,8 +34,7 @@ public class PreparedSessionActivity extends FragmentActivity {
         // Ajout des Fragments dans la liste
         fragments.add(Fragment.instantiate(this, CreateGridFragment.class.getName()));
 
-        // Création de l'adapter qui s'occupera de l'affichage de la liste de
-        // Fragments
+        // Création de l'adapter qui s'occupera de l'affichage de la liste de Fragments
         this.mPagerAdapter = new PreparedSessionAdapter(super.getSupportFragmentManager(), fragments);
 
         ViewPager pager = (ViewPager) super.findViewById(R.id.activity_create_grid);
