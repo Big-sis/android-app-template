@@ -70,23 +70,14 @@ public class StartActivity extends AppCompatActivity {
         Button buttonGo = findViewById(R.id.button_go);
         final Button buttonGoMulti = findViewById(R.id.button_go_multi);
         final ConstraintLayout share = findViewById(R.id.layout_share);
-        // final LinearLayout fabAddMoment = findViewById(R.id.new_event);
-        //final RecyclerView recyclerTagList = findViewById(R.id.recycler_view);
         final RecyclerView recyclerViewImport = findViewById(R.id.recycler_view_import);
-        // final RadioButton radioButtonImport = findViewById(R.id.radio_button_insert);
-        //final RadioButton radioButtonNew = findViewById(R.id.radio_Button_new);
         final Spinner spinner = (Spinner) findViewById(R.id.spinner_session_infos);
-        // TextView tvAddTag = findViewById(R.id.tv_add_tag);
-        // final TextView tvTitleGridImport = findViewById(R.id.tv_title_grid_import);
-        final ImageView ivAddTags = findViewById(R.id.fab_add_moment);
         scrollMain = findViewById(R.id.scrool_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
-        // mEtTagSet = findViewById(R.id.et_grid_title);
         mEtVideoTitle = findViewById(R.id.et_video_title2);
         Display display = getWindowManager().getDefaultDisplay();
         mWidth = display.getWidth();
         mHeigth = display.getHeight();
-        // final ProgressBar pbLoad = findViewById(R.id.pb_load);
         final String authUserId = SingletonFirebase.getInstance().getUid();
 
         setSupportActionBar(toolbar);
@@ -101,15 +92,6 @@ public class StartActivity extends AppCompatActivity {
             mTagModelListAdd.clear();
         }
 
-        /**
-         //enregistrement données
-         mSharedPrefTagSet = this.getSharedPreferences("TAGSET", Context.MODE_PRIVATE);
-
-         //tagSetShared des données
-         String tagSetShared = mSharedPrefTagSet.getString("TAGSET", "");
-         if (!tagSetShared.isEmpty()) {
-         mEtTagSet.setText(tagSetShared);
-         }**/
 
         //plus besoin de garder en memoire le titre sauf si rajoute la creation grille
         mSharedPrefVideoTitle = this.getSharedPreferences("VIDEOTITLE", Context.MODE_PRIVATE);
@@ -124,18 +106,6 @@ public class StartActivity extends AppCompatActivity {
             buttonGo.setText(R.string.next);
         }
 
-
-        /**
-         recyclerTagList.setVisibility(View.VISIBLE);
-         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(this,
-         LinearLayoutManager.VERTICAL, false);
-         recyclerTagList.setLayoutManager(layoutManager);
-         final TagRecyclerAdapter adapter = new TagRecyclerAdapter(mTagModelListAdd, "start");
-         recyclerTagList.setAdapter(adapter);
-         **/
-
-
-        //recyclerViewImport.setVisibility(View.INVISIBLE);
 
         //TODO: creation fragment : avec import grille
 
@@ -232,119 +202,10 @@ public class StartActivity extends AppCompatActivity {
 
         });
         KeyboardHelper.CloseKeyboard(StartActivity.this, spinner);
-/**
- radioButtonImport.setOnClickListener(new View.OnClickListener() {
-@Override public void onClick(View view) {
-KeyboardHelper.CloseKeyboard(StartActivity.this, radioButtonImport);
-ScrollHelper.DownScroll(scrollMain);
-spinner.setVisibility(View.VISIBLE);
 
-
-if (radioButtonImport.isChecked()) {
-mTagModelListAdd.clear();
-adapterNotifyDataChange(adapterImport, adapterImport);
-//recyclerTagList.setVisibility(View.GONE);
-recyclerViewImport.setVisibility(View.VISIBLE);
-//tvTitleGridImport.setVisibility(View.VISIBLE);
-// radioButtonNew.setChecked(false);
-spinner.setClickable(true);
-spinner.setEnabled(true);
-//importGrid(mEtTagSet, fabAddMoment, ivAddTags, false);
-}
-pbLoad.setVisibility(View.VISIBLE);
-spinner.setVisibility(View.INVISIBLE);
-
-ApiHelperSpinner.getSpinner(StartActivity.this, new ApiHelperSpinner.GridResponse() {
-@Override public void onSuccess(HashMap<String, String> hashMapTitleIdGrid) {
-tagSetIds.putAll(hashMapTitleIdGrid);
-mNameTagSet.clear();
-mNameTagSet.add(getString(R.string.import_grid_arrow) + str[0]);
-mIdTagSet.clear();
-mIdTagSet.add("0");
-for (Map.Entry<String, String> entry : tagSetIds.entrySet()) {
-mNameTagSet.add(entry.getValue());
-mIdTagSet.add(entry.getKey());
-}
-Log.d("Spinner", "onSuccess: " + String.valueOf(mNameTagSet.size()));
-adapterImport.notifyDataSetChanged();
-pbLoad.setVisibility(View.GONE);
-
-ArrayAdapter<String> adapterSpinner = new ArrayAdapter<String>(StartActivity.this,
-R.layout.simple_spinner, mNameTagSet);
-
-
-adapterSpinner.setDropDownViewResource(R.layout.item_spinner_dropdown);
-spinner.setAdapter(adapterSpinner);
-spinner.setVisibility(View.VISIBLE);
-
-
-}
-
-@Override public void onError(String error) {
-Toast.makeText(StartActivity.this, " erreur :" + error, Toast.LENGTH_SHORT).show();
-}
-
-@Override public void onWait(String wait) {
-
-
-}
-
-@Override public void onFinish(String finish) {
-
-}
-});
-
-
-spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-@Override public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-ScrollHelper.DownScroll(scrollMain);
-
-final String titlenameTagSetImport = mNameTagSet.get(i);
-mIdGridImport = mIdTagSet.get(i);
-if (mIdGridImport.equals("0")) {
-return;
-}
-mTagModelListAdd.clear();
-adapterNotifyDataChange(adapterImport, adapterImport);
-
-
-if (mIdGridImport != null && !mIdGridImport.equals(getString(R.string.import_grid_arrow) + str[0])) {
-
-ApiHelperSpinner.getTag(StartActivity.this, recyclerViewImport, mIdGridImport, new ApiHelperSpinner.TagsResponse() {
-@Override public void onSuccess(ArrayList<TagModel> tagModelArrayList) {
-mTagModelListAdd = tagModelArrayList;
-adapterImport.notifyDataSetChanged();
-ScrollHelper.DownScroll(scrollMain);
-
-}
-
-@Override public void onError(String error) {
-
-}
-});
-
-titleTagSet = titlenameTagSetImport;
-}
-
-}
-
-@Override public void onNothingSelected(AdapterView<?> adapterView) {
-
-}
-
-
-});
-
-
-}
-});**/
 
         final RestartSession restartSession = getIntent().getParcelableExtra("restartSession");
         if (restartSession != null) {
-            // radioButtonImport.setChecked(true);
-            // radioButtonNew.setChecked(false);
-            // tvTitleGridImport.setVisibility(View.VISIBLE);
-
             mEtVideoTitle.setText(restartSession.getNameTitleSession());
             final String idTagSetRestartSession = restartSession.getIdTagSet();
 
@@ -359,11 +220,10 @@ titleTagSet = titlenameTagSetImport;
 
             adapterNotifyDataChange(adapterImport, adapterImport);
             recyclerViewImport.setVisibility(View.VISIBLE);
-            // recyclerTagList.setVisibility(View.INVISIBLE);
 
             spinner.setClickable(true);
             spinner.setEnabled(true);
-            // importGrid(mEtTagSet, fabAddMoment, ivAddTags, false);
+
 
             //TODO: faire marcher laffichage
             ApiHelperSpinner.getTag(StartActivity.this, recyclerViewImport, idTagSetRestartSession, new ApiHelperSpinner.TagsResponse() {
@@ -380,32 +240,11 @@ titleTagSet = titlenameTagSetImport;
                 }
             });
 
-
             //TODO: indiquer qu'il faut garder l'identifiant de la grille pour envoyer les données sur firebase
 
 
         }
-/**
- radioButtonNew.setOnClickListener(new View.OnClickListener() {
-@Override public void onClick(View view) {
-KeyboardHelper.CloseKeyboard(StartActivity.this, radioButtonNew);
-if (radioButtonNew.isChecked()) {
-tvTitleGridImport.setVisibility(View.GONE);
-mTagModelListAdd.clear();
-adapterNotifyDataChange(adapter, adapterImport);
-recyclerTagList.setVisibility(View.VISIBLE);
-recyclerViewImport.setVisibility(View.GONE);
-radioButtonImport.setChecked(false);
-spinner.setClickable(false);
-spinner.setLongClickable(false);
-spinner.setEnabled(false);
-spinner.setVisibility(View.GONE);
-// importGrid(mEtTagSet, fabAddMoment, ivAddTags, true);
-}
-ScrollHelper.DownScroll(scrollMain);
-}
-});
- **/
+
         buttonGo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -440,102 +279,13 @@ ScrollHelper.DownScroll(scrollMain);
                         });
 
                     } else {
+                        intent.putExtra(ID_TAG_SET, mIdGridImport);
                         cleanSharedPref();
                         startActivity(intent);
                     }
                 }
 
-                // if (radioButtonNew.isChecked()) {
-                //     titleTagSet = mEtTagSet.getText().toString();
 
-                //  }
-                /**
-                if (/**radioButtonNew.isChecked() && titleTagSet.isEmpty()) {
-                    Toast.makeText(StartActivity.this, R.string.choose_name_grid, Toast.LENGTH_LONG).show();
-                } else {
-                    if (mTagModelListAdd.isEmpty()) {
-                        Toast.makeText(StartActivity.this, R.string.empty_grid, Toast.LENGTH_LONG).show();
-                    } else {
-                        ArrayList mTagModelFinal = (ArrayList) mTagModelListAdd.clone();
-                        mSingletonTags.setmTagsList(mTagModelFinal);
-
-                        //TODO enlever envoit firebase tagsSets et titleGrid
-                        //TODO : garder le choix de lutilisateur de la grille a garder  dans singleton
-                        //Firebase TAGSET
-                        String idTagSet = "";
-
-                        DatabaseReference idTagSetRef = mDatabase.getReference(authUserId).child("tagSets").child("name");
-                        idTagSetRef.keepSynced(true);
-                        /*
-                        if (radioButtonImport.isChecked()) {
-                            idTagSet = mIdGridImport;
-                        } else {
-                            idTagSet = idTagSetRef.push().getKey();
-                        }*/
-                        // TODO : éviter la création de nouvelles grilles à partir d'un import
-                       /** idTagSet = idTagSetRef.push().getKey();
-
-                        intent.putExtra(ID_TAG_SET, idTagSet);
-
-                        DatabaseReference tagsSetRef = mDatabase.getReference(authUserId).child("tagSets").child(idTagSet).child("name");
-                        tagsSetRef.keepSynced(true);
-                        tagsSetRef.setValue(titleTagSet);
-                        mTagsSetsList.add(new TagSetsModel(idTagSet, titleTagSet));
-                        mSingletonTagsSets.setmTagsSetsList(mTagsSetsList);
-
-
-                        //Firebase TAG
-                        for (int i = 0; i < mTagModelListAdd.size(); i++) {
-
-                            String colorTag = mTagModelListAdd.get(i).getColorName();
-                            String nameTag = mTagModelListAdd.get(i).getName();
-                            //V2 : choisir le temps, necessaire ???
-                            String durationTag = String.valueOf(getResources().getInteger(R.integer.duration_tag));
-                            String beforeTag = String.valueOf(getResources().getInteger(R.integer.before_tag));
-
-
-                            DatabaseReference tagsRef = mDatabase.getReference(authUserId).child("tags");
-                            tagsRef.keepSynced(true);
-                            String idTag = tagsRef.push().getKey();
-                            tagsRef.child(idTag).child("color").setValue(colorTag);
-                            tagsRef.child(idTag).child("name").setValue(nameTag);
-                            tagsRef.child(idTag).child("leftOffset").setValue(beforeTag);
-                            tagsRef.child(idTag).child("rigthOffset").setValue(durationTag);
-                            tagsRef.child(idTag).child("fkTagSet").setValue(idTagSet);
-
-                        }
-
-
-                        if ("multiSession".equals(multiSession)) {
-                            share.setVisibility(View.VISIBLE);
-                            buttonBack.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    share.setVisibility(View.GONE);
-                                }
-                            });
-                            buttonGoMulti.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    cleanSharedPref();
-                                    startActivity(intent);
-
-                                }
-                            });
-
-                        } else {
-                            if (titleSession.isEmpty()) {
-                                Toast.makeText(StartActivity.this, R.string.title, Toast.LENGTH_SHORT).show();
-                            } else {
-                                cleanSharedPref();
-                                startActivity(intent);
-
-                            }
-                        }
-
-
-                    }
-                }**/
             }
         });
 
@@ -564,15 +314,6 @@ ScrollHelper.DownScroll(scrollMain);
         return super.onOptionsItemSelected(item);
     }
 
-    public void importGrid(EditText titleGrid, LinearLayout fabAdd, ImageView ivAddTags, Boolean bolean) {
-        titleGrid.setClickable(bolean);
-        titleGrid.setLongClickable(bolean);
-        titleGrid.setEnabled(bolean);
-        fabAdd.setClickable(bolean);
-        fabAdd.setLongClickable(bolean);
-        fabAdd.setFocusable(bolean);
-        ivAddTags.setClickable(bolean);
-    }
 
     public void adapterNotifyDataChange(TagRecyclerAdapter adapterImport, TagRecyclerAdapter adapternew) {
         adapterImport.notifyDataSetChanged();
@@ -590,8 +331,6 @@ ScrollHelper.DownScroll(scrollMain);
     }
 
     public void cleanSharedPref() {
-        //mSharedPrefTagSet.edit().putString("TAGSET", "").apply();
-        // mEtTagSet.setText("");
         mSharedPrefVideoTitle.edit().putString("VIDEOTITLE", "").apply();
         mEtVideoTitle.setText("");
         mTagModelListAdd.clear();

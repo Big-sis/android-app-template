@@ -120,7 +120,8 @@ public class CreateGridFragment extends Fragment {
 
     public void cleanSharedPref() {
         mSharedPrefTagSet.edit().putString("TAGSET", "").apply();
-        mEtTagSet.setText("");}
+        mEtTagSet.setText("");
+    }
 
 
 

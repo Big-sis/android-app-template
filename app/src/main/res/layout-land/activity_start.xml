@@ -118,7 +118,9 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:paddingTop="10dp">
+
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/recycler_view_import"
                         android:layout_width="wrap_content"
@@ -128,13 +130,14 @@
                         android:layout_marginRight="32dp"
                         android:layout_marginStart="32dp"
                         android:layout_marginTop="16dp"
+                        android:layout_weight="0.8"
                         android:scrollbars="vertical"
                         android:visibility="visible"
-                        tools:visibility="visible"
-                        android:layout_weight="0.8">
+                        tools:visibility="visible">
 
 
                     </android.support.v7.widget.RecyclerView>
+
                     <Button
                         android:id="@+id/button_go"
                         android:layout_width="wrap_content"
@@ -148,9 +151,7 @@
                         android:text="@string/go"
                         android:textColor="@color/white"
                         android:textSize="18sp"
-                        app:fontFamily="@font/roboto"
-                        android:layout_weight="0.2"
-                        />
+                        app:fontFamily="@font/roboto" />
                 </LinearLayout>
 
 

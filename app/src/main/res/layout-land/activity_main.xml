@@ -66,11 +66,12 @@
                     android:layout_marginLeft="50dp"
                     android:layout_marginRight="50dp"
                     android:orientation="horizontal">
+
                     <LinearLayout
                         android:id="@+id/btn_create_grid"
                         android:layout_width="0dp
 "
-                        android:layout_height="100dp"
+                        android:layout_height="wrap_content"
                         android:layout_margin="15dp"
                         android:layout_weight="0.5"
                         android:background="@color/colorCharcoalGrey">
@@ -98,7 +99,7 @@
                     <LinearLayout
                         android:id="@+id/btn_start_session"
                         android:layout_width="0dp"
-                        android:layout_height="100dp"
+                        android:layout_height="match_parent"
                         android:layout_margin="15dp"
                         android:layout_weight="0.5"
                         android:background="@color/colorCharcoalGrey">
@@ -164,8 +165,8 @@
 
                     <LinearLayout
                         android:id="@+id/btn_videos"
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_margin="15dp"
                         android:layout_weight="1"
                         android:background="@color/colorCharcoalGrey">
