@@ -37,16 +37,22 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:padding="5dp"
-                    android:text="Créer une nouvelle grille d'analyse"
+                    android:text="@string/create_grid"
                     android:textColor="@android:color/background_light"
                     android:textSize="20sp"
                     app:fontFamily="@font/roboto_bold" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="20dp">
 
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
                     android:orientation="horizontal"
                     android:paddingTop="20dp">
 
@@ -113,9 +119,8 @@
                 <android.support.v7.widget.RecyclerView
 
                     android:id="@+id/recycler_view2"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
                     android:layout_marginEnd="32dp"
                     android:layout_marginLeft="32dp"
                     android:layout_marginRight="32dp"
@@ -138,7 +143,7 @@
                     android:padding="5dp"
                     android:paddingTop="15dp"
                     android:visibility="invisible"
-                    android:text="Enregistrer la nouvelle grille"
+                    android:text="@string/save_grid"
                     android:textColor="@color/white"
                     android:textSize="16sp" />
             </LinearLayout>

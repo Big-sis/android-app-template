@@ -54,7 +54,7 @@
                         android:id="@+id/tv_title_session"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Indiquez un titre à votre vidéo"
+                        android:text="@string/create_title_video"
                         android:textColor="@color/white"
                         android:textSize="20sp"
                         app:fontFamily="@font/roboto"
@@ -113,6 +113,22 @@
                         android:visibility="visible"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/radio_button_insert" />
+                    <Button
+                        android:id="@+id/btn_intent_create_grid"
+                        android:alpha="0.5"
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="32dp"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:padding="5dp"
+                        android:text="@string/create_grid2"
+                        android:textColor="@color/black_de"
+                        android:textSize="16sp"
+                        android:background="@drawable/style_button_white"
+                        />
                 </LinearLayout>
 
                 <LinearLayout
@@ -123,7 +139,7 @@
 
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/recycler_view_import"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginEnd="32dp"
                         android:layout_marginLeft="32dp"
@@ -142,10 +158,10 @@
                         android:id="@+id/button_go"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:layout_marginBottom="8dp"
+                        android:layout_marginBottom="16dp"
                         android:layout_marginEnd="16dp"
                         android:layout_marginRight="16dp"
+                        android:layout_marginTop="16dp"
                         android:background="@drawable/style_button"
                         android:padding="5dp"
                         android:text="@string/go"
@@ -161,125 +177,6 @@
 
 
 
-
-                <!--  <LinearLayout
-                    android:id="@+id/linear_layout_left"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="0.5">
-
-                    <LinearLayout
-                        android:id="@+id/ll_import_grid"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:orientation="vertical"
-                        app:layout_constraintStart_toStartOf="parent">
-
-                        <RadioButton
-                            android:id="@+id/radio_Button_new"
-                            style="@style/Widget.AppCompat.CompoundButton.CheckBox"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="32dp"
-                            android:layout_marginStart="32dp"
-                            android:layout_marginTop="30dp"
-                            android:checked="true"
-                            android:includeFontPadding="false"
-                            android:text="@string/new_grid2"
-                            android:textColor="@color/white"
-                            android:textSize="20sp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/tv_title_grid"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="40dp"
-                            android:layout_marginStart="40dp"
-                            android:layout_marginTop="30dp"
-                            android:text="@string/title_grid"
-                            android:textColor="@color/white"
-                            android:textSize="20sp"
-                            app:fontFamily="@font/roboto"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/tv_information" />
-
-                        <EditText
-                            android:id="@+id/et_grid_title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:layout_marginLeft="32dp"
-                            android:layout_marginStart="32dp"
-                            android:layout_marginTop="20dp"
-                            android:background="@drawable/style_input"
-                            android:ems="10"
-                            android:hint="@string/grid_title"
-                            android:inputType="textPersonName"
-                            android:textColor="@color/white"
-                            android:textColorHint="@color/white"
-                            android:textSize="20sp"
-                            app:fontFamily="@font/roboto"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/radio_Button_new" />
-
-                        <LinearLayout
-                            android:id="@+id/new_event"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginLeft="32dp"
-                            android:layout_marginStart="32dp"
-                            android:layout_marginTop="20dp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/recycler_view">
-
-                            <ImageView
-                                android:id="@+id/fab_add_moment"
-                                android:layout_width="60dp"
-                                android:layout_height="60dp"
-                                android:clickable="true"
-                                android:src="@drawable/icons8_plus_96"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/recycler_view" />
-
-
-                            <TextView
-                                android:id="@+id/tv_add_tag"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginLeft="8dp"
-                                android:layout_marginRight="8dp"
-                                android:text="@string/add_evenement"
-                                android:textColor="@android:color/white"
-                                android:textSize="20sp"
-                                app:fontFamily="@font/roboto"
-                                app:layout_constraintStart_toEndOf="@+id/fab_add_moment"
-                                app:layout_constraintTop_toBottomOf="@+id/recycler_view" />
-                        </LinearLayout>
-
-                        <android.support.v7.widget.RecyclerView
-
-                            android:id="@+id/recycler_view"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginEnd="32dp"
-                            android:layout_marginLeft="32dp"
-                            android:layout_marginRight="32dp"
-                            android:layout_marginStart="32dp"
-                            android:layout_marginTop="16dp"
-                            android:scrollbars="vertical"
-                            android:visibility="gone"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/et_grid_title"
-                            tools:visibility="visible" />
-
-                    </LinearLayout>
-
-                </LinearLayout>
--->
 
         </android.support.constraint.ConstraintLayout>
     </ScrollView>

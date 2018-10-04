@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginBottom="10dp"
-    android:background="@drawable/tag"
+    android:background="@drawable/color_gradient_grey"
     android:orientation="horizontal"
     tools:layout_editor_absoluteY="25dp">
 

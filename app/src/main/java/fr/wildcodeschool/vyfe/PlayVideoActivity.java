@@ -364,7 +364,7 @@ public class PlayVideoActivity extends AppCompatActivity {
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                 timelineTag.setLayoutParams(layoutParams);
-                timelineTag.setBackgroundColor(getResources().getColor(R.color.colorCharcoalGrey));
+                timelineTag.setBackgroundResource(R.drawable.color_gradient_grey_nocolor);
                 timelineTag.addView(iv);
                 mLastEnd = (int) end;
 

@@ -12,15 +12,15 @@ public class ApiHelperGrid {
 
 
     public static void setGrid(String titleTagSet,ArrayList<TagModel> mTagModelListAdd, Context context) {
+
+
         final String authUserId = SingletonFirebase.getInstance().getUid();
         mDatabase = SingletonFirebase.getInstance().getDatabase();
-        DatabaseReference idTagSetRef = mDatabase.getReference(authUserId).child("tagSets").child("name");
+        DatabaseReference idTagSetRef = mDatabase.getReference(authUserId).child("tagSets");
         idTagSetRef.keepSynced(true);
         String idTagSet = idTagSetRef.push().getKey();
+        idTagSetRef.child(idTagSet).child("name").setValue(titleTagSet);
 
-        DatabaseReference tagsSetRef = mDatabase.getReference(authUserId).child("tagSets").child(idTagSet).child("name");
-        tagsSetRef.keepSynced(true);
-        tagsSetRef.setValue(titleTagSet);
 
         setTags(mTagModelListAdd, idTagSet,context);
 

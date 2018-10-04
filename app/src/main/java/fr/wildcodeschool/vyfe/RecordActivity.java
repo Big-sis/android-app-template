@@ -344,7 +344,7 @@ public class RecordActivity extends AppCompatActivity {
             String name = tagModel.getName();
             //Ajout d'un Linear pour un tag
             final RelativeLayout timeline = new RelativeLayout(RecordActivity.this);
-            timeline.setBackgroundColor(getResources().getColor(R.color.colorCharcoal));
+            timeline.setBackgroundResource(R.drawable.color_gradient_grey_nocolor);
             llMain.addView(timeline);
             mTimelines.put(name, timeline);
         }

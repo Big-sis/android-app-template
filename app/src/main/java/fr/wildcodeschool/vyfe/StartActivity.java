@@ -69,6 +69,7 @@ public class StartActivity extends AppCompatActivity {
         final Button buttonBack = findViewById(R.id.button_back);
         Button buttonGo = findViewById(R.id.button_go);
         final Button buttonGoMulti = findViewById(R.id.button_go_multi);
+        Button btnCreateGrid = findViewById(R.id.btn_intent_create_grid);
         final ConstraintLayout share = findViewById(R.id.layout_share);
         final RecyclerView recyclerViewImport = findViewById(R.id.recycler_view_import);
         final Spinner spinner = (Spinner) findViewById(R.id.spinner_session_infos);
@@ -84,7 +85,14 @@ public class StartActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(R.string.start_session);
 
         final String[] str = {getString(R.string.arrow)};
-        spinner.setMinimumWidth((int) (0.2 * mWidth));
+      //  spinner.setMinimumWidth((int) (0.2 * mWidth));
+
+        btnCreateGrid.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(StartActivity.this,PreparedSessionActivity.class));
+            }
+        });
 
         //a enlever?
         String fromAdd = getIntent().getStringExtra("fromAdd");
@@ -256,7 +264,7 @@ public class StartActivity extends AppCompatActivity {
                 intent.putExtra(TITLE_VIDEO, titleSession);
 
                 if (mTagModelListAdd.isEmpty() || titleSession.isEmpty()) {
-                    Toast.makeText(StartActivity.this, "Vous devez indiquez un titre à votre session ET une grille d'observation", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(StartActivity.this, "Vous devez indiquez un titre à votre session ET une grille d'observation", Toast.LENGTH_LONG).show();
                 } else {
                     ArrayList mTagModelFinal = (ArrayList) mTagModelListAdd.clone();
                     mSingletonTags.setmTagsList(mTagModelFinal);
