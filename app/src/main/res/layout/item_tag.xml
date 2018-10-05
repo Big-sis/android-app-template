@@ -61,12 +61,12 @@
 
         <ImageView
             android:id="@+id/iv_menu"
-            android:visibility="visible"
-            android:layout_marginRight="5dp"
+            android:visibility="gone"
+            android:layout_marginRight="15dp"
             android:layout_marginBottom="5dp"
             android:layout_marginTop="5dp"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
             android:src="@drawable/icons8_trier_52" />
 
     </LinearLayout>
