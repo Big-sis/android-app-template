@@ -31,6 +31,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
@@ -221,6 +222,7 @@ public class RecordActivity extends AppCompatActivity {
                             file.delete();
 
                         } else {
+                            Toast.makeText(RecordActivity.this, "save", Toast.LENGTH_SHORT).show();
                             saveSession();
                         }
 
@@ -342,7 +344,7 @@ public class RecordActivity extends AppCompatActivity {
             String name = tagModel.getName();
             //Ajout d'un Linear pour un tag
             final RelativeLayout timeline = new RelativeLayout(RecordActivity.this);
-            timeline.setBackgroundColor(getResources().getColor(R.color.colorCharcoal));
+            timeline.setBackgroundResource(R.drawable.color_gradient_grey_nocolor);
             llMain.addView(timeline);
             mTimelines.put(name, timeline);
         }

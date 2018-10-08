@@ -81,7 +81,7 @@ public class ApiHelperVideo {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
 
                     SessionsModel sessionsModel = snapshot.getValue(SessionsModel.class);
-
+if((filesExternalStorage!=null)){
                     for (String nameFileExternalStorage : filesExternalStorage) {
                         String nameCache = racineExternalStorage +"/"+ nameFileExternalStorage;
                         assert sessionsModel != null;
@@ -89,7 +89,7 @@ public class ApiHelperVideo {
                             mSessionsModelList.add(sessionsModel);
                             //TODO: mettre un message a utilisateur plus dispo ou les faire apparaitre en plus clair
                         }
-                    }
+                    }}
 
                 }
 
