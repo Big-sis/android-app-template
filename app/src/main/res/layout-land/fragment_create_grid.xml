@@ -137,15 +137,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
+                    android:layout_marginBottom="10dp"
                     android:layout_marginLeft="32dp"
                     android:background="@drawable/style_button"
                     android:fontFamily="@font/roboto_bold"
                     android:padding="5dp"
                     android:paddingTop="15dp"
-                    android:visibility="invisible"
                     android:text="@string/save_grid"
                     android:textColor="@color/white"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    android:visibility="invisible" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
