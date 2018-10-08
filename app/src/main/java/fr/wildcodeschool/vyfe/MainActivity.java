@@ -1,22 +1,16 @@
 package fr.wildcodeschool.vyfe;
 
 import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-
 import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.net.wifi.ScanResult;
-import android.net.wifi.SupplicantState;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
-
 import android.os.Build;
-
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
@@ -28,11 +22,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.LinearLayout;
-
-import android.widget.ListView;
-
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -41,27 +31,24 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
-import java.util.ArrayList;
-import java.util.List;
 @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
 public class MainActivity extends AppCompatActivity {
 
     private static final int PERMISSIONS_REQUEST = 1;
+    // Operation = 24(day) * 60(hour) * 60(minute) * 1000 (millis)
+    private static final int TIME_IN_DAYS = 86400000;
     public static boolean mMulti = false;
     private WifiManager wifiManager;
-    private ListView listView;
-    private Button buttonScan;
-    private int size = 0;
     private List<ScanResult> results;
     private ArrayList<String> arrayList = new ArrayList<>();
     private ArrayAdapter adapter;
-    // Operation = 24(day) * 60(hour) * 60(minute) * 1000 (millis)
-    private static final int TIME_IN_DAYS = 86400000;
-
     private String[] permissions = {
             Manifest.permission.RECORD_AUDIO,
             Manifest.permission.CAMERA,
@@ -70,17 +57,19 @@ public class MainActivity extends AppCompatActivity {
     };
 
     private boolean mPermission;
-
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private String todayDate;
     private boolean firstMessage;
     private boolean secondMessage;
+    private String networkSSID;
+    private String networkPass;
+    private boolean mConnexionRasberry = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setLogo(R.drawable.vyfe_blanc);
         setSupportActionBar(toolbar);
@@ -89,6 +78,10 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout btnMultiSession = findViewById(R.id.btn_multi_session);
         LinearLayout btnVideos = findViewById(R.id.btn_videos);
         LinearLayout btnCreateGrid = findViewById(R.id.btn_create_grid);
+
+        wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        networkSSID = MainActivity.this.getString(R.string.networkSSID);
+        networkPass = MainActivity.this.getString(R.string.networkPass);
 
         FirebaseDatabase mDatabase = SingletonFirebase.getInstance().getDatabase();
         String authUserId = SingletonFirebase.getInstance().getUid();
@@ -152,48 +145,23 @@ public class MainActivity extends AppCompatActivity {
         });
 
         btnMultiSession.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
+                //ajout rasberry à la liste wifi
+                confWifi();
 
-
-                String networkSSID = MainActivity.this.getString(R.string.networkSSID);
-                String networkPass = MainActivity.this.getString(R.string.networkPass);
-
-                WifiConfiguration conf = new WifiConfiguration();
-                conf.SSID = "\"" + networkSSID + "\"";
-
-                conf.wepKeys[0] = "\"" + networkPass + "\"";
-                conf.wepTxKeyIndex = 0;
-                conf.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
-                conf.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP40);
-
-                final WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-                wifiManager.addNetwork(conf);
-
-                String connexion = wifiManager.getConnectionInfo().getSupplicantState().toString();
-
-
-                if (connexion.equals("COMPLETED")) {
-                    List<WifiConfiguration> list = wifiManager.getConfiguredNetworks();
-                    for (WifiConfiguration i : list) {
-                        if (i.SSID != null && i.SSID.equals("\"" + networkSSID + "\"")) {
-                            wifiManager.disconnect();
-                            wifiManager.enableNetwork(i.networkId, true);
-                            wifiManager.reconnect();
-
-                            break;
-                        }
-                        if (i.SSID == null) {
-                            Toast.makeText(MainActivity.this, "Veuillez brancher le boitier de connexion", Toast.LENGTH_LONG).show();
-                        }
-                    }
-                } else {
+                //verififcation wifi actif
+                String connexionWifi = wifiManager.getConnectionInfo().getSupplicantState().toString();
+                if (connexionWifi.equals("DISCONNECTED")) {
                     final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                     builder.setMessage(R.string.wifi_active)
                             .setPositiveButton(R.string.start_wifi, new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
                                     wifiManager.setWifiEnabled(true);
+                                    Toast.makeText(MainActivity.this, "Vous pouvez à present lancer une session", Toast.LENGTH_SHORT).show();
+
                                 }
                             })
                             .setNegativeButton(R.string.back, new DialogInterface.OnClickListener() {
@@ -203,13 +171,12 @@ public class MainActivity extends AppCompatActivity {
                                 }
                             })
                             .show();
+                } else if (connexionWifi.equals("COMPLETED")) {
+                    connexionRasberry();
+
+
                 }
 
-
-                Intent intent = new Intent(MainActivity.this, StartActivity.class);
-                intent.putExtra("multiSession", "multiSession");
-
-               // startActivity(intent);
 
             }
         });
@@ -242,7 +209,6 @@ public class MainActivity extends AppCompatActivity {
                     PERMISSIONS_REQUEST);
         }
     }
-
 
 
     @Override
@@ -289,5 +255,111 @@ public class MainActivity extends AppCompatActivity {
                 .show();
 
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
+    public void connexionRasberry() {
+
+        networkSSID = MainActivity.this.getString(R.string.networkSSID);
+        setConnexion();
+
+        RasberryConnexion.setConnexion(MainActivity.this, new RasberryConnexion.rasberryResponse() {
+            @Override
+            public void onSuccess(boolean connexion) {
+
+                Toast.makeText(MainActivity.this, "En cours de connexion", Toast.LENGTH_SHORT).show();
+                RasberryConnexion.getConnexion(MainActivity.this, new RasberryConnexion.rasberryResponse() {
+                    @Override
+                    public void onSuccess(boolean connexion) {
+                        
+                    }
+
+                    @Override
+                    public void onError(boolean connexion) {
+
+                    }
+
+                    @Override
+                    public void onConnected() {
+
+                        Toast.makeText(MainActivity.this, "Connecté au rasberry", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(MainActivity.this, StartActivity.class);
+                        intent.putExtra("multiSession", "multiSession");
+                        startActivity(intent);
+                    }
+                });
+            }
+
+            @Override
+            public void onError(boolean connexion) {
+
+                final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+                builder.setMessage("Pour lancer une session multiple \nVous devez brancher le boitier de connexion Vyfe\n\nBrancher le boitier?")
+                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                connexionRasberry();
+                            }
+                        })
+                        .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.cancel();
+                            }
+                        })
+                        .show();
+
+            }
+
+            @Override
+            public void onConnected() {
+
+
+
+
+            }
+        });
+
+
+
+    }
+
+
+    public void confWifi() {
+        networkSSID = MainActivity.this.getString(R.string.networkSSID);
+        networkPass = MainActivity.this.getString(R.string.networkPass);
+
+        WifiConfiguration conf = new WifiConfiguration();
+        conf.SSID = "\"" + networkSSID + "\"";
+        conf.wepKeys[0] = "\"" + networkPass + "\"";
+        conf.wepTxKeyIndex = 0;
+        conf.allowedKeyManagement.set(WifiConfiguration.KeyMgmt.NONE);
+        conf.allowedGroupCiphers.set(WifiConfiguration.GroupCipher.WEP40);
+
+        final WifiManager wifiManager = (WifiManager) MainActivity.this.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        wifiManager.addNetwork(conf);
+    }
+
+
+
+    public void setConnexion() {
+        networkSSID = MainActivity.this.getString(R.string.networkSSID);
+
+        //Connexion Rasberry
+        wifiManager = (WifiManager) MainActivity.this.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+        assert wifiManager != null;
+        List<WifiConfiguration> list = wifiManager.getConfiguredNetworks();
+        for (WifiConfiguration i : list) {
+            if (i.SSID != null && i.SSID.equals("\"" + networkSSID + "\"")) {
+                wifiManager.disconnect();
+                wifiManager.enableNetwork(i.networkId, true);
+                wifiManager.reconnect();
+
+                break;
+            }
+
+        }
+
+    }
+
 
 }
