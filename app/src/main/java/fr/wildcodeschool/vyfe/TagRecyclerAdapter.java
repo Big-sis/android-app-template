@@ -49,7 +49,6 @@ public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.
 
             e.getMessage();
             Log.d("BEUG", "onBindViewHolder: "+ e.getMessage());
-           // e.printStackTrace();
         }
 
 

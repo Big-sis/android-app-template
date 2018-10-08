@@ -8,9 +8,9 @@
     <string name="upload">Uploader</string>
     <string name="information">Informations sur la vidéo</string>
     <string name="title_video">Titre de la vidéo</string>
-    <string name="start_session">Lancer une session</string>
+    <string name="start_session">2- Lancer une session</string>
     <string name="start_multi_session">Lancer une session collaborative</string>
-    <string name="my_videos">Mes vidéos</string>
+    <string name="my_videos">3- Consulter vos vidéos</string>
     <string name="search">Rechercher</string>
     <string name="hello_user">Bonjour</string>
     <string name="connected">Connexion</string>
@@ -40,7 +40,7 @@
     <string name="name_event">Nom du tag</string>
     <string name="color_event">Couleur du tag</string>
     <string name="def_colot">Définissez un nom et une couleur au tag</string>
-    <string name="grid_import">Ou importer une grille d\'observation</string>
+    <string name="grid_import">Choississez votre grille d\'observation :</string>
     <string name="new_grid2">Créer une nouvelle grille d\'observation</string>
     <string name="move">Tag déplacé</string>
     <string name="delete_tag">Tag supprimé</string>
@@ -80,10 +80,10 @@
     <string name="quit_app">Voulez-vous quitter l\'application</string>
     <string name="yes">Oui</string>
     <string name="no">Non</string>
-    <string name="import_grid_arrow">Importer une grille</string>
+    <string name="import_grid_arrow">Sélectionner une grille</string>
     <string name="arrow"> \ \ \ ▼</string>
-    <string name="choose_name_grid">Indiquez un titre à votre grille d\'observation</string>
-    <string name="empty_grid">Veuiller indiquer des tags ou une grille d\'analyse</string>
+    <string name="choose_name_grid">Indiquez un titre à votre grille d\'observation :</string>
+    <string name="empty_grid">Veuiller indiquer des tags ou une grille d\'observation</string>
     <string name="title_grid">Titre de votre grille d\'observation :</string>
     <string name="title_session">Titre de votre vidéo :</string>
     <string name="add_tag">Ajouter le tag</string>
@@ -92,5 +92,21 @@
     <string name="active_wifi">Vous devez posséder une connexion internet pour vous identifiez</string>
     <string name="wifi_active">Vous devez activer votre wifi pour lancer une session collaborative</string>
     <string name="start_wifi">Activer Wifi</string>
+    <string name="expired_month">Il vous reste moins d\' 1 mois de licence pour profiter de cette fabuleuse application</string>
+    <string name="expired_7_days">Attention, cette application s\'autodétruira dans moins de 7jours ;)</string>
+    <string name="expired_day">Attention, il ne vous reste qu\'un jour d\'utilidation</string>
+    <string name="invalid_date">Date invalide</string>
+    <string name="expired_licence">Votre licence a expiré, merci de nous contacter pour la prolonger</string>
+    <string name="save_session">Voulez vous sauver la session en cours ?</string>
+    <string name="storagefree">Stockage disponible : </string>
+    <string name="pourcentage"> %</string>
+    <string name="fullstorage">\nAttention votre stockage est plein !\nFonctionnalités limitées</string>
+    <string name="dont_save_session">Vous ne disposez pas d\'assez d\'espace de stockage pour enregistrer la Session. \n\n Liberez de l\'espace pour enregistrer une nouvelle session </string>
+    <string name="save_grid">Enregistrer la nouvelle grille</string>
+    <string name="create_grid">Créer une nouvelle grille d\'observation</string>
+    <string name="create_grid2">Créer une grille</string>
+    <string name="create_title_video">Indiquez un titre à votre vidéo :</string>
+    <string name="edit_grid">1- Enregistrer une grille d\'observation</string>
+
 
 </resources>

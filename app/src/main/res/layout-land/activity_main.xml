@@ -69,11 +69,40 @@
                     android:orientation="horizontal">
 
                     <LinearLayout
+                        android:id="@+id/btn_create_grid"
+                        android:layout_width="0dp
+"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="15dp"
+                        android:layout_weight="0.5"
+                        android:background="@color/colorCharcoalGrey">
+
+                        <ImageView
+                            android:id="@+id/create_grid"
+                            android:layout_width="80dp"
+                            android:layout_height="80dp"
+                            android:layout_gravity="center_vertical"
+                            android:paddingLeft="15dp"
+                            app:srcCompat="@drawable/icons8_liste_de_v_rification_filled_100" />
+
+                        <TextView
+                            android:id="@+id/prepared_session"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="16dp"
+                            android:text="1- Créer votre grille d'observation"
+                            android:textColor="@color/white"
+                            android:textSize="20sp"
+                            app:fontFamily="@font/roboto_bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:id="@+id/btn_start_session"
                         android:layout_width="0dp"
-                        android:layout_height="100dp"
+                        android:layout_height="match_parent"
                         android:layout_margin="15dp"
-                        android:layout_weight="1"
+                        android:layout_weight="0.5"
                         android:background="@color/colorCharcoalGrey">
 
                         <ImageView
@@ -96,10 +125,23 @@
                             app:fontFamily="@font/roboto_bold" />
                     </LinearLayout>
 
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="50dp"
+                    android:layout_marginRight="50dp"
+                    android:layout_marginTop="40dp"
+                    android:orientation="horizontal">
+
+
                     <LinearLayout
                         android:id="@+id/btn_multi_session"
                         android:layout_width="0dp"
-                        android:layout_height="100dp"
+                        android:layout_height="wrap_content"
                         android:layout_margin="15dp"
                         android:layout_weight="1"
                         android:background="@color/colorCharcoalGrey"
@@ -125,20 +167,10 @@
                             app:fontFamily="@font/roboto_bold" />
                     </LinearLayout>
 
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="50dp"
-                    android:layout_marginRight="50dp"
-                    android:layout_marginTop="40dp"
-                    android:orientation="horizontal">
-
                     <LinearLayout
                         android:id="@+id/btn_videos"
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
                         android:layout_margin="15dp"
                         android:layout_weight="1"
                         android:background="@color/colorCharcoalGrey">
@@ -163,10 +195,7 @@
                             app:fontFamily="@font/roboto_bold" />
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1" />
+
 
                 </LinearLayout>
             </LinearLayout>

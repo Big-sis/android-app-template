@@ -5,22 +5,19 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.hardware.Camera;
-import android.media.AudioManager;
 import android.media.CamcorderProfile;
 import android.media.MediaRecorder;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.os.SystemClock;
-import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.util.Pair;
 import android.util.TypedValue;
 import android.view.Menu;
@@ -51,6 +48,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import static android.os.Environment.DIRECTORY_MOVIES;
+
 /**
  * This activity records in real time session with tags
  */
@@ -62,6 +61,7 @@ public class RecordActivity extends AppCompatActivity {
     public static boolean RESTART = false;
     private static String mFileName = null;
     private static String mIdSession = null;
+    private static int SPLASH_TIME_OUT = 5000;
     final String mAuthUserId = SingletonFirebase.getInstance().getUid();
     FirebaseDatabase mDatabase;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
@@ -79,6 +79,10 @@ public class RecordActivity extends AppCompatActivity {
     private String mTitleSession;
     private SingletonSessions mSingletonSessions = SingletonSessions.getInstance();
     private TagRecyclerAdapter mAdapterTags;
+    private Chronometer chronometer;
+    private ConstraintLayout sessionRecord;
+    private String idTagSet;
+    private boolean recordInProgress = false;
 
     // Pour obtenir une instance de la caméra
     public static Camera getCameraInstance(int currentCameraId) {
@@ -95,16 +99,36 @@ public class RecordActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
-        final Chronometer chronometer = findViewById(R.id.chronometer);
+        chronometer = findViewById(R.id.chronometer);
 
         mDatabase = SingletonFirebase.getInstance().getDatabase();
 
         mTitleSession = mSingletonSessions.getTitleSession();
+        TextView tvSpace = findViewById(R.id.tv_space);
 
         Date d = new Date();
-        mFileName = getExternalCacheDir().getAbsolutePath();
-        mFileName += "/" + d.getTime() + ".mp4";
+        File f1 = new File(Environment.getExternalStoragePublicDirectory(DIRECTORY_MOVIES) + "/" + "Vyfe");
+        if (!f1.exists()) {
+            f1.mkdirs();
+        }
 
+        mFileName = String.valueOf(Environment.getExternalStoragePublicDirectory(DIRECTORY_MOVIES) + "/" + "Vyfe");
+        mFileName += "/" + mTitleSession + " - " + d.getTime() + ".mp4";
+
+
+        //Stockage dispo
+
+        long totalSpace = Environment.getExternalStoragePublicDirectory(DIRECTORY_MOVIES).getTotalSpace();
+        final long freeSpace = Environment.getExternalStoragePublicDirectory(DIRECTORY_MOVIES).getFreeSpace();
+        long sizefreeSpace = freeSpace * 100 / totalSpace;
+        tvSpace.setAlpha(.5f);
+        tvSpace.setText(String.format("%s%s%s", getString(R.string.storagefree), String.valueOf(sizefreeSpace), getString(R.string.pourcentage)));
+
+        if (sizefreeSpace < 10) {
+            tvSpace.setText(String.format("%s%s", tvSpace.getText(), getString(R.string.fullstorage)));
+        }
+
+        //TODO: mettre espace dispo dans futurs parametres
 
         mSingletonSessions.setFileName(mFileName);
 
@@ -115,11 +139,13 @@ public class RecordActivity extends AppCompatActivity {
         mRecord.setImageResource(R.drawable.icons8_appel_video_60);
 
         final Button btnBackMain = findViewById(R.id.btn_back_main);
+        Button btnBackMainError = findViewById(R.id.btn_back_main_error);
         final Button btnPlay = findViewById(R.id.btn_play);
         Button btnRestart = findViewById(R.id.btn_restart);
-        final ConstraintLayout sessionRecord = findViewById(R.id.session_record);
+        sessionRecord = findViewById(R.id.session_record);
+        final ConstraintLayout sessionErrorSpace = findViewById(R.id.session_error_space);
         final RecyclerView recyclerTags = findViewById(R.id.re_tags);
-        final String idTagSet = getIntent().getStringExtra(ID_TAG_SET);
+        idTagSet = getIntent().getStringExtra(ID_TAG_SET);
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -131,6 +157,13 @@ public class RecordActivity extends AppCompatActivity {
         mTagModels = singletonTags.getmTagsList();
 
         recyclerTags.setAlpha(0.5f);
+
+        btnBackMainError.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(RecordActivity.this, MainActivity.class));
+            }
+        });
 
         final FrameLayout preview = findViewById(R.id.video_view);
         final Handler handler = new Handler();
@@ -164,6 +197,7 @@ public class RecordActivity extends AppCompatActivity {
         mRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                recordInProgress = true;
                 mActiveTag = true;
                 chronometer.setBase(SystemClock.elapsedRealtime());
                 chronometer.start();
@@ -177,50 +211,19 @@ public class RecordActivity extends AppCompatActivity {
                 mRecord.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mActiveTag = false;
-                        chronometer.stop();
-                        stopRecording();
-                        mRecord.setClickable(false);
-                        sessionRecord.setVisibility(View.VISIBLE);
-                        Date date = new Date();
-                        Date newDate = new Date(date.getTime());
-                        SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yy HH:mm");
-                        String stringdate = dt.format(newDate);
+                        closeRecord();
+                        recordInProgress = false;
+                        File file = new File(mFileName);
+                        long lengthFile = file.length();
 
-                        String idAndroid = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-                        HashCode hashCode = Hashing.sha256().hashString(idAndroid, Charset.defaultCharset());
+                        if (lengthFile >= freeSpace || lengthFile == 0) {
+                            sessionRecord.setVisibility(View.GONE);
+                            sessionErrorSpace.setVisibility(View.VISIBLE);
+                            file.delete();
 
-                        //Firebase SESSION
-                        DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions");
-                        sessionRef.keepSynced(true);
-                        mIdSession = sessionRef.push().getKey();
-                        mSingletonSessions.setIdSession(mIdSession);
-                        sessionRef.child(mIdSession).child("name").setValue(mTitleSession);
-                        sessionRef.child(mIdSession).child("author").setValue(mAuthUserId);
-                        sessionRef.child(mIdSession).child("videoLink").setValue(mFileName);
-                        sessionRef.child(mIdSession).child("date").setValue(stringdate);
-                        sessionRef.child(mIdSession).child("idSession").setValue(mIdSession);
-                        sessionRef.child(mIdSession).child("idTagSet").setValue(idTagSet);
-
-                        //TODO rajout firebase
-                        sessionRef.child(mIdSession).child("idAndroid").setValue(hashCode.toString());
-
-
-
-                        for (Map.Entry<String, ArrayList<Pair<Integer, Integer>>> entry : newTagList.entrySet()) {
-
-                            String tagKey = sessionRef.child(mIdSession).child("tags").push().getKey();
-                            sessionRef.child(mIdSession).child("tags").child(tagKey).child("tagName").setValue(entry.getKey());
-                            ArrayList<TimeModel> times = new ArrayList<>();
-
-                            for (Pair<Integer, Integer> pair : entry.getValue()) {
-
-                                times.add(new TimeModel(pair.first, pair.second));
-
-
-                            }
-                            sessionRef.child(mIdSession).child("tags").child(tagKey).child("times").setValue(times);
-
+                        } else {
+                            Toast.makeText(RecordActivity.this, "save", Toast.LENGTH_SHORT).show();
+                            saveSession();
                         }
 
 /*
@@ -248,6 +251,7 @@ public class RecordActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 sessionRecord.setVisibility(View.GONE);
+
                 Intent intent = new Intent(RecordActivity.this, MainActivity.class);
                 startActivity(intent);
             }
@@ -268,9 +272,9 @@ public class RecordActivity extends AppCompatActivity {
                 //TODO: Modif lors du changement du Singleton
                 String nameTitleSession = RestartSession.implementTitleGrid(mSingletonSessions.getTitleSession());
 
-                RestartSession restartSession = new RestartSession(nameTitleSession,idTagSet);
+                RestartSession restartSession = new RestartSession(nameTitleSession, idTagSet);
                 Intent intent = new Intent(RecordActivity.this, StartActivity.class);
-                intent.putExtra("restartSession",restartSession );
+                intent.putExtra("restartSession", restartSession);
 
                 startActivity(intent);
 
@@ -291,11 +295,13 @@ public class RecordActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.logout:
-                DisconnectionAlert.confirmedDisconnection(RecordActivity.this);
+                DisconnectionAlert.confirmedDisconnection(this);
 
             case R.id.home:
-                Intent intentHome = new Intent(RecordActivity.this, MainActivity.class);
-                startActivity(intentHome);
+                final Intent intentHome = new Intent(this, MainActivity.class);
+                saveAlertDialog(intentHome);
+
+
                 return true;
         }
 
@@ -328,8 +334,6 @@ public class RecordActivity extends AppCompatActivity {
     }
 
 
-
-
     private void initTimeline(final ArrayList<TagModel> listTag, RecyclerView rv) {
         //Init variable
         final StopwatchView chronometer = findViewById(R.id.chronometer);
@@ -340,7 +344,7 @@ public class RecordActivity extends AppCompatActivity {
             String name = tagModel.getName();
             //Ajout d'un Linear pour un tag
             final RelativeLayout timeline = new RelativeLayout(RecordActivity.this);
-            timeline.setBackgroundColor(getResources().getColor(R.color.colorCharcoal));
+            timeline.setBackgroundResource(R.drawable.color_gradient_grey_nocolor);
             llMain.addView(timeline);
             mTimelines.put(name, timeline);
         }
@@ -378,7 +382,7 @@ public class RecordActivity extends AppCompatActivity {
                             titleLength, LinearLayout.LayoutParams.WRAP_CONTENT);
                     layoutParamsIv.setMargins(0, convertToDp(8), 0, convertToDp(8));
                     iv.setLayoutParams(layoutParamsIv);
-                    iv.setMinimumHeight(50);
+                    iv.setMinimumHeight(convertToDp(25));
                     try {
                         iv.setBackgroundResource(ColorHelper.convertColor(listTag.get(position).getColorName()));
                     } catch (ColorNotFoundException e) {
@@ -393,19 +397,21 @@ public class RecordActivity extends AppCompatActivity {
 
                     RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                             LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                    layoutParams.setMargins(convertToDp(titleLength + startTime + convertToDp(15)), convertToDp(10), 0, convertToDp(10));
+                    layoutParams.setMargins(convertToDp(startTime), convertToDp(10), 0, convertToDp(10));
                     RelativeLayout timeline = mTimelines.get(nameTag);
 
+
+                    timeline.addView(iv, layoutParams);
                     if (isFirstTitle) {
                         tvNameTimeline.setText(listTag.get(position).getName());
+                        tvNameTimeline.setMinimumHeight(convertToDp(25));
                         RelativeLayout.LayoutParams layoutParamsTv = new RelativeLayout.LayoutParams(
                                 convertToDp(titleLength), LinearLayout.LayoutParams.WRAP_CONTENT);
-                        layoutParamsTv.setMargins(convertToDp(15), convertToDp(8), convertToDp(8), convertToDp(8));
+                        layoutParamsTv.setMargins(convertToDp(15), convertToDp(10), convertToDp(8), convertToDp(10));
                         tvNameTimeline.setLayoutParams(layoutParamsTv);
-                        tvNameTimeline.setTextSize(convertToDp(10));
                         timeline.addView(tvNameTimeline, layoutParamsTv);
                     }
-                    timeline.addView(iv, layoutParams);
+
 
                     //Pour envoit sur firebase
                     Pair<Integer, Integer> timePair = new Pair<>(startTime / rapport, endTime / rapport);
@@ -436,7 +442,89 @@ public class RecordActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(RecordActivity.this, StartActivity.class);
-        startActivity(intent);
+        final Intent intent = new Intent(this, StartActivity.class);
+        saveAlertDialog(intent);
+
     }
+
+    public void closeRecord() {
+        mActiveTag = false;
+        chronometer.stop();
+        stopRecording();
+        mRecord.setClickable(false);
+        sessionRecord.setVisibility(View.VISIBLE);
+
+    }
+
+    public void saveAlertDialog(final Intent intent) {
+        if (recordInProgress) {
+            closeRecord();
+            sessionRecord.setVisibility(View.GONE);
+            final AlertDialog.Builder builder = new AlertDialog.Builder(RecordActivity.this);
+            builder.setMessage(R.string.save_session)
+                    .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            saveSession();
+                            startActivity(intent);
+
+                        }
+                    })
+                    .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                            startActivity(intent);
+                        }
+                    })
+                    .show();
+
+        } else startActivity(intent);
+    }
+
+    public void saveSession() {
+        Date date = new Date();
+        Date newDate = new Date(date.getTime());
+        SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yy HH:mm");
+        String stringdate = dt.format(newDate);
+
+        String idAndroid = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        HashCode hashCode = Hashing.sha256().hashString(idAndroid, Charset.defaultCharset());
+
+        //Firebase SESSION
+        DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions");
+        sessionRef.keepSynced(true);
+        mIdSession = sessionRef.push().getKey();
+        mSingletonSessions.setIdSession(mIdSession);
+        sessionRef.child(mIdSession).child("name").setValue(mTitleSession);
+        sessionRef.child(mIdSession).child("author").setValue(mAuthUserId);
+        sessionRef.child(mIdSession).child("videoLink").setValue(mFileName);
+        sessionRef.child(mIdSession).child("date").setValue(stringdate);
+        sessionRef.child(mIdSession).child("idSession").setValue(mIdSession);
+        sessionRef.child(mIdSession).child("idTagSet").setValue(idTagSet);
+
+        //TODO rajout firebase
+        sessionRef.child(mIdSession).child("idAndroid").setValue(hashCode.toString());
+
+
+        for (Map.Entry<String, ArrayList<Pair<Integer, Integer>>> entry : newTagList.entrySet()) {
+
+            String tagKey = sessionRef.child(mIdSession).child("tags").push().getKey();
+            sessionRef.child(mIdSession).child("tags").child(tagKey).child("tagName").setValue(entry.getKey());
+            ArrayList<TimeModel> times = new ArrayList<>();
+
+            for (Pair<Integer, Integer> pair : entry.getValue()) {
+
+                times.add(new TimeModel(pair.first, pair.second));
+
+
+            }
+            sessionRef.child(mIdSession).child("tags").child(tagKey).child("times").setValue(times);
+
+
+        }
+
+    }
+
+
 }

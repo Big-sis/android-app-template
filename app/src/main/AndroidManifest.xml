@@ -30,7 +30,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="userLandscape"/>
+            android:screenOrientation="userLandscape"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".RecordActivity"
             android:screenOrientation="userLandscape" />
@@ -40,10 +41,8 @@
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".SelectedVideoActivity"
-            android:screenOrientation="userLandscape">
-
-        </activity>
-
+            android:screenOrientation="userLandscape"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".ConnexionActivity"
             android:screenOrientation="userLandscape"
@@ -53,7 +52,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
         </activity>
         <activity
             android:name=".MyVideoActivity"
@@ -61,10 +59,7 @@
         <activity
             android:name=".StartActivity"
             android:screenOrientation="userLandscape"
-            android:windowSoftInputMode="stateHidden|adjustPan"
-            >
-        </activity>
-
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".PlayVideoActivity"
             android:screenOrientation="userLandscape" />
@@ -73,12 +68,17 @@
             android:screenOrientation="userLandscape"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden|adjustPan" />
-
         <activity
             android:name=".AddGridActivity"
             android:screenOrientation="userLandscape"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden|adjustPan" />
+        <activity
+            android:name=".PreparedSessionActivity"
+            android:screenOrientation="userLandscape"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg"
+    tools:context="fr.wildcodeschool.vyfe.CreateGridFragment">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="330dp"
+        tools:layout_editor_absoluteY="315dp">
+
+        <LinearLayout
+            android:id="@+id/ll_import_grid2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginStart="8dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_gravity="center">
+
+
+                <TextView
+                    android:id="@+id/tv_create_grid"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:padding="5dp"
+                    android:text="@string/create_grid"
+                    android:textColor="@android:color/background_light"
+                    android:textSize="20sp"
+                    app:fontFamily="@font/roboto_bold" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="20dp">
+
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingTop="20dp">
+
+                    <TextView
+                        android:id="@+id/tv_title_grid"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:padding="10dp"
+                        android:paddingRight="20dp"
+                        android:text="@string/title_grid"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        app:fontFamily="@font/roboto" />
+
+                    <EditText
+                        android:id="@+id/et_grid_title2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/style_input"
+                        android:ems="10"
+                        android:hint="@string/grid_title"
+                        android:inputType="textPersonName"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/white"
+                        android:textSize="20sp"
+                        app:fontFamily="@font/roboto" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/new_event2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:paddingTop="20dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/recycler_view">
+
+                    <ImageView
+                        android:id="@+id/fab_add_moment2"
+                        android:layout_width="60dp"
+                        android:layout_height="60dp"
+                        android:clickable="true"
+                        android:src="@drawable/icons8_plus_96"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/recycler_view" />
+
+
+                    <TextView
+                        android:id="@+id/tv_add_tag2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="8dp"
+                        android:layout_marginRight="8dp"
+                        android:text="@string/add_evenement"
+                        android:textColor="@android:color/white"
+                        android:textSize="20sp"
+                        app:fontFamily="@font/roboto"
+                        app:layout_constraintStart_toEndOf="@+id/fab_add_moment"
+                        app:layout_constraintTop_toBottomOf="@+id/recycler_view" />
+                </LinearLayout>
+
+                <android.support.v7.widget.RecyclerView
+
+                    android:id="@+id/recycler_view2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginRight="32dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="16dp"
+                    android:padding="10dp"
+                    android:scrollbars="vertical"
+                    android:visibility="gone"
+                    tools:visibility="invisible" />
+
+                <Button
+                    android:id="@+id/btn_save_session"
+                    style="@style/Widget.AppCompat.Button.Small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="32dp"
+                    android:background="@drawable/style_button"
+                    android:fontFamily="@font/roboto_bold"
+                    android:padding="5dp"
+                    android:paddingTop="15dp"
+                    android:text="@string/save_grid"
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:visibility="invisible" />
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</android.support.constraint.ConstraintLayout>
