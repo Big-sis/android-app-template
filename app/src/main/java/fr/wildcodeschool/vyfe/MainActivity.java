@@ -11,6 +11,7 @@ import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
@@ -44,6 +45,7 @@ public class MainActivity extends AppCompatActivity {
     // Operation = 24(day) * 60(hour) * 60(minute) * 1000 (millis)
     private static final int TIME_IN_DAYS = 86400000;
     public static boolean mMulti = false;
+    List<ScanResult> wifiList;
     private WifiManager wifiManager;
     private List<ScanResult> results;
     private ArrayList<String> arrayList = new ArrayList<>();
@@ -52,9 +54,9 @@ public class MainActivity extends AppCompatActivity {
             Manifest.permission.RECORD_AUDIO,
             Manifest.permission.CAMERA,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.READ_EXTERNAL_STORAGE
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.ACCESS_FINE_LOCATION
     };
-
     private boolean mPermission;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private String todayDate;
@@ -62,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
     private boolean secondMessage;
     private String networkSSID;
     private String networkPass;
-    private boolean mConnexionRasberry = false;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -207,11 +209,19 @@ public class MainActivity extends AppCompatActivity {
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED
                 || ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
-                || ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                || ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
             ActivityCompat.requestPermissions(this,
                     permissions,
                     PERMISSIONS_REQUEST);
+        }
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 87);
+            }
         }
     }
 
@@ -266,7 +276,7 @@ public class MainActivity extends AppCompatActivity {
 
         networkSSID = MainActivity.this.getString(R.string.networkSSID);
 
-        RasberryConnexion.setConnexion(MainActivity.this, new RasberryConnexion.wifiResponse() {
+        RasberryConnexion.setConnexionRaspberry(MainActivity.this, new RasberryConnexion.wifiResponse() {
             @Override
             public void onSuccess() {
                 Intent intent = new Intent(MainActivity.this, StartActivity.class);
@@ -277,12 +287,32 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onError() {
 
+
                 final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setMessage("Pour lancer une session multiple \nVous devez brancher le boitier de connexion Vyfe\n\n Brancher le boitier?")
                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                connexionRasberry();
+                                Toast.makeText(MainActivity.this, "La connexion prend environ 1 min ...", Toast.LENGTH_LONG).show();
+
+                                //TODO: mettre timer pour faire patienter ?? ou un gif de chargement ?
+
+                                final boolean scanWifiRaspberry = RasberryConnexion.getScanWifi(MainActivity.this);
+                                if (scanWifiRaspberry) {
+                                    Toast.makeText(MainActivity.this, "Vous pouvez à présent lancer une session collaborative", Toast.LENGTH_LONG).show();
+                                }
+
+
+                                new Handler().postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        startActivity(new Intent(MainActivity.this, MainActivity.class));
+                                        if (scanWifiRaspberry)
+                                            Toast.makeText(MainActivity.this, "Vous pouvez à présent lancer une session collaborative", Toast.LENGTH_LONG).show();
+                                        else
+                                            Toast.makeText(MainActivity.this, "La connexion n'a pu avoir lieu,\n Vérifier que le boitier Vyfe soit bien branché", Toast.LENGTH_LONG).show();
+                                    }
+                                }, 600000);
                             }
                         })
                         .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
@@ -311,5 +341,6 @@ public class MainActivity extends AppCompatActivity {
         final WifiManager wifiManager = (WifiManager) MainActivity.this.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         wifiManager.addNetwork(conf);
     }
+
 
 }

@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
+import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -33,6 +34,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class StartActivity extends AppCompatActivity {
@@ -131,6 +133,7 @@ public class StartActivity extends AppCompatActivity {
             if (wifi != null && wifi.equals('"' + networkSSID + '"')) {
                 Toast.makeText(StartActivity.this, "2", Toast.LENGTH_SHORT).show();
             }else Toast.makeText(StartActivity.this, "non", Toast.LENGTH_SHORT).show();
+
 
 
 
