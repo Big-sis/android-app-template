@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.ConnectivityManager;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
@@ -144,6 +143,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
         btnMultiSession.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
@@ -152,8 +152,10 @@ public class MainActivity extends AppCompatActivity {
                 confWifi();
 
                 //verififcation wifi actif
-                String connexionWifi = wifiManager.getConnectionInfo().getSupplicantState().toString();
-                if (connexionWifi.equals("DISCONNECTED")) {
+                // String connexionWifi = wifiManager.getConnectionInfo().getSupplicantState().toString();
+
+                int wifiState = wifiManager.getWifiState();
+                if (wifiState == 1) {
                     final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                     builder.setMessage(R.string.wifi_active)
                             .setPositiveButton(R.string.start_wifi, new DialogInterface.OnClickListener() {
@@ -161,7 +163,6 @@ public class MainActivity extends AppCompatActivity {
                                 public void onClick(DialogInterface dialog, int which) {
                                     wifiManager.setWifiEnabled(true);
                                     Toast.makeText(MainActivity.this, "Vous pouvez à present lancer une session", Toast.LENGTH_SHORT).show();
-
                                 }
                             })
                             .setNegativeButton(R.string.back, new DialogInterface.OnClickListener() {
@@ -171,13 +172,17 @@ public class MainActivity extends AppCompatActivity {
                                 }
                             })
                             .show();
-                } else if (connexionWifi.equals("COMPLETED")) {
-                    connexionRasberry();
+                } else if (wifiState == 3) {
 
-
+                    String wifiManagerConnectionInfo = wifiManager.getConnectionInfo().getSSID();
+                    if (!wifiManagerConnectionInfo.equals('"' + networkSSID + '"'))
+                        connexionRasberry();
+                    else {
+                        Intent intent = new Intent(MainActivity.this, StartActivity.class);
+                        intent.putExtra("multiSession", "multiSession");
+                        startActivity(intent);
+                    }
                 }
-
-
             }
         });
 
@@ -260,40 +265,20 @@ public class MainActivity extends AppCompatActivity {
     public void connexionRasberry() {
 
         networkSSID = MainActivity.this.getString(R.string.networkSSID);
-        setConnexion();
 
-        RasberryConnexion.setConnexion(MainActivity.this, new RasberryConnexion.rasberryResponse() {
+        RasberryConnexion.setConnexion(MainActivity.this, new RasberryConnexion.wifiResponse() {
             @Override
-            public void onSuccess(boolean connexion) {
-
-                Toast.makeText(MainActivity.this, "En cours de connexion", Toast.LENGTH_SHORT).show();
-                RasberryConnexion.getConnexion(MainActivity.this, new RasberryConnexion.rasberryResponse() {
-                    @Override
-                    public void onSuccess(boolean connexion) {
-                        
-                    }
-
-                    @Override
-                    public void onError(boolean connexion) {
-
-                    }
-
-                    @Override
-                    public void onConnected() {
-
-                        Toast.makeText(MainActivity.this, "Connecté au rasberry", Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(MainActivity.this, StartActivity.class);
-                        intent.putExtra("multiSession", "multiSession");
-                        startActivity(intent);
-                    }
-                });
+            public void onSuccess() {
+                Intent intent = new Intent(MainActivity.this, StartActivity.class);
+                intent.putExtra("multiSession", "multiSession");
+                startActivity(intent);
             }
 
             @Override
-            public void onError(boolean connexion) {
+            public void onError() {
 
                 final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setMessage("Pour lancer une session multiple \nVous devez brancher le boitier de connexion Vyfe\n\nBrancher le boitier?")
+                builder.setMessage("Pour lancer une session multiple \nVous devez brancher le boitier de connexion Vyfe\n\n Brancher le boitier?")
                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -307,20 +292,8 @@ public class MainActivity extends AppCompatActivity {
                             }
                         })
                         .show();
-
-            }
-
-            @Override
-            public void onConnected() {
-
-
-
-
             }
         });
-
-
-
     }
 
 
@@ -338,28 +311,5 @@ public class MainActivity extends AppCompatActivity {
         final WifiManager wifiManager = (WifiManager) MainActivity.this.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         wifiManager.addNetwork(conf);
     }
-
-
-
-    public void setConnexion() {
-        networkSSID = MainActivity.this.getString(R.string.networkSSID);
-
-        //Connexion Rasberry
-        wifiManager = (WifiManager) MainActivity.this.getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        assert wifiManager != null;
-        List<WifiConfiguration> list = wifiManager.getConfiguredNetworks();
-        for (WifiConfiguration i : list) {
-            if (i.SSID != null && i.SSID.equals("\"" + networkSSID + "\"")) {
-                wifiManager.disconnect();
-                wifiManager.enableNetwork(i.networkId, true);
-                wifiManager.reconnect();
-
-                break;
-            }
-
-        }
-
-    }
-
 
 }
