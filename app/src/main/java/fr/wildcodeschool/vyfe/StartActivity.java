@@ -121,9 +121,10 @@ public class StartActivity extends AppCompatActivity {
         if ("multiSession".equals(multiSession)) {
             buttonGo.setText(R.string.next);
 
+            /**
             String wifiManagerConnectionInfo = wifiManager.getConnectionInfo().getSSID();
             if (wifiManagerConnectionInfo.equals('"' + networkSSID + '"')){
-               // Toast.makeText(this, "Vous êtes co au rasberry", Toast.LENGTH_SHORT).show();
+               Toast.makeText(this, "Vous êtes co au rasberry", Toast.LENGTH_SHORT).show();
             }
 
 
@@ -131,10 +132,10 @@ public class StartActivity extends AppCompatActivity {
             assert connManager != null;
             final String wifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getExtraInfo();
             if (wifi != null && wifi.equals('"' + networkSSID + '"')) {
-                Toast.makeText(StartActivity.this, "2", Toast.LENGTH_SHORT).show();
+                Toast.makeText(StartActivity.this, "yes", Toast.LENGTH_SHORT).show();
             }else Toast.makeText(StartActivity.this, "non", Toast.LENGTH_SHORT).show();
 
-
+            **/
 
 
 

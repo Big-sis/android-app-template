@@ -156,8 +156,8 @@ public class MainActivity extends AppCompatActivity {
                 //verififcation wifi actif
                 // String connexionWifi = wifiManager.getConnectionInfo().getSupplicantState().toString();
 
-                int wifiState = wifiManager.getWifiState();
-                if (wifiState == 1) {
+                boolean wifiEnabled = wifiManager.isWifiEnabled();
+                if (!wifiEnabled) {
                     final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                     builder.setMessage(R.string.wifi_active)
                             .setPositiveButton(R.string.start_wifi, new DialogInterface.OnClickListener() {
@@ -174,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
                                 }
                             })
                             .show();
-                } else if (wifiState == 3) {
+                } else  {
 
                     String wifiManagerConnectionInfo = wifiManager.getConnectionInfo().getSSID();
                     if (!wifiManagerConnectionInfo.equals('"' + networkSSID + '"'))
@@ -276,7 +276,7 @@ public class MainActivity extends AppCompatActivity {
 
         networkSSID = MainActivity.this.getString(R.string.networkSSID);
 
-        RasberryConnexion.setConnexionRaspberry(MainActivity.this, new RasberryConnexion.wifiResponse() {
+        RaspberryConnexion.setConnexionRaspberry(MainActivity.this, new RaspberryConnexion.wifiResponse() {
             @Override
             public void onSuccess() {
                 Intent intent = new Intent(MainActivity.this, StartActivity.class);
@@ -287,32 +287,25 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onError() {
 
-
                 final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setMessage("Pour lancer une session multiple \nVous devez brancher le boitier de connexion Vyfe\n\n Brancher le boitier?")
                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 Toast.makeText(MainActivity.this, "La connexion prend environ 1 min ...", Toast.LENGTH_LONG).show();
-
-                                //TODO: mettre timer pour faire patienter ?? ou un gif de chargement ?
-
-                                final boolean scanWifiRaspberry = RasberryConnexion.getScanWifi(MainActivity.this);
-                                if (scanWifiRaspberry) {
-                                    Toast.makeText(MainActivity.this, "Vous pouvez à présent lancer une session collaborative", Toast.LENGTH_LONG).show();
-                                }
-
+                                //TODO: mettre un gif de chargement durant 1 min qui prend tout l'ecran?
+                                //apparition gif
 
                                 new Handler().postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
-                                        startActivity(new Intent(MainActivity.this, MainActivity.class));
-                                        if (scanWifiRaspberry)
-                                            Toast.makeText(MainActivity.this, "Vous pouvez à présent lancer une session collaborative", Toast.LENGTH_LONG).show();
-                                        else
-                                            Toast.makeText(MainActivity.this, "La connexion n'a pu avoir lieu,\n Vérifier que le boitier Vyfe soit bien branché", Toast.LENGTH_LONG).show();
+
+                                        //disparition gif
+                                       Intent intent = getIntent();
+                                       finish();
+                                       startActivity(intent);
                                     }
-                                }, 600000);
+                                }, 60000);
                             }
                         })
                         .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {

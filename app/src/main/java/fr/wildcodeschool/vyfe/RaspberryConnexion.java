@@ -10,7 +10,7 @@ import android.support.annotation.RequiresApi;
 
 import java.util.List;
 
-public class RasberryConnexion {
+public class RaspberryConnexion {
     private static String networkSSID;
     private static  WifiManager wifiManager;
 
