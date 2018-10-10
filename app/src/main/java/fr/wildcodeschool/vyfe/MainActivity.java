@@ -23,6 +23,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -174,7 +175,7 @@ public class MainActivity extends AppCompatActivity {
                                 }
                             })
                             .show();
-                } else  {
+                } else {
 
                     String wifiManagerConnectionInfo = wifiManager.getConnectionInfo().getSSID();
                     if (!wifiManagerConnectionInfo.equals('"' + networkSSID + '"'))
@@ -286,6 +287,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onError() {
+                final ProgressBar progressBarLoadingRaspberry = findViewById(R.id.progress_bar_loading_raspberry);
+
 
                 final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setMessage("Pour lancer une session multiple \nVous devez brancher le boitier de connexion Vyfe\n\n Brancher le boitier?")
@@ -293,17 +296,15 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 Toast.makeText(MainActivity.this, "La connexion prend environ 1 min ...", Toast.LENGTH_LONG).show();
-                                //TODO: mettre un gif de chargement durant 1 min qui prend tout l'ecran?
-                                //apparition gif
+                                progressBarLoadingRaspberry.setVisibility(View.VISIBLE);
 
                                 new Handler().postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
-
-                                        //disparition gif
-                                       Intent intent = getIntent();
-                                       finish();
-                                       startActivity(intent);
+                                        progressBarLoadingRaspberry.setVisibility(View.INVISIBLE);
+                                        Intent intent = getIntent();
+                                        finish();
+                                        startActivity(intent);
                                     }
                                 }, 60000);
                             }

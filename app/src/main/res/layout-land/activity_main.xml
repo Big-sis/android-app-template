@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+
     <ScrollView
         android:id="@+id/scrollView2"
         android:layout_width="match_parent"
@@ -70,8 +71,7 @@
 
                     <LinearLayout
                         android:id="@+id/btn_create_grid"
-                        android:layout_width="0dp
-"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="15dp"
                         android:layout_weight="0.5"
@@ -201,6 +201,23 @@
             </LinearLayout>
         </android.support.constraint.ConstraintLayout>
     </ScrollView>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ProgressBar
+            android:id="@+id/progress_bar_loading_raspberry"
+            android:layout_width="400dp"
+            android:layout_height="400dp"
+            android:progressDrawable="@drawable/vyfe_logo"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </android.support.constraint.ConstraintLayout>
 
 
 </android.support.constraint.ConstraintLayout>
