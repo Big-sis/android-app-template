@@ -18,14 +18,18 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -287,7 +291,8 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onError() {
-                final ProgressBar progressBarLoadingRaspberry = findViewById(R.id.progress_bar_loading_raspberry);
+                final ImageView progressRoue = findViewById(R.id.logo_multi_session);
+
 
 
                 final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
@@ -296,12 +301,14 @@ public class MainActivity extends AppCompatActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 Toast.makeText(MainActivity.this, "La connexion prend environ 1 min ...", Toast.LENGTH_LONG).show();
-                                progressBarLoadingRaspberry.setVisibility(View.VISIBLE);
+                                progressRoue.setMaxWidth(convertToDp(100));
+                                progressRoue.setMaxHeight(convertToDp(100));
+                                Glide.with(MainActivity.this).load(R.drawable.roue2).into(progressRoue);
+
 
                                 new Handler().postDelayed(new Runnable() {
                                     @Override
                                     public void run() {
-                                        progressBarLoadingRaspberry.setVisibility(View.INVISIBLE);
                                         Intent intent = getIntent();
                                         finish();
                                         startActivity(intent);
@@ -336,5 +343,7 @@ public class MainActivity extends AppCompatActivity {
         wifiManager.addNetwork(conf);
     }
 
-
+    private int convertToDp(int size) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, size, getResources().getDisplayMetrics());
+    }
 }
