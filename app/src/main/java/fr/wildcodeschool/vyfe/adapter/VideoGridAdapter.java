@@ -1,0 +1,103 @@
+package fr.wildcodeschool.vyfe.adapter;
+
+import android.content.Context;
+import android.content.Intent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+
+import fr.wildcodeschool.vyfe.CustomVideoFilter;
+import fr.wildcodeschool.vyfe.R;
+import fr.wildcodeschool.vyfe.activity.SelectVideoActivity;
+import fr.wildcodeschool.vyfe.model.SessionModel;
+import fr.wildcodeschool.vyfe.viewModel.SingletonSessions;
+
+public class VideoGridAdapter extends BaseAdapter implements Filterable {
+
+    private final Context mContext;
+    public ArrayList<SessionModel> mSessions;
+
+    private ArrayList<SessionModel> filterList;
+    private CustomVideoFilter filter;
+
+    private SingletonSessions mSingletonSessions;
+
+    public VideoGridAdapter(Context context, ArrayList<SessionModel> sessions) {
+        this.mContext = context;
+        this.mSessions = sessions;
+        this.filterList = sessions;
+    }
+
+    @Override
+    public int getCount() {
+        return mSessions.size();
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return position;
+    }
+
+    @Override
+    public Object getItem(int position) {
+        return mSessions.get(position);
+    }
+
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        final SessionModel session = this.mSessions.get(position);
+        mSingletonSessions = SingletonSessions.getInstance();
+
+        if (convertView == null) {
+            final LayoutInflater layoutInflater = LayoutInflater.from(mContext);
+            convertView = layoutInflater.inflate(R.layout.item_video, null);
+        }
+
+        //Test avec seulement le nom
+        final TextView tvName = convertView.findViewById(R.id.title_video);
+        tvName.setText(session.getName());
+
+        final TextView tvDate = convertView.findViewById(R.id.video_date);
+        tvDate.setText(session.getDate());
+
+        ImageView videoStatus = convertView.findViewById(R.id.img_upload_video);
+
+        String lRegex = "^(https?)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
+
+        if (session.getVideoLink().equals(lRegex)) {
+            videoStatus.setImageResource(R.drawable.icons8_cloud_v_rifi__96);
+        }
+
+
+
+        convertView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mSingletonSessions.setFileName(session.getVideoLink());
+                mSingletonSessions.setIdSession(session.getIdSession());
+                mSingletonSessions.setTitleSession(session.getName());
+                Intent intent = new Intent(mContext, SelectVideoActivity.class);
+                mContext.startActivity(intent);
+            }
+        });
+
+
+        return convertView;
+    }
+
+    @Override
+    public Filter getFilter() {
+        if (filter == null) {
+            filter = new CustomVideoFilter(filterList, this);
+        }
+        return filter;
+    }
+}

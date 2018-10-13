@@ -1,10 +1,11 @@
 package fr.wildcodeschool.vyfe;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+
+import fr.wildcodeschool.vyfe.helper.ColorHelper;
 
 import static org.junit.Assert.*;
 

@@ -8,7 +8,6 @@ import android.view.View;
 
 public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
 
-    private final int FLASH_DURATION_MS = 100;
     private GestureDetector gestureDetector;
     private ClickListener clickListener;
 

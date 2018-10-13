@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+//TODO : Classe à supprimer quand les données seront gérées par des viewModels
 public class RestartSession implements Parcelable {
 
     private String nameTitleSession;

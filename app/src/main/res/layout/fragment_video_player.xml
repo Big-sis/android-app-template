@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <VideoView
+        android:id="@+id/video_view_selected"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="1920:1080"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/video_control"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="@+id/video_view_selected"
+        app:layout_constraintEnd_toEndOf="@+id/video_view_selected"
+        app:layout_constraintTop_toTopOf="@+id/video_view_selected">
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/bt_play_selected"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:src="@android:drawable/ic_media_play"
+            app:backgroundTint="@color/color12" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/bt_replay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:longClickable="false"
+            app:backgroundTint="@color/color2"
+            app:srcCompat="@drawable/replay_black" />
+
+        <fr.wildcodeschool.vyfe.view.StopwatchView
+            android:id="@+id/chronometer_play"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:background="@color/colorCharcoal"
+            android:padding="10dp"
+            android:textColor="@color/colorFadedOrange"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

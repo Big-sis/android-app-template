@@ -60,7 +60,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
     }
 
-    interface SurfaceCallback {
+    public interface SurfaceCallback {
         void onSurfaceCreated();
     }
 }

@@ -1,17 +1,15 @@
 package fr.wildcodeschool.vyfe;
 
 import android.content.Context;
-import android.os.SystemClock;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import java.time.Clock;
+import fr.wildcodeschool.vyfe.view.StopwatchView;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.doReturn;
 
 public class StopwatchViewTest {
 

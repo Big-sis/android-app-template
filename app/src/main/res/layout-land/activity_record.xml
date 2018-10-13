@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg"
-    tools:context=".RecordActivity">
+    tools:context=".activity.RecordActivity">
 
     <include
         android:id="@+id/appBar"
@@ -60,7 +60,7 @@
                         app:backgroundTint="@color/color4" />
 
 
-                    <fr.wildcodeschool.vyfe.StopwatchView
+                    <fr.wildcodeschool.vyfe.view.StopwatchView
                         android:id="@+id/chronometer"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
