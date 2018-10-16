@@ -18,6 +18,7 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import fr.wildcodeschool.vyfe.PrepareSessionActivity;
 import fr.wildcodeschool.vyfe.helper.ColorHelper;
 import fr.wildcodeschool.vyfe.ColorNotFoundException;
 import fr.wildcodeschool.vyfe.adapter.CustomAdapter;
@@ -149,7 +150,7 @@ public class AddGridActivity extends AppCompatActivity implements AdapterView.On
             public void onClick(View view) {
                 mSingletonTags.setmTagsListAdd(mTagModelListAdd);
                 colors.clear();
-                Intent intent = new Intent(AddGridActivity.this, CreateSessionActivity.class);
+                Intent intent = new Intent(AddGridActivity.this, PrepareSessionActivity.class);
                 intent.putExtra("fromAdd", "fromAdd");
                 startActivity(intent);
                 finish();
@@ -178,7 +179,6 @@ public class AddGridActivity extends AppCompatActivity implements AdapterView.On
     @Override
     public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
         if (position != 0) {
-
 
             mfinalcolor = color[position];
             nameColorTag = nameDrawable[position];

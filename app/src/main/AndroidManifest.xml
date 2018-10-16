@@ -25,7 +25,7 @@
         <activity
             android:name=".activity.MainActivity"
             android:screenOrientation="userLandscape"
-            android:windowSoftInputMode="stateHidden|adjustPan"/>
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".activity.RecordActivity"
             android:screenOrientation="userLandscape" />
@@ -35,10 +35,8 @@
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".activity.SelectVideoActivity"
-            android:screenOrientation="userLandscape">
-
-        </activity>
-
+            android:screenOrientation="userLandscape"
+            android:windowSoftInputMode="stateHidden|adjustPan"/>
         <activity
             android:name=".activity.ConnexionActivity"
             android:screenOrientation="userLandscape"
@@ -56,10 +54,7 @@
         <activity
             android:name=".activity.CreateSessionActivity"
             android:screenOrientation="userLandscape"
-            android:windowSoftInputMode="stateHidden|adjustPan"
-            >
-        </activity>
-
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".activity.PlayVideoActivity"
             android:screenOrientation="userLandscape" />
@@ -74,6 +69,12 @@
             android:screenOrientation="userLandscape"
             android:theme="@style/AppTheme.NoActionBar"
             android:windowSoftInputMode="stateHidden|adjustPan" />
+
+        <activity
+            android:name=".PrepareSessionActivity"
+            android:screenOrientation="userLandscape"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
+
 
         <meta-data
             android:name="preloaded_fonts"

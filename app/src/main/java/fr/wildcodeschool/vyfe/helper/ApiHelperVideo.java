@@ -87,12 +87,14 @@ public class ApiHelperVideo {
 
                     SessionModel sessionsModel = snapshot.getValue(SessionModel.class);
 
-                    for (String nameFileExternalStorage : filesExternalStorage) {
-                        String nameCache = racineExternalStorage +"/"+ nameFileExternalStorage;
-                        assert sessionsModel != null;
-                        if (sessionsModel.getVideoLink().equals(nameCache)) {
-                            mSessionsModelList.add(sessionsModel);
+                    if((filesExternalStorage!=null)){
+                        for (String nameFileExternalStorage : filesExternalStorage) {
+                            String nameCache = racineExternalStorage +"/"+ nameFileExternalStorage;
+                            assert sessionsModel != null;
+                            if (sessionsModel.getVideoLink().equals(nameCache)) {
+                                mSessionsModelList.add(sessionsModel);
                             //TODO: mettre un message a utilisateur plus dispo ou les faire apparaitre en plus clair
+                            }
                         }
                     }
 

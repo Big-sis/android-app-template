@@ -12,6 +12,8 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
@@ -28,6 +30,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import fr.wildcodeschool.vyfe.Constants;
+import fr.wildcodeschool.vyfe.PrepareSessionActivity;
 import fr.wildcodeschool.vyfe.R;
 import fr.wildcodeschool.vyfe.viewModel.SingletonFirebase;
 
@@ -58,6 +61,7 @@ public class MainActivity extends VyfeActivity {
         LinearLayout btnStartSession = findViewById(R.id.btn_start_session);
         LinearLayout btnMultiSession = findViewById(R.id.btn_multi_session);
         LinearLayout btnVideos = findViewById(R.id.btn_videos);
+        LinearLayout btnCreateGrid = findViewById(R.id.btn_create_grid);
 
         FirebaseDatabase mDatabase = SingletonFirebase.getInstance().getDatabase();
         String authUserId = SingletonFirebase.getInstance().getUid();
@@ -139,6 +143,14 @@ public class MainActivity extends VyfeActivity {
             }
         });
 
+        btnCreateGrid.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, PrepareSessionActivity.class);
+                startActivity(intent);
+            }
+        });
+
         ActivityCompat.requestPermissions(this, permissions, PERMISSIONS_REQUEST);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED
@@ -177,4 +189,11 @@ public class MainActivity extends VyfeActivity {
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.settings, menu);
+        MenuItem itemLogout = menu.findItem(R.id.logout);
+        itemLogout.setVisible(true);
+        return true;
+    }
 }
