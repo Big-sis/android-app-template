@@ -1,8 +1,12 @@
 package fr.wildcodeschool.vyfe;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.wifi.ScanResult;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -30,6 +34,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class StartActivity extends AppCompatActivity {
@@ -56,6 +61,7 @@ public class StartActivity extends AppCompatActivity {
     private ArrayList<String> mIdTagSet = new ArrayList<>();
     private Intent intent;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -80,6 +86,8 @@ public class StartActivity extends AppCompatActivity {
         mWidth = display.getWidth();
         mHeigth = display.getHeight();
         final String authUserId = SingletonFirebase.getInstance().getUid();
+        WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
+         final String networkSSID =StartActivity.this.getString(R.string.networkSSID);;
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.start_session);
@@ -112,6 +120,25 @@ public class StartActivity extends AppCompatActivity {
         final String multiSession = getIntent().getStringExtra("multiSession");
         if ("multiSession".equals(multiSession)) {
             buttonGo.setText(R.string.next);
+
+            /**
+            String wifiManagerConnectionInfo = wifiManager.getConnectionInfo().getSSID();
+            if (wifiManagerConnectionInfo.equals('"' + networkSSID + '"')){
+               Toast.makeText(this, "Vous êtes co au rasberry", Toast.LENGTH_SHORT).show();
+            }
+
+
+                    ConnectivityManager connManager = (ConnectivityManager) this.getSystemService(CONNECTIVITY_SERVICE);
+            assert connManager != null;
+            final String wifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getExtraInfo();
+            if (wifi != null && wifi.equals('"' + networkSSID + '"')) {
+                Toast.makeText(StartActivity.this, "yes", Toast.LENGTH_SHORT).show();
+            }else Toast.makeText(StartActivity.this, "non", Toast.LENGTH_SHORT).show();
+
+            **/
+
+
+
         }
 
 
