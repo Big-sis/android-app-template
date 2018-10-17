@@ -1,7 +1,9 @@
 package fr.wildcodeschool.vyfe;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -59,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout btnStartSession = findViewById(R.id.btn_start_session);
         LinearLayout btnMultiSession = findViewById(R.id.btn_multi_session);
         LinearLayout btnVideos = findViewById(R.id.btn_videos);
+        LinearLayout btnCreateGrid = findViewById(R.id.btn_create_grid);
 
         FirebaseDatabase mDatabase = SingletonFirebase.getInstance().getDatabase();
         String authUserId = SingletonFirebase.getInstance().getUid();
@@ -140,6 +143,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        btnCreateGrid.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, PreparedSessionActivity.class);
+                startActivity(intent);
+            }
+        });
+
         ActivityCompat.requestPermissions(this, permissions, PERMISSIONS_REQUEST);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED
@@ -151,6 +162,7 @@ public class MainActivity extends AppCompatActivity {
                     PERMISSIONS_REQUEST);
         }
     }
+
 
 
     @Override

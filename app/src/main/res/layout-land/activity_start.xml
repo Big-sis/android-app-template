@@ -10,300 +10,173 @@
     <ScrollView
         android:id="@+id/scrool_main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <include
-                android:id="@+id/appBar"
-                layout="@layout/toolbar" />
-
-            <TextView
-                android:id="@+id/tv_information"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="40dp"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="36dp"
-                android:text="@string/info_session"
-                android:textColor="@color/white"
-                android:textSize="24sp"
-                app:fontFamily="@font/roboto_bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/appBar" />
-
-            <TextView
-                android:id="@+id/tv_title_session"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="40dp"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="30dp"
-                android:text="@string/title_session"
-                android:textColor="@color/white"
-                android:textSize="20sp"
-                app:fontFamily="@font/roboto"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/tv_information" />
-
-            <EditText
-                android:id="@+id/et_video_title2"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_marginLeft="40dp"
-                android:layout_marginStart="40dp"
-                android:background="@drawable/style_input"
-                android:ems="10"
-                android:hint="@string/title_video"
-                android:inputType="textPersonName"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white"
-                android:textSize="20sp"
-                app:fontFamily="@font/roboto"
-                app:layout_constraintBottom_toBottomOf="@+id/tv_title_session"
-                app:layout_constraintStart_toEndOf="@+id/tv_title_session"
-                app:layout_constraintTop_toTopOf="@+id/tv_title_session" />
-
             <LinearLayout
-                android:id="@+id/linearLayout2"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:orientation="horizontal"
-                app:layout_constraintTop_toBottomOf="@+id/et_video_title2">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <include
+                    android:id="@+id/appBar"
+                    layout="@layout/toolbar" />
+
+                <TextView
+                    android:id="@+id/tv_information"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="36dp"
+                    android:text="@string/info_session"
+                    android:textColor="@color/white"
+                    android:textSize="24sp"
+                    app:fontFamily="@font/roboto_bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/appBar" />
 
                 <LinearLayout
-                    android:id="@+id/linear_layout_left"
-                    android:layout_width="0dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.5">
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"
+                    android:layout_marginEnd="40dp"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginTop="20dp"
+                    android:orientation="horizontal">
 
-                    <LinearLayout
-                        android:id="@+id/ll_import_grid"
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/tv_title_session"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:orientation="vertical"
-                        app:layout_constraintStart_toStartOf="parent">
+                        android:text="@string/create_title_video"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        app:fontFamily="@font/roboto"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_information" />
 
-                        <RadioButton
-                            android:id="@+id/radio_Button_new"
-                            style="@style/Widget.AppCompat.CompoundButton.CheckBox"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="32dp"
-                            android:layout_marginStart="32dp"
-                            android:layout_marginTop="30dp"
-                            android:checked="true"
-                            android:includeFontPadding="false"
-                            android:text="@string/new_grid2"
-                            android:textColor="@color/white"
-                            android:textSize="20sp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent" />
-
-                        <TextView
-                            android:id="@+id/tv_title_grid"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="40dp"
-                            android:layout_marginStart="40dp"
-                            android:layout_marginTop="30dp"
-                            android:text="@string/title_grid"
-                            android:textColor="@color/white"
-                            android:textSize="20sp"
-                            app:fontFamily="@font/roboto"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/tv_information" />
-
-                        <EditText
-                            android:id="@+id/et_grid_title"
-                            android:layout_width="wrap_content"
-                            android:layout_height="40dp"
-                            android:layout_marginLeft="32dp"
-                            android:layout_marginStart="32dp"
-                            android:layout_marginTop="20dp"
-                            android:background="@drawable/style_input"
-                            android:ems="10"
-                            android:hint="@string/grid_title"
-                            android:inputType="textPersonName"
-                            android:textColor="@color/white"
-                            android:textColorHint="@color/white"
-                            android:textSize="20sp"
-                            app:fontFamily="@font/roboto"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/radio_Button_new" />
-
-                        <LinearLayout
-                            android:id="@+id/new_event"
-                            android:layout_width="wrap_content"
-                            android:layout_height="match_parent"
-                            android:layout_marginLeft="32dp"
-                            android:layout_marginStart="32dp"
-                            android:layout_marginTop="20dp"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/recycler_view">
-
-                            <ImageView
-                                android:id="@+id/fab_add_moment"
-                                android:layout_width="60dp"
-                                android:layout_height="60dp"
-                                android:clickable="true"
-                                android:src="@drawable/icons8_plus_96"
-                                app:layout_constraintStart_toStartOf="parent"
-                                app:layout_constraintTop_toBottomOf="@+id/recycler_view" />
-
-
-                            <TextView
-                                android:id="@+id/tv_add_tag"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center_vertical"
-                                android:layout_marginLeft="8dp"
-                                android:layout_marginRight="8dp"
-                                android:text="@string/add_evenement"
-                                android:textColor="@android:color/white"
-                                android:textSize="20sp"
-                                app:fontFamily="@font/roboto"
-                                app:layout_constraintStart_toEndOf="@+id/fab_add_moment"
-                                app:layout_constraintTop_toBottomOf="@+id/recycler_view" />
-                        </LinearLayout>
-
-                        <android.support.v7.widget.RecyclerView
-
-                            android:id="@+id/recycler_view"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginEnd="32dp"
-                            android:layout_marginLeft="32dp"
-                            android:layout_marginRight="32dp"
-                            android:layout_marginStart="32dp"
-                            android:layout_marginTop="16dp"
-                            android:scrollbars="vertical"
-                            android:visibility="gone"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/et_grid_title"
-                            tools:visibility="visible" />
-
-                    </LinearLayout>
-
+                    <EditText
+                        android:id="@+id/et_video_title2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="40dp"
+                        android:layout_marginLeft="40dp"
+                        android:layout_marginStart="40dp"
+                        android:background="@drawable/style_input"
+                        android:ems="10"
+                        android:hint="@string/title_video"
+                        android:inputType="textPersonName"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/white"
+                        android:textSize="20sp"
+                        app:fontFamily="@font/roboto"
+                        app:layout_constraintBottom_toBottomOf="@+id/tv_title_session"
+                        app:layout_constraintStart_toEndOf="@+id/tv_title_session"
+                        app:layout_constraintTop_toTopOf="@+id/tv_title_session" />
                 </LinearLayout>
 
-                <android.support.constraint.ConstraintLayout
-                    android:id="@+id/linear_layout_right"
-                    android:layout_width="0dp"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="0.5">
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginRight="40dp"
+                    android:layout_marginStart="40dp"
+                    android:layout_marginEnd="40dp"
+                    android:layout_marginTop="10dp"
+                    android:orientation="horizontal">
 
-
-                    <LinearLayout
-                        android:id="@+id/ll_create_grid"
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/tv_choose_grid"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
-                        android:clickable="true"
-                        android:orientation="vertical"
-                        tools:layout_editor_absoluteX="8dp">
+                        android:layout_marginTop="30dp"
+                        android:text="@string/grid_import"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        app:fontFamily="@font/roboto"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_information" />
 
-                        <RadioButton
-                            android:id="@+id/radio_button_insert"
-                            style="@style/Widget.AppCompat.CompoundButton.CheckBox"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="16dp"
-                            android:layout_marginLeft="32dp"
-                            android:layout_marginStart="32dp"
-                            android:layout_marginTop="30dp"
-                            android:cursorVisible="false"
-                            android:text="@string/grid_import"
-                            android:textColor="@color/white"
+                    <Spinner
+                        android:id="@+id/spinner_session_infos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="32dp"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="20dp"
+                        android:background="@drawable/style_input"
+                        android:visibility="visible"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/radio_button_insert" />
+                    <Button
+                        android:id="@+id/btn_intent_create_grid"
+                        android:alpha="0.5"
+                        android:layout_gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="32dp"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="20dp"
+                        android:layout_marginBottom="20dp"
+                        android:padding="5dp"
+                        android:text="@string/create_grid2"
+                        android:textColor="@color/black_de"
+                        android:textSize="16sp"
+                        android:background="@drawable/style_button_white"
+                        />
+                </LinearLayout>
 
-                            android:textSize="20sp"
-                            app:fontFamily="@font/roboto"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/tv_my_analyse" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingTop="10dp">
 
-                        <ProgressBar
-                            android:id="@+id/pb_load"
-                            style="?android:attr/progressBarStyle"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:visibility="gone" />
-
-                        <TextView
-                            android:id="@+id/tv_title_grid_import"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="40dp"
-                            android:layout_marginStart="40dp"
-                            android:layout_marginTop="10dp"
-                            android:text="Titre de la grille importée :"
-                            android:textColor="@color/white"
-                            android:textSize="20sp"
-                            android:visibility="gone"
-                            app:fontFamily="@font/roboto"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/tv_information" />
-
-                        <Spinner
-                            android:id="@+id/spinner_session_infos"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="32dp"
-                            android:layout_marginStart="32dp"
-                            android:layout_marginTop="20dp"
-                            android:background="@drawable/style_input"
-                            android:visibility="invisible"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/radio_button_insert" />
-
-                        <android.support.v7.widget.RecyclerView
-                            android:id="@+id/recycler_view_import"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginEnd="32dp"
-                            android:layout_marginLeft="32dp"
-                            android:layout_marginRight="32dp"
-                            android:layout_marginStart="32dp"
-                            android:layout_marginTop="16dp"
-                            android:scrollbars="vertical"
-                            android:visibility="visible"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toBottomOf="@+id/spinner_session_infos"
-                            tools:visibility="visible">
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycler_view_import"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="32dp"
+                        android:layout_marginLeft="32dp"
+                        android:layout_marginRight="32dp"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_weight="0.8"
+                        android:scrollbars="vertical"
+                        android:visibility="visible"
+                        tools:visibility="visible">
 
 
-                        </android.support.v7.widget.RecyclerView>
-
-
-                    </LinearLayout>
+                    </android.support.v7.widget.RecyclerView>
 
                     <Button
                         android:id="@+id/button_go"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        android:layout_marginBottom="8dp"
+                        android:layout_marginBottom="16dp"
                         android:layout_marginEnd="16dp"
                         android:layout_marginRight="16dp"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginTop="16dp"
                         android:background="@drawable/style_button"
                         android:padding="5dp"
                         android:text="@string/go"
                         android:textColor="@color/white"
                         android:textSize="18sp"
-                        app:fontFamily="@font/roboto"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/ll_create_grid" />
+                        app:fontFamily="@font/roboto" />
+                </LinearLayout>
 
-                </android.support.constraint.ConstraintLayout>
+
+
+
             </LinearLayout>
+
+
+
 
         </android.support.constraint.ConstraintLayout>
     </ScrollView>

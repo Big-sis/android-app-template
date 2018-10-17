@@ -140,7 +140,7 @@ public class AddGridActivity extends AppCompatActivity implements AdapterView.On
             public void onClick(View view) {
                 mSingletonTags.setmTagsListAdd(mTagModelListAdd);
                 colors.clear();
-                Intent intent = new Intent(AddGridActivity.this, StartActivity.class);
+                Intent intent = new Intent(AddGridActivity.this, PreparedSessionActivity.class);
                 intent.putExtra("fromAdd", "fromAdd");
                 startActivity(intent);
                 finish();
@@ -169,7 +169,6 @@ public class AddGridActivity extends AppCompatActivity implements AdapterView.On
     @Override
     public void onItemSelected(AdapterView<?> arg0, View arg1, int position, long id) {
         if (position != 0) {
-
 
             mfinalcolor = color[position];
             nameColorTag = nameDrawable[position];

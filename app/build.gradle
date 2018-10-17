@@ -11,6 +11,7 @@ android {
     }
     compileSdkVersion 27
     defaultConfig {
+        resConfigs "en", "fr"
         applicationId "fr.wildcodeschool.vyfe"
         minSdkVersion 15
         targetSdkVersion 26
