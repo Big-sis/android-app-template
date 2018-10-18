@@ -8,10 +8,10 @@
     <string name="edit">Edit</string>
     <string name="upload">Upload</string>
     <string name="information">Informations</string>
-    <string name="title_video">VIdeo Title</string>
-    <string name="start_session">Start session</string>
+    <string name="title_video">Video Title</string>
+    <string name="start_session">2- Start session</string>
     <string name="start_multi_session">Start multi session</string>
-    <string name="my_videos">My videos</string>
+    <string name="my_videos">3- My videos</string>
     <string name="search">Search</string>
     <string name="hello_user">Hello</string>
     <string name="connected">Connection</string>
@@ -19,7 +19,7 @@
     <string name="password">Password</string>
     <string name="lost_password">lost password</string>
     <string name="connected_maj">Log in</string>
-    <string name="info_session">Informations session</string>
+    <string name="info_session">Session information</string>
     <string name="add_description">Add description</string>
     <string name="my_analyse">My analysis window</string>
     <string name="grid_title">Analysis window title</string>
@@ -97,4 +97,13 @@
     <string name="save_session">Do you want to save the session?</string>
     <string name="url">http://vyfe.co/live/356</string>
     <string name="arrow">▼</string>
+    <string name="storagefree">Free storage</string>
+    <string name="pourcentage">" %"</string>
+    <string name="dont_save_session">"Not enough memory.    Free some space to store session "</string>
+    <string name="save_grid">Limited features</string>
+    <string name="fullstorage">" You should watch your storage ! Limited features"</string>
+    <string name="create_grid">Make new grid</string>
+    <string name="create_grid2">Create new grid</string>
+    <string name="create_title_video">"Give your session a title : "</string>
+    <string name="edit_grid">1- Make new grid</string>
 </resources>

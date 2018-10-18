@@ -8,10 +8,10 @@
     <string name="edit">Edit</string>
     <string name="upload">Upload</string>
     <string name="information">Informations</string>
-    <string name="title_video">VIdeo Title</string>
-    <string name="start_session">Start session</string>
+    <string name="title_video">Video Title</string>
+    <string name="start_session">2- Start session</string>
     <string name="start_multi_session">Start multi session</string>
-    <string name="my_videos">My videos</string>
+    <string name="my_videos">3- My videos</string>
     <string name="search">Search</string>
     <string name="hello_user">Hello</string>
     <string name="connected">Connection</string>
@@ -19,7 +19,7 @@
     <string name="password">Password</string>
     <string name="lost_password">lost password</string>
     <string name="connected_maj">Log in</string>
-    <string name="info_session">Session info</string>
+    <string name="info_session">Session information</string>
     <string name="add_description">Add description</string>
     <string name="my_analyse">My analysis window</string>
     <string name="grid_title">Analysis window title</string>

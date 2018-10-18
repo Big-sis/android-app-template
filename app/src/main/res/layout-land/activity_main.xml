@@ -69,8 +69,7 @@
 
                     <LinearLayout
                         android:id="@+id/btn_create_grid"
-                        android:layout_width="0dp
-"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_margin="15dp"
                         android:layout_weight="0.5"
@@ -90,7 +89,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="16dp"
-                            android:text="1- Créer votre grille d'observation"
+                            android:text="@string/edit_grid"
                             android:textColor="@color/white"
                             android:textSize="20sp"
                             app:fontFamily="@font/roboto_bold" />
