@@ -219,7 +219,6 @@ public class RecordActivity extends VyfeActivity {
                     @Override
                     public void onClick(View v) {
                         closeRecord();
-                        saveSession();
                         recordInProgress =false;
                         recordInProgress = false;
                         File file = new File(mFileName);
