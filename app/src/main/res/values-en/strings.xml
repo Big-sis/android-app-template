@@ -19,7 +19,7 @@
     <string name="password">Password</string>
     <string name="lost_password">lost password</string>
     <string name="connected_maj">Log in</string>
-    <string name="info_session">Informations session</string>
+    <string name="info_session">Session info</string>
     <string name="add_description">Add description</string>
     <string name="my_analyse">My analysis window</string>
     <string name="grid_title">Analysis window title</string>
@@ -97,4 +97,13 @@
     <string name="save_session">Do you want to save the session?</string>
     <string name="url">http://vyfe.co/live/356</string>
     <string name="arrow">▼</string>
+    <string name="storagefree">Free storage</string>
+    <string name="pourcentage"> %</string>
+    <string name="fullstorage">\nYou should watch your storage !\nLimited features</string>
+    <string name="dont_save_session">Not enough memory. \n\n Free some space to store session </string>
+    <string name="save_grid">Save grid</string>
+    <string name="create_grid">Make new grid</string>
+    <string name="create_grid2">Create new grid</string>
+    <string name="create_title_video">Give your session a title : </string>
+    <string name="edit_grid">1- Make new grid</string>
 </resources>
