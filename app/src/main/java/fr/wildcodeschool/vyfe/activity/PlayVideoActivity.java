@@ -15,6 +15,7 @@ import fr.wildcodeschool.vyfe.fragment.TimelineFragment;
 import fr.wildcodeschool.vyfe.fragment.VideoPlayerFragment;
 import fr.wildcodeschool.vyfe.R;
 import fr.wildcodeschool.vyfe.model.SessionModel;
+import fr.wildcodeschool.vyfe.model.SessionModelBDD2;
 import fr.wildcodeschool.vyfe.viewModel.PlayVideoViewModel;
 import fr.wildcodeschool.vyfe.viewModel.PlayVideoViewModelFactory;
 
@@ -42,9 +43,9 @@ public class PlayVideoActivity extends VyfeActivity implements LifecycleOwner {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        viewModel.getSession().observe(this, new Observer<SessionModel>() {
-            @Override
-            public void onChanged(@Nullable SessionModel sessionModel) {
+        viewModel.getSession().observe(this, new Observer<SessionModelBDD2>() {
+            @Override                       //TODO BDD2
+            public void onChanged(@Nullable SessionModelBDD2 sessionModel) {
                 getSupportActionBar().setTitle(sessionModel.getName());
             }
         });

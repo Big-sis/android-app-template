@@ -11,16 +11,15 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import fr.wildcodeschool.vyfe.R;
 import fr.wildcodeschool.vyfe.adapter.TimelineAdapter;
-import fr.wildcodeschool.vyfe.model.SessionModel;
+import fr.wildcodeschool.vyfe.adapter.TimelineAdapterBDD2;
+import fr.wildcodeschool.vyfe.model.SessionModelBDD2;
 import fr.wildcodeschool.vyfe.model.TagModel;
+import fr.wildcodeschool.vyfe.model.TagsSessionBB2;
 import fr.wildcodeschool.vyfe.viewModel.PlayVideoViewModel;
-
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
@@ -55,13 +54,17 @@ public class TimelineFragment extends Fragment {
                 mSeekBar.setProgress(position);
             }
         });
-
-        viewModel.getSession().observe(getActivity(), new Observer<SessionModel>() {
+                                                    //TODO : BDD2
+        viewModel.getSession().observe(getActivity(), new Observer<SessionModelBDD2>() {
             @Override
-            public void onChanged(@Nullable SessionModel session) {
-                if (session.getTags() != null) {
-                    List<TagModel> taglist = new ArrayList<TagModel>(session.getTags().values());
-                    recyclerView.setAdapter(new TimelineAdapter(taglist, session.getDuration()));
+            public void onChanged(@Nullable SessionModelBDD2 session) {
+             //TODO: BDD2
+                if (session.getTagsSessions() != null) {
+                    List<TagsSessionBB2> tagsSessionBB2s = new ArrayList<TagsSessionBB2>(session.getTagsSessions());
+                    recyclerView.setAdapter(new TimelineAdapterBDD2(tagsSessionBB2s,session.getDuration()));
+
+                   // List<TagModel> taglist = new ArrayList<TagModel>(session.getTags().values());
+                    //recyclerView.setAdapter(new TimelineAdapter(taglist, session.getDuration()));
                 }
                 mSeekBar.setMax(session.getDuration());
             }

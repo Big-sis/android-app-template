@@ -6,21 +6,23 @@ import android.arch.lifecycle.ViewModel;
 
 import java.util.List;
 
-import fr.wildcodeschool.vyfe.model.SessionModel;
+import fr.wildcodeschool.vyfe.model.SessionModelBDD2;
 import fr.wildcodeschool.vyfe.model.TagModel;
 import fr.wildcodeschool.vyfe.repository.FirebaseDatabaseRepositorySingle;
-import fr.wildcodeschool.vyfe.repository.SessionRepository;
+import fr.wildcodeschool.vyfe.repository.SessionRepositoryBDD2;
 
+
+//TODO BDD2
 public class PlayVideoViewModel extends ViewModel {
 
     private MutableLiveData<List<TagModel>> tags;
-    private MutableLiveData<SessionModel> session;
-    private SessionRepository sessionRepository;
+    private MutableLiveData<SessionModelBDD2> session;
+    private SessionRepositoryBDD2 sessionRepository;
     private MutableLiveData<Integer> videoPosition;
     private MutableLiveData<Boolean> isPlaying;
 
     public PlayVideoViewModel(String company, String sessionId) {
-        sessionRepository = new SessionRepository(company, sessionId);
+        sessionRepository = new SessionRepositoryBDD2(company, sessionId);
         isPlaying = new MutableLiveData<Boolean>();
         isPlaying.setValue(false);
         videoPosition = new MutableLiveData<Integer>();
@@ -47,7 +49,7 @@ public class PlayVideoViewModel extends ViewModel {
         isPlaying.setValue(false);
     }
 
-    public LiveData<SessionModel> getSession(){
+    public LiveData<SessionModelBDD2> getSession(){
         return session;
     }
 
@@ -58,11 +60,11 @@ public class PlayVideoViewModel extends ViewModel {
 
     public void loadSession(String id){
         if (session == null) {
-            session = new MutableLiveData<SessionModel>();
+            session = new MutableLiveData<SessionModelBDD2>();
         }
-        sessionRepository.addListener(new FirebaseDatabaseRepositorySingle.CallbackInterface<SessionModel>() {
+        sessionRepository.addListener(new FirebaseDatabaseRepositorySingle.CallbackInterface<SessionModelBDD2>() {
             @Override
-            public void onSuccess(SessionModel result) { session.setValue(result); }
+            public void onSuccess(SessionModelBDD2 result) { session.setValue(result); }
 
             @Override
             public void onError(Exception e) { session.setValue(null); }

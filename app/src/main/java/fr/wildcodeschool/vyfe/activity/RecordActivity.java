@@ -468,35 +468,44 @@ public class RecordActivity extends VyfeActivity {
         String idAndroid = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         HashCode hashCode = Hashing.sha256().hashString(idAndroid, Charset.defaultCharset());
 
-        //Firebase SESSION
-        DatabaseReference sessionRef = mDatabase.getReference(mAuthUserId).child("sessions");
-        sessionRef.keepSynced(true);
-        mIdSession = sessionRef.push().getKey();
+        //TODO V2 : tester ok
+        mDatabase = FirebaseDatabase.getInstance("https://vyfe-v2.firebaseio.com/");
+        DatabaseReference sessionRef2 = mDatabase.getReference("NomEntreprise").child("Sessions");
+        sessionRef2.keepSynced(true);
+        mIdSession = sessionRef2.push().getKey();
         mSingletonSessions.setIdSession(mIdSession);
-        sessionRef.child(mIdSession).child("name").setValue(mTitleSession);
-        sessionRef.child(mIdSession).child("author").setValue(mAuthUserId);
-        sessionRef.child(mIdSession).child("videoLink").setValue(mFileName);
-        sessionRef.child(mIdSession).child("date").setValue(stringdate);
-        sessionRef.child(mIdSession).child("idSession").setValue(mIdSession);
-        sessionRef.child(mIdSession).child("idTagSet").setValue(idTagSet);
+        sessionRef2.child(mIdSession).child("author").setValue(mAuthUserId);
+        sessionRef2.child(mIdSession).child("name").setValue(mTitleSession);
+        sessionRef2.child(mIdSession).child("idTagSet").setValue(idTagSet);
+        sessionRef2.child(mIdSession).child("pathApp").setValue(mFileName);
+        sessionRef2.child(mIdSession).child("idAndroid").setValue(hashCode.toString());
+        sessionRef2.child(mIdSession).child("date").setValue(stringdate);
 
-        //TODO rajout firebase
-        sessionRef.child(mIdSession).child("idAndroid").setValue(hashCode.toString());
 
+        HashMap<String, String> TagNameColorName = new HashMap<>();
+        for (int i = 0; i < mTagModels.size(); i++) {
+            String nameColor = mTagModels.get(i).getColor();
+            String nameTag = mTagModels.get(i).getName();
+            TagNameColorName.put(nameTag, nameColor);
+
+        }
 
         for (Map.Entry<String, ArrayList<Pair<Integer, Integer>>> entry : newTagList.entrySet()) {
 
-            String tagKey = sessionRef.child(mIdSession).child("tags").push().getKey();
-            sessionRef.child(mIdSession).child("tags").child(tagKey).child("tagName").setValue(entry.getKey());
+            String colorTag = TagNameColorName.get(entry.getKey());
+
+            String tagKey = sessionRef2.child(mIdSession).child("Tags").push().getKey();
+            sessionRef2.child(mIdSession).child("Tags").child(tagKey).child("name").setValue(entry.getKey());
+            sessionRef2.child(mIdSession).child("Tags").child(tagKey).child("color").setValue(colorTag);
             ArrayList<TimeModel> times = new ArrayList<>();
 
             for (Pair<Integer, Integer> pair : entry.getValue()) {
 
                 times.add(new TimeModel(pair.first, pair.second));
 
-
             }
-            sessionRef.child(mIdSession).child("tags").child(tagKey).child("times").setValue(times);
+            sessionRef2.child(mIdSession).child("Tags").child(tagKey).child("Times").child(mAuthUserId).setValue(times);
+
 
 
         }

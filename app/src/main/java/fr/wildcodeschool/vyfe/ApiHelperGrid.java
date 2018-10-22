@@ -16,42 +16,40 @@ public class ApiHelperGrid {
 
     public static void setGrid(String titleTagSet, ArrayList<TagModel> mTagModelListAdd, Context context) {
 
-
+        //TODO : BDD 2 : test ok
         final String authUserId = SingletonFirebase.getInstance().getUid();
-        mDatabase = SingletonFirebase.getInstance().getDatabase();
-        DatabaseReference idTagSetRef = mDatabase.getReference(authUserId).child("tagSets");
+
+        mDatabase = FirebaseDatabase.getInstance("https://vyfe-v2.firebaseio.com/");
+        DatabaseReference idTagSetRef = mDatabase.getReference("NomEntreprise").child("Users").child(authUserId).child("TagSets");
         idTagSetRef.keepSynced(true);
         String idTagSet = idTagSetRef.push().getKey();
         idTagSetRef.child(idTagSet).child("name").setValue(titleTagSet);
 
-
         setTags(mTagModelListAdd, idTagSet,context);
-
 
     }
 
     public static void setTags(ArrayList<TagModel> mTagModelListAdd, String idTagSet, Context context) {
+        //TODO : BDD2 : tester ok
+
+
         final String authUserId = SingletonFirebase.getInstance().getUid();
-        mDatabase = SingletonFirebase.getInstance().getDatabase();
-        // a mettre dans create grid mTagModelListAdd = mSingletonTags.getmTagsListAdd();
+        mDatabase = FirebaseDatabase.getInstance("https://vyfe-v2.firebaseio.com/");
 
         for (int i = 0; i < mTagModelListAdd.size(); i++) {
-
             String colorTag = mTagModelListAdd.get(i).getColor();
             String nameTag = mTagModelListAdd.get(i).getName();
             //V2 : choisir le temps, necessaire ???
             String durationTag = String.valueOf(context.getResources().getInteger(R.integer.duration_tag));
             String beforeTag = String.valueOf(context.getResources().getInteger(R.integer.before_tag));
 
-
-            DatabaseReference tagsRef = mDatabase.getReference(authUserId).child("tags");
+            DatabaseReference tagsRef = mDatabase.getReference("NomEntreprise").child("Users").child(authUserId).child("TagSets").child(idTagSet).child("Tags");
             tagsRef.keepSynced(true);
             String idTag = tagsRef.push().getKey();
             tagsRef.child(idTag).child("color").setValue(colorTag);
             tagsRef.child(idTag).child("name").setValue(nameTag);
             tagsRef.child(idTag).child("leftOffset").setValue(beforeTag);
             tagsRef.child(idTag).child("rigthOffset").setValue(durationTag);
-            tagsRef.child(idTag).child("fkTagSet").setValue(idTagSet);
 
         }
     }
