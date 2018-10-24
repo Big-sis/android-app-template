@@ -1,6 +1,7 @@
 package fr.wildcodeschool.vyfe.activity;
 
 
+import android.arch.lifecycle.MutableLiveData;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,13 +19,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 
 import fr.wildcodeschool.vyfe.R;
 import fr.wildcodeschool.vyfe.adapter.TagRecyclerAdapter;
 import fr.wildcodeschool.vyfe.model.SessionModel;
 import fr.wildcodeschool.vyfe.model.TagModel;
+import fr.wildcodeschool.vyfe.repository.FirebaseDatabaseRepositorySingle;
+import fr.wildcodeschool.vyfe.repository.SessionRepository;
 import fr.wildcodeschool.vyfe.viewModel.SingletonFirebase;
 import fr.wildcodeschool.vyfe.viewModel.SingletonSessions;
 
@@ -86,9 +88,10 @@ public class SelectVideoActivity extends VyfeActivity {
                 runPlayVideoActivity();
             }
         });
+    }
 
 
-
+/**
         final DatabaseReference tagSessionRef = mDatabase.getReference(mAuthUserId).child("sessions").child(mIdSession).child("idTagSet");
 
         tagSessionRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -110,7 +113,7 @@ public class SelectVideoActivity extends VyfeActivity {
                 for (DataSnapshot tagSnapshot : dataSnapshot.getChildren()) {
                     TagModel tagModel = tagSnapshot.getValue(TagModel.class);
 
-                    if (tagModel.getFkTagSet().equals(mIdTagSet)) {
+                    if (tagModel.getTaggerId().equals(mIdTagSet)) {
                         mTagModels.add(tagModel);
                     }
                 }
@@ -123,7 +126,7 @@ public class SelectVideoActivity extends VyfeActivity {
                             TagModel taged = tagedSnapshot.getValue(TagModel.class);
                             // TODO : trouver pourquoi la requête ne récupère pas le tagName avec le modèle
                             String tagedName = tagedSnapshot.child("tagName").getValue(String.class);
-                            taged.setName(tagedName);
+                            taged.setTagName(tagedName);
                             mTagedList.add(taged);
                         }
 
@@ -173,7 +176,25 @@ public class SelectVideoActivity extends VyfeActivity {
 
             }
         });
-    }
+
+
+        //TODO BDD2
+
+        SessionRepository sessionRepository;
+        String userId = FirebaseAuth.getInstance().getUid();
+        String sessionId = getIntent().getStringExtra(SelectVideoActivity.ID_SESSION);
+        sessionRepository = new SessionRepository("NomEntreprise", sessionId);
+        final SessionModel sessionModelBDD2;
+        final MutableLiveData<SessionModel> session= new MutableLiveData<SessionModel>();;
+
+        sessionRepository.addListener(new FirebaseDatabaseRepositorySingle.CallbackInterface<SessionModel>() {
+            @Override
+            public void onSuccess(SessionModel result) { session.setValue(result); }
+
+            @Override
+            public void onError(Exception e) { session.setValue(null); }
+        });
+    }**/
 
     private void runPlayVideoActivity(){
         Intent intent = new Intent(SelectVideoActivity.this, PlayVideoActivity.class);

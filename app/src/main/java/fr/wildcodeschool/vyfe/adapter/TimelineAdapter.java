@@ -73,7 +73,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
 
         public void bind(TagModel tag){
 
-            String tagName = tag.getName();
+            String tagName = tag.getTagName();
 
             //Creation de chaque etage de tags sur la timeline
             final RelativeLayout timelineRow = new RelativeLayout(context);

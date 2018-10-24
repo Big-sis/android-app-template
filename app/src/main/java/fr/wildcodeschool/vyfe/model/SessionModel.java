@@ -2,6 +2,7 @@ package fr.wildcodeschool.vyfe.model;
 
 import android.media.MediaMetadataRetriever;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import fr.wildcodeschool.vyfe.Constants;
@@ -9,23 +10,24 @@ import fr.wildcodeschool.vyfe.Constants;
 public class SessionModel {
     private String name;
     private String author;
-    private String videoLink;
+    private String serverVideoLink;
     private String date;
     private String idSession;
     private String idTagSet;
-    private HashMap<String, TagModel> tags;
+    private ArrayList<TagModel> tags;
     private String description;
     private String idAndroid;
+    private String deviceVideoLink;
+    private String thumbnail;
 
 
     public SessionModel(String name, String author, String videoLink, String date, String idSession, String idTagSet) {
         this.name = name;
         this.author = author;
-        this.videoLink = videoLink;
+        this.serverVideoLink = videoLink;
         this.date = date;
         this.idSession = idSession;
         this.idTagSet = idTagSet;
-        this.tags = new HashMap<>();
     }
 
     public SessionModel(){}
@@ -53,11 +55,11 @@ public class SessionModel {
     }
 
     public String getVideoLink() {
-        return videoLink;
+        return serverVideoLink;
     }
 
     public void setVideoLink(String videoLink) {
-        this.videoLink = videoLink;
+        this.serverVideoLink = videoLink;
     }
 
     public String getDate() {
@@ -91,14 +93,6 @@ public class SessionModel {
         this.idTagSet = idTagSet;
     }
 
-    public HashMap<String, TagModel> getTags() {
-        return tags;
-    }
-
-    public void setTags(HashMap<String, TagModel> tags) {
-        this.tags = tags;
-    }
-
     public String getIdAndroid() {
         return idAndroid;
     }
@@ -110,12 +104,44 @@ public class SessionModel {
     public int getDuration(){
         MediaMetadataRetriever retriever = new MediaMetadataRetriever();
         //use one of overloaded setDataSource() functions to set your data source
-        retriever.setDataSource(this.videoLink);
+        retriever.setDataSource(this.deviceVideoLink);
         String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
         int timeInMillisec = Integer.parseInt(time);
 
         retriever.release();
 
         return timeInMillisec / Constants.UNIT_TO_MILLI_FACTOR;
+    }
+
+    public String getServerVideoLink() {
+        return serverVideoLink;
+    }
+
+    public void setServerVideoLink(String serverVideoLink) {
+        this.serverVideoLink = serverVideoLink;
+    }
+
+    public ArrayList<TagModel> getTags() {
+        return tags;
+    }
+
+    public void setTags(ArrayList<TagModel> tags) {
+        this.tags = tags;
+    }
+
+    public String getDeviceVideoLink() {
+        return deviceVideoLink;
+    }
+
+    public void setDeviceVideoLink(String deviceVideoLink) {
+        this.deviceVideoLink = deviceVideoLink;
+    }
+
+    public String getThumbnail() {
+        return thumbnail;
+    }
+
+    public void setThumbnail(String thumbnail) {
+        this.thumbnail = thumbnail;
     }
 }

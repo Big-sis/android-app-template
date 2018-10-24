@@ -4,12 +4,11 @@ import java.util.ArrayList;
 
 public class TagModel {
 
+    private String tagId;
     private String color;
     private String tagName;
     private ArrayList<TimeModel> times;
-    // TODO : Expliciter le rôle de count
-    private int count = 0;
-    private String fkTagSet;
+    private String taggerId;
 
     public TagModel() {
     }
@@ -28,11 +27,11 @@ public class TagModel {
         this.color = color;
     }
 
-    public String getName() {
+    public String getTagName() {
         return tagName;
     }
 
-    public void setName(String tagName) {
+    public void setTagName(String tagName) {
         this.tagName = tagName;
     }
 
@@ -45,15 +44,23 @@ public class TagModel {
     }
 
     public int getCount() {
-        return count;
+        return times != null ? times.size() : 0;
     }
 
-    public void setCount(int count) {
-        this.count = count;
+    public String getTaggerId() {
+        return taggerId;
     }
 
-    public String getFkTagSet() {
-        return this.fkTagSet;
+    public void setTaggerId(String taggerId) {
+        this.taggerId = taggerId;
+    }
+
+    public String getTagId() {
+        return tagId;
+    }
+
+    public void setTagId(String tagId) {
+        this.tagId = tagId;
     }
 }
 

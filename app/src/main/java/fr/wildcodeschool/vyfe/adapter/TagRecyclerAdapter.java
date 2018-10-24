@@ -47,7 +47,7 @@ public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.
     @Override
     public void onBindViewHolder(TagRecyclerAdapter.ViewHolder holder, int position) {
         TagModel tagModel = mTagModelList.get(position);
-        holder.tvName.setText(tagModel.getName());
+        holder.tvName.setText(tagModel.getTagName());
         try {
             holder.ivColor.setBackgroundResource(ColorHelper.convertColor(tagModel.getColor()));
         } catch (ColorNotFoundException e) {
@@ -73,8 +73,8 @@ public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.
             holder.tvNum.setVisibility(View.VISIBLE);
             for (TagModel taged : mTagedList) {
                 ArrayList<TimeModel> timeList = taged.getTimes();
-                String tagedName = taged.getName();
-                if (tagedName.equals(tagModel.getName())) {
+                String tagedName = taged.getTagName();
+                if (tagedName.equals(tagModel.getTagName())) {
                     tagModel.setTimes(timeList);
                 }
             }

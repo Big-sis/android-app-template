@@ -32,7 +32,6 @@ import android.widget.Toast;
 
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -318,7 +317,7 @@ public class RecordActivity extends VyfeActivity {
         //Ajout des differentes timelines au conteneur principal
         LinearLayout llMain = findViewById(R.id.ll_main);
         for (TagModel tagModel : listTag) {
-            String name = tagModel.getName();
+            String name = tagModel.getTagName();
             //Ajout d'un Linear pour un tag
             final RelativeLayout timeline = new RelativeLayout(RecordActivity.this);
             timeline.setBackgroundResource(R.drawable.color_gradient_grey_nocolor);
@@ -332,7 +331,7 @@ public class RecordActivity extends VyfeActivity {
             @Override
             public void onClick(View view, int position) {
                 if (mActiveTag) {
-                    String nameTag = listTag.get(position).getName();
+                    String nameTag = listTag.get(position).getTagName();
                     //init name Tag
                     TextView tvNameTimeline = new TextView(RecordActivity.this);
                     tvNameTimeline.setTextColor(Color.WHITE);
@@ -380,7 +379,7 @@ public class RecordActivity extends VyfeActivity {
 
                     timeline.addView(iv, layoutParams);
                     if (isFirstTitle) {
-                        tvNameTimeline.setText(listTag.get(position).getName());
+                        tvNameTimeline.setText(listTag.get(position).getTagName());
                         tvNameTimeline.setMinimumHeight(convertToDp(25));
                         RelativeLayout.LayoutParams layoutParamsTv = new RelativeLayout.LayoutParams(
                                 convertToDp(titleLength), LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -395,7 +394,7 @@ public class RecordActivity extends VyfeActivity {
                     newTagList.get(nameTag).add(timePair);
                     int count = listTag.get(position).getCount();
                     count++;
-                    listTag.get(position).setCount(count);
+                   // listTag.get(position).setCount(count);
                     mAdapterTags.notifyDataSetChanged();
 
                     //Scrool automatiquement suit l'ajout des tags
@@ -485,7 +484,7 @@ public class RecordActivity extends VyfeActivity {
         HashMap<String, String> TagNameColorName = new HashMap<>();
         for (int i = 0; i < mTagModels.size(); i++) {
             String nameColor = mTagModels.get(i).getColor();
-            String nameTag = mTagModels.get(i).getName();
+            String nameTag = mTagModels.get(i).getTagName();
             TagNameColorName.put(nameTag, nameColor);
 
         }

@@ -49,7 +49,7 @@ public class ApiHelperPlay {
                 for (DataSnapshot tagSnapshot : dataSnapshot.getChildren()) {
                     TagModel tagModel = tagSnapshot.getValue(TagModel.class);
                     String tagName = tagSnapshot.child("tagName").getValue(String.class);
-                    tagModel.setName(tagName);
+                    tagModel.setTagName(tagName);
                     mTagedList.add(tagModel);
                     final DatabaseReference tagRef = mDatabase.getReference(mAuthUserId).child("tags");
                     tagRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -58,7 +58,7 @@ public class ApiHelperPlay {
                             mTagModels.clear();
                             for (DataSnapshot tagsSnapshot : dataSnapshot.getChildren()) {
                                 TagModel tagModel = tagsSnapshot.getValue(TagModel.class);
-                                if (tagModel.getFkTagSet().equals(mIdTagSet)) {
+                                if (tagModel.getTaggerId().equals(mIdTagSet)) {
                                     if (!mTagModels.contains(tagModel)) {
                                         mTagModels.add(tagModel);
                                     }
@@ -90,8 +90,8 @@ public class ApiHelperPlay {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot tagSnapshot : dataSnapshot.getChildren()) {
                     TagModel tagModel = tagSnapshot.getValue(TagModel.class);
-                    if (tagModel.getFkTagSet().equals(mIdTagSet)) {
-                        mTagColorList.put(tagModel.getName(), tagModel.getColor());
+                    if (tagModel.getTaggerId().equals(mIdTagSet)) {
+                        mTagColorList.put(tagModel.getTagName(), tagModel.getColor());
                     }
                 }
                 listener.onSuccess();

@@ -1,8 +1,9 @@
 package fr.wildcodeschool.vyfe.fragment;
 
+
+import android.arch.lifecycle.ViewModelProviders;
 import android.support.v4.app.Fragment;
 import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,10 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 import fr.wildcodeschool.vyfe.R;
 import fr.wildcodeschool.vyfe.adapter.TimelineAdapter;
-import fr.wildcodeschool.vyfe.adapter.TimelineAdapterBDD2;
-import fr.wildcodeschool.vyfe.model.SessionModelBDD2;
+import fr.wildcodeschool.vyfe.model.SessionModel;
 import fr.wildcodeschool.vyfe.model.TagModel;
-import fr.wildcodeschool.vyfe.model.TagsSessionBB2;
 import fr.wildcodeschool.vyfe.viewModel.PlayVideoViewModel;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -54,17 +53,14 @@ public class TimelineFragment extends Fragment {
                 mSeekBar.setProgress(position);
             }
         });
-                                                    //TODO : BDD2
-        viewModel.getSession().observe(getActivity(), new Observer<SessionModelBDD2>() {
-            @Override
-            public void onChanged(@Nullable SessionModelBDD2 session) {
-             //TODO: BDD2
-                if (session.getTagsSessions() != null) {
-                    List<TagsSessionBB2> tagsSessionBB2s = new ArrayList<TagsSessionBB2>(session.getTagsSessions());
-                    recyclerView.setAdapter(new TimelineAdapterBDD2(tagsSessionBB2s,session.getDuration()));
 
-                   // List<TagModel> taglist = new ArrayList<TagModel>(session.getTags().values());
-                    //recyclerView.setAdapter(new TimelineAdapter(taglist, session.getDuration()));
+        viewModel.getSession().observe(getActivity(), new Observer<SessionModel>() {
+            @Override
+            public void onChanged(@Nullable SessionModel session) {
+             //TODO: BDD2
+                if (session.getTags() != null) {
+                    List<TagModel> tags = new ArrayList<TagModel>(session.getTags());
+                    recyclerView.setAdapter(new TimelineAdapter(tags,session.getDuration()));
                 }
                 mSeekBar.setMax(session.getDuration());
             }

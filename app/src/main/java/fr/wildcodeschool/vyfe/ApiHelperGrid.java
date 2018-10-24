@@ -38,7 +38,7 @@ public class ApiHelperGrid {
 
         for (int i = 0; i < mTagModelListAdd.size(); i++) {
             String colorTag = mTagModelListAdd.get(i).getColor();
-            String nameTag = mTagModelListAdd.get(i).getName();
+            String nameTag = mTagModelListAdd.get(i).getTagName();
             //V2 : choisir le temps, necessaire ???
             String durationTag = String.valueOf(context.getResources().getInteger(R.integer.duration_tag));
             String beforeTag = String.valueOf(context.getResources().getInteger(R.integer.before_tag));

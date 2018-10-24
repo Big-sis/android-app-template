@@ -19,9 +19,10 @@ public class SessionRepository extends FirebaseDatabaseRepositorySingle<SessionM
 
     }
 
+    //TODO: changer chemin acces + mettre filtre sur les tagger
     @Override
     protected String getRootNode() {
-        return this.userId + "/sessions/" + this.sessionId;
+        return "NomEntreprise/Sessions/"+this.sessionId;
     }
 
 }

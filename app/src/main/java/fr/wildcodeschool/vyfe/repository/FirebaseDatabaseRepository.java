@@ -18,6 +18,7 @@ public abstract class FirebaseDatabaseRepository<Model> {
 
     public FirebaseDatabaseRepository(FirebaseMapper mapper) {
         databaseReference = FirebaseDatabase.getInstance(Constants.FIREBASE_DB_VERSION_URL).getReference(getRootNode());
+        databaseReference.keepSynced(true);
         this.mapper = mapper;
     }
 

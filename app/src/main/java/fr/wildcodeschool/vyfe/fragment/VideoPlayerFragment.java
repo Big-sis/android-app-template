@@ -14,7 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.VideoView;
 import fr.wildcodeschool.vyfe.R;
-import fr.wildcodeschool.vyfe.model.SessionModelBDD2;
+import fr.wildcodeschool.vyfe.model.SessionModel;
 import fr.wildcodeschool.vyfe.view.StopwatchView;
 import fr.wildcodeschool.vyfe.viewModel.PlayVideoViewModel;
 
@@ -43,10 +43,10 @@ public class VideoPlayerFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         viewModel = ViewModelProviders.of(getActivity()).get(PlayVideoViewModel.class);
                                                     //TODO: BDD2
-        viewModel.getSession().observe(getActivity(), new Observer<SessionModelBDD2>() {
+        viewModel.getSession().observe(getActivity(), new Observer<SessionModel>() {
             @Override
-            public void onChanged(@Nullable SessionModelBDD2 session) {
-                mVideoSelectedView.setVideoPath(session.getVideoLink());
+            public void onChanged(@Nullable SessionModel session) {
+                mVideoSelectedView.setVideoPath(session.getDeviceVideoLink());
             }
         });
 
