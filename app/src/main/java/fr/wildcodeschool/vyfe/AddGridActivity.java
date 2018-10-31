@@ -39,8 +39,7 @@ public class AddGridActivity extends AppCompatActivity implements AdapterView.On
     private static String nameColorTag;
     private static ArrayList<Integer> existColor = new ArrayList<>();
     private static int random;
-    private String[] colorName = {"Choisir une couleur", "Violet", "Bleu clair", "Orange", "Vert clair", "Rose", "Rouge", "Bleu", "Jaune", "Violet clair", "Vert"};
-
+    private String[] colorName ;
     public static void randomColor() {
 
         if (existColor.size() == 0) {
@@ -64,6 +63,8 @@ public class AddGridActivity extends AppCompatActivity implements AdapterView.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_grid);
+        colorName = new String[]{AddGridActivity.this.getString(R.string.choose_color), AddGridActivity.this.getString(R.string.purple), AddGridActivity.this.getString(R.string.light_blue), AddGridActivity.this.getString(R.string.orange), AddGridActivity.this.getString(R.string.light_green), AddGridActivity.this.getString(R.string.pink), AddGridActivity.this.getString(R.string.red), AddGridActivity.this.getString(R.string.red), AddGridActivity.this.getString(R.string.yellow), AddGridActivity.this.getString(R.string.light_purple), AddGridActivity.this.getString(R.string.green)};
+
 
         final Spinner spinner = (Spinner) findViewById(R.id.simpleSpinner);
         spinner.setOnItemSelectedListener(this);

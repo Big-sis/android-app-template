@@ -112,4 +112,8 @@ public class ConnexionActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        Toast.makeText(this, R.string.connection, Toast.LENGTH_LONG).show();
+    }
 }

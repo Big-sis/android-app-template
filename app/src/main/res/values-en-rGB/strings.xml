@@ -106,4 +106,15 @@
     <string name="create_grid2">Create new grid</string>
     <string name="create_title_video">"Give your session a title : "</string>
     <string name="edit_grid">1- Make new grid</string>
+    <string name="purple">Purple</string>
+    <string name="light_blue">Light blue</string>
+    <string name="orange">Orange</string>
+    <string name="light_green">Light green</string>
+    <string name="pink">Pink</string>
+    <string name="red">Red</string>
+    <string name="blue">Blue</string>
+    <string name="yellow">Yellow</string>
+    <string name="light_purple">Light purple</string>
+    <string name="green">Green</string>
+    <string name="connection">You must log in</string>
 </resources>
