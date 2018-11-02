@@ -4,7 +4,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
-public class BaseSingleValueEventListener<Model, Entity> implements ValueEventListener {
+public class BaseSingleValueEventListener<Entity, Model> implements ValueEventListener {
 
     private FirebaseMapper<Entity, Model> mapper;
     private FirebaseDatabaseRepositorySingle.CallbackInterface<Model> callback;
@@ -17,7 +17,7 @@ public class BaseSingleValueEventListener<Model, Entity> implements ValueEventLi
 
     @Override
     public void onDataChange(DataSnapshot dataSnapshot) {
-        Model data = mapper.map(dataSnapshot);
+        Model data = mapper.map(dataSnapshot,"");
         callback.onSuccess(data);
     }
 

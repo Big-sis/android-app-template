@@ -2,6 +2,7 @@ package fr.wildcodeschool.vyfe.repository;
 
 
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 import fr.wildcodeschool.vyfe.Constants;
 import fr.wildcodeschool.vyfe.model.SessionModel;
@@ -16,10 +17,9 @@ public class SessionRepository extends FirebaseDatabaseRepositorySingle<SessionM
         this.userId = userId;
         this.sessionId = sessionId;
         databaseReference = FirebaseDatabase.getInstance(Constants.FIREBASE_DB_VERSION_URL).getReference(getRootNode());
-
     }
 
-    //TODO: changer chemin acces + mettre filtre sur les tagger
+
     @Override
     protected String getRootNode() {
         return "NomEntreprise/Sessions/"+this.sessionId;

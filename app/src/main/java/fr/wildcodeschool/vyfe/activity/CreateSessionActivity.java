@@ -1,14 +1,15 @@
 package fr.wildcodeschool.vyfe.activity;
 
-import android.content.Context;
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Display;
 import android.view.View;
 import android.widget.AdapterView;
@@ -19,23 +20,23 @@ import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 import fr.wildcodeschool.vyfe.PrepareSessionActivity;
-import fr.wildcodeschool.vyfe.viewModel.SingletonTagsSets;
-import fr.wildcodeschool.vyfe.helper.ApiHelperSpinner;
-import fr.wildcodeschool.vyfe.helper.KeyboardHelper;
 import fr.wildcodeschool.vyfe.R;
 import fr.wildcodeschool.vyfe.RestartSession;
-import fr.wildcodeschool.vyfe.helper.ScrollHelper;
 import fr.wildcodeschool.vyfe.adapter.TagRecyclerAdapter;
+import fr.wildcodeschool.vyfe.adapter.TagsSetsSpinnerAdapter;
+import fr.wildcodeschool.vyfe.helper.ApiHelperSpinner;
+import fr.wildcodeschool.vyfe.helper.KeyboardHelper;
+import fr.wildcodeschool.vyfe.helper.ScrollHelper;
 import fr.wildcodeschool.vyfe.model.TagModel;
 import fr.wildcodeschool.vyfe.model.TagSetModel;
+import fr.wildcodeschool.vyfe.viewModel.CreateSessionViewModel;
+import fr.wildcodeschool.vyfe.viewModel.CreateSessionViewModelFactory;
 import fr.wildcodeschool.vyfe.viewModel.SingletonFirebase;
 import fr.wildcodeschool.vyfe.viewModel.SingletonSessions;
 import fr.wildcodeschool.vyfe.viewModel.SingletonTags;
@@ -48,26 +49,26 @@ public class CreateSessionActivity extends VyfeActivity {
     ScrollView scrollMain;
     private SingletonTags mSingletonTags = SingletonTags.getInstance();
     private ArrayList<TagModel> mTagModelListAdd = mSingletonTags.getmTagsListAdd();
-    private SingletonTagsSets mSingletonTagsSets = SingletonTagsSets.getInstance();
-    private ArrayList<TagSetModel> mTagsSetsList = mSingletonTagsSets.getmTagsSetsList();
     private FirebaseDatabase mDatabase;
-    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private String mIdGridImport;
-    private String mNameGrid;
-    private SharedPreferences mSharedPrefTagSet;
     private SharedPreferences mSharedPrefVideoTitle;
-    private EditText mEtTagSet;
     private EditText mEtVideoTitle;
     private int mWidth;
     private int mHeigth;
     private ArrayList<String> mNameTagSet = new ArrayList<>();
     private ArrayList<String> mIdTagSet = new ArrayList<>();
     private Intent intent;
+    private CreateSessionViewModel viewModel;
+
+    private TagRecyclerAdapter adapterImport;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
+
+        viewModel = ViewModelProviders.of(this, new CreateSessionViewModelFactory(SingletonFirebase.getInstance().getUid())).get(CreateSessionViewModel.class);
 
         final SingletonSessions singletonSessions = SingletonSessions.getInstance();
 
@@ -101,20 +102,6 @@ public class CreateSessionActivity extends VyfeActivity {
             }
         });
 
-        //a enlever?
-        String fromAdd = getIntent().getStringExtra("fromAdd");
-        if (fromAdd == null) {
-            mTagModelListAdd.clear();
-        }
-
-
-        //plus besoin de garder en memoire le titre sauf si rajoute la creation grille
-        mSharedPrefVideoTitle = this.getSharedPreferences("VIDEOTITLE", Context.MODE_PRIVATE);
-        String videoTitleShared = mSharedPrefVideoTitle.getString("VIDEOTITLE", "");
-        if (!videoTitleShared.isEmpty()) {
-            mEtVideoTitle.setText(videoTitleShared);
-        }
-
 
         final String multiSession = getIntent().getStringExtra("multiSession");
         if ("multiSession".equals(multiSession)) {
@@ -122,98 +109,42 @@ public class CreateSessionActivity extends VyfeActivity {
         }
 
 
-        //TODO: creation fragment : avec import grille
-
-        RecyclerView.LayoutManager layoutManagerImport = new LinearLayoutManager(CreateSessionActivity.this,
-                LinearLayoutManager.VERTICAL, false);
-        recyclerViewImport.setLayoutManager(layoutManagerImport);
-        final TagRecyclerAdapter adapterImport = new TagRecyclerAdapter(mTagModelListAdd, "start");
-        recyclerViewImport.setAdapter(adapterImport);
-
-        mTagModelListAdd.clear();
-        final HashMap<String, String> tagSetIds = new HashMap<>();
-        ApiHelperSpinner.getSpinner(CreateSessionActivity.this, new ApiHelperSpinner.GridResponse() {
+        viewModel.getTagSets().observe(this, new Observer<List<TagSetModel>>() {
             @Override
-            public void onSuccess(HashMap<String, String> hashMapTitleIdGrid) {
-                tagSetIds.putAll(hashMapTitleIdGrid);
-                mNameTagSet.clear();
-                mNameTagSet.add(getString(R.string.import_grid_arrow) + str[0]);
-                mIdTagSet.clear();
-                mIdTagSet.add("0");
-                for (Map.Entry<String, String> entry : tagSetIds.entrySet()) {
-                    mNameTagSet.add(entry.getValue());
-                    mIdTagSet.add(entry.getKey());
-                }
-                Log.d("Spinner", "onSuccess: " + String.valueOf(mNameTagSet.size()));
-                adapterImport.notifyDataSetChanged();
-                //pbLoad.setVisibility(View.GONE);
-
-                ArrayAdapter<String> adapterSpinner = new ArrayAdapter<String>(CreateSessionActivity.this,
-                        R.layout.simple_spinner, mNameTagSet);
-
-
-                adapterSpinner.setDropDownViewResource(R.layout.item_spinner_dropdown);
-                spinner.setAdapter(adapterSpinner);
-
-            }
-
-            @Override
-            public void onError(String error) {
-                Toast.makeText(CreateSessionActivity.this, " erreur :" + error, Toast.LENGTH_SHORT).show();
-            }
-
-            @Override
-            public void onWait(String wait) {
-
-
-            }
-
-            @Override
-            public void onFinish(String finish) {
-
+            public void onChanged(@Nullable List<TagSetModel> tagSetModels) {
+                TagsSetsSpinnerAdapter adapterTagsSetsSpinner = new TagsSetsSpinnerAdapter(CreateSessionActivity.this, tagSetModels);
+                spinner.setAdapter(adapterTagsSetsSpinner);
             }
         });
+
+
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemSelected(AdapterView<?> parent, View view, final int position, long id) {
+
+                TagSetModel tagSetModels;
+                if (position == 0) {
+                    mTagModelListAdd = new ArrayList<>();
+                } else {
+                    tagSetModels = viewModel.getTagSets().getValue().get(position - 1);
+                    mTagModelListAdd = tagSetModels.getTags();
+                    viewModel.getSession().setTags(mTagModelListAdd);
+                    viewModel.getSession().setIdTagSet(tagSetModels.getId());
+                }
+
+                RecyclerView.LayoutManager layoutManagerImport = new LinearLayoutManager(CreateSessionActivity.this, LinearLayoutManager.VERTICAL, false);
+                recyclerViewImport.setLayoutManager(layoutManagerImport);
+                adapterImport = new TagRecyclerAdapter(mTagModelListAdd, "start");
+                recyclerViewImport.setAdapter(adapterImport);
+
+
                 ScrollHelper.DownScroll(scrollMain);
-
-                final String titlenameTagSetImport = mNameTagSet.get(i);
-                mIdGridImport = mIdTagSet.get(i);
-                if (mIdGridImport.equals("0")) {
-                    return;
-                }
-                mTagModelListAdd.clear();
-                adapterNotifyDataChange(adapterImport, adapterImport);
-
-
-                if (mIdGridImport != null && !mIdGridImport.equals(getString(R.string.import_grid_arrow) + str[0])) {
-
-                    ApiHelperSpinner.getTag(CreateSessionActivity.this, recyclerViewImport, mIdGridImport, new ApiHelperSpinner.TagsResponse() {
-                        @Override
-                        public void onSuccess(ArrayList<TagModel> tagModelArrayList) {
-                            mTagModelListAdd = tagModelArrayList;
-                            adapterImport.notifyDataSetChanged();
-                            ScrollHelper.DownScroll(scrollMain);
-
-                        }
-
-                        @Override
-                        public void onError(String error) {
-
-                        }
-                    });
-
-                    titleTagSet = titlenameTagSetImport;
-                }
-
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
+            public void onNothingSelected(AdapterView<?> parent) {
 
             }
-
 
         });
         KeyboardHelper.CloseKeyboard(CreateSessionActivity.this, spinner);
@@ -233,7 +164,7 @@ public class CreateSessionActivity extends VyfeActivity {
             spinner.setAdapter(adapterSpinner);
             spinner.setVisibility(View.VISIBLE);
 
-            adapterNotifyDataChange(adapterImport, adapterImport);
+            adapterImport.notifyDataSetChanged();
             recyclerViewImport.setVisibility(View.VISIBLE);
 
             spinner.setClickable(true);
@@ -254,7 +185,6 @@ public class CreateSessionActivity extends VyfeActivity {
 
                 }
             });
-
             //TODO: indiquer qu'il faut garder l'identifiant de la grille pour envoyer les données sur firebase
 
 
@@ -265,17 +195,16 @@ public class CreateSessionActivity extends VyfeActivity {
             public void onClick(View v) {
 
                 intent = new Intent(CreateSessionActivity.this, RecordActivity.class);
-                final String titleSession = mEtVideoTitle.getText().toString();
+                viewModel.getSession().setName(mEtVideoTitle.getText().toString());
 
-                singletonSessions.setTitleSession(titleSession);
-                intent.putExtra(TITLE_VIDEO, titleSession);
 
-                if (mTagModelListAdd.isEmpty() || titleSession.isEmpty()) {
+                if (viewModel.getSession().getTags().isEmpty() || viewModel.getSession().getName().isEmpty()) {
                     Toast.makeText(CreateSessionActivity.this, "Vous devez indiquez un titre à votre session ET une grille d'observation", Toast.LENGTH_LONG).show();
                 } else {
                     ArrayList mTagModelFinal = (ArrayList) mTagModelListAdd.clone();
                     mSingletonTags.setmTagsList(mTagModelFinal);
 
+                    //TODO : à voir cmt on le gere quand la raspberry sera en place
                     if ("multiSession".equals(multiSession)) {
                         share.setVisibility(View.VISIBLE);
                         buttonBack.setOnClickListener(new View.OnClickListener() {
@@ -287,15 +216,13 @@ public class CreateSessionActivity extends VyfeActivity {
                         buttonGoMulti.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                cleanSharedPref();
                                 startActivity(intent);
 
                             }
                         });
 
                     } else {
-                        intent.putExtra(ID_TAG_SET, mIdGridImport);
-                        cleanSharedPref();
+                        intent.putExtra("SessionModel", viewModel.getSession());
                         startActivity(intent);
                     }
                 }
@@ -304,23 +231,6 @@ public class CreateSessionActivity extends VyfeActivity {
             }
         });
 
-
-    }
-
-
-
-    public void adapterNotifyDataChange(TagRecyclerAdapter adapterImport, TagRecyclerAdapter adapternew) {
-        adapterImport.notifyDataSetChanged();
-        adapternew.notifyDataSetChanged();
-
-    }
-
-
-
-    public void cleanSharedPref() {
-        mSharedPrefVideoTitle.edit().putString("VIDEOTITLE", "").apply();
-        mEtVideoTitle.setText("");
-        mTagModelListAdd.clear();
 
     }
 

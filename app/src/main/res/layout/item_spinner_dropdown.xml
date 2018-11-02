@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<CheckedTextView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@android:id/text1"
-    style="?android:attr/spinnerDropDownItemStyle"
-    android:singleLine="true"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:ellipsize="marquee"
-    android:background="@color/colorCharcoal"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:id="@android:id/text1"
+style="?android:attr/spinnerDropDownItemStyle"
+android:singleLine="true"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:ellipsize="marquee"
+android:background="@color/colorCharcoal"
+android:textColor="@color/colorWhiteTwo"
+android:layout_marginTop="5dp"
+android:textSize="20sp"
+android:padding="10sp">
+
+<TextView
+    android:id="@+id/tv_grid"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:layout_gravity="center"
+    android:text="Indiquez votre grille"
     android:textColor="@color/colorWhiteTwo"
-    android:layout_marginTop="5dp"
-    android:textSize="20sp"
-    android:padding="10sp"/>
+    android:textSize="20sp" />
+</LinearLayout>

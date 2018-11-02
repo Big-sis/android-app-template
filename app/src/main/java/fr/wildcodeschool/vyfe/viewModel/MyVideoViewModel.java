@@ -5,45 +5,18 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
 import fr.wildcodeschool.vyfe.model.SessionModel;
+import fr.wildcodeschool.vyfe.repository.AllUserSessionsRepository;
 import fr.wildcodeschool.vyfe.repository.FirebaseDatabaseRepositorySingle;
-import fr.wildcodeschool.vyfe.repository.SessionRepository;
 
 
-//TODO BDD2
-public class PlayVideoViewModel extends ViewModel {
-
+public class MyVideoViewModel  extends ViewModel {
     private MutableLiveData<SessionModel> session;
-    private SessionRepository sessionRepository;
-    private MutableLiveData<Integer> videoPosition;
-    private MutableLiveData<Boolean> isPlaying;
+    private AllUserSessionsRepository sessionRepository;
 
-    public PlayVideoViewModel(String company, String sessionId) {
-        sessionRepository = new SessionRepository(company, sessionId);
-        isPlaying = new MutableLiveData<Boolean>();
-        isPlaying.setValue(false);
-        videoPosition = new MutableLiveData<Integer>();
-        videoPosition.setValue(0);
+    public MyVideoViewModel(String userId) {
+        sessionRepository = new AllUserSessionsRepository(userId);
     }
 
-    public LiveData<Integer> getVideoPosition() {
-        return videoPosition;
-    }
-
-    public void setVideoPosition(Integer videoPosition) {
-        this.videoPosition.setValue(videoPosition);
-    }
-
-    public LiveData<Boolean> isPlaying(){
-        return isPlaying;
-    }
-
-    public void play(){
-        isPlaying.setValue(true);
-    }
-
-    public void pause(){
-        isPlaying.setValue(false);
-    }
 
     public LiveData<SessionModel> getSession(){
         return session;

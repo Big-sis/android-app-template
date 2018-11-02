@@ -50,6 +50,9 @@ public class MyVideosActivity extends VyfeActivity {
         search.setImageResource(android.R.drawable.ic_menu_search);
         final ProgressBar pBLoading = findViewById(R.id.progress_bar_loading);
 
+
+
+
         ApiHelperVideo.getVideo(this, gridView, new ApiHelperVideo.ForecastResponse() {
             @Override
             public void onSuccess(ArrayList<SessionModel> result) {

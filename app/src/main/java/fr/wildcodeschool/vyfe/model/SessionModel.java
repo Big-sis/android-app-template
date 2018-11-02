@@ -1,13 +1,14 @@
 package fr.wildcodeschool.vyfe.model;
 
 import android.media.MediaMetadataRetriever;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import fr.wildcodeschool.vyfe.Constants;
 
-public class SessionModel {
+public class SessionModel implements Parcelable {
     private String name;
     private String author;
     private String serverVideoLink;
@@ -30,6 +31,12 @@ public class SessionModel {
         this.idTagSet = idTagSet;
     }
 
+    public SessionModel(String name, ArrayList<TagModel> tags,String idTagSet ){
+        this.name = name;
+        this.tags = tags;
+        this.idTagSet = idTagSet;
+    }
+
     public SessionModel(){}
 
     public SessionModel(String name, String author, String videoLink, String date, String idSession, String idTagSet, String idAndroid) {
@@ -37,6 +44,32 @@ public class SessionModel {
         this.idAndroid = idAndroid;
     }
 
+
+    public SessionModel(Parcel in) {
+        name = in.readString();
+        author = in.readString();
+        serverVideoLink = in.readString();
+        date = in.readString();
+        idSession = in.readString();
+        idTagSet = in.readString();
+        tags = in.createTypedArrayList(TagModel.CREATOR);
+        description = in.readString();
+        idAndroid = in.readString();
+        deviceVideoLink = in.readString();
+        thumbnail = in.readString();
+    }
+
+    public static final Creator<SessionModel> CREATOR = new Creator<SessionModel>() {
+        @Override
+        public SessionModel createFromParcel(Parcel in) {
+            return new SessionModel(in);
+        }
+
+        @Override
+        public SessionModel[] newArray(int size) {
+            return new SessionModel[size];
+        }
+    };
 
     public String getName() {
         return name;
@@ -143,5 +176,26 @@ public class SessionModel {
 
     public void setThumbnail(String thumbnail) {
         this.thumbnail = thumbnail;
+    }
+
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        dest.writeString(author);
+        dest.writeString(serverVideoLink);
+        dest.writeString(date);
+        dest.writeString(idSession);
+        dest.writeString(idTagSet);
+        dest.writeTypedList(tags);
+        dest.writeString(description);
+        dest.writeString(idAndroid);
+        dest.writeString(deviceVideoLink);
+        dest.writeString(thumbnail);
     }
 }

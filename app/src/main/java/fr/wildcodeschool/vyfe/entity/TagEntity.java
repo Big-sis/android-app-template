@@ -7,6 +7,26 @@ public class TagEntity {
     private String color;
     private String name;
     private HashMap<String, ArrayList<TimeEntity>> Times;
+    private String leftOffset;
+    private String rigthOffset;
+
+    public String getLeftOffset() {
+        return leftOffset;
+    }
+
+    public void setLeftOffset(String leftOffset) {
+        this.leftOffset = leftOffset;
+    }
+
+    public String getRigthOffset() {
+        return rigthOffset;
+    }
+
+    public void setRigthOffset(String rigthOffset) {
+        this.rigthOffset = rigthOffset;
+    }
+
+
 
     public String getColor() {
         return color;

@@ -8,15 +8,15 @@ import java.util.List;
 
 public abstract class FirebaseMapper<Entity, Model> implements IMapper<Entity, Model> {
 
-    public Model map(DataSnapshot dataSnapshot) {
+    public Model map(DataSnapshot dataSnapshot, String key) {
         Entity entity = dataSnapshot.getValue(getEntityClass());
-        return map(entity);
+        return map(entity,key);
     }
 
     public List<Model> mapList(DataSnapshot dataSnapshot) {
         List<Model> list = new ArrayList<>();
         for (DataSnapshot item : dataSnapshot.getChildren()) {
-            list.add(map(item));
+            list.add(map(item,item.getKey()));
         }
         return list;
     }

@@ -1,6 +1,7 @@
 package fr.wildcodeschool.vyfe.activity;
 
 import android.app.AlertDialog;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -45,21 +46,24 @@ import java.util.HashMap;
 import java.util.Map;
 
 import fr.wildcodeschool.vyfe.CameraPreview;
-import fr.wildcodeschool.vyfe.helper.ColorHelper;
 import fr.wildcodeschool.vyfe.ColorNotFoundException;
 import fr.wildcodeschool.vyfe.R;
 import fr.wildcodeschool.vyfe.RecyclerTouchListener;
 import fr.wildcodeschool.vyfe.RestartSession;
-import fr.wildcodeschool.vyfe.helper.ScrollHelper;
-import fr.wildcodeschool.vyfe.view.StopwatchView;
 import fr.wildcodeschool.vyfe.adapter.TagRecyclerAdapter;
+import fr.wildcodeschool.vyfe.helper.ColorHelper;
+import fr.wildcodeschool.vyfe.helper.ScrollHelper;
+import fr.wildcodeschool.vyfe.model.SessionModel;
 import fr.wildcodeschool.vyfe.model.TagModel;
 import fr.wildcodeschool.vyfe.model.TimeModel;
+import fr.wildcodeschool.vyfe.view.StopwatchView;
+import fr.wildcodeschool.vyfe.viewModel.RecordVideoViewModel;
 import fr.wildcodeschool.vyfe.viewModel.SingletonFirebase;
 import fr.wildcodeschool.vyfe.viewModel.SingletonSessions;
 import fr.wildcodeschool.vyfe.viewModel.SingletonTags;
 
 import static android.os.Environment.DIRECTORY_MOVIES;
+
 
 /**
  * This activity records in real time session with tags
@@ -90,6 +94,10 @@ public class RecordActivity extends VyfeActivity {
     private ConstraintLayout sessionRecord;
     private String idTagSet;
     private boolean recordInProgress = false;
+    private SessionModel session;
+    private RecordVideoViewModel view = null;
+    private RecordVideoViewModel viewModel;
+
 
     // Pour obtenir une instance de la caméra
     public static Camera getCameraInstance(int currentCameraId) {
@@ -106,11 +114,13 @@ public class RecordActivity extends VyfeActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(R.string.record_session);
+
         chronometer = findViewById(R.id.chronometer);
-
         mDatabase = SingletonFirebase.getInstance().getDatabase();
-
-        mTitleSession = mSingletonSessions.getTitleSession();
         TextView tvSpace = findViewById(R.id.tv_space);
 
         Date d = new Date();
@@ -122,9 +132,8 @@ public class RecordActivity extends VyfeActivity {
         mFileName = String.valueOf(Environment.getExternalStoragePublicDirectory(DIRECTORY_MOVIES) + "/" + "Vyfe");
         mFileName += "/" + mTitleSession + " - " + d.getTime() + ".mp4";
 
-
+        //TODO: mettre espace dispo dans futurs parametres
         //Stockage dispo
-
         long totalSpace = Environment.getExternalStoragePublicDirectory(DIRECTORY_MOVIES).getTotalSpace();
         final long freeSpace = Environment.getExternalStoragePublicDirectory(DIRECTORY_MOVIES).getFreeSpace();
         long sizefreeSpace = freeSpace * 100 / totalSpace;
@@ -135,13 +144,12 @@ public class RecordActivity extends VyfeActivity {
             tvSpace.setText(String.format("%s%s", tvSpace.getText(), getString(R.string.fullstorage)));
         }
 
-        //TODO: mettre espace dispo dans futurs parametres
 
-        mSingletonSessions.setFileName(mFileName);
+
+       // mSingletonSessions.setFileName(mFileName);
 
         int currentCameraId = Camera.CameraInfo.CAMERA_FACING_BACK;
         mCamera = getCameraInstance(currentCameraId);
-
         mRecord = findViewById(R.id.bt_record);
         mRecord.setImageResource(R.drawable.icons8_appel_video_60);
 
@@ -154,14 +162,15 @@ public class RecordActivity extends VyfeActivity {
         final RecyclerView recyclerTags = findViewById(R.id.re_tags);
         idTagSet = getIntent().getStringExtra(ID_TAG_SET);
 
+        //TODO voir comment lui passer le modele en 1 fois et non pas pour chaques parametres
+        session = getIntent().getParcelableExtra("SessionModel");
+        viewModel = ViewModelProviders.of(RecordActivity.this).get(RecordVideoViewModel.class);
+        viewModel.getSession().setIdTagSet(session.getIdTagSet());
+        viewModel.getSession().setName(session.getName());
+        viewModel.getSession().setTags(session.getTags());
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(R.string.record_session);
-
-
-        SingletonTags singletonTags = SingletonTags.getInstance();
-        mTagModels = singletonTags.getmTagsList();
+        mTitleSession =  viewModel.getSession().getName();
+        mTagModels =  viewModel.getSession().getTags();
 
         recyclerTags.setAlpha(0.5f);
 
@@ -218,7 +227,7 @@ public class RecordActivity extends VyfeActivity {
                     @Override
                     public void onClick(View v) {
                         closeRecord();
-                        recordInProgress =false;
+                        recordInProgress = false;
                         recordInProgress = false;
                         File file = new File(mFileName);
                         long lengthFile = file.length();
@@ -231,6 +240,7 @@ public class RecordActivity extends VyfeActivity {
                         } else {
                             Toast.makeText(RecordActivity.this, "save", Toast.LENGTH_SHORT).show();
                             saveSession();
+
                         }
 
                     }
@@ -259,6 +269,7 @@ public class RecordActivity extends VyfeActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(RecordActivity.this, SelectVideoActivity.class);
+                intent.putExtra("SessionModel", viewModel.getSession());
                 startActivity(intent);
             }
         });
@@ -394,7 +405,7 @@ public class RecordActivity extends VyfeActivity {
                     newTagList.get(nameTag).add(timePair);
                     int count = listTag.get(position).getCount();
                     count++;
-                   // listTag.get(position).setCount(count);
+                    // listTag.get(position).setCount(count);
                     mAdapterTags.notifyDataSetChanged();
 
                     //Scrool automatiquement suit l'ajout des tags
@@ -459,6 +470,7 @@ public class RecordActivity extends VyfeActivity {
     }
 
     public void saveSession() {
+
         Date date = new Date();
         Date newDate = new Date(date.getTime());
         SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yy HH:mm");
@@ -468,7 +480,7 @@ public class RecordActivity extends VyfeActivity {
         HashCode hashCode = Hashing.sha256().hashString(idAndroid, Charset.defaultCharset());
 
         //TODO V2 : tester ok
-        mDatabase = FirebaseDatabase.getInstance("https://vyfe-v2.firebaseio.com/");
+        mDatabase = FirebaseDatabase.getInstance("https://vyfe-dev-8702b.firebaseio.com/");
         DatabaseReference sessionRef2 = mDatabase.getReference("NomEntreprise").child("Sessions");
         sessionRef2.keepSynced(true);
         mIdSession = sessionRef2.push().getKey();
@@ -480,22 +492,35 @@ public class RecordActivity extends VyfeActivity {
         sessionRef2.child(mIdSession).child("idAndroid").setValue(hashCode.toString());
         sessionRef2.child(mIdSession).child("date").setValue(stringdate);
 
+        viewModel.getSession().setAuthor(mAuthUserId);
+        viewModel.getSession().setDate(stringdate);
+        viewModel.getSession().setIdSession(mIdSession);
+        viewModel.getSession().setDeviceVideoLink(mFileName);
+        viewModel.getSession().setIdAndroid(hashCode.toString());
+
+
+        ArrayList<TagModel> tagModelList = new ArrayList<>();
 
         HashMap<String, String> TagNameColorName = new HashMap<>();
         for (int i = 0; i < mTagModels.size(); i++) {
             String nameColor = mTagModels.get(i).getColor();
             String nameTag = mTagModels.get(i).getTagName();
             TagNameColorName.put(nameTag, nameColor);
-
         }
 
         for (Map.Entry<String, ArrayList<Pair<Integer, Integer>>> entry : newTagList.entrySet()) {
+            TagModel tagModel = new TagModel();
 
             String colorTag = TagNameColorName.get(entry.getKey());
-
             String tagKey = sessionRef2.child(mIdSession).child("Tags").push().getKey();
             sessionRef2.child(mIdSession).child("Tags").child(tagKey).child("name").setValue(entry.getKey());
             sessionRef2.child(mIdSession).child("Tags").child(tagKey).child("color").setValue(colorTag);
+
+            tagModel.setColor(colorTag);
+            tagModel.setTagId(tagKey);
+            tagModel.setTaggerId(mAuthUserId);
+            tagModel.setTagName(entry.getKey());
+
             ArrayList<TimeModel> times = new ArrayList<>();
 
             for (Pair<Integer, Integer> pair : entry.getValue()) {
@@ -504,10 +529,14 @@ public class RecordActivity extends VyfeActivity {
 
             }
             sessionRef2.child(mIdSession).child("Tags").child(tagKey).child("Times").child(mAuthUserId).setValue(times);
-
-
+            tagModel.setTimes(times);
+            tagModelList.add(tagModel);
 
         }
+
+        viewModel.getSession().setTags(tagModelList);
+
+
 
     }
 
