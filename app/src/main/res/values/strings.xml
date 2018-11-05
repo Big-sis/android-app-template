@@ -105,5 +105,17 @@
     <string name="create_grid2">Créer une grille</string>
     <string name="create_title_video">Indiquez un titre à votre vidéo :</string>
     <string name="edit_grid">1- Enregistrer une grille d\'observation</string>
+    <string name="purple">Violet</string>
+    <string name="light_blue">Bleu clair</string>
+    <string name="orange">Orange</string>
+    <string name="light_green">Vert clair</string>
+    <string name="pink">Rose</string>
+    <string name="red">Rouge</string>
+    <string name="blue">Bleu</string>
+    <string name="yellow">Jaune</string>
+    <string name="light_purple">Violet clair</string>
+    <string name="green">Vert</string>
+    <string name="connection">Vous devez vous connecter</string>
+
 
 </resources>
