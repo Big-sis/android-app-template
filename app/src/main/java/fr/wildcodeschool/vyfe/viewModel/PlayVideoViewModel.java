@@ -9,7 +9,6 @@ import fr.wildcodeschool.vyfe.repository.FirebaseDatabaseRepositorySingle;
 import fr.wildcodeschool.vyfe.repository.SessionRepository;
 
 
-//TODO BDD2
 public class PlayVideoViewModel extends ViewModel {
 
     private MutableLiveData<SessionModel> session;

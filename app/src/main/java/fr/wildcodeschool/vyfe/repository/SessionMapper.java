@@ -25,7 +25,6 @@ public class SessionMapper extends FirebaseMapper<SessionEntity, SessionModel> {
         session.setIdSession(key);
         ArrayList<TagModel> tagModels = new TagMapper().mapList(sessionEntity.getTags());
 
-
         session.setTags( tagModels);
 
         return session;

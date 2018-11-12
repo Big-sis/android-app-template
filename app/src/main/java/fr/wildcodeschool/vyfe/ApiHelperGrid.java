@@ -19,7 +19,7 @@ public class ApiHelperGrid {
         //TODO : BDD 2 : test ok
         final String authUserId = SingletonFirebase.getInstance().getUid();
 
-        mDatabase = FirebaseDatabase.getInstance("https://vyfe-v2.firebaseio.com/");
+        mDatabase = FirebaseDatabase.getInstance(Constants.FIREBASE_DB_VERSION_URL);
         DatabaseReference idTagSetRef = mDatabase.getReference("NomEntreprise").child("Users").child(authUserId).child("TagSets");
         idTagSetRef.keepSynced(true);
         String idTagSet = idTagSetRef.push().getKey();
@@ -32,9 +32,8 @@ public class ApiHelperGrid {
     public static void setTags(ArrayList<TagModel> mTagModelListAdd, String idTagSet, Context context) {
         //TODO : BDD2 : tester ok
 
-
         final String authUserId = SingletonFirebase.getInstance().getUid();
-        mDatabase = FirebaseDatabase.getInstance("https://vyfe-v2.firebaseio.com/");
+        mDatabase = FirebaseDatabase.getInstance(Constants.FIREBASE_DB_VERSION_URL);
 
         for (int i = 0; i < mTagModelListAdd.size(); i++) {
             String colorTag = mTagModelListAdd.get(i).getColor();

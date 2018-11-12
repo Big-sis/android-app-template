@@ -2,6 +2,8 @@ package fr.wildcodeschool.vyfe.activity;
 
 import android.Manifest;
 import android.app.AlertDialog;
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -18,20 +20,25 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.functions.FirebaseFunctions;
+import com.google.firebase.functions.HttpsCallableResult;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import fr.wildcodeschool.vyfe.Constants;
 import fr.wildcodeschool.vyfe.PrepareSessionActivity;
 import fr.wildcodeschool.vyfe.R;
+import fr.wildcodeschool.vyfe.model.LicenceModel;
+import fr.wildcodeschool.vyfe.viewModel.MainViewModel;
+import fr.wildcodeschool.vyfe.viewModel.MainViewModelFactory;
 import fr.wildcodeschool.vyfe.viewModel.SingletonFirebase;
 
 @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -48,6 +55,9 @@ public class MainActivity extends VyfeActivity {
     private String todayDate;
     private boolean firstMessage;
     private boolean secondMessage;
+    private MainViewModel viewModel;
+    private FirebaseFunctions mFunctions;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,60 +68,66 @@ public class MainActivity extends VyfeActivity {
         toolbar.setLogo(R.drawable.vyfe_blanc);
         setSupportActionBar(toolbar);
 
+        mFunctions = FirebaseFunctions.getInstance();
+
         LinearLayout btnStartSession = findViewById(R.id.btn_start_session);
         LinearLayout btnMultiSession = findViewById(R.id.btn_multi_session);
         LinearLayout btnVideos = findViewById(R.id.btn_videos);
         LinearLayout btnCreateGrid = findViewById(R.id.btn_create_grid);
-
-        FirebaseDatabase mDatabase = SingletonFirebase.getInstance().getDatabase();
-        String authUserId = SingletonFirebase.getInstance().getUid();
 
         Date date = new Date();
         Date newDate = new Date(date.getTime());
         final SimpleDateFormat format = new SimpleDateFormat("dd-MM-yy", Locale.FRENCH);
         todayDate = format.format(newDate);
 
-        DatabaseReference referenceLicence = mDatabase.getReference(authUserId).child("licence");
-        referenceLicence.keepSynced(true);
-        referenceLicence.addListenerForSingleValueEvent(new ValueEventListener() {
+//       TEst  String a = getComapgny(SingletonFirebase.getInstance().getUid()).getResult();
+
+
+        viewModel = ViewModelProviders.of(this, new MainViewModelFactory(SingletonFirebase.getInstance().getUid())).get(MainViewModel.class);
+        viewModel.getLicence(new MainViewModel.ForecastResponse() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                long remainingDays = 0;
-                String valueEndLicence = dataSnapshot.child("endLicence").getValue().toString();
-                Date dateToday = null;
-                Date dateEndLicence = null;
-                try {
-                    dateToday = format.parse(todayDate);
-                    dateEndLicence = format.parse(valueEndLicence);
-                    long difference = dateEndLicence.getTime() - dateToday.getTime();
-                    remainingDays = difference / Constants.DAY_TO_MILLISECOND_FACTOR;
-
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-
-                if (remainingDays < 30 && firstMessage) {
-                    Toast.makeText(MainActivity.this, R.string.expired_month, Toast.LENGTH_SHORT).show();
-                    firstMessage = false;
-                }
-                if (remainingDays < 7 && secondMessage) {
-                    Toast.makeText(MainActivity.this, R.string.expired_7_days, Toast.LENGTH_SHORT).show();
-                    secondMessage = false;
-                }
-                if (remainingDays <= 1) {
-                    Toast.makeText(MainActivity.this, R.string.expired_day, Toast.LENGTH_SHORT).show();
-                }
-                if (remainingDays < 0) {
-                    Toast.makeText(MainActivity.this, R.string.expired_licence, Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(MainActivity.this, ConnexionActivity.class);
-                    MainActivity.this.startActivity(intent);
+            public void onSuccess(LiveData<List<LicenceModel>> license) {
+                if (license.getValue().get(0).getEnd() == null) {
+                    Toast.makeText(MainActivity.this, R.string.license, Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(MainActivity.this, ConnexionActivity.class);MainActivity.this.startActivity(intent);
                     mAuth.signOut();
+                } else {
+                    long remainingDays = 0;
+                    Date dateToday = null;
+                    Date dateEndLicence = null;
+                    try {
+                        dateToday = format.parse(todayDate);
+                        dateEndLicence = format.parse(   license.getValue().get(0).getEnd());
+                        long difference = dateEndLicence.getTime() - dateToday.getTime();
+                        remainingDays = difference / Constants.DAY_TO_MILLISECOND_FACTOR;
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                    if (remainingDays < 30 && firstMessage) {
+                        Toast.makeText(MainActivity.this, R.string.expired_month, Toast.LENGTH_LONG).show();
+                        firstMessage = false;
+                    }
+                    if (remainingDays < 7 && secondMessage) {
+                        Toast.makeText(MainActivity.this, R.string.expired_7_days, Toast.LENGTH_LONG).show();
+                        secondMessage = false;
+                    }
+                    if (remainingDays <= 1) {
+                        Toast.makeText(MainActivity.this, R.string.expired_day, Toast.LENGTH_LONG).show();
+                    }
+                    if (remainingDays < 0) {
+                        Toast.makeText(MainActivity.this, R.string.expired_licence, Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(MainActivity.this, ConnexionActivity.class);
+                        MainActivity.this.startActivity(intent);
+                        mAuth.signOut();
+                    }
                 }
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-                Toast.makeText(MainActivity.this, databaseError.getMessage(), Toast.LENGTH_SHORT).show();
+            public void onError(String error) {
+                Toast.makeText(MainActivity.this, getString(R.string.problem)+error, Toast.LENGTH_SHORT).show();
             }
         });
 
@@ -195,5 +211,27 @@ public class MainActivity extends VyfeActivity {
         MenuItem itemLogout = menu.findItem(R.id.logout);
         itemLogout.setVisible(true);
         return true;
+    }
+
+    //TODO a faire fonctionner
+    private Task<String> getComapgny(String text) {
+        // Create the arguments to the callable function.
+        Map<String, Object> data = new HashMap<>();
+        data.put("userId", text);
+        data.put("get", true);
+
+        return mFunctions
+                .getHttpsCallable("https://us-central1-vyfe-project.cloudfunctions.net/getCompany")
+                .call(data)
+                .continueWith(new Continuation<HttpsCallableResult, String>() {
+                    @Override
+                    public String then(@NonNull Task<HttpsCallableResult> task) throws Exception {
+                        // This continuation runs on either success or failure, but if the task
+                        // has failed then getResult() will throw an Exception which will be
+                        // propagated down.
+                        String result = (String) task.getResult().getData();
+                        return result;
+                    }
+                });
     }
 }

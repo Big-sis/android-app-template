@@ -1,6 +1,9 @@
 package fr.wildcodeschool.vyfe.activity;
 
+import android.arch.lifecycle.Observer;
+import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
@@ -8,36 +11,35 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.FirebaseDatabase;
-
+import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 
-import fr.wildcodeschool.vyfe.helper.ApiHelperVideo;
-import fr.wildcodeschool.vyfe.adapter.VideoGridAdapter;
 import fr.wildcodeschool.vyfe.R;
+import fr.wildcodeschool.vyfe.adapter.VideoGridAdapter;
 import fr.wildcodeschool.vyfe.model.SessionModel;
+import fr.wildcodeschool.vyfe.viewModel.MyVideosViewModel;
+import fr.wildcodeschool.vyfe.viewModel.MyVideosViewModelFactory;
 import fr.wildcodeschool.vyfe.viewModel.SingletonFirebase;
-import fr.wildcodeschool.vyfe.viewModel.SingletonSessions;
+
+import static android.os.Environment.DIRECTORY_MOVIES;
+import static android.os.Environment.getExternalStoragePublicDirectory;
 
 /**
  * Activity presents cache memory videos and device videos
  * The user can select one and view it
  */
 public class MyVideosActivity extends VyfeActivity {
-    SingletonSessions mSingletonSessions = SingletonSessions.getInstance();
-    ArrayList<SessionModel> mSessionsModelList = mSingletonSessions.getmSessionsList();
-    FirebaseDatabase mDatabase;
-    VideoGridAdapter mVideoGridAdapter = new VideoGridAdapter(this, mSessionsModelList);
+    VideoGridAdapter mVideoGridAdapter;
+    MyVideosViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_video);
 
-        mDatabase = SingletonFirebase.getInstance().getDatabase();
+        viewModel = ViewModelProviders.of(this, new MyVideosViewModelFactory(SingletonFirebase.getInstance().getUid())).get(MyVideosViewModel.class);
 
         final GridView gridView = findViewById(R.id.grid_videos);
         SearchView searchView = findViewById(R.id.search_video);
@@ -51,30 +53,32 @@ public class MyVideosActivity extends VyfeActivity {
         final ProgressBar pBLoading = findViewById(R.id.progress_bar_loading);
 
 
-
-
-        ApiHelperVideo.getVideo(this, gridView, new ApiHelperVideo.ForecastResponse() {
+        viewModel.getSessions().observe(this, new Observer<List<SessionModel>>() {
             @Override
-            public void onSuccess(ArrayList<SessionModel> result) {
-                pBLoading.setVisibility(View.GONE);
-                gridView.setAdapter(mVideoGridAdapter);
-            }
+            public void onChanged(@Nullable List<SessionModel> tagSetModels) {
+                if(tagSetModels!=null) {
+                    ArrayList<SessionModel> userSessions = new ArrayList<>();
+                    pBLoading.setVisibility(View.INVISIBLE);
 
-            @Override
-            public void onError(String error) {
-                Toast.makeText(MyVideosActivity.this, " erreur :"+ error, Toast.LENGTH_SHORT).show();
-                pBLoading.setVisibility(View.GONE);
-            }
+                    File externalStorage = getExternalStoragePublicDirectory(DIRECTORY_MOVIES + "/" + "Vyfe");
+                    final String racineExternalStorage = String.valueOf(externalStorage.getAbsoluteFile());
+                    final String[] filesExternalStorage = externalStorage.list();
 
-            @Override
-            public void onWait() {
-                pBLoading.setVisibility(View.VISIBLE);
-            }
+                    if ((filesExternalStorage != null)) {
+                        for (String nameFileExternalStorage : filesExternalStorage) {
+                            String nameCache = racineExternalStorage + "/" + nameFileExternalStorage;
 
-            @Override
-            public void onFinish() {
-                pBLoading.setVisibility(View.GONE);
-                gridView.setAdapter(mVideoGridAdapter);
+                            for (SessionModel sessionModel : viewModel.getSessions().getValue()) {
+                                if (sessionModel.getDeviceVideoLink().equals(nameCache)) {
+                                    userSessions.add(sessionModel);
+                                }
+                            }
+                        }
+                    }
+
+                    mVideoGridAdapter = new VideoGridAdapter(MyVideosActivity.this, userSessions);
+                    gridView.setAdapter(mVideoGridAdapter);
+                }
             }
         });
 
@@ -95,7 +99,7 @@ public class MyVideosActivity extends VyfeActivity {
                 return false;
             }
         });
-        mVideoGridAdapter.notifyDataSetChanged();
+        if (mVideoGridAdapter != null) mVideoGridAdapter.notifyDataSetChanged();
     }
 
 }

@@ -3,7 +3,6 @@ package fr.wildcodeschool.vyfe.activity;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -13,66 +12,45 @@ import android.support.v7.widget.Toolbar;
 import android.view.Display;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.google.firebase.database.FirebaseDatabase;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import fr.wildcodeschool.vyfe.PrepareSessionActivity;
 import fr.wildcodeschool.vyfe.R;
-import fr.wildcodeschool.vyfe.RestartSession;
 import fr.wildcodeschool.vyfe.adapter.TagRecyclerAdapter;
 import fr.wildcodeschool.vyfe.adapter.TagsSetsSpinnerAdapter;
-import fr.wildcodeschool.vyfe.helper.ApiHelperSpinner;
 import fr.wildcodeschool.vyfe.helper.KeyboardHelper;
 import fr.wildcodeschool.vyfe.helper.ScrollHelper;
+import fr.wildcodeschool.vyfe.model.SessionModel;
 import fr.wildcodeschool.vyfe.model.TagModel;
 import fr.wildcodeschool.vyfe.model.TagSetModel;
 import fr.wildcodeschool.vyfe.viewModel.CreateSessionViewModel;
 import fr.wildcodeschool.vyfe.viewModel.CreateSessionViewModelFactory;
 import fr.wildcodeschool.vyfe.viewModel.SingletonFirebase;
-import fr.wildcodeschool.vyfe.viewModel.SingletonSessions;
-import fr.wildcodeschool.vyfe.viewModel.SingletonTags;
 
 public class CreateSessionActivity extends VyfeActivity {
 
-    public static final String TITLE_VIDEO = "titleVideo";
-    public static final String ID_TAG_SET = "idTagSet";
-    String titleTagSet = "";
     ScrollView scrollMain;
-    private SingletonTags mSingletonTags = SingletonTags.getInstance();
-    private ArrayList<TagModel> mTagModelListAdd = mSingletonTags.getmTagsListAdd();
-    private FirebaseDatabase mDatabase;
-    private String mIdGridImport;
-    private SharedPreferences mSharedPrefVideoTitle;
+    private ArrayList<TagModel> mTagModelListAdd = new ArrayList<>();
     private EditText mEtVideoTitle;
     private int mWidth;
     private int mHeigth;
-    private ArrayList<String> mNameTagSet = new ArrayList<>();
-    private ArrayList<String> mIdTagSet = new ArrayList<>();
     private Intent intent;
     private CreateSessionViewModel viewModel;
-
     private TagRecyclerAdapter adapterImport;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_start);
+        setContentView(R.layout.activity_create_session);
 
         viewModel = ViewModelProviders.of(this, new CreateSessionViewModelFactory(SingletonFirebase.getInstance().getUid())).get(CreateSessionViewModel.class);
-
-        final SingletonSessions singletonSessions = SingletonSessions.getInstance();
-
-        mDatabase = SingletonFirebase.getInstance().getDatabase();
 
         final Button buttonBack = findViewById(R.id.button_back);
         Button buttonGo = findViewById(R.id.button_go);
@@ -87,12 +65,10 @@ public class CreateSessionActivity extends VyfeActivity {
         Display display = getWindowManager().getDefaultDisplay();
         mWidth = display.getWidth();
         mHeigth = display.getHeight();
-        final String authUserId = SingletonFirebase.getInstance().getUid();
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.start_session);
 
-        final String[] str = {getString(R.string.arrow)};
         spinner.setMinimumWidth((int) (0.2 * mWidth));
 
         btnCreateGrid.setOnClickListener(new View.OnClickListener() {
@@ -101,7 +77,6 @@ public class CreateSessionActivity extends VyfeActivity {
                 startActivity(new Intent(CreateSessionActivity.this, PrepareSessionActivity.class));
             }
         });
-
 
         final String multiSession = getIntent().getStringExtra("multiSession");
         if ("multiSession".equals(multiSession)) {
@@ -122,7 +97,7 @@ public class CreateSessionActivity extends VyfeActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, final int position, long id) {
 
-                TagSetModel tagSetModels;
+                final TagSetModel tagSetModels;
                 if (position == 0) {
                     mTagModelListAdd = new ArrayList<>();
                 } else {
@@ -149,45 +124,14 @@ public class CreateSessionActivity extends VyfeActivity {
         });
         KeyboardHelper.CloseKeyboard(CreateSessionActivity.this, spinner);
 
-
-        final RestartSession restartSession = getIntent().getParcelableExtra("restartSession");
-        if (restartSession != null) {
-            mEtVideoTitle.setText(restartSession.getNameTitleSession());
-            final String idTagSetRestartSession = restartSession.getIdTagSet();
-
-            //TODO: remplacer par nouvelle spinner
-            ArrayAdapter<String> adapterSpinner = new ArrayAdapter<String>(CreateSessionActivity.this,
-                    R.layout.simple_spinner, mNameTagSet);
-
-
-            adapterSpinner.setDropDownViewResource(R.layout.item_spinner_dropdown);
-            spinner.setAdapter(adapterSpinner);
-            spinner.setVisibility(View.VISIBLE);
-
-            adapterImport.notifyDataSetChanged();
-            recyclerViewImport.setVisibility(View.VISIBLE);
-
-            spinner.setClickable(true);
-            spinner.setEnabled(true);
-
-
-            //TODO: faire marcher laffichage
-            ApiHelperSpinner.getTag(CreateSessionActivity.this, recyclerViewImport, idTagSetRestartSession, new ApiHelperSpinner.TagsResponse() {
-                @Override
-                public void onSuccess(ArrayList<TagModel> tagModelArrayList) {
-                    mTagModelListAdd = tagModelArrayList;
-                    // adapterImport.notifyDataSetChanged();
-
-                }
-
-                @Override
-                public void onError(String error) {
-
-                }
-            });
-            //TODO: indiquer qu'il faut garder l'identifiant de la grille pour envoyer les données sur firebase
-
-
+        //TODO voir selection spinner avec positionTagSetSpinner
+        SessionModel sessionRestart = getIntent().getParcelableExtra("restartSession");
+        if (sessionRestart != null) {
+            mEtVideoTitle.setText(sessionRestart.getName());
+            final String idTagSetRestartSession = sessionRestart.getIdTagSet();
+            int positionTagSetSpinner = positionGridSpinner(idTagSetRestartSession);
+            //TODO: methode ne fonctionne pas ????
+            spinner.setSelection(positionTagSetSpinner);
         }
 
         buttonGo.setOnClickListener(new View.OnClickListener() {
@@ -197,13 +141,9 @@ public class CreateSessionActivity extends VyfeActivity {
                 intent = new Intent(CreateSessionActivity.this, RecordActivity.class);
                 viewModel.getSession().setName(mEtVideoTitle.getText().toString());
 
-
                 if (viewModel.getSession().getTags().isEmpty() || viewModel.getSession().getName().isEmpty()) {
-                    Toast.makeText(CreateSessionActivity.this, "Vous devez indiquez un titre à votre session ET une grille d'observation", Toast.LENGTH_LONG).show();
+                    Toast.makeText(CreateSessionActivity.this, R.string.title_tagSet, Toast.LENGTH_LONG).show();
                 } else {
-                    ArrayList mTagModelFinal = (ArrayList) mTagModelListAdd.clone();
-                    mSingletonTags.setmTagsList(mTagModelFinal);
-
                     //TODO : à voir cmt on le gere quand la raspberry sera en place
                     if ("multiSession".equals(multiSession)) {
                         share.setVisibility(View.VISIBLE);
@@ -226,13 +166,28 @@ public class CreateSessionActivity extends VyfeActivity {
                         startActivity(intent);
                     }
                 }
-
-
             }
         });
 
 
     }
 
+    public int positionGridSpinner(final String tagSetSession) {
+        final int[] position = new int[1];
+        viewModel.getTagSets().observe(this, new Observer<List<TagSetModel>>() {
+            @Override
+            public void onChanged(@Nullable List<TagSetModel> tagSetModels) {
+                for (int i = 0; i < tagSetModels.size(); i++) {
+                    String idTagSetSpinner = tagSetModels.get(i).getId();
+                    if (idTagSetSpinner.equals(tagSetSession)) {
+                        position[0] = i;
+
+                    }
+                }
+
+            }
+        });
+        return position[0];
+    }
 
 }

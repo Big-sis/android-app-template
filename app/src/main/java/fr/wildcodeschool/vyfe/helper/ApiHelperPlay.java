@@ -12,7 +12,7 @@ import java.util.HashMap;
 import fr.wildcodeschool.vyfe.model.TagModel;
 import fr.wildcodeschool.vyfe.viewModel.SingletonFirebase;
 import fr.wildcodeschool.vyfe.viewModel.SingletonSessions;
-
+//TODO: a supprimer si pas apl
 public class ApiHelperPlay {
     private static FirebaseDatabase mDatabase = SingletonFirebase.getInstance().getDatabase();
     private static String mAuthUserId;

@@ -4,21 +4,19 @@ import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 
-public class SelectVideoViewModelFactory implements ViewModelProvider.Factory {
+public class MainViewModelFactory implements ViewModelProvider.Factory {
 
     private final String userId;
-    private final String sessionId;
 
-    public SelectVideoViewModelFactory(String userId, String sessionId) {
+    public MainViewModelFactory(String userId) {
         this.userId = userId;
-        this.sessionId = sessionId;
     }
 
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        if (modelClass.isAssignableFrom(SelectVideoViewModel.class))
-            return (T) new SelectVideoViewModel(userId, sessionId);
+        if (modelClass.isAssignableFrom(MainViewModel.class))
+            return (T) new MainViewModel(userId);
         throw new IllegalArgumentException("Unkowm ViewModel class");
     }
 }

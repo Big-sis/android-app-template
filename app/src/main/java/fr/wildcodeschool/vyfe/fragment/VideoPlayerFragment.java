@@ -9,14 +9,18 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.VideoView;
 import fr.wildcodeschool.vyfe.R;
+import fr.wildcodeschool.vyfe.adapter.TagRecyclerAdapter;
 import fr.wildcodeschool.vyfe.model.SessionModel;
 import fr.wildcodeschool.vyfe.view.StopwatchView;
 import fr.wildcodeschool.vyfe.viewModel.PlayVideoViewModel;
+import fr.wildcodeschool.vyfe.viewModel.RecordVideoViewModel;
 
 public class VideoPlayerFragment extends Fragment {
 
@@ -26,6 +30,7 @@ public class VideoPlayerFragment extends Fragment {
     private VideoView mVideoSelectedView;
     private FloatingActionButton mButtonReplay;
     private Handler mHandler;
+
 
     public static VideoPlayerFragment newInstance() {
         return new VideoPlayerFragment();
@@ -42,7 +47,7 @@ public class VideoPlayerFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         viewModel = ViewModelProviders.of(getActivity()).get(PlayVideoViewModel.class);
-                                                    //TODO: BDD2
+
         viewModel.getSession().observe(getActivity(), new Observer<SessionModel>() {
             @Override
             public void onChanged(@Nullable SessionModel session) {
@@ -91,6 +96,7 @@ public class VideoPlayerFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
+        viewModel = ViewModelProviders.of(getActivity()).get(PlayVideoViewModel.class);
         mVideoSelectedView = view.findViewById(R.id.video_view_selected);
         mChronoView = view.findViewById(R.id.chronometer_play);
         mPlayButtonView = view.findViewById(R.id.bt_play_selected);
@@ -128,5 +134,14 @@ public class VideoPlayerFragment extends Fragment {
             }
         });
 
+
+
+
+
+
     }
+
+
+
+
 }

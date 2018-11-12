@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import java.util.List;
-
+//TODO: classe qui sera dans lavenir supprimer av les nouveauw fragments
 public class PreparedSessionAdapter extends FragmentPagerAdapter {
     private final List fragments;
 

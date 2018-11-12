@@ -12,146 +12,51 @@
         layout="@layout/toolbar" />
 
 
-    <android.support.constraint.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="50dp">
-
-        <ScrollView
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            app:layout_constraintEnd_toStartOf="@+id/scroll_view_left"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:orientation="horizontal"
+            android:layout_marginTop="50dp">
 
-            <android.support.constraint.ConstraintLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:layout_weight="0.2"
+                android:orientation="vertical"
+                android:layout_marginRight="5dp">
 
-                <FrameLayout
-                    android:id="@+id/video_view"
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/constraint_video_record"
                     android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    app:layout_constraintDimensionRatio="1920:1080"
-                    app:layout_constraintEnd_toEndOf="@+id/video_control"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.2"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                </FrameLayout>
-
-                <TextView
-                    android:id="@+id/tv_space"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginStart="8dp"
-                    android:textColor="@color/common_google_signin_btn_text_dark_default"
-                    app:fontFamily="@font/roboto"
-                    app:layout_constraintBottom_toTopOf="@+id/scrollView3"
-                    app:layout_constraintStart_toStartOf="parent" />
-
-                <LinearLayout
-                    android:id="@+id/video_control"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginTop="8dp"
-                    android:gravity="center_vertical"
-                    android:orientation="vertical"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    app:layout_constraintBottom_toBottomOf="@+id/video_view"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/video_view">
-
-                    <android.support.design.widget.FloatingActionButton
-                        android:id="@+id/bt_record"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        app:backgroundTint="@color/color4" />
-
-
-                    <fr.wildcodeschool.vyfe.view.StopwatchView
-                        android:id="@+id/chronometer"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="16dp"
-                        android:background="@color/colorCharcoal"
-                        android:gravity="center"
-                        android:padding="10dp"
-                        android:textColor="@color/color9"
-                        android:textStyle="bold"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/bt_finish" />
-
-
-                </LinearLayout>
+                </android.support.constraint.ConstraintLayout>
 
                 <ScrollView
-                    android:id="@+id/scrollView3"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/video_view">
-
-                    <HorizontalScrollView
-                        android:id="@+id/horizontal_scroll_view"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scrollbars="horizontal">
-
-                        <LinearLayout
-                            android:id="@+id/ll_main"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:orientation="vertical" />
-
-                    </HorizontalScrollView>
-                </ScrollView>
-            </android.support.constraint.ConstraintLayout>
-
-        </ScrollView>
-
-
-
-        <ScrollView
-            android:id="@+id/scroll_view_left"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:orientation="vertical">
-
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/re_tags"
-                    android:layout_width="300dp"
+                    android:id="@+id/scroll_timeline"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_gravity="center_horizontal"
-                    android:padding="8dp">
-
-
-                </android.support.v7.widget.RecyclerView>
+                    android:layout_weight="0.8"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/constraint_video_record"/>
             </LinearLayout>
-        </ScrollView>
+
+            <ScrollView
+                android:id="@+id/scroll_tagset"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.8">
+
+            </ScrollView>
+
+        </LinearLayout>
 
 
-
-    </android.support.constraint.ConstraintLayout>
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/session_record"
@@ -250,7 +155,7 @@
                     android:text="@string/restart_session"
                     android:textColor="@color/white"
                     android:textSize="18sp"
-                    android:visibility="gone" />
+                    android:visibility="visible" />
             </LinearLayout>
         </android.support.constraint.ConstraintLayout>
     </android.support.constraint.ConstraintLayout>

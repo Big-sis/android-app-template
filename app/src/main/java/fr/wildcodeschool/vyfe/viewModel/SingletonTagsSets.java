@@ -6,11 +6,7 @@ import fr.wildcodeschool.vyfe.model.TagSetModel;
 
 public class SingletonTagsSets {
     public static SingletonTagsSets sInstance = null;
-
-
     private ArrayList<TagSetModel> mTagsSetsList = new ArrayList<>();
-
-
     private SingletonTagsSets() {
     }
 

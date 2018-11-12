@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import fr.wildcodeschool.vyfe.model.TagModel;
 
+//TODO disparaitra av viewmodel
 public class SingletonTags {
-
 
     public static SingletonTags sInstance = null;
 

@@ -5,13 +5,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import fr.wildcodeschool.vyfe.entity.TagEntity;
 import fr.wildcodeschool.vyfe.entity.TagSetEntity;
-import fr.wildcodeschool.vyfe.entity.TimeEntity;
 import fr.wildcodeschool.vyfe.model.TagModel;
 import fr.wildcodeschool.vyfe.model.TagSetModel;
-import fr.wildcodeschool.vyfe.model.TimeModel;
 
 
 public class TagSetMapper extends FirebaseMapper<TagSetEntity, TagSetModel> {
@@ -33,7 +30,6 @@ public class TagSetMapper extends FirebaseMapper<TagSetEntity, TagSetModel> {
             tagModel.setColor(tags.getValue().getColor());
 
             tagslist.add(tagModel);
-
 
         }
         tagSet.setTags(tagslist);

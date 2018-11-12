@@ -8,13 +8,12 @@ import fr.wildcodeschool.vyfe.model.SessionModel;
 import fr.wildcodeschool.vyfe.repository.FirebaseDatabaseRepositorySingle;
 import fr.wildcodeschool.vyfe.repository.SessionRepository;
 
-
-public class SelectVideoViewModel extends ViewModel {
+public class InfoVideoViewModel extends ViewModel {
     public SessionRepository sessionRepository;
     private MutableLiveData<SessionModel> session;
 
 
-    public SelectVideoViewModel(String userId, String sessionId) {
+    public InfoVideoViewModel(String userId, String sessionId) {
         sessionRepository = new SessionRepository(userId, sessionId);
     }
 
@@ -26,11 +25,11 @@ public class SelectVideoViewModel extends ViewModel {
         return session;
     }
 
-/** //TODO utilité?
-    @Override
-    protected void onCleared() {
-        sessionRepository.removeListener();
-    }**/
+    /** utilile?
+     @Override
+     protected void onCleared() {
+     sessionRepository.removeListener();
+     }**/
 
     public void loadSession() {
         if (session == null) {
@@ -49,5 +48,6 @@ public class SelectVideoViewModel extends ViewModel {
         });
 
     }
+
 
 }

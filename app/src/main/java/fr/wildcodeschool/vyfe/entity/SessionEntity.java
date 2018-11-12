@@ -20,7 +20,6 @@ public class SessionEntity {
     private HashMap<String, TagEntity> Tags;
 
 
-
     public SessionEntity(){}
 
 

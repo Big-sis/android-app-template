@@ -83,10 +83,10 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginEnd="40dp"
                     android:layout_marginLeft="40dp"
                     android:layout_marginRight="40dp"
                     android:layout_marginStart="40dp"
-                    android:layout_marginEnd="40dp"
                     android:layout_marginTop="10dp"
                     android:orientation="horizontal">
 
@@ -94,13 +94,15 @@
                         android:id="@+id/tv_choose_grid"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_weight="0.3"
                         android:layout_marginTop="30dp"
                         android:text="@string/grid_import"
                         android:textColor="@color/white"
                         android:textSize="20sp"
                         app:fontFamily="@font/roboto"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_information" />
+                        app:layout_constraintTop_toBottomOf="@+id/tv_information"
+                        />
 
                     <Spinner
                         android:id="@+id/spinner_session_infos"
@@ -112,23 +114,25 @@
                         android:background="@drawable/style_input"
                         android:visibility="visible"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/radio_button_insert" />
+                        app:layout_constraintTop_toBottomOf="@+id/radio_button_insert"
+                        android:layout_weight="0.6"/>
+
                     <Button
                         android:id="@+id/btn_intent_create_grid"
-                        android:alpha="0.5"
-                        android:layout_gravity="center"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="20dp"
                         android:layout_marginLeft="32dp"
                         android:layout_marginStart="32dp"
                         android:layout_marginTop="20dp"
-                        android:layout_marginBottom="20dp"
+                        android:alpha="0.5"
+                        android:background="@drawable/style_button_white"
                         android:padding="5dp"
                         android:text="@string/create_grid2"
                         android:textColor="@color/black_de"
                         android:textSize="16sp"
-                        android:background="@drawable/style_button_white"
-                        />
+                        android:layout_weight="0.1"/>
                 </LinearLayout>
 
                 <LinearLayout

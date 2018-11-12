@@ -12,13 +12,11 @@ import fr.wildcodeschool.vyfe.repository.FirebaseDatabaseRepository;
 import fr.wildcodeschool.vyfe.repository.TagSetRepository;
 
 
-//TODO BDD2
 public class CreateSessionViewModel extends ViewModel {
 
     private TagSetRepository repository;
     private SessionModel session;
     private MutableLiveData<List<TagSetModel>> tagSets;
-
 
     public CreateSessionViewModel(String userId) {
         repository = new TagSetRepository(userId);
@@ -31,13 +29,11 @@ public class CreateSessionViewModel extends ViewModel {
         return session;
     }
 
-
     public LiveData<List<TagSetModel>> getTagSets() {
         if (tagSets == null) {
             tagSets = new MutableLiveData<>();
             loadTagSets();
         }
-
         return tagSets;
     }
 
@@ -47,7 +43,6 @@ public class CreateSessionViewModel extends ViewModel {
     }
 
     private void loadTagSets() {
-
         repository.addListener(new FirebaseDatabaseRepository.CallbackInterface<TagSetModel>() {
             @Override
             public void onSuccess(List<TagSetModel> result) {

@@ -9,35 +9,23 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import fr.wildcodeschool.vyfe.ColorNotFoundException;
 import fr.wildcodeschool.vyfe.R;
 import fr.wildcodeschool.vyfe.helper.ColorHelper;
 import fr.wildcodeschool.vyfe.model.TagModel;
-import fr.wildcodeschool.vyfe.model.TagSetModel;
-import fr.wildcodeschool.vyfe.model.TimeModel;
 
 public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.ViewHolder> {
 
     private List<TagModel> mTagModelList;
     private String mFrom;
-    private TagSetModel  mTagsTagSet;
 
 
     public TagRecyclerAdapter(List<TagModel> observations, String from) {
         mTagModelList = observations;
         mFrom = from;
     }
-
-
-    public TagRecyclerAdapter(TagSetModel tagSetModel, List<TagModel> observations, String from) {
-        mTagsTagSet = tagSetModel;
-        mTagModelList = observations;
-        mFrom = from;
-    }
-
 
 
     @Override
@@ -51,14 +39,10 @@ public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.
     @Override
     public void onBindViewHolder(TagRecyclerAdapter.ViewHolder holder, int position) {
 
-        List<TagModel> tagGrid ;
+        List<TagModel> tagGrid = mTagModelList;
 
-        if(mTagsTagSet==null){
-            tagGrid = mTagModelList;
-        } else tagGrid = mTagsTagSet.getTags();
 
         TagModel tagTagSetModel = tagGrid.get(position);
-        TagModel tagModel = mTagModelList.get(position);
 
 
         holder.tvName.setText(tagTagSetModel.getTagName());
@@ -69,7 +53,7 @@ public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.
             e.getMessage();
             Log.d("BEUG", "onBindViewHolder: " + e.getMessage());
         }
-
+        //TODO: Creer classe fille
         if (mFrom.equals("start")) {
             holder.tvNum.setVisibility(View.GONE);
         } else if (mFrom.equals("create")) {
@@ -77,75 +61,22 @@ public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.
             holder.ivMenu.setVisibility(View.VISIBLE);
         } else if (mFrom.equals("record")) {
             holder.tvNum.setVisibility(View.VISIBLE);
-            int count = tagModel.getCount();
+            int count = tagTagSetModel.getCount();
             holder.tvNum.setText(String.valueOf(count));
         } else if (mFrom.equals("timelines")) {
             holder.tvNum.setVisibility(View.GONE);
         } else if (mFrom.equals("count")) {
             holder.tvNum.setVisibility(View.VISIBLE);
             if (mTagModelList != null) {
-                for (TagModel taged : mTagModelList) {
-                    ArrayList<TimeModel> timeList = taged.getTimes();
-                    String tagedName = taged.getTagName();
-                    if (tagedName.equals(tagModel.getTagName())) {
-                        tagModel.setTimes(timeList);
-                        if(taged.getTimes()!=null)
-                            holder.tvName.setText(String.valueOf(taged.getTimes().size()));
-                    }
-                }
+                holder.tvNum.setText(String.valueOf(tagTagSetModel.getCount()));
             }
-            if (!(tagModel.getTimes() == null)) {
-                int count = tagModel.getTimes().size();
+            if (!(tagTagSetModel.getTimes() == null)) {
+                int count = tagTagSetModel.getTimes().size();
                 holder.tvNum.setText(String.valueOf(count));
             } else {
                 holder.tvNum.setText("0");
             }
         }
-
-
-
-        /**
-
-        holder.tvName.setText(tagModel.getTagName());
-        try {
-            holder.ivColor.setBackgroundResource(ColorHelper.convertColor(tagModel.getColor()));
-        } catch (ColorNotFoundException e) {
-
-            e.getMessage();
-            Log.d("BEUG", "onBindViewHolder: " + e.getMessage());
-        }
-
-        if (mFrom.equals("start")) {
-            holder.tvNum.setVisibility(View.GONE);
-        } else if (mFrom.equals("create")) {
-            holder.tvNum.setVisibility(View.GONE);
-            holder.ivMenu.setVisibility(View.VISIBLE);
-        } else if (mFrom.equals("record")) {
-            holder.tvNum.setVisibility(View.VISIBLE);
-            int count = tagModel.getCount();
-            holder.tvNum.setText(String.valueOf(count));
-        } else if (mFrom.equals("timelines")) {
-            holder.tvNum.setVisibility(View.GONE);
-        } else if (mFrom.equals("count")) {
-            holder.tvNum.setVisibility(View.VISIBLE);
-            if (mTagModelList != null) {
-                for (TagModel taged : mTagModelList) {
-                    ArrayList<TimeModel> timeList = taged.getTimes();
-                    String tagedName = taged.getTagName();
-                    if (tagedName.equals(tagModel.getTagName())) {
-                        tagModel.setTimes(timeList);
-                        if(taged.getTimes()!=null)
-                        holder.tvName.setText(String.valueOf(taged.getTimes().size()));
-                    }
-                }
-            }
-            if (!(tagModel.getTimes() == null)) {
-                int count = tagModel.getTimes().size();
-                holder.tvNum.setText(String.valueOf(count));
-            } else {
-                holder.tvNum.setText("0");
-            }
-        }**/
     }
 
     @Override

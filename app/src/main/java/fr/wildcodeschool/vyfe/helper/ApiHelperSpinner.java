@@ -18,7 +18,7 @@ import fr.wildcodeschool.vyfe.R;
 import fr.wildcodeschool.vyfe.adapter.TagRecyclerAdapter;
 import fr.wildcodeschool.vyfe.model.TagModel;
 import fr.wildcodeschool.vyfe.viewModel.SingletonFirebase;
-
+//TODO: a supprimer si pas apl
 public class ApiHelperSpinner {
 
     private static FirebaseDatabase mDatabase = SingletonFirebase.getInstance().getDatabase();

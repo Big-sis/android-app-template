@@ -1,12 +1,9 @@
 package fr.wildcodeschool.vyfe.repository;
 
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
 import java.util.ArrayList;
-
-import fr.wildcodeschool.vyfe.Constants;
 
 public abstract class FirebaseDatabaseRepositorySingle<Model> {
 
@@ -18,8 +15,6 @@ public abstract class FirebaseDatabaseRepositorySingle<Model> {
     protected abstract String getRootNode();
 
     public FirebaseDatabaseRepositorySingle(FirebaseMapper mapper) {
-        databaseReference = FirebaseDatabase.getInstance(Constants.FIREBASE_DB_VERSION_URL).getReference(getRootNode());
-        databaseReference.keepSynced(true);
         this.mapper = mapper;
     }
 

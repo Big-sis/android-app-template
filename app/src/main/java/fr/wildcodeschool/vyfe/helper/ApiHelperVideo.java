@@ -27,7 +27,7 @@ import fr.wildcodeschool.vyfe.viewModel.SingletonSessions;
 
 import static android.os.Environment.DIRECTORY_MOVIES;
 import static android.os.Environment.getExternalStoragePublicDirectory;
-
+//TODO: a supprimer si pas apl
 public class ApiHelperVideo {
     private static FirebaseDatabase mDatabase = SingletonFirebase.getInstance().getDatabase();
     private static SingletonSessions mSingletonSessions = SingletonSessions.getInstance();

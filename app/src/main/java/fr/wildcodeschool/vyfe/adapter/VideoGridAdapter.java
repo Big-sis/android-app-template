@@ -27,7 +27,7 @@ public class VideoGridAdapter extends BaseAdapter implements Filterable {
     private ArrayList<SessionModel> filterList;
     private CustomVideoFilter filter;
 
-    private SingletonSessions mSingletonSessions;
+    private SessionModel mSession;
 
     public VideoGridAdapter(Context context, ArrayList<SessionModel> sessions) {
         this.mContext = context;
@@ -53,8 +53,7 @@ public class VideoGridAdapter extends BaseAdapter implements Filterable {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        final SessionModel session = this.mSessions.get(position);
-        mSingletonSessions = SingletonSessions.getInstance();
+        mSession = this.mSessions.get(position);
 
         if (convertView == null) {
             final LayoutInflater layoutInflater = LayoutInflater.from(mContext);
@@ -63,16 +62,16 @@ public class VideoGridAdapter extends BaseAdapter implements Filterable {
 
         //Test avec seulement le nom
         final TextView tvName = convertView.findViewById(R.id.title_video);
-        tvName.setText(session.getName());
+        tvName.setText(mSession.getName());
 
         final TextView tvDate = convertView.findViewById(R.id.video_date);
-        tvDate.setText(session.getDate());
+        tvDate.setText(mSession.getDate());
 
         ImageView videoStatus = convertView.findViewById(R.id.img_upload_video);
 
         String lRegex = "^(https?)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
 
-        if (session.getVideoLink().equals(lRegex)) {
+       if (mSession.getDeviceVideoLink().equals(lRegex)) {
             videoStatus.setImageResource(R.drawable.icons8_cloud_v_rifi__96);
         }
 
@@ -81,10 +80,8 @@ public class VideoGridAdapter extends BaseAdapter implements Filterable {
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mSingletonSessions.setFileName(session.getVideoLink());
-                mSingletonSessions.setIdSession(session.getIdSession());
-                mSingletonSessions.setTitleSession(session.getName());
                 Intent intent = new Intent(mContext, SelectVideoActivity.class);
+                intent.putExtra("SessionModel", mSession);
                 mContext.startActivity(intent);
             }
         });

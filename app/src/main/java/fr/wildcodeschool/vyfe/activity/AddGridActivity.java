@@ -31,12 +31,11 @@ import fr.wildcodeschool.vyfe.viewModel.SingletonTags;
 /**
  * This activity create Tags (name + color)
  */
+//TODO: le passer en fragment
+//TODO: enlever lobligation de changer le nom si il existe deja (plus necessaire)
 public class AddGridActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-
     private static int mfinalcolor = 0;
-
-
     private static SingletonTags mSingletonTags = SingletonTags.getInstance();
     private static ArrayList<TagModel> mTagModelListAdd = mSingletonTags.getmTagsListAdd();
     private static TagRecyclerAdapter mAdapter = new TagRecyclerAdapter(mTagModelListAdd, "create");

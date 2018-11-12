@@ -21,7 +21,6 @@ public class SessionModel implements Parcelable {
     private String deviceVideoLink;
     private String thumbnail;
 
-
     public SessionModel(String name, String author, String videoLink, String date, String idSession, String idTagSet) {
         this.name = name;
         this.author = author;

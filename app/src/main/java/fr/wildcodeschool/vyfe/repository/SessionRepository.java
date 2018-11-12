@@ -19,7 +19,6 @@ public class SessionRepository extends FirebaseDatabaseRepositorySingle<SessionM
         databaseReference = FirebaseDatabase.getInstance(Constants.FIREBASE_DB_VERSION_URL).getReference(getRootNode());
     }
 
-
     @Override
     protected String getRootNode() {
         return "NomEntreprise/Sessions/"+this.sessionId;

@@ -13,6 +13,17 @@ public class TagModel implements Parcelable{
     private ArrayList<TimeModel> times;
     private String taggerId;
 
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    private int count =0;
+
+
     protected TagModel(Parcel in) {
         tagId = in.readString();
         color = in.readString();
@@ -93,9 +104,6 @@ public class TagModel implements Parcelable{
         this.times = times;
     }
 
-    public int getCount() {
-        return times != null ? times.size() : 0;
-    }
 
     public String getTaggerId() {
         return taggerId;

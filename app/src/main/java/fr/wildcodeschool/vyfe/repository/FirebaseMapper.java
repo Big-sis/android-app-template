@@ -10,7 +10,7 @@ public abstract class FirebaseMapper<Entity, Model> implements IMapper<Entity, M
 
     public Model map(DataSnapshot dataSnapshot, String key) {
         Entity entity = dataSnapshot.getValue(getEntityClass());
-        return map(entity,key);
+        return map(entity,dataSnapshot.getKey());
     }
 
     public List<Model> mapList(DataSnapshot dataSnapshot) {

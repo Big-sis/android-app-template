@@ -17,9 +17,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.util.ArrayList;
 import fr.wildcodeschool.vyfe.activity.AddGridActivity;
-import fr.wildcodeschool.vyfe.activity.MainActivity;
 import fr.wildcodeschool.vyfe.adapter.TagRecyclerAdapter;
 import fr.wildcodeschool.vyfe.model.TagModel;
 import fr.wildcodeschool.vyfe.viewModel.SingletonTags;
@@ -39,7 +40,8 @@ public class CreateGridFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
 
-        //TODO: affichage de la grille creer
+        //TODO: revoir av leviewModel , enlever Singleton etc
+        // => replaceFragment(R.id.scroll_timeline, AddGridActivity.newInstance());
         //Elements page
         mEtTagSet = getView().findViewById(R.id.et_grid_title2);
         final TextView tvAddTag = getView().findViewById(R.id.tv_add_tag2);
@@ -59,11 +61,18 @@ public class CreateGridFragment extends Fragment {
             public void onClick(View v) {
 
                 String titleGrid = mEtTagSet.getText().toString();
-                if(titleGrid!=null){
+                if(!titleGrid.isEmpty() && mTagModelListAdd!=null){
                     ApiHelperGrid.setGrid(titleGrid,mTagModelListAdd,getContext());
-                    startActivity(new Intent(getContext(),MainActivity.class));
+                   //TODO : attention si lenregistrement est en cours lannule : a revoir
+                    Toast.makeText(getActivity(), "Grille enregistrée", Toast.LENGTH_LONG).show();
+                    cleanSharedPref();
+                    mTagModelListAdd.clear();
+                    gridRecyclerView(mTagModelListAdd);
+                }else {
+                    Toast.makeText(getActivity(), "Vous devez renseigner un titre à votre grille et des tags", Toast.LENGTH_LONG).show();
                 }
-                cleanSharedPref();
+
+
             }
         });
 

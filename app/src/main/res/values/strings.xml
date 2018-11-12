@@ -68,7 +68,7 @@
     <string name="mail_unkown">Email inconnu</string>
     <string name="send">Envoyer</string>
     <string name="date">Date</string>
-    <string name="contact">Vous pouvez nous contacter sur : www.vyfe-app.com</string>
+    <string name="contact">Vous pouvez nous contacter sur : www.vyfe.fr</string>
     <string name="create_account">Créer un compte</string>
     <string name="havent_grid">Vous n\'avez pas encore de grille</string>
     <string name="havent_tag">Vous n\'avez pas de tags</string>
@@ -105,5 +105,8 @@
     <string name="create_grid2">Créer une grille</string>
     <string name="create_title_video">Indiquez un titre à votre vidéo :</string>
     <string name="edit_grid">1- Enregistrer une grille d\'observation</string>
+    <string name="license">Vous ne disposez pas de licence</string>
+    <string name="problem">Problème d\'authentification :</string>
+    <string name="title_tagSet">Vous devez indiquez un titre à votre session ET une grille d\'observation</string>
 
 </resources>
