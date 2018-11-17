@@ -41,24 +41,6 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-                <TextView
-                    android:id="@+id/name_user"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginBottom="32dp"
-
-                    android:layout_marginTop="32dp"
-                    android:layout_marginLeft="8dp"
-
-                    android:text="@string/hello_user"
-                    android:textColor="@color/white"
-                    android:textSize="20sp"
-                    app:fontFamily="@font/roboto_bold"
-                    app:layout_constraintStart_toEndOf="@+id/img_avatar"
-                    app:layout_constraintTop_toTopOf="@+id/appBar" />
-
-
                 <LinearLayout
                     android:id="@+id/line1"
                     android:layout_width="match_parent"
@@ -81,7 +63,8 @@
                             android:layout_height="80dp"
                             android:layout_gravity="center_vertical"
                             android:paddingLeft="15dp"
-                            app:srcCompat="@drawable/icons8_liste_de_v_rification_filled_100" />
+                            android:paddingStart="15dp"
+                            app:srcCompat="@drawable/icons8_liste_de_v_rification_filled_100"/>
 
                         <TextView
                             android:id="@+id/prepared_session"
@@ -89,10 +72,11 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="16dp"
-                            android:text="1- Créer votre grille d'observation"
+                            android:layout_marginStart="16dp"
+                            android:text="@string/create_tagset_title"
                             android:textColor="@color/white"
                             android:textSize="20sp"
-                            app:fontFamily="@font/roboto_bold" />
+                            app:fontFamily="@font/roboto_bold"/>
                     </LinearLayout>
 
                     <LinearLayout

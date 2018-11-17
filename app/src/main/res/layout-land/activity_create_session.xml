@@ -129,7 +129,7 @@
                         android:alpha="0.5"
                         android:background="@drawable/style_button_white"
                         android:padding="5dp"
-                        android:text="@string/create_grid2"
+                        android:text="@string/create_grid_short"
                         android:textColor="@color/black_de"
                         android:textSize="16sp"
                         android:layout_weight="0.1"/>

@@ -8,7 +8,7 @@
     <string name="edit">Edit</string>
     <string name="upload">Upload</string>
     <string name="information">Informations</string>
-    <string name="title_video">VIdeo Title</string>
+    <string name="title_video">Video Title</string>
     <string name="start_session">Start session</string>
     <string name="start_multi_session">Start multi session</string>
     <string name="my_videos">My videos</string>
@@ -22,7 +22,6 @@
     <string name="info_session">Informations session</string>
     <string name="add_description">Add description</string>
     <string name="my_analyse">My analysis window</string>
-    <string name="grid_title">Analysis window title</string>
     <string name="add_evenement">Add Event</string>
     <string name="go">GO</string>
     <string name="back">Back</string>
@@ -31,14 +30,14 @@
     <string name="name_observation">Name observation</string>
     <string name="avatar">avatar</string>
     <string name="new_grid">New analysis</string>
-    <string name="choose_color">Choose your color</string>
+    <string name="choose_color">Chose your color</string>
     <string name="name">Name</string>
     <string name="color">Color</string>
-    <string name="choose">Choisir</string>
-    <string name="aleatory">Aleatory color</string>
+    <string name="choose">Chose</string>
+    <string name="aleatory">Random color</string>
     <string name="end">End</string>
-    <string name="name_event">Name event</string>
-    <string name="color_event">Color event</string>
+    <string name="name_event">Tag name</string>
+    <string name="color_event">Tag color</string>
     <string name="def_colot">Choose an event name and color</string>
     <string name="grid_import">Import an analysis window</string>
     <string name="new_grid2">Create a new analysis window</string>
@@ -83,9 +82,9 @@
     <string name="import_grid_arrow">Import an analysis window</string>
     <string name="choose_name_grid">Choose name for your analysis window</string>
     <string name="empty_grid">Select event or analysis window</string>
-    <string name="title_grid">Analysis window title :</string>
+    <string name="grid_title">Grid title</string>
     <string name="title_session">Video title :</string>
-    <string name="add_tag">Add event</string>
+    <string name="add_tag">Add tag</string>
     <string name="restart_session">Restart session</string>
     <string name="deconnected">Do you want to disconnect you?</string>
     <string name="active_wifi">You need a wifi connection for your identification</string>
@@ -97,4 +96,17 @@
     <string name="save_session">Do you want to save the session?</string>
     <string name="url">http://vyfe.co/live/356</string>
     <string name="arrow">▼</string>
+    <string name="create_tagset_title">Create new observation grid</string>
+    <string name="free_storage">disk space available : </string>
+    <string name="pourcentage"> %</string>
+    <string name="fullstorage">\nMemory is full !\nSome features may encounter issues</string>
+    <string name="dont_save_session">Session cannot be recorded due to a lack of memory. \n\n Free space and try recording session again </string>
+    <string name="save_grid">Save new grid</string>
+    <string name="create_grid">Creation new observation grid</string>
+    <string name="create_grid_short">Create new grid</string>
+    <string name="create_title_video">Give a title to your video :</string>
+    <string name="edit_grid">1- Save a new observation grid</string>
+    <string name="license">No license found</string>
+    <string name="problem">Authentication problem :</string>
+    <string name="tagset_title_warning">Please give your session a title AND a grid</string>
 </resources>

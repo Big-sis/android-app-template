@@ -84,7 +84,6 @@
     <string name="arrow"> \ \ \ ▼</string>
     <string name="choose_name_grid">Indiquez un titre à votre grille d\'observation :</string>
     <string name="empty_grid">Veuiller indiquer des tags ou une grille d\'observation</string>
-    <string name="title_grid">Titre de votre grille d\'observation :</string>
     <string name="title_session">Titre de votre vidéo :</string>
     <string name="add_tag">Ajouter le tag</string>
     <string name="restart_session">Relancer une Session</string>
@@ -96,17 +95,18 @@
     <string name="invalid_date">Date invalide</string>
     <string name="expired_licence">Votre licence a expiré, merci de nous contacter pour la prolonger</string>
     <string name="save_session">Voulez vous sauver la session en cours ?</string>
-    <string name="storagefree">Stockage disponible : </string>
+    <string name="free_storage">Stockage disponible : </string>
     <string name="pourcentage"> %</string>
     <string name="fullstorage">\nAttention votre stockage est plein !\nFonctionnalités limitées</string>
     <string name="dont_save_session">Vous ne disposez pas d\'assez d\'espace de stockage pour enregistrer la Session. \n\n Liberez de l\'espace pour enregistrer une nouvelle session </string>
     <string name="save_grid">Enregistrer la nouvelle grille</string>
     <string name="create_grid">Créer une nouvelle grille d\'observation</string>
-    <string name="create_grid2">Créer une grille</string>
+    <string name="create_grid_short">Créer une grille</string>
     <string name="create_title_video">Indiquez un titre à votre vidéo :</string>
     <string name="edit_grid">1- Enregistrer une grille d\'observation</string>
     <string name="license">Vous ne disposez pas de licence</string>
     <string name="problem">Problème d\'authentification :</string>
-    <string name="title_tagSet">Vous devez indiquez un titre à votre session ET une grille d\'observation</string>
+    <string name="tagset_title_warning">Vous devez indiquez un titre à votre session ET une grille d\'observation</string>
+    <string name="create_tagset_title">1- Créer votre grille d\'observation</string>
 
 </resources>
