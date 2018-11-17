@@ -15,11 +15,11 @@ import android.widget.Toast;
 import com.google.firebase.database.FirebaseDatabase;
 
 import fr.wildcodeschool.vyfe.R;
+import fr.wildcodeschool.vyfe.helper.AuthHelper;
 import fr.wildcodeschool.vyfe.model.SessionModel;
 import fr.wildcodeschool.vyfe.repository.EditSessionPost;
 import fr.wildcodeschool.vyfe.viewModel.InfoVideoViewModel;
 import fr.wildcodeschool.vyfe.viewModel.InfoVideoViewModelFactory;
-import fr.wildcodeschool.vyfe.viewModel.SingletonFirebase;
 
 public class InfoVideoActivity extends VyfeActivity {
 
@@ -39,7 +39,7 @@ public class InfoVideoActivity extends VyfeActivity {
         final EditText etDescription = findViewById(R.id.et_description);
         final EditText etVideoTitle = findViewById(R.id.et_video_title);
         Toolbar toolbar = findViewById(R.id.toolbar);
-        mDatabase = SingletonFirebase.getInstance().getDatabase();
+        mDatabase = FirebaseDatabase.getInstance();
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.infos_video);
@@ -47,7 +47,7 @@ public class InfoVideoActivity extends VyfeActivity {
         SessionModel sessionModel = getIntent().getParcelableExtra("SessionModel");
 
         if (sessionModel!= null) {
-            viewModel = ViewModelProviders.of(this, new InfoVideoViewModelFactory(SingletonFirebase.getInstance().getUid(), sessionModel.getIdSession())).get(InfoVideoViewModel.class);
+            viewModel = ViewModelProviders.of(this, new InfoVideoViewModelFactory( mAuth.getCurrentUser().getId(), sessionModel.getIdSession())).get(InfoVideoViewModel.class);
         }
 
         viewModel.getSession().observe(this, new Observer<SessionModel>() {

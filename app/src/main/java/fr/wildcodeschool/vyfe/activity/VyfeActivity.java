@@ -4,19 +4,22 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-
-import com.google.firebase.auth.FirebaseAuth;
+import android.widget.Toast;
 
 import fr.wildcodeschool.vyfe.R;
+import fr.wildcodeschool.vyfe.helper.AuthHelper;
 
 public abstract class VyfeActivity extends AppCompatActivity {
 
-    private static FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    protected static AuthHelper mAuth;
 
     protected void replaceFragment(int view, Fragment fragment) {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
@@ -63,5 +66,19 @@ public abstract class VyfeActivity extends AppCompatActivity {
                     }
                 })
                 .show();
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mAuth = AuthHelper.getInstance(this);
+        if(mAuth.getLicenseRemainingDays()==0) {
+            if (mAuth.getCurrentUser() != null)
+                Toast.makeText(this, R.string.license, Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(this, ConnexionActivity.class);
+            this.startActivity(intent);
+            mAuth.signOut();
+            finish();
+        }
     }
 }

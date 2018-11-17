@@ -30,8 +30,4 @@ public class SessionMapper extends FirebaseMapper<SessionEntity, SessionModel> {
         return session;
     }
 
-    @Override
-    public List<SessionModel> mapList(HashMap<String,SessionEntity> from) {
-        return null;
-    }
 }

@@ -8,6 +8,7 @@ import java.util.List;
 
 import fr.wildcodeschool.vyfe.model.SessionModel;
 import fr.wildcodeschool.vyfe.model.TagSetModel;
+import fr.wildcodeschool.vyfe.repository.BaseListValueEventListener;
 import fr.wildcodeschool.vyfe.repository.FirebaseDatabaseRepository;
 import fr.wildcodeschool.vyfe.repository.TagSetRepository;
 
@@ -18,8 +19,8 @@ public class CreateSessionViewModel extends ViewModel {
     private SessionModel session;
     private MutableLiveData<List<TagSetModel>> tagSets;
 
-    public CreateSessionViewModel(String userId) {
-        repository = new TagSetRepository(userId);
+    public CreateSessionViewModel(String userId, String companyId) {
+        repository = new TagSetRepository(userId, companyId);
     }
 
     public SessionModel getSession() {
@@ -39,11 +40,11 @@ public class CreateSessionViewModel extends ViewModel {
 
     @Override
     protected void onCleared() {
-        repository.removeListener();
+        repository.removeListeners();
     }
 
     private void loadTagSets() {
-        repository.addListener(new FirebaseDatabaseRepository.CallbackInterface<TagSetModel>() {
+        repository.addListListener(new BaseListValueEventListener.CallbackInterface<TagSetModel>() {
             @Override
             public void onSuccess(List<TagSetModel> result) {
                 tagSets.setValue(result);

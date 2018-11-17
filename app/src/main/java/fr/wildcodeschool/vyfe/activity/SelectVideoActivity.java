@@ -14,10 +14,10 @@ import android.widget.TextView;
 
 import fr.wildcodeschool.vyfe.R;
 import fr.wildcodeschool.vyfe.adapter.TagRecyclerAdapter;
+import fr.wildcodeschool.vyfe.helper.AuthHelper;
 import fr.wildcodeschool.vyfe.model.SessionModel;
 import fr.wildcodeschool.vyfe.viewModel.SelectVideoViewModel;
 import fr.wildcodeschool.vyfe.viewModel.SelectVideoViewModelFactory;
-import fr.wildcodeschool.vyfe.viewModel.SingletonFirebase;
 
 
 public class SelectVideoActivity extends VyfeActivity {
@@ -41,7 +41,7 @@ public class SelectVideoActivity extends VyfeActivity {
         sessionModel = getIntent().getParcelableExtra("SessionModel");
 
         if (sessionModel != null) {
-            viewModel = ViewModelProviders.of(this, new SelectVideoViewModelFactory(SingletonFirebase.getInstance().getUid(), sessionModel.getIdSession())).get(SelectVideoViewModel.class);
+            viewModel = ViewModelProviders.of(this, new SelectVideoViewModelFactory( mAuth.getCurrentUser().getId(), sessionModel.getIdSession())).get(SelectVideoViewModel.class);
         }
 
         //TODO : Je passerais tt par des intent au lieu dapl mapper (moins long?)?

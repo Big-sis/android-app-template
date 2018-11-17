@@ -7,19 +7,18 @@ import android.arch.lifecycle.ViewModel;
 import java.util.List;
 
 import fr.wildcodeschool.vyfe.model.SessionModel;
-import fr.wildcodeschool.vyfe.model.TagSetModel;
+import fr.wildcodeschool.vyfe.repository.BaseListValueEventListener;
 import fr.wildcodeschool.vyfe.repository.FirebaseDatabaseRepository;
-import fr.wildcodeschool.vyfe.repository.TagSetRepository;
-import fr.wildcodeschool.vyfe.repository.UserSessionRepository;
+import fr.wildcodeschool.vyfe.repository.UserRepository;
 
 
 public class MyVideosViewModel extends ViewModel {
 
-    private UserSessionRepository repository;
+    private UserRepository repository;
     private MutableLiveData<List<SessionModel>> sessions;
 
     public MyVideosViewModel(String userId) {
-        repository = new UserSessionRepository(userId);
+        repository = new UserRepository(userId);
     }
 
     public LiveData<List<SessionModel>> getSessions() {
@@ -32,12 +31,12 @@ public class MyVideosViewModel extends ViewModel {
 
     @Override
     protected void onCleared() {
-        repository.removeListener();
+        repository.removeListeners();
     }
 
     private void loadSessions() {
 
-        repository.addListener(new FirebaseDatabaseRepository.CallbackInterface<SessionModel>() {
+        repository.addListListener(new BaseListValueEventListener.CallbackInterface<SessionModel>() {
             @Override
             public void onSuccess(List<SessionModel> result) {
                 sessions.setValue(result);

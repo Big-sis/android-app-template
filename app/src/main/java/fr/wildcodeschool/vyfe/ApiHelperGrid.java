@@ -1,5 +1,6 @@
 package fr.wildcodeschool.vyfe;
 
+import android.app.Activity;
 import android.content.Context;
 
 import com.google.firebase.database.DatabaseReference;
@@ -7,9 +8,11 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
+import fr.wildcodeschool.vyfe.helper.AuthHelper;
 import fr.wildcodeschool.vyfe.model.TagModel;
-import fr.wildcodeschool.vyfe.viewModel.SingletonFirebase;
 
+
+// TODO to be removed
 public class ApiHelperGrid {
     private static FirebaseDatabase mDatabase;
 
@@ -17,7 +20,7 @@ public class ApiHelperGrid {
     public static void setGrid(String titleTagSet, ArrayList<TagModel> mTagModelListAdd, Context context) {
 
         //TODO : BDD 2 : test ok
-        final String authUserId = SingletonFirebase.getInstance().getUid();
+        final String authUserId =  AuthHelper.getInstance(context).getCurrentUser().getId();
 
         mDatabase = FirebaseDatabase.getInstance(Constants.FIREBASE_DB_VERSION_URL);
         DatabaseReference idTagSetRef = mDatabase.getReference("NomEntreprise").child("Users").child(authUserId).child("TagSets");
@@ -32,7 +35,7 @@ public class ApiHelperGrid {
     public static void setTags(ArrayList<TagModel> mTagModelListAdd, String idTagSet, Context context) {
         //TODO : BDD2 : tester ok
 
-        final String authUserId = SingletonFirebase.getInstance().getUid();
+        final String authUserId =  AuthHelper.getInstance(context).getCurrentUser().getId();
         mDatabase = FirebaseDatabase.getInstance(Constants.FIREBASE_DB_VERSION_URL);
 
         for (int i = 0; i < mTagModelListAdd.size(); i++) {

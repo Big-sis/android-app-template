@@ -7,10 +7,10 @@ import com.google.firebase.database.ValueEventListener;
 public class BaseSingleValueEventListener<Entity, Model> implements ValueEventListener {
 
     private FirebaseMapper<Entity, Model> mapper;
-    private FirebaseDatabaseRepositorySingle.CallbackInterface<Model> callback;
+    private CallbackInterface<Model> callback;
 
     public BaseSingleValueEventListener(FirebaseMapper<Entity, Model> mapper,
-                                        FirebaseDatabaseRepositorySingle.CallbackInterface<Model> callback) {
+                                        CallbackInterface<Model> callback) {
         this.mapper = mapper;
         this.callback = callback;
     }
@@ -24,5 +24,12 @@ public class BaseSingleValueEventListener<Entity, Model> implements ValueEventLi
     @Override
     public void onCancelled(DatabaseError databaseError) {
         callback.onError(databaseError.toException());
+    }
+
+    public interface CallbackInterface<T> {
+        void onSuccess(T result);
+
+
+        void onError(Exception e);
     }
 }

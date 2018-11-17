@@ -41,7 +41,6 @@ public class PlayVideoActivity extends VyfeActivity implements LifecycleOwner {
         String userId = FirebaseAuth.getInstance().getUid();
         sessionId = getIntent().getStringExtra(SelectVideoActivity.ID_SESSION);
         viewModel = ViewModelProviders.of(this, new PlayVideoViewModelFactory(userId, sessionId)).get(PlayVideoViewModel.class);
-        viewModel.loadSession();
 
         setContentView(R.layout.activity_play_video);
         //TODO: affichage des tags ne fonctionne pas

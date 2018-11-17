@@ -1,27 +1,63 @@
 package fr.wildcodeschool.vyfe.repository;
 
 
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
+
+import java.util.ArrayList;
 
 import fr.wildcodeschool.vyfe.Constants;
 import fr.wildcodeschool.vyfe.model.SessionModel;
+import fr.wildcodeschool.vyfe.model.TagModel;
 
-public class SessionRepository extends FirebaseDatabaseRepositorySingle<SessionModel> {
+public class SessionRepository extends FirebaseDatabaseRepository<SessionModel> {
 
-    private String userId;
-    private String sessionId;
-
-    public SessionRepository(String userId, String sessionId) {
-        super(new SessionMapper());
-        this.userId = userId;
-        this.sessionId = sessionId;
-        databaseReference = FirebaseDatabase.getInstance(Constants.FIREBASE_DB_VERSION_URL).getReference(getRootNode());
+    public SessionRepository(String companyId) {
+        super(new SessionMapper(), companyId);
     }
 
     @Override
     protected String getRootNode() {
-        return "NomEntreprise/Sessions/"+this.sessionId;
+        return getCompany() + "/Sessions/";
     }
+
+//    public SessionModel sessionMapper(SessionModel sessionModel) {
+//        ArrayList<TagModel> mTagModels = sessionModel.getTags();
+//
+//        if (mTagModels != null) {
+//
+//            String mIdSession = dataBaseReference.push().getKey();
+//            sessionModel.setIdSession(mIdSession);
+//
+//            sessionRef2.child(mIdSession).child("author").setValue(sessionModel.getAuthor());
+//            sessionRef2.child(mIdSession).child("name").setValue(sessionModel.getName());
+//            sessionRef2.child(mIdSession).child("idTagSet").setValue(sessionModel.getIdTagSet());
+//            sessionRef2.child(mIdSession).child("pathApp").setValue(sessionModel.getDeviceVideoLink());
+//            sessionRef2.child(mIdSession).child("idAndroid").setValue(sessionModel.getIdAndroid());
+//            sessionRef2.child(mIdSession).child("date").setValue(sessionModel.getDate());
+//
+//            ArrayList<TagModel> tagModelList = new ArrayList<>();
+//            for (TagModel entry : mTagModels) {
+//                TagModel tagModel = new TagModel();
+//
+//                String tagKey = sessionRef2.child(mIdSession).child("Tags").push().getKey();
+//                sessionRef2.child(mIdSession).child("Tags").child(tagKey).child("name").setValue(entry.getTagName());
+//                sessionRef2.child(mIdSession).child("Tags").child(tagKey).child("color").setValue(entry.getColor());
+//                sessionRef2.child(mIdSession).child("Tags").child(tagKey).child("Times").child(sessionModel.getAuthor()).setValue(entry.getTimes());
+//
+//                tagModel.setTimes(entry.getTimes());
+//                tagModel.setColor(entry.getColor());
+//                tagModel.setTagId(tagKey);
+//                tagModel.setTaggerId(sessionModel.getAuthor());
+//                tagModel.setTagName(entry.getTagName());
+//                tagModelList.add(tagModel);
+//
+//            }
+//
+//            sessionModel.setTags(tagModelList);
+//
+//        }
+//        return sessionModel;
+//    }
 
 }

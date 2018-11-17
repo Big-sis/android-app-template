@@ -5,6 +5,8 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
 import fr.wildcodeschool.vyfe.model.SessionModel;
+import fr.wildcodeschool.vyfe.repository.BaseListValueEventListener;
+import fr.wildcodeschool.vyfe.repository.BaseSingleValueEventListener;
 import fr.wildcodeschool.vyfe.repository.FirebaseDatabaseRepositorySingle;
 import fr.wildcodeschool.vyfe.repository.SessionRepository;
 
@@ -12,10 +14,12 @@ import fr.wildcodeschool.vyfe.repository.SessionRepository;
 public class SelectVideoViewModel extends ViewModel {
     public SessionRepository sessionRepository;
     private MutableLiveData<SessionModel> session;
+    private String sessionId;
 
 
-    public SelectVideoViewModel(String userId, String sessionId) {
-        sessionRepository = new SessionRepository(userId, sessionId);
+    public SelectVideoViewModel(String companyId, String sessionId) {
+        this.sessionId = sessionId;
+        sessionRepository = new SessionRepository(companyId);
     }
 
     public LiveData<SessionModel> getSession() {
@@ -26,17 +30,17 @@ public class SelectVideoViewModel extends ViewModel {
         return session;
     }
 
-/** //TODO utilité?
+
     @Override
     protected void onCleared() {
-        sessionRepository.removeListener();
-    }**/
+        sessionRepository.removeListeners();
+    }
 
     public void loadSession() {
         if (session == null) {
             session = new MutableLiveData<SessionModel>();
         }
-        sessionRepository.addListener(new FirebaseDatabaseRepositorySingle.CallbackInterface<SessionModel>() {
+        sessionRepository.addChildListener(sessionId, new BaseSingleValueEventListener.CallbackInterface<SessionModel>() {
             @Override
             public void onSuccess(SessionModel result) {
                 session.setValue(result);

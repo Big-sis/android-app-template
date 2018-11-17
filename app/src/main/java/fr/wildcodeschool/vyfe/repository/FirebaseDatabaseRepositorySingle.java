@@ -8,8 +8,8 @@ import java.util.ArrayList;
 public abstract class FirebaseDatabaseRepositorySingle<Model> {
 
     protected Query databaseReference;
-    protected CallbackInterface<Model> firebaseCallback;
-    private BaseSingleValueEventListener listener;
+    protected BaseListValueEventListener.CallbackInterface<Model> firebaseCallback;
+    private BaseListValueEventListener listener;
     private FirebaseMapper mapper;
 
     protected abstract String getRootNode();
@@ -18,9 +18,9 @@ public abstract class FirebaseDatabaseRepositorySingle<Model> {
         this.mapper = mapper;
     }
 
-    public void addListener(CallbackInterface<Model> callback) {
+    public void addListener(BaseListValueEventListener.CallbackInterface<Model> callback) {
         this.firebaseCallback = callback;
-        listener = new BaseSingleValueEventListener(mapper, callback);
+        listener = new BaseListValueEventListener(mapper, callback);
         databaseReference.addValueEventListener(listener);
     }
 
@@ -29,10 +29,6 @@ public abstract class FirebaseDatabaseRepositorySingle<Model> {
         databaseReference.removeEventListener(listener);
     }
 
-    public interface CallbackInterface<T> {
-        void onSuccess(T result);
 
-        void onError(Exception e);
-    }
 
 }

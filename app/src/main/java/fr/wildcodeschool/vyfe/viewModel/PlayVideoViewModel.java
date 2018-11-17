@@ -5,6 +5,7 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
 import fr.wildcodeschool.vyfe.model.SessionModel;
+import fr.wildcodeschool.vyfe.repository.BaseSingleValueEventListener;
 import fr.wildcodeschool.vyfe.repository.FirebaseDatabaseRepositorySingle;
 import fr.wildcodeschool.vyfe.repository.SessionRepository;
 
@@ -15,13 +16,15 @@ public class PlayVideoViewModel extends ViewModel {
     private SessionRepository sessionRepository;
     private MutableLiveData<Integer> videoPosition;
     private MutableLiveData<Boolean> isPlaying;
+    private String sessionId;
 
     public PlayVideoViewModel(String company, String sessionId) {
-        sessionRepository = new SessionRepository(company, sessionId);
+        sessionRepository = new SessionRepository(company);
         isPlaying = new MutableLiveData<Boolean>();
         isPlaying.setValue(false);
         videoPosition = new MutableLiveData<Integer>();
         videoPosition.setValue(0);
+        this.sessionId = sessionId;
     }
 
     public LiveData<Integer> getVideoPosition() {
@@ -45,19 +48,21 @@ public class PlayVideoViewModel extends ViewModel {
     }
 
     public LiveData<SessionModel> getSession(){
+        if (session == null) {
+            session = new MutableLiveData<SessionModel>();
+            loadSession();
+        }
         return session;
     }
 
     @Override
     protected void onCleared() {
-        sessionRepository.removeListener();
+        sessionRepository.removeListeners();
     }
 
-    public void loadSession(){
-        if (session == null) {
-            session = new MutableLiveData<SessionModel>();
-        }
-        sessionRepository.addListener(new FirebaseDatabaseRepositorySingle.CallbackInterface<SessionModel>() {
+    private void loadSession(){
+
+        sessionRepository.addChildListener(sessionId, new BaseSingleValueEventListener.CallbackInterface<SessionModel>() {
             @Override
             public void onSuccess(SessionModel result) { session.setValue(result); }
 

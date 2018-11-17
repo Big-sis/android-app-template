@@ -20,10 +20,4 @@ public class LicenseMapper extends FirebaseMapper<LicenseEntity, LicenceModel> {
         return license;
     }
 
-    @Override
-    public List<LicenceModel> mapList(HashMap<String, LicenseEntity> from) {
-        return null;
-    }
-
-
 }

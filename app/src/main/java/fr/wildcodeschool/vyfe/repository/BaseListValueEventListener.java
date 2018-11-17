@@ -9,10 +9,10 @@ import java.util.List;
 public class BaseListValueEventListener<Model, Entity> implements ValueEventListener {
 
     private FirebaseMapper<Entity, Model> mapper;
-    private FirebaseDatabaseRepository.CallbackInterface<Model> callback;
+    private CallbackInterface<Model> callback;
 
     public BaseListValueEventListener(FirebaseMapper<Entity, Model> mapper,
-                                      FirebaseDatabaseRepository.CallbackInterface<Model> callback) {
+                                      CallbackInterface<Model> callback) {
         this.mapper = mapper;
         this.callback = callback;
     }
@@ -26,5 +26,12 @@ public class BaseListValueEventListener<Model, Entity> implements ValueEventList
     @Override
     public void onCancelled(DatabaseError databaseError) {
         callback.onError(databaseError.toException());
+    }
+
+    public interface CallbackInterface<T> {
+        void onSuccess(List<T> result);
+
+
+        void onError(Exception e);
     }
 }

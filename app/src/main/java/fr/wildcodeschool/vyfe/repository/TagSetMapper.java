@@ -38,10 +38,4 @@ public class TagSetMapper extends FirebaseMapper<TagSetEntity, TagSetModel> {
         return tagSet;
     }
 
-    @Override
-    public List<TagSetModel> mapList(HashMap<String, TagSetEntity> from) {
-        return null;
-    }
-
-
 }

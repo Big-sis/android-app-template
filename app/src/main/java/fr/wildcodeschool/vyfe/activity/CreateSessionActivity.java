@@ -25,32 +25,37 @@ import fr.wildcodeschool.vyfe.PrepareSessionActivity;
 import fr.wildcodeschool.vyfe.R;
 import fr.wildcodeschool.vyfe.adapter.TagRecyclerAdapter;
 import fr.wildcodeschool.vyfe.adapter.TagsSetsSpinnerAdapter;
+import fr.wildcodeschool.vyfe.helper.AuthHelper;
 import fr.wildcodeschool.vyfe.helper.KeyboardHelper;
 import fr.wildcodeschool.vyfe.helper.ScrollHelper;
 import fr.wildcodeschool.vyfe.model.SessionModel;
 import fr.wildcodeschool.vyfe.model.TagModel;
 import fr.wildcodeschool.vyfe.model.TagSetModel;
+import fr.wildcodeschool.vyfe.model.UserModel;
 import fr.wildcodeschool.vyfe.viewModel.CreateSessionViewModel;
 import fr.wildcodeschool.vyfe.viewModel.CreateSessionViewModelFactory;
-import fr.wildcodeschool.vyfe.viewModel.SingletonFirebase;
 
 public class CreateSessionActivity extends VyfeActivity {
 
     ScrollView scrollMain;
-    private ArrayList<TagModel> mTagModelListAdd = new ArrayList<>();
+    private ArrayList<TagModel> mTagModelListAdd;
     private EditText mEtVideoTitle;
     private int mWidth;
     private int mHeigth;
     private Intent intent;
     private CreateSessionViewModel viewModel;
     private TagRecyclerAdapter adapterImport;
+    private UserModel currentUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_session);
 
-        viewModel = ViewModelProviders.of(this, new CreateSessionViewModelFactory(SingletonFirebase.getInstance().getUid())).get(CreateSessionViewModel.class);
+        currentUser = mAuth.getCurrentUser();
+        mTagModelListAdd = new ArrayList<>();
+
+        viewModel = ViewModelProviders.of(this, new CreateSessionViewModelFactory( currentUser.getId(), currentUser.getCompany())).get(CreateSessionViewModel.class);
 
         final Button buttonBack = findViewById(R.id.button_back);
         Button buttonGo = findViewById(R.id.button_go);

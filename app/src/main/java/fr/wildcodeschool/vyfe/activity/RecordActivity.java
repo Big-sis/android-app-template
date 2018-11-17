@@ -28,7 +28,6 @@ import fr.wildcodeschool.vyfe.fragment.TimelineRealTimeFragment;
 import fr.wildcodeschool.vyfe.model.SessionModel;
 import fr.wildcodeschool.vyfe.repository.NewSessionPost;
 import fr.wildcodeschool.vyfe.viewModel.RecordVideoViewModel;
-import fr.wildcodeschool.vyfe.viewModel.SingletonFirebase;
 
 
 /**
@@ -37,7 +36,7 @@ import fr.wildcodeschool.vyfe.viewModel.SingletonFirebase;
 
 public class RecordActivity extends VyfeActivity {
 
-    private final String mAuthUserId = SingletonFirebase.getInstance().getUid();
+    private final String mAuthUserId = mAuth.getCurrentUser().getId();
     private RecordVideoViewModel viewModel;
     private ConstraintLayout contrainOkRecord;
     private ConstraintLayout constraintErrorSpace;
@@ -123,8 +122,6 @@ public class RecordActivity extends VyfeActivity {
             public void onChanged(@Nullable String step) {
                 if (step.equals("save")) {
                     contrainOkRecord.setVisibility(View.VISIBLE);
-                    SessionModel sessionModel = NewSessionPost.sessionMapper(viewModel.getSession());
-                    viewModel.getSession().setTags(sessionModel.getTags());
                 }
                 if (step.equals("error")) {
                     constraintErrorSpace.setVisibility(View.VISIBLE);

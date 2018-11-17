@@ -3,17 +3,23 @@ package fr.wildcodeschool.vyfe.viewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
+import android.support.annotation.NonNull;
 import android.util.Pair;
+
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import fr.wildcodeschool.vyfe.model.SessionModel;
+import fr.wildcodeschool.vyfe.repository.SessionRepository;
 
 public class RecordVideoViewModel extends ViewModel {
 
     private SessionModel session;
+    private SessionRepository sessionRepository;
     private MutableLiveData<Integer> touchTagPosition;
     private MutableLiveData<String> stepRecord;
     private MutableLiveData<Long> chronometer;
@@ -60,6 +66,14 @@ public class RecordVideoViewModel extends ViewModel {
     }
     public void save(){
         stepRecord.setValue("save");
+        sessionRepository.push(session).continueWith(new Continuation<Void, Object>() {
+
+            @Override
+            public Object then(@NonNull Task<Void> task) throws Exception {
+                Object result = task.getResult();
+                return result;
+            }
+        });
     }
     public void close() {stepRecord.setValue("close");}
 

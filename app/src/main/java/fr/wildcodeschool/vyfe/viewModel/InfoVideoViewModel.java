@@ -4,17 +4,23 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
+import java.util.List;
+
 import fr.wildcodeschool.vyfe.model.SessionModel;
+import fr.wildcodeschool.vyfe.repository.BaseSingleValueEventListener;
+import fr.wildcodeschool.vyfe.repository.FirebaseDatabaseRepository;
 import fr.wildcodeschool.vyfe.repository.FirebaseDatabaseRepositorySingle;
 import fr.wildcodeschool.vyfe.repository.SessionRepository;
 
 public class InfoVideoViewModel extends ViewModel {
     public SessionRepository sessionRepository;
     private MutableLiveData<SessionModel> session;
+    private String sessionId;
 
 
-    public InfoVideoViewModel(String userId, String sessionId) {
-        sessionRepository = new SessionRepository(userId, sessionId);
+    public InfoVideoViewModel(String companyId, String sessionId) {
+        sessionRepository = new SessionRepository(companyId);
+        this.sessionId = sessionId;
     }
 
     public LiveData<SessionModel> getSession() {
@@ -25,17 +31,17 @@ public class InfoVideoViewModel extends ViewModel {
         return session;
     }
 
-    /** utilile?
-     @Override
-     protected void onCleared() {
-     sessionRepository.removeListener();
-     }**/
 
-    public void loadSession() {
+    @Override
+    protected void onCleared() {
+        sessionRepository.removeListeners();
+    }
+
+    private void loadSession() {
         if (session == null) {
             session = new MutableLiveData<SessionModel>();
         }
-        sessionRepository.addListener(new FirebaseDatabaseRepositorySingle.CallbackInterface<SessionModel>() {
+        sessionRepository.addChildListener(sessionId, new BaseSingleValueEventListener.CallbackInterface<SessionModel>() {
             @Override
             public void onSuccess(SessionModel result) {
                 session.setValue(result);
@@ -43,7 +49,7 @@ public class InfoVideoViewModel extends ViewModel {
 
             @Override
             public void onError(Exception e) {
-                session.setValue(null);
+
             }
         });
 

@@ -18,10 +18,10 @@ import java.util.List;
 
 import fr.wildcodeschool.vyfe.R;
 import fr.wildcodeschool.vyfe.adapter.VideoGridAdapter;
+import fr.wildcodeschool.vyfe.helper.AuthHelper;
 import fr.wildcodeschool.vyfe.model.SessionModel;
 import fr.wildcodeschool.vyfe.viewModel.MyVideosViewModel;
 import fr.wildcodeschool.vyfe.viewModel.MyVideosViewModelFactory;
-import fr.wildcodeschool.vyfe.viewModel.SingletonFirebase;
 
 import static android.os.Environment.DIRECTORY_MOVIES;
 import static android.os.Environment.getExternalStoragePublicDirectory;
@@ -39,7 +39,7 @@ public class MyVideosActivity extends VyfeActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_video);
 
-        viewModel = ViewModelProviders.of(this, new MyVideosViewModelFactory(SingletonFirebase.getInstance().getUid())).get(MyVideosViewModel.class);
+        viewModel = ViewModelProviders.of(this, new MyVideosViewModelFactory( mAuth.getCurrentUser().getId())).get(MyVideosViewModel.class);
 
         final GridView gridView = findViewById(R.id.grid_videos);
         SearchView searchView = findViewById(R.id.search_video);
