@@ -1,5 +1,6 @@
 package fr.vyfe.repository;
 
+import fr.vyfe.mapper.SessionMapper;
 import fr.vyfe.model.SessionModel;
 
 

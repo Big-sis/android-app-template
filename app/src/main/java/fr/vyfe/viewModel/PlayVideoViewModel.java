@@ -48,7 +48,7 @@ public class PlayVideoViewModel extends ViewModel {
 
     public LiveData<SessionModel> getSession(){
         if (session == null) {
-            session = new MutableLiveData<SessionModel>();
+            session = new MutableLiveData<>();
             loadSession();
         }
         return session;

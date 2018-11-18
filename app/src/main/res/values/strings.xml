@@ -22,7 +22,7 @@
     <string name="add_description">Ajouter une description</string>
     <string name="my_analyse">Mes grilles d\'analyses</string>
     <string name="grid_title">Titre de la grille</string>
-    <string name="add_evenement">Créer des tags</string>
+    <string name="create_tags">Créer des tags</string>
     <string name="go">Démarrer</string>
     <string name="back">Retour</string>
     <string name="share_url">Partagez l\'adresse URL à vos apprenants</string>
@@ -37,9 +37,9 @@
     <string name="choose">Choisir une couleur</string>
     <string name="aleatory">Couleur aléatoire</string>
     <string name="end">Terminer</string>
-    <string name="name_event">Nom du tag</string>
-    <string name="color_event">Couleur du tag</string>
-    <string name="def_colot">Définissez un nom et une couleur au tag</string>
+    <string name="tag_name">Nom du tag</string>
+    <string name="tag_color">Couleur du tag</string>
+    <string name="def_color">Définissez un nom et une couleur au tag</string>
     <string name="grid_import">Choississez votre grille d\'observation :</string>
     <string name="new_grid2">Créer une nouvelle grille d\'observation</string>
     <string name="move">Tag déplacé</string>
@@ -108,5 +108,18 @@
     <string name="problem">Problème d\'authentification :</string>
     <string name="tagset_title_warning">Vous devez indiquez un titre à votre session ET une grille d\'observation</string>
     <string name="create_tagset_title">1- Créer votre grille d\'observation</string>
+    <string name="color_gradient_blue_dark">Violet</string>
+    <string name="color_gradient_blue_light">Bleu clair</string>
+    <string name="color_gradient_faded_orange">Orange</string>
+    <string name="color_gradient_green">Vert clair</string>
+    <string name="color_gradient_rosy">Rose</string>
+    <string name="color_gradient_red">Rouge</string>
+    <string name="color_gradient_blue">Bleu</string>
+    <string name="color_gradient_yellow">Jaune</string>
+    <string name="color_gradient_magenta_light">Violet Clair</string>
+    <string name="color_gradient_green_lightgreen">Vert</string>
+    <string name="color_gradient_grey">Gris</string>
+    <string name="grid_name_empty_warning">Vous devez renseigner un titre à votre grille et des tags</string>
+    <string name="save_grid_info">Grid saved</string>
 
 </resources>

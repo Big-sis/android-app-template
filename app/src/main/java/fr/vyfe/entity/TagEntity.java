@@ -7,25 +7,8 @@ public class TagEntity {
     private String color;
     private String name;
     private HashMap<String, ArrayList<TimeEntity>> Times;
-    private String leftOffset;
-    private String rigthOffset;
-
-    public String getLeftOffset() {
-        return leftOffset;
-    }
-
-    public void setLeftOffset(String leftOffset) {
-        this.leftOffset = leftOffset;
-    }
-
-    public String getRigthOffset() {
-        return rigthOffset;
-    }
-
-    public void setRigthOffset(String rigthOffset) {
-        this.rigthOffset = rigthOffset;
-    }
-
+    private int leftOffset;
+    private int rigthOffset;
 
 
     public String getColor() {
@@ -50,5 +33,21 @@ public class TagEntity {
 
     public void setTimes(HashMap<String, ArrayList<TimeEntity>> times) {
         Times = times;
+    }
+
+    public int getLeftOffset() {
+        return leftOffset;
+    }
+
+    public void setLeftOffset(int leftOffset) {
+        this.leftOffset = leftOffset;
+    }
+
+    public int getRigthOffset() {
+        return rigthOffset;
+    }
+
+    public void setRigthOffset(int rigthOffset) {
+        this.rigthOffset = rigthOffset;
     }
 }

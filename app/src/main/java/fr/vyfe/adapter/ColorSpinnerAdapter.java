@@ -8,37 +8,38 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import fr.vyfe.R;
+import java.util.ArrayList;
+import java.util.HashMap;
 
-public class CustomAdapter extends BaseAdapter {
+import fr.vyfe.R;
+import fr.vyfe.model.ColorModel;
+
+public class ColorSpinnerAdapter extends BaseAdapter {
 
     Context context;
-    int color[];
-    String[] colorName;
-    String[] nameDrawable;
     LayoutInflater inflter;
+    ArrayList<ColorModel> colors;
 
-    public CustomAdapter(Context applicationContext, int[] color, String[] colorName, String[] nameDrawable) {
+
+    public ColorSpinnerAdapter(Context applicationContext, ArrayList<ColorModel> colors) {
         this.context = applicationContext;
-        this.color = color;
-        this.colorName = colorName;
-        this.nameDrawable =nameDrawable;
+        this.colors = colors;
         inflter = (LayoutInflater.from(applicationContext));
     }
 
     @Override
     public int getCount() {
-        return color.length;
+        return colors.size();
     }
 
     @Override
-    public Object getItem(int i) {
-        return null;
+    public ColorModel getItem(int i) {
+        return colors.get(i);
     }
 
     @Override
     public long getItemId(int i) {
-        return 0;
+        return i;
     }
 
     @Override
@@ -46,8 +47,8 @@ public class CustomAdapter extends BaseAdapter {
         view = inflter.inflate(R.layout.custom_spinner_color, null);
         ImageView ivColor = (ImageView) view.findViewById(R.id.iv_color);
         TextView tvColorNames = (TextView) view.findViewById(R.id.tv_color);
-        ivColor.setImageResource(color[i]);
-        tvColorNames.setText(colorName[i]);
+        ivColor.setImageResource(getItem(i).getImage());
+        tvColorNames.setText(getItem(i).getName());
         return view;
     }
 }

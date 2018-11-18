@@ -2,6 +2,8 @@ package fr.vyfe.repository;
 
 import com.google.firebase.database.Query;
 
+import fr.vyfe.mapper.FirebaseMapper;
+
 // TODO to be removed
 public abstract class FirebaseDatabaseRepositorySingle<Model> {
 

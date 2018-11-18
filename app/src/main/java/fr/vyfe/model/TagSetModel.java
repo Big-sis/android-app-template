@@ -12,11 +12,6 @@ public class TagSetModel implements Parcelable {
 
     public TagSetModel() {}
 
-    public TagSetModel(String id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
     protected TagSetModel(Parcel in) {
         id = in.readString();
         name = in.readString();
@@ -57,6 +52,10 @@ public class TagSetModel implements Parcelable {
 
     public void setTags(ArrayList<TagModel> tags) {
         this.tags = tags;
+    }
+
+    public void addTag(TagModel tag){
+        this.tags.add(tag);
     }
 
     @Override

@@ -39,20 +39,14 @@ public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.
     @Override
     public void onBindViewHolder(TagRecyclerAdapter.ViewHolder holder, int position) {
 
-        List<TagModel> tagGrid = mTagModelList;
+        List<TagModel> tagList = mTagModelList;
 
 
-        TagModel tagTagSetModel = tagGrid.get(position);
+        TagModel tagModel = tagList.get(position);
 
 
-        holder.tvName.setText(tagTagSetModel.getTagName());
-        try {
-            holder.ivColor.setBackgroundResource(ColorHelper.convertColor(tagTagSetModel.getColor()));
-        } catch (ColorNotFoundException e) {
-
-            e.getMessage();
-            Log.d("BEUG", "onBindViewHolder: " + e.getMessage());
-        }
+        holder.tvName.setText(tagModel.getTagName());
+        holder.ivColor.setBackgroundResource(ColorHelper.getInstance().findColorById(tagModel.getColor().getId()).getImage());
         //TODO: Creer classe fille
         if (mFrom.equals("start")) {
             holder.tvNum.setVisibility(View.GONE);
@@ -61,17 +55,17 @@ public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.
             holder.ivMenu.setVisibility(View.VISIBLE);
         } else if (mFrom.equals("record")) {
             holder.tvNum.setVisibility(View.VISIBLE);
-            int count = tagTagSetModel.getCount();
+            int count = tagModel.getCount();
             holder.tvNum.setText(String.valueOf(count));
         } else if (mFrom.equals("timelines")) {
             holder.tvNum.setVisibility(View.GONE);
         } else if (mFrom.equals("count")) {
             holder.tvNum.setVisibility(View.VISIBLE);
             if (mTagModelList != null) {
-                holder.tvNum.setText(String.valueOf(tagTagSetModel.getCount()));
+                holder.tvNum.setText(String.valueOf(tagModel.getCount()));
             }
-            if (!(tagTagSetModel.getTimes() == null)) {
-                int count = tagTagSetModel.getTimes().size();
+            if (!(tagModel.getTimes() == null)) {
+                int count = tagModel.getTimes().size();
                 holder.tvNum.setText(String.valueOf(count));
             } else {
                 holder.tvNum.setText("0");

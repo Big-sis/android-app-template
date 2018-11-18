@@ -142,12 +142,7 @@ public class TimelineFragment extends Fragment {
                             tagImageView.setMinimumHeight(convertToDp(25));
                             tagImageView.setMinimumWidth(Math.max(convertToDp(50), (int) (end - start)));
 
-                            try {
-                                tagImageView.setBackgroundResource(ColorHelper.convertColor(tag.getColor()));
-                            } catch (ColorNotFoundException e) {
-                                e.getMessage();
-                                Log.d("BEUG", "onBindViewHolder: " + e.getMessage());
-                            }
+                            tagImageView.setBackgroundResource(ColorHelper.getInstance().findColorById(tag.getColor().getId()).getImage());
 
                             LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                                     LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);

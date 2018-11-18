@@ -4,6 +4,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
+import fr.vyfe.mapper.FirebaseMapper;
+
 public class BaseSingleValueEventListener<Entity, Model> implements ValueEventListener {
 
     private FirebaseMapper<Entity, Model> mapper;

@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,7 +15,6 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import fr.vyfe.ColorNotFoundException;
 import fr.vyfe.R;
 import fr.vyfe.helper.ColorHelper;
 import fr.vyfe.model.TagModel;
@@ -107,12 +105,8 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
                 tagImageView.setMinimumHeight(convertToDp(25));
                 tagImageView.setMinimumWidth(Math.max(convertToDp(50), (int) (end - start)));
 
-                try {
-                    tagImageView.setBackgroundResource(ColorHelper.convertColor(tag.getColor()));
-                } catch (ColorNotFoundException e) {
-                    e.getMessage();
-                    Log.d("BEUG", "onBindViewHolder: "+ e.getMessage());
-                }
+
+                tagImageView.setBackgroundResource(ColorHelper.getInstance().findColorById(tag.getColor().getId()).getImage());
 
                 LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
                         LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);

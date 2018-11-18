@@ -1,4 +1,4 @@
-package fr.vyfe.repository;
+package fr.vyfe.mapper;
 
 import com.google.firebase.database.DataSnapshot;
 

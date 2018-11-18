@@ -17,7 +17,7 @@ public class CreateGridViewModelFactory implements ViewModelProvider.Factory {
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        if (modelClass.isAssignableFrom(PlayVideoViewModel.class))
+        if (modelClass.isAssignableFrom(CreateGridViewModel.class))
             return (T) new CreateGridViewModel(userId, companyId);
         throw new IllegalArgumentException("Unkowm ViewModel class");
     }

@@ -1,5 +1,8 @@
-package fr.vyfe.repository;
+package fr.vyfe.mapper;
 
+
+import java.util.HashMap;
+import java.util.List;
 
 import fr.vyfe.entity.LicenseEntity;
 import fr.vyfe.model.LicenceModel;
@@ -15,6 +18,16 @@ public class LicenseMapper extends FirebaseMapper<LicenseEntity, LicenceModel> {
         license.setUserId(licenseEntity.getIdUser());
 
         return license;
+    }
+
+    @Override
+    public LicenseEntity unMap(LicenceModel licenceModel) {
+        return null;
+    }
+
+    @Override
+    public HashMap<String, LicenseEntity> unMapList(List<LicenceModel> to) {
+        return null;
     }
 
 }

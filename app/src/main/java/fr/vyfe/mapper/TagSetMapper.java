@@ -1,10 +1,13 @@
-package fr.vyfe.repository;
+package fr.vyfe.mapper;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import fr.vyfe.entity.TagEntity;
 import fr.vyfe.entity.TagSetEntity;
+import fr.vyfe.helper.ColorHelper;
 import fr.vyfe.model.TagModel;
 import fr.vyfe.model.TagSetModel;
 
@@ -24,8 +27,8 @@ public class TagSetMapper extends FirebaseMapper<TagSetEntity, TagSetModel> {
 
             tagModel.setLeftOffset(tags.getValue().getLeftOffset());
             tagModel.setRigthOffset(tags.getValue().getRigthOffset());
-            tagModel.setTagName(tags.getValue().getName());
-            tagModel.setColor(tags.getValue().getColor());
+            tagModel.setName(tags.getValue().getName());
+            tagModel.setColor(ColorHelper.getInstance().findColorById(tags.getValue().getColor()));
 
             tagslist.add(tagModel);
 
@@ -34,6 +37,18 @@ public class TagSetMapper extends FirebaseMapper<TagSetEntity, TagSetModel> {
         tagSet.setId(key);
 
         return tagSet;
+    }
+
+    @Override
+    public TagSetEntity unMap(TagSetModel tagSetModel) {
+        TagSetEntity tagSetEntity = new TagSetEntity();
+        tagSetEntity.setName(tagSetModel.getName());
+        return tagSetEntity;
+    }
+
+    @Override
+    public HashMap<String, TagSetEntity> unMapList(List<TagSetModel> to) {
+        return null;
     }
 
 }

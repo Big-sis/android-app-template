@@ -1,7 +1,9 @@
-package fr.vyfe.repository;
+package fr.vyfe.mapper;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 import fr.vyfe.entity.SessionEntity;
 import fr.vyfe.model.SessionModel;
@@ -27,6 +29,16 @@ public class SessionMapper extends FirebaseMapper<SessionEntity, SessionModel> {
         session.setTags( tagModels);
 
         return session;
+    }
+
+    @Override
+    public SessionEntity unMap(SessionModel sessionModel) {
+        return null;
+    }
+
+    @Override
+    public HashMap<String, SessionEntity> unMapList(List<SessionModel> to) {
+        return null;
     }
 
 }

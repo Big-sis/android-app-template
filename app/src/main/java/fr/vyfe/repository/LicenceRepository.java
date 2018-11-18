@@ -1,6 +1,7 @@
 package fr.vyfe.repository;
 
 
+import fr.vyfe.mapper.LicenseMapper;
 import fr.vyfe.model.LicenceModel;
 
 public class LicenceRepository extends  FirebaseDatabaseRepository<LicenceModel> {

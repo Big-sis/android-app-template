@@ -1,9 +1,10 @@
-package fr.vyfe.repository;
+package fr.vyfe.mapper;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import fr.vyfe.entity.UserEntity;
 import fr.vyfe.model.UserModel;
@@ -13,6 +14,16 @@ public class UserMapper extends FirebaseMapper<UserEntity, UserModel> {
     @Override
     public UserModel map(UserEntity userEntity, String key) {
         return map(userEntity, new UserModel(key));
+    }
+
+    @Override
+    public UserEntity unMap(UserModel userModel) {
+        return null;
+    }
+
+    @Override
+    public HashMap<String, UserEntity> unMapList(List<UserModel> to) {
+        return null;
     }
 
     public UserModel map(UserEntity userEntity, UserModel user) {

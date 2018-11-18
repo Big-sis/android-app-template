@@ -100,11 +100,7 @@ public class TimelineRealTimeFragment extends Fragment {
                     layoutParamsIv.setMargins(0, convertToDp(8), 0, convertToDp(8));
                     iv.setLayoutParams(layoutParamsIv);
                     iv.setMinimumHeight(convertToDp(25));
-                    try {
-                        iv.setBackgroundResource(ColorHelper.convertColor(viewModel.getSession().getTags().get(integer).getColor()));
-                    } catch (ColorNotFoundException e) {
-                        e.printStackTrace();
-                    }
+                    iv.setBackgroundResource(viewModel.getSession().getTags().get(integer).getColor().getImage());
 
                     //init chrono
                     final int[] timeChrono = new int[1];

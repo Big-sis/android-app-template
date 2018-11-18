@@ -6,6 +6,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.List;
 
+import fr.vyfe.mapper.FirebaseMapper;
+
 public class BaseListValueEventListener<Model, Entity> implements ValueEventListener {
 
     private FirebaseMapper<Entity, Model> mapper;

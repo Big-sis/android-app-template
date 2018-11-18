@@ -1,11 +1,13 @@
-package fr.vyfe.repository;
+package fr.vyfe.mapper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import fr.vyfe.entity.TagEntity;
 import fr.vyfe.entity.TimeEntity;
+import fr.vyfe.helper.ColorHelper;
 import fr.vyfe.model.TagModel;
 import fr.vyfe.model.TimeModel;
 
@@ -14,8 +16,8 @@ public class TagMapper extends FirebaseMapper<TagEntity, TagModel> {
     @Override
     public TagModel map(TagEntity tagEntity, String key) {
         TagModel tag = new TagModel();
-        tag.setColor(tagEntity.getColor());
-        tag.setTagName(tagEntity.getName());
+        tag.setColor(ColorHelper.getInstance().findColorById(tagEntity.getColor()));
+        tag.setName(tagEntity.getName());
         tag.setTagId(key);
 
         if (tagEntity.getTimes() != null) {
@@ -45,5 +47,20 @@ public class TagMapper extends FirebaseMapper<TagEntity, TagModel> {
             }
         }
         return tagModelList;
+    }
+
+    @Override
+    public TagEntity unMap(TagModel tagModel) {
+        TagEntity tagEntity = new TagEntity();
+        tagEntity.setName(tagModel.getTagName());
+        tagEntity.setColor(tagModel.getColor().getId());
+        tagEntity.setLeftOffset(tagModel.getLeftOffset());
+        tagEntity.setRigthOffset(tagModel.getRigthOffset());
+        return tagEntity;
+    }
+
+    @Override
+    public HashMap<String, TagEntity> unMapList(List<TagModel> to) {
+        return null;
     }
 }

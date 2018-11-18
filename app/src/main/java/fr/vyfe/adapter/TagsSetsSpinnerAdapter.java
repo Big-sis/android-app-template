@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.vyfe.R;
+import fr.vyfe.model.TagModel;
 import fr.vyfe.model.TagSetModel;
 
 public class TagsSetsSpinnerAdapter extends BaseAdapter {
@@ -22,7 +23,9 @@ public class TagsSetsSpinnerAdapter extends BaseAdapter {
     public TagsSetsSpinnerAdapter(Context applicationContext, List<TagSetModel> tagsSets) {
         this.context = applicationContext;
         this.tagsSets = new ArrayList<>();
-        this.tagsSets.add(new TagSetModel(null,applicationContext.getString(R.string.import_grid_arrow)+ applicationContext.getString(R.string.arrow)));
+        TagSetModel fakeTag = new TagSetModel();
+        fakeTag.setName(R.string.import_grid_arrow + applicationContext.getString(R.string.arrow));
+        this.tagsSets.add(fakeTag);
         this.tagsSets.addAll(tagsSets);
         inflter = (LayoutInflater.from(applicationContext));
     }

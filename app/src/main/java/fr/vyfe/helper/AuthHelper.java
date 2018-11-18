@@ -26,7 +26,7 @@ import java.util.Locale;
 
 import fr.vyfe.Constants;
 import fr.vyfe.model.UserModel;
-import fr.vyfe.repository.UserMapper;
+import fr.vyfe.mapper.UserMapper;
 
 /**
  * Handles authentication, login, logout, current user with offline mode and license check

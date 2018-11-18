@@ -4,26 +4,66 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
+import java.util.ArrayList;
+
+import fr.vyfe.model.ColorModel;
+import fr.vyfe.model.TagModel;
 import fr.vyfe.model.TagSetModel;
 import fr.vyfe.repository.TagSetRepository;
 
 
 public class CreateGridViewModel extends ViewModel {
 
-    private MutableLiveData<TagSetModel> tagSet;
     private TagSetRepository repository;
+    private MutableLiveData<String> tagSetName;
+    private MutableLiveData<ArrayList<TagModel>> tags;
 
-    public CreateGridViewModel(String userId, String companyId) {
+    CreateGridViewModel(String userId, String companyId) {
         repository = new TagSetRepository(userId, companyId);
-        tagSet = new MutableLiveData<>();
+        tagSetName = new MutableLiveData<>();
+        tags = new MutableLiveData<>();
     }
 
-    public LiveData<TagSetModel> getTagSet(){
-        return tagSet;
+    public void init() {
+        if (tags.getValue() == null) tags.setValue(new ArrayList<TagModel>());
+    }
+
+    public LiveData<String> getTagSetName(){
+        return tagSetName;
+    }
+
+    public LiveData<ArrayList<TagModel>> getTags() {
+        return tags;
     }
 
     @Override
     protected void onCleared() {
         repository.removeListeners();
+    }
+
+    public void addTag(ColorModel color, String name) {
+        TagModel tag = new TagModel();
+        tag.setColor(color);
+        tag.setName(name);
+        tags.getValue().add(tag);
+    }
+
+    public void moveTag(int from, int to) {
+        TagModel movingTag = tags.getValue().get(from);
+        tags.getValue().remove(movingTag);
+        tags.getValue().add(to, movingTag);
+    }
+
+    public void setTagSetName(String name){
+        this.tagSetName.setValue(name);
+    }
+
+    public TagSetModel save() {
+        TagSetModel tagSetModel = new TagSetModel();
+        tagSetModel.setName(this.tagSetName.getValue());
+        String tagSetKey = repository.push(tagSetModel);
+        repository.createTags(tagSetKey, this.tags.getValue());
+        tagSetModel.setTags(this.tags.getValue());
+        return tagSetModel;
     }
 }

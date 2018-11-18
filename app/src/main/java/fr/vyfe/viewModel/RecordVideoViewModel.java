@@ -61,14 +61,7 @@ public class RecordVideoViewModel extends ViewModel {
     }
     public void save(){
         stepRecord.setValue("save");
-        sessionRepository.push(session).continueWith(new Continuation<Void, Object>() {
-
-            @Override
-            public Object then(@NonNull Task<Void> task) throws Exception {
-                Object result = task.getResult();
-                return result;
-            }
-        });
+        sessionRepository.push(session);
     }
     public void close() {stepRecord.setValue("close");}
 

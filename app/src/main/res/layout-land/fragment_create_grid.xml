@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg"
-    tools:context="fr.wildcodeschool.vyfe.fragment.CreateGridFragment">
+    tools:context="fr.vyfe.fragment.CreateGridFragment">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -69,7 +69,7 @@
                         app:fontFamily="@font/roboto" />
 
                     <EditText
-                        android:id="@+id/et_grid_title2"
+                        android:id="@+id/grid_title_edit"
                         android:layout_width="wrap_content"
                         android:layout_height="40dp"
                         android:layout_gravity="center_horizontal"
@@ -108,11 +108,9 @@
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="8dp"
                         android:layout_marginRight="8dp"
-                        android:text="@string/add_evenement"
                         android:textColor="@android:color/white"
                         android:textSize="20sp"
                         app:fontFamily="@font/roboto"
-                        app:layout_constraintStart_toEndOf="@+id/fab_add_moment"
                         app:layout_constraintTop_toBottomOf="@+id/recycler_view" />
                 </LinearLayout>
 
@@ -127,12 +125,10 @@
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="16dp"
                     android:padding="10dp"
-                    android:scrollbars="vertical"
-                    android:visibility="gone"
-                    tools:visibility="invisible" />
+                    android:scrollbars="vertical"/>
 
                 <Button
-                    android:id="@+id/btn_save_session"
+                    android:id="@+id/save_grid_btn"
                     style="@style/Widget.AppCompat.Button.Small"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -145,8 +141,7 @@
                     android:paddingTop="15dp"
                     android:text="@string/save_grid"
                     android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:visibility="invisible" />
+                    android:textSize="16sp"/>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

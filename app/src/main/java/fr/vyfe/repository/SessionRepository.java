@@ -1,6 +1,7 @@
 package fr.vyfe.repository;
 
 
+import fr.vyfe.mapper.SessionMapper;
 import fr.vyfe.model.SessionModel;
 
 public class SessionRepository extends FirebaseDatabaseRepository<SessionModel> {
@@ -42,7 +43,7 @@ public class SessionRepository extends FirebaseDatabaseRepository<SessionModel> 
 //                tagModel.setColor(entry.getColor());
 //                tagModel.setTagId(tagKey);
 //                tagModel.setTaggerId(sessionModel.getAuthor());
-//                tagModel.setTagName(entry.getTagName());
+//                tagModel.setName(entry.getTagName());
 //                tagModelList.add(tagModel);
 //
 //            }

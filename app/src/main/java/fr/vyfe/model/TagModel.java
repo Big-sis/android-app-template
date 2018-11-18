@@ -8,10 +8,29 @@ import java.util.ArrayList;
 public class TagModel implements Parcelable{
 
     private String tagId;
-    private String color;
+    private ColorModel color;
     private String tagName;
     private ArrayList<TimeModel> times;
     private String taggerId;
+    private int leftOffset;
+    private int rigthOffset;
+
+
+    public TagModel() {
+        leftOffset = 4;
+        rigthOffset = 3;
+    }
+
+    protected TagModel(Parcel in) {
+        tagId = in.readString();
+        color = in.readParcelable((ClassLoader) ColorModel.CREATOR);
+        tagName = in.readString();
+        taggerId = in.readString();
+        leftOffset = in.readInt();
+        rigthOffset = in.readInt();
+        times = in.createTypedArrayList(TimeModel.CREATOR);
+    }
+
 
     public int getCount() {
         return count;
@@ -22,17 +41,6 @@ public class TagModel implements Parcelable{
     }
 
     private int count =0;
-
-
-    protected TagModel(Parcel in) {
-        tagId = in.readString();
-        color = in.readString();
-        tagName = in.readString();
-        taggerId = in.readString();
-        leftOffset = in.readString();
-        rigthOffset = in.readString();
-        times = in.createTypedArrayList(TimeModel.CREATOR);
-    }
 
     public static final Creator<TagModel> CREATOR = new Creator<TagModel>() {
         @Override
@@ -46,45 +54,27 @@ public class TagModel implements Parcelable{
         }
     };
 
-    public String getLeftOffset() {
+    public int getLeftOffset() {
         return leftOffset;
     }
 
-    public void setLeftOffset(String leftOffset) {
+    public void setLeftOffset(int leftOffset) {
         this.leftOffset = leftOffset;
     }
 
-    public String getRigthOffset() {
+    public int getRigthOffset() {
         return rigthOffset;
     }
 
-    public void setRigthOffset(String rigthOffset) {
+    public void setRigthOffset(int rigthOffset) {
         this.rigthOffset = rigthOffset;
     }
 
-    private String leftOffset;
-    private String rigthOffset;
-
-    public TagModel() {
-    }
-
-    public TagModel(String color, String tagName, String fkTagSet, String rigthOffset) {
-        this.color = color;
-        this.tagName = tagName;
-    }
-
-    public TagModel(String tagId, String color, String tagName) {
-        this.tagId = tagId;
-        this.color = color;
-        this.tagName = tagName;
-    }
-
-
-    public String getColor() {
+    public ColorModel getColor() {
         return color;
     }
 
-    public void setColor(String color) {
+    public void setColor(ColorModel color) {
         this.color = color;
     }
 
@@ -92,7 +82,7 @@ public class TagModel implements Parcelable{
         return tagName;
     }
 
-    public void setTagName(String tagName) {
+    public void setName(String tagName) {
         this.tagName = tagName;
     }
 
@@ -129,11 +119,11 @@ public class TagModel implements Parcelable{
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(tagId);
-        dest.writeString(color);
+        dest.writeParcelable(color, 0);
         dest.writeString(tagName);
         dest.writeString(taggerId);
-        dest.writeString(leftOffset);
-        dest.writeString(rigthOffset);
+        dest.writeInt(leftOffset);
+        dest.writeInt(rigthOffset);
         dest.writeTypedList(times);
     }
 }
