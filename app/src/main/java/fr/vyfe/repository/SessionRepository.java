@@ -25,7 +25,7 @@ public class SessionRepository extends FirebaseDatabaseRepository<SessionModel> 
 //
 //            sessionRef2.child(mIdSession).child("author").setValue(sessionModel.getAuthor());
 //            sessionRef2.child(mIdSession).child("name").setValue(sessionModel.getName());
-//            sessionRef2.child(mIdSession).child("idTagSet").setValue(sessionModel.getIdTagSet());
+//            sessionRef2.child(mIdSession).child("idTagSet").setValue(sessionModel.getTagSetId());
 //            sessionRef2.child(mIdSession).child("pathApp").setValue(sessionModel.getDeviceVideoLink());
 //            sessionRef2.child(mIdSession).child("idAndroid").setValue(sessionModel.getIdAndroid());
 //            sessionRef2.child(mIdSession).child("date").setValue(sessionModel.getDate());

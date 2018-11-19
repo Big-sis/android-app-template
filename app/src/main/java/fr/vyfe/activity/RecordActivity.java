@@ -63,7 +63,7 @@ public class RecordActivity extends VyfeActivity {
 
         SessionModel session = getIntent().getParcelableExtra("SessionModel");
         viewModel = ViewModelProviders.of(RecordActivity.this).get(RecordVideoViewModel.class);
-        viewModel.getSession().setIdTagSet(session.getIdTagSet());
+        viewModel.getSession().setIdTagSet(session.getTagSetId());
         viewModel.getSession().setName(session.getName());
         viewModel.getSession().setTags(session.getTags());
 

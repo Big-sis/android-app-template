@@ -117,7 +117,7 @@ public class SessionModel implements Parcelable {
     public void setDescription(String description) {
         this.description = description;
     }
-    public String getIdTagSet() {
+    public String getTagSetId() {
         return idTagSet;
     }
 

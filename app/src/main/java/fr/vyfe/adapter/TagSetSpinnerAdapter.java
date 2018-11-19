@@ -11,22 +11,27 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.vyfe.R;
-import fr.vyfe.model.TagModel;
 import fr.vyfe.model.TagSetModel;
 
-public class TagsSetsSpinnerAdapter extends BaseAdapter {
+public class TagSetSpinnerAdapter extends BaseAdapter {
     Context context;
     List<TagSetModel> tagsSets;
     LayoutInflater inflter;
 
 
-    public TagsSetsSpinnerAdapter(Context applicationContext, List<TagSetModel> tagsSets) {
+    public TagSetSpinnerAdapter(Context applicationContext, List<TagSetModel> tagsSets) {
         this.context = applicationContext;
-        this.tagsSets = new ArrayList<>();
-        TagSetModel fakeTag = new TagSetModel();
-        fakeTag.setName(R.string.import_grid_arrow + applicationContext.getString(R.string.arrow));
-        this.tagsSets.add(fakeTag);
-        this.tagsSets.addAll(tagsSets);
+        TagSetModel fakeTagSet = new TagSetModel();
+        fakeTagSet.setName(context.getString(R.string.import_grid_arrow)+ context.getString(R.string.arrow));
+        if (tagsSets == null){
+            this.tagsSets = new ArrayList<>();
+            this.tagsSets.add(fakeTagSet);
+        }
+        else {
+            this.tagsSets = tagsSets;
+            this.tagsSets.add(0, fakeTagSet);
+        }
+
         inflter = (LayoutInflater.from(applicationContext));
     }
 
@@ -53,3 +58,4 @@ public class TagsSetsSpinnerAdapter extends BaseAdapter {
         return convertView;
     }
 }
+

@@ -2,6 +2,8 @@ package fr.vyfe.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import android.support.v7.util.DiffUtil;
 
 import java.util.ArrayList;
 
@@ -69,4 +71,22 @@ public class TagSetModel implements Parcelable {
         dest.writeString(name);
         dest.writeTypedList(tags);
     }
+
+    public static final DiffUtil.ItemCallback<TagSetModel> DIFF_CALLBACK =
+            new DiffUtil.ItemCallback<TagSetModel>() {
+                @Override
+                public boolean areItemsTheSame(
+                        @NonNull TagSetModel oldTagSet, @NonNull TagSetModel newTagSet) {
+                    // User properties may have changed if reloaded from the DB, but ID is fixed
+                    return oldTagSet.getId() == newTagSet.getId();
+                }
+
+                @Override
+                public boolean areContentsTheSame(
+                        @NonNull TagSetModel oldTagSet, @NonNull TagSetModel newTagSet) {
+                    // NOTE: if you use equals, your object must properly override Object#equals()
+                    // Incorrectly returning false here will result in too many animations.
+                    return oldTagSet.equals(newTagSet);
+                }
+            };
 }
