@@ -9,6 +9,15 @@ import fr.vyfe.model.UserModel;
 import fr.vyfe.viewModel.CreateSessionViewModel;
 import fr.vyfe.viewModel.CreateSessionViewModelFactory;
 
+
+/**
+ * This activity handles Session configuration before recording
+ *
+ * Accept EXTRA "multiSession" set to true in case of a session with observers (Raspberry)
+ * Accept EXTRA "restartSession" in case of a repeat session after record
+ *
+ * TODO : Test use cases with EXTRAS
+ */
 public class CreateSessionActivity extends VyfeActivity {
 
     private CreateSessionViewModel viewModel;
