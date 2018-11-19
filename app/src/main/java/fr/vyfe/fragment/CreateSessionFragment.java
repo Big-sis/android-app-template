@@ -36,19 +36,21 @@ import fr.vyfe.model.SessionModel;
 import fr.vyfe.model.TagSetModel;
 import fr.vyfe.viewModel.CreateSessionViewModel;
 
+
+/**
+ * This fragment handles Session configuration before recording
+ */
 public class CreateSessionFragment extends Fragment {
     private CreateSessionViewModel viewModel;
     private Button buttonBack;
     private Button buttonGo;
-    private  Button buttonGoMulti;
+    private Button buttonGoMulti;
     private Button btnCreateGrid;
     private ConstraintLayout share;
     private RecyclerView recyclerViewImport;
     private Spinner spinner;
     private ScrollView scrollMain;
     private EditText mEtVideoTitle;
-    private int mWidth;
-    private int mHeigth;
     private TagSetSpinnerAdapter tagSetsSpinnerAdapter;
     private SessionModel sessionRestart;
 
@@ -82,13 +84,6 @@ public class CreateSessionFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
 
-        Display display = getActivity().getWindowManager().getDefaultDisplay();
-        mWidth = display.getWidth();
-        mHeigth = display.getHeight();
-
-
-
-
         if (sessionRestart != null) mEtVideoTitle.setText(sessionRestart.getName());
 
         if (((CreateSessionActivity) getActivity()).isMulti) buttonGo.setText(R.string.next);
@@ -108,7 +103,6 @@ public class CreateSessionFragment extends Fragment {
                 // This is the most efficient solution I've found to make it work,
                 // it means rebuilding the sipnner and adapter after each data change event
                 tagSetsSpinnerAdapter = new TagSetSpinnerAdapter(getContext(), tagSetModels);
-                spinner.setMinimumWidth((int) (0.2 * mWidth));
                 spinner.setAdapter(tagSetsSpinnerAdapter);
                 if (sessionRestart != null && viewModel.getSelectedTagSet().getValue()==null && tagSetModels!=null) {
                     for (int i=0; i<tagSetModels.size(); i++ ) {
