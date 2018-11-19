@@ -22,7 +22,6 @@ public class ColorHelper {
         colors.add(new ColorModel("color_gradient_blue_light", R.string.color_gradient_blue_light , R.drawable.color_gradient_blue_light));
         colors.add(new ColorModel("color_gradient_faded_orange", R.string.color_gradient_faded_orange , R.drawable.color_gradient_faded_orange));
         colors.add(new ColorModel("color_gradient_green", R.string.color_gradient_green , R.drawable.color_gradient_green));
-        colors.add(new ColorModel("color_gradient_grey", R.string.color_gradient_grey , R.drawable.color_gradient_grey));
         colors.add(new ColorModel("color_gradient_rosy", R.string.color_gradient_rosy , R.drawable.color_gradient_rosy));
         colors.add(new ColorModel("color_gradient_red", R.string.color_gradient_red , R.drawable.color_gradient_red));
         colors.add(new ColorModel("color_gradient_blue", R.string.color_gradient_blue , R.drawable.color_gradient_blue));

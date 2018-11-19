@@ -22,13 +22,14 @@ public class CreateSessionViewModel extends ViewModel {
     private SessionRepository sessionRepository;
     private MutableLiveData<ArrayList<TagSetModel>> tagSets;
     private MutableLiveData<TagSetModel> selectedTagSet;
-    private String SessionName;
+    private MutableLiveData<String> sessionName;
     private String userId;
 
     public CreateSessionViewModel(String userId, String companyId) {
         tagSetRepository = new TagSetRepository(userId, companyId);
         sessionRepository = new SessionRepository(companyId);
         tagSets = new MutableLiveData<>();
+        sessionName = new MutableLiveData<>();
         this.userId = userId;
     }
 
@@ -47,6 +48,10 @@ public class CreateSessionViewModel extends ViewModel {
             loadTagSets();
         }
         return tagSets;
+    }
+
+    public void setSessionName(String name) {
+        this.sessionName.setValue(name);
     }
 
     @Override
@@ -69,13 +74,14 @@ public class CreateSessionViewModel extends ViewModel {
 
     }
 
-
     public SessionModel getSession() {
         SessionModel session = new SessionModel();
-        session.setName(this.SessionName);
+        session.setName(this.sessionName.getValue());
         session.setAuthor(this.userId);
-        session.setIdTagSet(this.selectedTagSet.getValue().getId());
-        session.setTags(this.selectedTagSet.getValue().getTags());
+        if (this.selectedTagSet.getValue() != null) {
+            session.setIdTagSet(this.selectedTagSet.getValue().getId());
+            session.setTags(this.selectedTagSet.getValue().getTags());
+        }
         return session;
     }
 }

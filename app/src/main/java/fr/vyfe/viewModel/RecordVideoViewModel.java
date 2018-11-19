@@ -8,6 +8,9 @@ import android.support.annotation.NonNull;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.Task;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import fr.vyfe.model.SessionModel;
 import fr.vyfe.repository.SessionRepository;
 
@@ -28,6 +31,16 @@ public class RecordVideoViewModel extends ViewModel {
         chronometer.setValue((long)0);
         count = new MutableLiveData<>();
         count.setValue(0);
+    }
+
+    public void init(SessionModel session) {
+        Date date = new Date();
+        Date newDate = new Date(date.getTime());
+        SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yy HH:mm");
+        String stringdate = dt.format(newDate);
+
+        this.session = session;
+        session.setDate(stringdate);
     }
 
     public LiveData<Integer> getCount() {
@@ -80,5 +93,4 @@ public class RecordVideoViewModel extends ViewModel {
         }
         return session;
     }
-
 }

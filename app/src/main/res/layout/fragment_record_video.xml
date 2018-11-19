@@ -47,7 +47,7 @@
             app:backgroundTint="@color/color4" />
 
 
-        <fr.wildcodeschool.vyfe.view.StopwatchView
+        <fr.vyfe.view.StopwatchView
             android:id="@+id/chronometer"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -35,7 +35,6 @@ import fr.vyfe.viewModel.RecordVideoViewModel;
 
 public class RecordActivity extends VyfeActivity {
 
-    private final String mAuthUserId = mAuth.getCurrentUser().getId();
     private RecordVideoViewModel viewModel;
     private ConstraintLayout contrainOkRecord;
     private ConstraintLayout constraintErrorSpace;
@@ -53,23 +52,12 @@ public class RecordActivity extends VyfeActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.record_session);
 
-        Date date = new Date();
-        Date newDate = new Date(date.getTime());
-        SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yy HH:mm");
-        String stringdate = dt.format(newDate);
-
-        String idAndroid = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-        HashCode hashCode = Hashing.sha256().hashString(idAndroid, Charset.defaultCharset());
-
-        SessionModel session = getIntent().getParcelableExtra("SessionModel");
         viewModel = ViewModelProviders.of(RecordActivity.this).get(RecordVideoViewModel.class);
-        viewModel.getSession().setIdTagSet(session.getTagSetId());
-        viewModel.getSession().setName(session.getName());
-        viewModel.getSession().setTags(session.getTags());
-
-        viewModel.getSession().setAuthor(mAuthUserId);
-        viewModel.getSession().setDate(stringdate);
-        viewModel.getSession().setIdAndroid(hashCode.toString());
+        SessionModel session = getIntent().getParcelableExtra("SessionModel");
+        String idAndroid = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        session.setIdAndroid(Hashing.sha256().hashString(idAndroid, Charset.defaultCharset()).toString());
+        session.setAuthor(mAuth.getCurrentUser().getId());
+        viewModel.init(session);
 
         constraintErrorSpace = findViewById(R.id.session_error_space);
         contrainOkRecord = findViewById(R.id.session_record);

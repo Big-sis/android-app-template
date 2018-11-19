@@ -11,6 +11,8 @@ import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -95,6 +97,23 @@ public class CreateSessionFragment extends Fragment {
             }
         });
 
+        mEtVideoTitle.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                viewModel.setSessionName(s.toString());
+            }
+        });
+
         viewModel.getTagSets().observe(getActivity(), new Observer<ArrayList<TagSetModel>>() {
             @Override
             public void onChanged(@Nullable ArrayList<TagSetModel> tagSetModels) {
@@ -148,7 +167,10 @@ public class CreateSessionFragment extends Fragment {
 
                 Intent intent = new Intent(getContext(), RecordActivity.class);
 
-                if (viewModel.getSession().getTags().isEmpty() || viewModel.getSession().getName().isEmpty()) {
+                if (viewModel.getSession().getTags() == null
+                        || viewModel.getSession().getTags().isEmpty()
+                        || viewModel.getSession().getName() == null
+                        || viewModel.getSession().getName().isEmpty()) {
                     Toast.makeText(getContext(), R.string.tagset_title_warning, Toast.LENGTH_LONG).show();
                 } else {
                     //TODO : à voir cmt on le gere quand la raspberry sera en place

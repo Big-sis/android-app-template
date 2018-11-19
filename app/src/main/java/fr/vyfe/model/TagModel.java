@@ -5,6 +5,8 @@ import android.os.Parcelable;
 
 import java.util.ArrayList;
 
+import fr.vyfe.Constants;
+
 public class TagModel implements Parcelable{
 
     private String tagId;
@@ -17,13 +19,13 @@ public class TagModel implements Parcelable{
 
 
     public TagModel() {
-        leftOffset = 4;
-        rigthOffset = 3;
+        leftOffset = Constants.STANDARD_LEFT_OFFSET;
+        rigthOffset = Constants.STANDARD_RIGHT_OFFSET;
     }
 
     protected TagModel(Parcel in) {
         tagId = in.readString();
-        color = in.readParcelable((ClassLoader) ColorModel.CREATOR);
+        color = in.readParcelable(ColorModel.class.getClassLoader());
         tagName = in.readString();
         taggerId = in.readString();
         leftOffset = in.readInt();
