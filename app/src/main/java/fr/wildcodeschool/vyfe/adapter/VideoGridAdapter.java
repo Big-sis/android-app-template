@@ -79,10 +79,8 @@ public class VideoGridAdapter extends BaseAdapter implements Filterable {
 
 
         if(mSession.getServerVideoLink()!= null){
-           videoStatus.setImageResource(R.drawable.color_gradient_blue);
+           videoStatus.setImageResource(R.drawable.uploadtocloudblanc);
         }
-
-
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,7 +91,6 @@ public class VideoGridAdapter extends BaseAdapter implements Filterable {
                 mContext.startActivity(intent);
             }
         });
-
 
         return convertView;
     }
