@@ -4,6 +4,8 @@ package fr.wildcodeschool.vyfe.repository;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
+import java.util.List;
+
 import fr.wildcodeschool.vyfe.Constants;
 import fr.wildcodeschool.vyfe.model.SessionModel;
 
@@ -23,5 +25,8 @@ public class SessionRepository extends FirebaseDatabaseRepositorySingle<SessionM
     protected String getRootNode() {
         return "NomEntreprise/Sessions/"+this.sessionId;
     }
+    public void createVimeoLink(String vimeoLink){
+            databaseReference.child("videoLink").setValue(vimeoLink);
 
+    }
 }

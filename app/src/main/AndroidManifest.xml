@@ -75,7 +75,7 @@
             android:screenOrientation="userLandscape"
             android:windowSoftInputMode="stateHidden|adjustPan" />
 
-
+        <service android:name="service.UploadVideoService"/>
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />

@@ -108,5 +108,13 @@
     <string name="license">Vous ne disposez pas de licence</string>
     <string name="problem">Problème d\'authentification :</string>
     <string name="title_tagSet">Vous devez indiquez un titre à votre session ET une grille d\'observation</string>
+    <string name="end_upload">Fin du téléchargement</string>
+    <string name="alert">Alerte</string>
+    <string name="upload_contact">Pour accéder à cette fonctionnalitée, vous devez possedez un accès à la plateforme   Vous pouvez nous contacter sur www.vyfe.fr</string>
+    <string name="ok">Ok</string>
+    <string name="start_upload">Téléchargement commencé</string>
+    <string name="have_internet_connection">Vous devez posseder une connexion Internet pour télécharger vos vidéos</string>
+    <string name="online">Vidéo en ligne</string>
+    <string name="upload_vimeo">Vidéo téléchargée</string>
 
 </resources>

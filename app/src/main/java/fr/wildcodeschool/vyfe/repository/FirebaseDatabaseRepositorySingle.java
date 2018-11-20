@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public abstract class FirebaseDatabaseRepositorySingle<Model> {
 
-    protected Query databaseReference;
+    protected DatabaseReference databaseReference;
     protected CallbackInterface<Model> firebaseCallback;
     private BaseSingleValueEventListener listener;
     private FirebaseMapper mapper;
