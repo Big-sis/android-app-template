@@ -46,7 +46,7 @@ public class InfoVideoActivity extends VyfeActivity {
         SessionModel sessionModel = getIntent().getParcelableExtra("SessionModel");
 
         if (sessionModel!= null) {
-            viewModel = ViewModelProviders.of(this, new InfoVideoViewModelFactory( mAuth.getCurrentUser().getId(), sessionModel.getIdSession())).get(InfoVideoViewModel.class);
+            viewModel = ViewModelProviders.of(this, new InfoVideoViewModelFactory( mAuth.getCurrentUser().getId(), sessionModel.getId())).get(InfoVideoViewModel.class);
         }
 
         viewModel.getSession().observe(this, new Observer<SessionModel>() {

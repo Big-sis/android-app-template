@@ -8,7 +8,7 @@ import fr.vyfe.mapper.FirebaseMapper;
 
 public abstract class FirebaseDatabaseRepository<Model> {
 
-    // databaserefence is supposed to e private but we need access it in TagSetRepository since the
+    // databaserefence is supposed to be private but we need access it in TagSetRepository since the
     // database is not perfectly architectured
     DatabaseReference databaseReference;
     private BaseListValueEventListener listListener;

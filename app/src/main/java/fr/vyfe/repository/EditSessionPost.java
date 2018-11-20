@@ -11,7 +11,7 @@ public class EditSessionPost {
     public static void sessionMapper(SessionModel sessionModel) {
         FirebaseDatabase mDatabase;
         mDatabase = FirebaseDatabase.getInstance(Constants.FIREBASE_DB_VERSION_URL);
-        DatabaseReference sessionRef2 = mDatabase.getReference("NomEntreprise").child("Sessions").child(sessionModel.getIdSession());
+        DatabaseReference sessionRef2 = mDatabase.getReference("NomEntreprise").child("Sessions").child(sessionModel.getId());
 
         sessionRef2.child("name").setValue(sessionModel.getName());
         sessionRef2.child("description").setValue(sessionModel.getDescription());
@@ -22,7 +22,7 @@ public class EditSessionPost {
     public static void deleteSession (SessionModel sessionModel){
         FirebaseDatabase mDatabase;
         mDatabase = FirebaseDatabase.getInstance(Constants.FIREBASE_DB_VERSION_URL);
-        DatabaseReference sessionRef2 = mDatabase.getReference("NomEntreprise").child("Sessions").child(sessionModel.getIdSession());
+        DatabaseReference sessionRef2 = mDatabase.getReference("NomEntreprise").child("Sessions").child(sessionModel.getId());
 
         sessionRef2.getRef().removeValue();
     }

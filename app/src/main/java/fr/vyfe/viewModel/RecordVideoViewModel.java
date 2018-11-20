@@ -3,16 +3,15 @@ package fr.vyfe.viewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-import android.support.annotation.NonNull;
+import android.os.Environment;
 
-import com.google.android.gms.tasks.Continuation;
-import com.google.android.gms.tasks.Task;
-
-import java.text.SimpleDateFormat;
+import java.io.File;
 import java.util.Date;
 
 import fr.vyfe.model.SessionModel;
 import fr.vyfe.repository.SessionRepository;
+
+import static android.os.Environment.DIRECTORY_MOVIES;
 
 public class RecordVideoViewModel extends ViewModel {
 
@@ -23,8 +22,9 @@ public class RecordVideoViewModel extends ViewModel {
     private MutableLiveData<Long> chronometer;
     private MutableLiveData<Integer> count;
 
-    public RecordVideoViewModel() {
-        touchTagPosition = new MutableLiveData<Integer>();
+    public RecordVideoViewModel(String companyId) {
+        sessionRepository = new SessionRepository(companyId);
+        touchTagPosition = new MutableLiveData<>();
         stepRecord = new MutableLiveData<>();
         stepRecord.setValue("init");
         chronometer = new MutableLiveData<>();
@@ -34,13 +34,16 @@ public class RecordVideoViewModel extends ViewModel {
     }
 
     public void init(SessionModel session) {
-        Date date = new Date();
-        Date newDate = new Date(date.getTime());
-        SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yy HH:mm");
-        String stringdate = dt.format(newDate);
-
         this.session = session;
-        session.setDate(stringdate);
+        session.setDate(new Date());
+
+        File f1 = new File(Environment.getExternalStoragePublicDirectory(DIRECTORY_MOVIES) + "/" + "Vyfe");
+        if (!f1.exists()) {
+            f1.mkdirs();
+        }
+        String mFileName = String.valueOf(Environment.getExternalStoragePublicDirectory(DIRECTORY_MOVIES) + "/" + "Vyfe");
+        mFileName += "/" + session.getName() + " - " + (new Date()).getTime() + ".mp4";
+        session.setDeviceVideoLink(mFileName);
     }
 
     public LiveData<Integer> getCount() {
@@ -72,9 +75,11 @@ public class RecordVideoViewModel extends ViewModel {
     public void error(){
         stepRecord.setValue("error");
     }
-    public void save(){
+    public String save(){
         stepRecord.setValue("save");
-        sessionRepository.push(session);
+        String key = sessionRepository.push(session);
+        session.setId(key);
+        return key;
     }
     public void close() {stepRecord.setValue("close");}
 

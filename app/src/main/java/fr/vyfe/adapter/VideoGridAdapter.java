@@ -64,7 +64,7 @@ public class VideoGridAdapter extends BaseAdapter implements Filterable {
         tvName.setText(mSession.getName());
 
         final TextView tvDate = convertView.findViewById(R.id.video_date);
-        tvDate.setText(mSession.getDate());
+        tvDate.setText(mSession.getFormatDate());
 
         ImageView videoStatus = convertView.findViewById(R.id.img_upload_video);
 

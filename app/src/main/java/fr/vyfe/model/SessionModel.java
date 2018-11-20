@@ -5,6 +5,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import fr.vyfe.Constants;
 
@@ -12,8 +13,8 @@ public class SessionModel implements Parcelable {
     private String name;
     private String author;
     private String serverVideoLink;
-    private String date;
-    private String idSession;
+    private Date date;
+    private String id;
     private String idTagSet;
     private ArrayList<TagModel> tags;
     private String description;
@@ -21,24 +22,28 @@ public class SessionModel implements Parcelable {
     private String deviceVideoLink;
     private String thumbnail;
 
-    public SessionModel(String name, String author, String videoLink, String date, String idSession, String idTagSet) {
+    public SessionModel(String name, String author, String videoLink, Date date, String idSession, String idTagSet) {
+        this();
         this.name = name;
         this.author = author;
         this.serverVideoLink = videoLink;
         this.date = date;
-        this.idSession = idSession;
+        this.id = idSession;
         this.idTagSet = idTagSet;
     }
 
     public SessionModel(String name, ArrayList<TagModel> tags,String idTagSet ){
+        this();
         this.name = name;
         this.tags = tags;
         this.idTagSet = idTagSet;
     }
 
-    public SessionModel(){}
+    public SessionModel(){
+        this.date = new Date();
+    }
 
-    public SessionModel(String name, String author, String videoLink, String date, String idSession, String idTagSet, String idAndroid) {
+    public SessionModel(String name, String author, String videoLink, Date date, String idSession, String idTagSet, String idAndroid) {
         this(name, author, videoLink, date, idSession, idTagSet);
         this.idAndroid = idAndroid;
     }
@@ -48,8 +53,8 @@ public class SessionModel implements Parcelable {
         name = in.readString();
         author = in.readString();
         serverVideoLink = in.readString();
-        date = in.readString();
-        idSession = in.readString();
+        date = new Date(in.readLong());
+        id = in.readString();
         idTagSet = in.readString();
         tags = in.createTypedArrayList(TagModel.CREATOR);
         description = in.readString();
@@ -94,20 +99,20 @@ public class SessionModel implements Parcelable {
         this.serverVideoLink = videoLink;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
-    public String getIdSession() {
-        return idSession;
+    public String getId() {
+        return id;
     }
 
-    public void setIdSession(String idSession) {
-        this.idSession = idSession;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getDescription() {
@@ -188,13 +193,17 @@ public class SessionModel implements Parcelable {
         dest.writeString(name);
         dest.writeString(author);
         dest.writeString(serverVideoLink);
-        dest.writeString(date);
-        dest.writeString(idSession);
+        dest.writeLong(date.getTime());
+        dest.writeString(id);
         dest.writeString(idTagSet);
         dest.writeTypedList(tags);
         dest.writeString(description);
         dest.writeString(idAndroid);
         dest.writeString(deviceVideoLink);
         dest.writeString(thumbnail);
+    }
+
+    public String getFormatDate() {
+        return this.date.toString();
     }
 }

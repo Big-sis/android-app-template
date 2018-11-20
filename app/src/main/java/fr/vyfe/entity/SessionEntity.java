@@ -8,9 +8,9 @@ import java.util.HashMap;
 public class SessionEntity {
 
     private String author;
-    private String date;
+    private long date;
     private String idAndroid;
-    private String idTagSet;
+    private String tagSetId;
     private String name;
     private String pathApp;
     private String videoLink;
@@ -30,11 +30,11 @@ public class SessionEntity {
         this.author = author;
     }
 
-    public String getDate() {
+    public long getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(long date) {
         this.date = date;
     }
 
@@ -46,12 +46,12 @@ public class SessionEntity {
         this.idAndroid = idAndroid;
     }
 
-    public String getIdTagSet() {
-        return idTagSet;
+    public String getTagSetId() {
+        return tagSetId;
     }
 
-    public void setIdTagSet(String idTagSet) {
-        this.idTagSet = idTagSet;
+    public void setTagSetId(String tagSetId) {
+        this.tagSetId = tagSetId;
     }
 
     public String getName() {

@@ -40,7 +40,7 @@ public class SelectVideoActivity extends VyfeActivity {
         sessionModel = getIntent().getParcelableExtra("SessionModel");
 
         if (sessionModel != null) {
-            viewModel = ViewModelProviders.of(this, new SelectVideoViewModelFactory( mAuth.getCurrentUser().getId(), sessionModel.getIdSession())).get(SelectVideoViewModel.class);
+            viewModel = ViewModelProviders.of(this, new SelectVideoViewModelFactory( mAuth.getCurrentUser().getId(), sessionModel.getId())).get(SelectVideoViewModel.class);
         }
 
         //TODO : Je passerais tt par des intent au lieu dapl mapper (moins long?)?
@@ -79,7 +79,7 @@ public class SelectVideoActivity extends VyfeActivity {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                intent.putExtra(ID_SESSION, sessionModel.getIdSession());
+                intent.putExtra(ID_SESSION, sessionModel.getId());
                 intent.putExtra("SessionModel", sessionModel);
                 startActivity(intent);
             }

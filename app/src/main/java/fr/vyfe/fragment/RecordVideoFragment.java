@@ -36,7 +36,6 @@ import static android.os.Environment.DIRECTORY_MOVIES;
 
 public class RecordVideoFragment extends Fragment {
 
-    private static String mFileName = null;
     private RecordVideoViewModel viewModel;
     private Camera mCamera;
     private FloatingActionButton mRecord;
@@ -125,19 +124,16 @@ public class RecordVideoFragment extends Fragment {
                     mRecord.setImageResource(R.drawable.icons8_arr_ter_96);
                 } else if (step.equals("stop")) {
                     closeRecord();
-                    File file = new File(mFileName);
-                    long lengthFile = file.length();
-
-                    if (lengthFile >= freeSpace || lengthFile == 0) {
-                        viewModel.error();
-                        file.delete();
-
-                    } else {
-                        Toast.makeText(getActivity(), "save", Toast.LENGTH_SHORT).show();
-                        viewModel.getSession().setDeviceVideoLink(mFileName);
-                        viewModel.save();
-
+                    String sessionId = viewModel.save();
+                    if (sessionId != null) {
+                        Toast.makeText(getActivity(), "saved ", Toast.LENGTH_SHORT).show();
                     }
+                    else {
+                        viewModel.error();
+                    }
+
+
+
                 } else if (step.equals("close")){
                     closeRecord();
 
@@ -164,17 +160,6 @@ public class RecordVideoFragment extends Fragment {
         params.height = previewHeight;
         preview.setLayoutParams(params);
 
-
-        //Param Stockage
-        Date d = new Date();
-        File f1 = new File(Environment.getExternalStoragePublicDirectory(DIRECTORY_MOVIES) + "/" + "Vyfe");
-        if (!f1.exists()) {
-            f1.mkdirs();
-        }
-
-        mFileName = String.valueOf(Environment.getExternalStoragePublicDirectory(DIRECTORY_MOVIES) + "/" + "Vyfe");
-        mFileName += "/" + viewModel.getSession().getName() + " - " + d.getTime() + ".mp4";
-
         //TODO: mettre espace dispo dans futurs parametres
         //Stockage dispo
         long totalSpace = Environment.getExternalStoragePublicDirectory(DIRECTORY_MOVIES).getTotalSpace();
@@ -187,7 +172,6 @@ public class RecordVideoFragment extends Fragment {
             tvSpace.setText(String.format("%s%s", tvSpace.getText(), getString(R.string.fullstorage)));
         }
 
-
         mRecord = view.findViewById(R.id.bt_record);
         mRecord.setImageResource(R.drawable.icons8_appel_video_60);
 
@@ -198,7 +182,6 @@ public class RecordVideoFragment extends Fragment {
         chronometer.stop();
         stopRecording();
         mRecord.setClickable(false);
-
     }
 
     private void startRecording() {
@@ -209,7 +192,7 @@ public class RecordVideoFragment extends Fragment {
         mRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
         mRecorder.setVideoSource(MediaRecorder.VideoSource.CAMERA);
         mRecorder.setProfile(CamcorderProfile.get(CamcorderProfile.QUALITY_1080P));
-        mRecorder.setOutputFile(mFileName);
+        mRecorder.setOutputFile(viewModel.getSession().getDeviceVideoLink());
 
         try {
             mRecorder.prepare();

@@ -27,6 +27,7 @@ import fr.vyfe.fragment.TagsSetFragment;
 import fr.vyfe.fragment.TimelineRealTimeFragment;
 import fr.vyfe.model.SessionModel;
 import fr.vyfe.viewModel.RecordVideoViewModel;
+import fr.vyfe.viewModel.RecordVideoViewModelFactory;
 
 
 /**
@@ -52,7 +53,7 @@ public class RecordActivity extends VyfeActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.record_session);
 
-        viewModel = ViewModelProviders.of(RecordActivity.this).get(RecordVideoViewModel.class);
+        viewModel = ViewModelProviders.of(this, new RecordVideoViewModelFactory(mAuth.getCurrentUser().getCompany())).get(RecordVideoViewModel.class);
         SessionModel session = getIntent().getParcelableExtra("SessionModel");
         String idAndroid = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         session.setIdAndroid(Hashing.sha256().hashString(idAndroid, Charset.defaultCharset()).toString());
