@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg"
     android:padding="15dp"
-    tools:context=".AddGridActivity">
+    tools:context=".activity._OldCreateGridActivity">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -39,7 +39,7 @@
                     android:background="@android:color/darker_gray" />
 
                 <EditText
-                    android:id="@+id/et_name"
+                    android:id="@+id/tag_name_edit"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"
@@ -48,7 +48,7 @@
                     android:layout_weight="1"
                     android:background="@android:color/transparent"
                     android:ems="10"
-                    android:hint="@string/name_event"
+                    android:hint="@string/tag_name"
                     android:inputType="textPersonName"
                     android:maxHeight="400dp"
                     android:textColor="@color/white"
@@ -61,7 +61,7 @@
 
 
             <Spinner
-                android:id="@+id/simpleSpinner"
+                android:id="@+id/colorSpinner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="16dp"
@@ -70,7 +70,7 @@
                 android:layout_weight="0.2"/>
 
             <Button
-                android:id="@+id/btn_add"
+                android:id="@+id/add_tag_btn"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_vertical"
@@ -103,7 +103,7 @@
             app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
         <Button
-            android:id="@+id/btn_end"
+            android:id="@+id/end_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="15dp"
