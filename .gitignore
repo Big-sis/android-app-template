@@ -136,4 +136,7 @@ fabric.properties
 app/src/main/res/values/conf.xml
 app/src/main/res/values/password.xml
 
+app/src/main/res/values/password.xml
+
 app/keystore.jks
+
