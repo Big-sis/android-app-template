@@ -89,6 +89,8 @@
     <string name="restart_session">Relancer une Session</string>
     <string name="deconnected">Etes-vous sûr(e) de vouloir vous déconnecter ?</string>
     <string name="active_wifi">Vous devez posséder une connexion internet pour vous identifiez</string>
+    <string name="wifi_active">Vous devez activer votre wifi pour lancer une session collaborative</string>
+    <string name="start_wifi">Activer Wifi</string>
     <string name="expired_month">Il vous reste moins d\' 1 mois de licence pour profiter de cette fabuleuse application</string>
     <string name="expired_7_days">Attention, cette application s\'autodétruira dans moins de 7jours ;)</string>
     <string name="expired_day">Attention, il ne vous reste qu\'un jour d\'utilidation</string>
@@ -121,5 +123,6 @@
     <string name="color_gradient_grey">Gris</string>
     <string name="grid_name_empty_warning">Vous devez renseigner un titre à votre grille et des tags</string>
     <string name="save_grid_info">Grid saved</string>
+
 
 </resources>
