@@ -8,16 +8,20 @@ import java.util.List;
 
 import fr.vyfe.model.SessionModel;
 import fr.vyfe.repository.BaseListValueEventListener;
-import fr.vyfe.repository.UserRepository;
+import fr.vyfe.repository.SessionRepository;
 
 
 public class MyVideosViewModel extends ViewModel {
 
-    private UserRepository repository;
+    private SessionRepository repository;
     private MutableLiveData<List<SessionModel>> sessions;
+    private String filter;
 
-    public MyVideosViewModel(String userId) {
-        repository = new UserRepository(userId);
+    public MyVideosViewModel(String companyId, String androidId) {
+        repository = new SessionRepository(companyId);
+        repository.setOrderByChildKey("idAndroid");
+        repository.setEqualToKey(androidId);
+        filter = "";
     }
 
     public LiveData<List<SessionModel>> getSessions() {
@@ -38,6 +42,10 @@ public class MyVideosViewModel extends ViewModel {
         repository.addListListener(new BaseListValueEventListener.CallbackInterface<SessionModel>() {
             @Override
             public void onSuccess(List<SessionModel> result) {
+                for (SessionModel session: result) {
+                    if (!session.getName().contains(filter))
+                        result.remove(session);
+                }
                 sessions.setValue(result);
             }
 
@@ -49,5 +57,8 @@ public class MyVideosViewModel extends ViewModel {
 
     }
 
-
+    public void setFilter(String filter) {
+        this.filter = filter;
+        loadSessions();
+    }
 }

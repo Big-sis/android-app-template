@@ -2,6 +2,7 @@ package fr.vyfe.repository;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 
 import fr.vyfe.Constants;
 import fr.vyfe.mapper.FirebaseMapper;
@@ -16,6 +17,8 @@ public abstract class FirebaseDatabaseRepository<Model> {
     private FirebaseMapper mapper;
     private String company;
     private String user;
+    private String orderByChildKey;
+    private String equalToKey;
 
     public FirebaseDatabaseRepository(FirebaseMapper mapper, String company) {
         this.mapper = mapper;
@@ -41,11 +44,22 @@ public abstract class FirebaseDatabaseRepository<Model> {
         return this.user;
     }
 
+    public void setOrderByChildKey(String orderByChildKey) {
+        this.orderByChildKey = orderByChildKey;
+    }
+
+    public void setEqualToKey(String equalToKey) {
+        this.equalToKey = equalToKey;
+    }
+
     protected abstract String getRootNode();
 
     public void addListListener(BaseListValueEventListener.CallbackInterface<Model> callback) {
         listListener = new BaseListValueEventListener(mapper, callback);
-        databaseReference.addValueEventListener(listListener);
+        Query query = databaseReference;
+        if (orderByChildKey != null) query = query.orderByChild(orderByChildKey);
+        if (equalToKey != null) query = query.equalTo(equalToKey);
+        query.addValueEventListener(listListener);
     }
 
     public void addChildListener(String childId, BaseSingleValueEventListener.CallbackInterface<Model> callback) {
@@ -65,5 +79,4 @@ public abstract class FirebaseDatabaseRepository<Model> {
         databaseReference.child(key).setValue(mapper.unMap(model));
         return key;
     }
-
 }

@@ -36,7 +36,7 @@ public class VideoGridAdapter extends BaseAdapter implements Filterable {
 
     @Override
     public int getCount() {
-        return mSessions.size();
+        return mSessions != null ? mSessions.size() : 0;
     }
 
     @Override
@@ -70,11 +70,9 @@ public class VideoGridAdapter extends BaseAdapter implements Filterable {
 
         String lRegex = "^(https?)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
 
-       if (mSession.getDeviceVideoLink().equals(lRegex)) {
+        if (mSession.getDeviceVideoLink().equals(lRegex)) {
             videoStatus.setImageResource(R.drawable.icons8_cloud_v_rifi__96);
         }
-
-
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override

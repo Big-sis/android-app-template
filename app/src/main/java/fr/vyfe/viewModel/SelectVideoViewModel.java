@@ -22,7 +22,7 @@ public class SelectVideoViewModel extends ViewModel {
 
     public LiveData<SessionModel> getSession() {
         if (session == null) {
-            session = new MutableLiveData<SessionModel>();
+            session = new MutableLiveData<>();
             loadSession();
         }
         return session;
@@ -35,9 +35,6 @@ public class SelectVideoViewModel extends ViewModel {
     }
 
     public void loadSession() {
-        if (session == null) {
-            session = new MutableLiveData<SessionModel>();
-        }
         sessionRepository.addChildListener(sessionId, new BaseSingleValueEventListener.CallbackInterface<SessionModel>() {
             @Override
             public void onSuccess(SessionModel result) {

@@ -18,6 +18,7 @@ import java.util.List;
 
 import fr.vyfe.R;
 import fr.vyfe.adapter.VideoGridAdapter;
+import fr.vyfe.helper.AndroidHelper;
 import fr.vyfe.model.SessionModel;
 import fr.vyfe.viewModel.MyVideosViewModel;
 import fr.vyfe.viewModel.MyVideosViewModelFactory;
@@ -30,7 +31,6 @@ import static android.os.Environment.getExternalStoragePublicDirectory;
  * The user can select one and view it
  */
 public class MyVideosActivity extends VyfeActivity {
-    VideoGridAdapter mVideoGridAdapter;
     MyVideosViewModel viewModel;
 
     @Override
@@ -38,7 +38,7 @@ public class MyVideosActivity extends VyfeActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_video);
 
-        viewModel = ViewModelProviders.of(this, new MyVideosViewModelFactory( mAuth.getCurrentUser().getId())).get(MyVideosViewModel.class);
+        viewModel = ViewModelProviders.of(this, new MyVideosViewModelFactory(mAuth.getCurrentUser().getCompany(), AndroidHelper.getAndroidId(this))).get(MyVideosViewModel.class);
 
         final GridView gridView = findViewById(R.id.grid_videos);
         SearchView searchView = findViewById(R.id.search_video);
@@ -49,38 +49,13 @@ public class MyVideosActivity extends VyfeActivity {
         closeSearch.setImageResource(android.R.drawable.ic_menu_close_clear_cancel);
         ImageView search = searchView.findViewById(android.support.v7.appcompat.R.id.search_button);
         search.setImageResource(android.R.drawable.ic_menu_search);
-        final ProgressBar pBLoading = findViewById(R.id.progress_bar_loading);
-
 
         viewModel.getSessions().observe(this, new Observer<List<SessionModel>>() {
             @Override
-            public void onChanged(@Nullable List<SessionModel> tagSetModels) {
-                if(tagSetModels!=null) {
-                    ArrayList<SessionModel> userSessions = new ArrayList<>();
-                    pBLoading.setVisibility(View.INVISIBLE);
-
-                    File externalStorage = getExternalStoragePublicDirectory(DIRECTORY_MOVIES + "/" + "Vyfe");
-                    final String racineExternalStorage = String.valueOf(externalStorage.getAbsoluteFile());
-                    final String[] filesExternalStorage = externalStorage.list();
-
-                    if ((filesExternalStorage != null)) {
-                        for (String nameFileExternalStorage : filesExternalStorage) {
-                            String nameCache = racineExternalStorage + "/" + nameFileExternalStorage;
-
-                            for (SessionModel sessionModel : viewModel.getSessions().getValue()) {
-                                if (sessionModel.getDeviceVideoLink().equals(nameCache)) {
-                                    userSessions.add(sessionModel);
-                                }
-                            }
-                        }
-                    }
-
-                    mVideoGridAdapter = new VideoGridAdapter(MyVideosActivity.this, userSessions);
-                    gridView.setAdapter(mVideoGridAdapter);
-                }
+            public void onChanged(@Nullable List<SessionModel> sessions) {
+                gridView.setAdapter(new VideoGridAdapter(MyVideosActivity.this, (ArrayList<SessionModel>) sessions));
             }
         });
-
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -94,11 +69,10 @@ public class MyVideosActivity extends VyfeActivity {
 
             @Override
             public boolean onQueryTextChange(String s) {
-                mVideoGridAdapter.getFilter().filter(s);
+                viewModel.setFilter(s);
                 return false;
             }
         });
-        if (mVideoGridAdapter != null) mVideoGridAdapter.notifyDataSetChanged();
     }
 
 }
