@@ -116,6 +116,9 @@
     <string name="light_purple">Violet clair</string>
     <string name="green">Vert</string>
     <string name="connection">Vous devez vous connecter</string>
+    <string name="alert">Alerte</string>
+    <string name="error_record">Une erreur est survenue, veuillez relancer une session</string>
+    <string name="ok">OK</string>
 
 
 </resources>
