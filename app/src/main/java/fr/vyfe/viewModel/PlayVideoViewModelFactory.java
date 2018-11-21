@@ -7,18 +7,16 @@ import android.support.annotation.NonNull;
 public class PlayVideoViewModelFactory implements ViewModelProvider.Factory {
 
     private final String userId;
-    private final String sessionId;
 
-    public PlayVideoViewModelFactory(String userId, String sessionId) {
+    public PlayVideoViewModelFactory(String userId) {
         this.userId = userId;
-        this.sessionId = sessionId;
     }
 
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.isAssignableFrom(PlayVideoViewModel.class))
-            return (T) new PlayVideoViewModel(userId, sessionId);
+            return (T) new PlayVideoViewModel(userId);
         throw new IllegalArgumentException("Unkowm ViewModel class");
     }
 }

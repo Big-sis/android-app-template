@@ -21,9 +21,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import fr.vyfe.ColorNotFoundException;
 import fr.vyfe.R;
-import fr.vyfe.helper.ColorHelper;
 import fr.vyfe.helper.ScrollHelper;
 import fr.vyfe.model.TagModel;
 import fr.vyfe.model.TimeModel;

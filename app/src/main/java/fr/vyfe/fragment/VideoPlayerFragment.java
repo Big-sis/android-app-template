@@ -45,12 +45,7 @@ public class VideoPlayerFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         viewModel = ViewModelProviders.of(getActivity()).get(PlayVideoViewModel.class);
 
-        viewModel.getSession().observe(getActivity(), new Observer<SessionModel>() {
-            @Override
-            public void onChanged(@Nullable SessionModel session) {
-                mVideoSelectedView.setVideoPath(session.getDeviceVideoLink());
-            }
-        });
+        mVideoSelectedView.setVideoPath(viewModel.getSession().getDeviceVideoLink());
 
         viewModel.getVideoPosition().observe(getActivity(), new Observer<Integer>() {
             @Override

@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -21,7 +20,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import fr.vyfe.ColorNotFoundException;
 import fr.vyfe.R;
 import fr.vyfe.helper.ColorHelper;
 import fr.vyfe.model.SessionModel;
@@ -63,16 +61,10 @@ public class TimelineFragment extends Fragment {
             }
         });
 
-        viewModel.getSession().observe(getActivity(), new Observer<SessionModel>() {
-            @Override
-            public void onChanged(@Nullable SessionModel session) {
-                //TODO: BDD2
-                if (session.getTags() != null) {
-                    ArrayList<TagModel> tags = new ArrayList<TagModel>(session.getTags());
-                }
-                mSeekBar.setMax(session.getDuration());
-            }
-        });
+        if (viewModel.getSession().getTags() != null) {
+            ArrayList<TagModel> tags = new ArrayList<TagModel>(viewModel.getSession().getTags());
+        }
+        mSeekBar.setMax(viewModel.getSession().getDuration());
 
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -104,58 +96,53 @@ public class TimelineFragment extends Fragment {
 
         final LinearLayout mLlMain = view.findViewById(R.id.ll_main_playvideo);
 
-        viewModel.getSession().observe(getActivity(), new Observer<SessionModel>() {
-            @Override
-            public void onChanged(@Nullable SessionModel sessionModel) {
-                for (TagModel tag : sessionModel.getTags()) {
-                    String tagName = tag.getTagName();
+        for (TagModel tag : viewModel.getSession().getTags()) {
+            String tagName = tag.getTagName();
 
-                    //Creation de chaque etage de tags sur la timeline
-                    final RelativeLayout timelineRow = new RelativeLayout(getActivity());
-                    mLlMain.addView(timelineRow);
+            //Creation de chaque etage de tags sur la timeline
+            final RelativeLayout timelineRow = new RelativeLayout(getActivity());
+            mLlMain.addView(timelineRow);
 
-                    TextView tvNameTimeline = new TextView(getActivity());
-                    tvNameTimeline.setText(tagName);
-                    tvNameTimeline.setTextColor(Color.WHITE);
+            TextView tvNameTimeline = new TextView(getActivity());
+            tvNameTimeline.setText(tagName);
+            tvNameTimeline.setTextColor(Color.WHITE);
 
-                    //Creation des noms pour chaque timeline
-                    RelativeLayout.LayoutParams layoutParamsTv = new RelativeLayout.LayoutParams(
-                            convertToDp(mSizeTitle), LinearLayout.LayoutParams.WRAP_CONTENT);
-                    layoutParamsTv.setMargins(convertToDp(15), convertToDp(8), 0, convertToDp(8));
-                    tvNameTimeline.setTextColor(Color.WHITE);
-                    tvNameTimeline.setMinimumHeight(convertToDp(25));
+            //Creation des noms pour chaque timeline
+            RelativeLayout.LayoutParams layoutParamsTv = new RelativeLayout.LayoutParams(
+                    convertToDp(mSizeTitle), LinearLayout.LayoutParams.WRAP_CONTENT);
+            layoutParamsTv.setMargins(convertToDp(15), convertToDp(8), 0, convertToDp(8));
+            tvNameTimeline.setTextColor(Color.WHITE);
+            tvNameTimeline.setMinimumHeight(convertToDp(25));
 
-                    if (tag.getTimes() != null) {
+            if (tag.getTimes() != null) {
 
-                        // Créé une image par utilisation du tag en cour
-                        for (final TimeModel tagTime : tag.getTimes()) {
-                            //TODO: affichage ne fonctionne pas
-                            double start = convertIntoTimelineViewRef(tagTime.getStart(), mWidth, sessionModel);
-                            double end = convertIntoTimelineViewRef(tagTime.getEnd(), mWidth, sessionModel);
+                // Créé une image par utilisation du tag en cour
+                for (final TimeModel tagTime : tag.getTimes()) {
+                    //TODO: affichage ne fonctionne pas
+                    double start = convertIntoTimelineViewRef(tagTime.getStart(), mWidth, viewModel.getSession());
+                    double end = convertIntoTimelineViewRef(tagTime.getEnd(), mWidth, viewModel.getSession());
 
-                            final ImageView tagImageView = new ImageView(getActivity());
-                            RelativeLayout.LayoutParams layoutParamsIv = new RelativeLayout.LayoutParams(
-                                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    final ImageView tagImageView = new ImageView(getActivity());
+                    RelativeLayout.LayoutParams layoutParamsIv = new RelativeLayout.LayoutParams(
+                            LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 
-                            layoutParamsIv.setMargins((int) Math.floor(start), convertToDp(8), 0, convertToDp(8));
+                    layoutParamsIv.setMargins((int) Math.floor(start), convertToDp(8), 0, convertToDp(8));
 
-                            tagImageView.setMinimumHeight(convertToDp(25));
-                            tagImageView.setMinimumWidth(Math.max(convertToDp(50), (int) (end - start)));
+                    tagImageView.setMinimumHeight(convertToDp(25));
+                    tagImageView.setMinimumWidth(Math.max(convertToDp(50), (int) (end - start)));
 
-                            tagImageView.setBackgroundResource(ColorHelper.getInstance().findColorById(tag.getColor().getId()).getImage());
+                    tagImageView.setBackgroundResource(ColorHelper.getInstance().findColorById(tag.getColor().getId()).getImage());
 
-                            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                            timelineRow.setLayoutParams(layoutParams);
-                            timelineRow.setBackgroundColor(getActivity().getResources().getColor(R.color.colorCharcoalGrey));
-                            timelineRow.addView(tagImageView, layoutParamsIv);
+                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                    timelineRow.setLayoutParams(layoutParams);
+                    timelineRow.setBackgroundColor(getActivity().getResources().getColor(R.color.colorCharcoalGrey));
+                    timelineRow.addView(tagImageView, layoutParamsIv);
 
-                        }
-                        timelineRow.addView(tvNameTimeline);
-                    }
                 }
+                timelineRow.addView(tvNameTimeline);
             }
-        });
+        }
 
     }
 

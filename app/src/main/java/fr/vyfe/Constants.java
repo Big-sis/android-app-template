@@ -8,4 +8,5 @@ public final class Constants {
     public static final int SPLASH_TIME_OUT = 200;
     public static final int STANDARD_LEFT_OFFSET = 6;
     public static final int STANDARD_RIGHT_OFFSET = 3;
+    public static final String SESSIONMODEL_EXTRA = "SessionModel";
 }

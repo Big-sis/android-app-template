@@ -2,11 +2,13 @@ package fr.vyfe.activity;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -16,6 +18,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.vyfe.Constants;
 import fr.vyfe.R;
 import fr.vyfe.adapter.VideoGridAdapter;
 import fr.vyfe.helper.AndroidHelper;
@@ -71,6 +74,16 @@ public class MyVideosActivity extends VyfeActivity {
             public boolean onQueryTextChange(String s) {
                 viewModel.setFilter(s);
                 return false;
+            }
+        });
+
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(MyVideosActivity.this, SelectVideoActivity.class);
+                SessionModel sessionModel = (SessionModel) parent.getItemAtPosition(position);
+                intent.putExtra(Constants.SESSIONMODEL_EXTRA, sessionModel);
+                MyVideosActivity.this.startActivity(intent);
             }
         });
     }

@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import fr.vyfe.Constants;
 import fr.vyfe.CustomVideoFilter;
 import fr.vyfe.R;
 import fr.vyfe.activity.SelectVideoActivity;
@@ -45,7 +46,7 @@ public class VideoGridAdapter extends BaseAdapter implements Filterable {
     }
 
     @Override
-    public Object getItem(int position) {
+    public SessionModel getItem(int position) {
         return mSessions.get(position);
     }
 
@@ -73,16 +74,6 @@ public class VideoGridAdapter extends BaseAdapter implements Filterable {
         if (mSession.getDeviceVideoLink().equals(lRegex)) {
             videoStatus.setImageResource(R.drawable.icons8_cloud_v_rifi__96);
         }
-
-        convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(mContext, SelectVideoActivity.class);
-                intent.putExtra("SessionModel", mSession);
-                mContext.startActivity(intent);
-            }
-        });
-
 
         return convertView;
     }

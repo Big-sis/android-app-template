@@ -11,7 +11,6 @@ import android.widget.TextView;
 
 import java.util.List;
 
-import fr.vyfe.ColorNotFoundException;
 import fr.vyfe.R;
 import fr.vyfe.helper.ColorHelper;
 import fr.vyfe.model.TagModel;

@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
+import fr.vyfe.Constants;
 import fr.vyfe.adapter.TagRecyclerAdapter;
 import fr.vyfe.fragment.TimelineFragment;
 import fr.vyfe.fragment.VideoPlayerFragment;
@@ -24,7 +25,6 @@ import fr.vyfe.viewModel.PlayVideoViewModelFactory;
  */
 public class PlayVideoActivity extends VyfeActivity implements LifecycleOwner {
 
-    private String sessionId;
     private PlayVideoViewModel viewModel;
     private RecyclerView mRecyclerView;
     private TagRecyclerAdapter mAdapterTags;
@@ -34,8 +34,8 @@ public class PlayVideoActivity extends VyfeActivity implements LifecycleOwner {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        sessionId = getIntent().getStringExtra(SelectVideoActivity.ID_SESSION);
-        viewModel = ViewModelProviders.of(this, new PlayVideoViewModelFactory(mAuth.getCurrentUser().getId(), sessionId)).get(PlayVideoViewModel.class);
+        viewModel = ViewModelProviders.of(this, new PlayVideoViewModelFactory(mAuth.getCurrentUser().getId())).get(PlayVideoViewModel.class);
+        viewModel.init((SessionModel) getIntent().getParcelableExtra(Constants.SESSIONMODEL_EXTRA));
 
         setContentView(R.layout.activity_play_video);
         //TODO: affichage des tags ne fonctionne pas
@@ -44,25 +44,15 @@ public class PlayVideoActivity extends VyfeActivity implements LifecycleOwner {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        viewModel.getSession().observe(this, new Observer<SessionModel>() {
-            @Override                       //TODO BDD2
-            public void onChanged(@Nullable SessionModel sessionModel) {
-                getSupportActionBar().setTitle(sessionModel.getName());
-            }
-        });
+        getSupportActionBar().setTitle(viewModel.getSession().getName());
 
 
         mRecyclerView = findViewById(R.id.re_tags_selected);
 
-        viewModel.getSession().observe(this, new Observer<SessionModel>() {
-            @Override
-            public void onChanged(@Nullable SessionModel sessionModel) {
-                mAdapterTags = new TagRecyclerAdapter(sessionModel.getTags(), "count");
-                RecyclerView.LayoutManager layoutManagerTags = new LinearLayoutManager(PlayVideoActivity.this, LinearLayoutManager.VERTICAL, false);
-                mRecyclerView.setLayoutManager(layoutManagerTags);
+        mAdapterTags = new TagRecyclerAdapter(viewModel.getSession().getTags(), "count");
+        RecyclerView.LayoutManager layoutManagerTags = new LinearLayoutManager(PlayVideoActivity.this, LinearLayoutManager.VERTICAL, false);
+        mRecyclerView.setLayoutManager(layoutManagerTags);
 
-                mRecyclerView.setAdapter(mAdapterTags);
-            }
-        });
+        mRecyclerView.setAdapter(mAdapterTags);
     }
 }
