@@ -38,5 +38,4 @@ public class SessionRepository extends FirebaseDatabaseRepository<SessionModel> 
             return super.push(sessionModel);
         }
     }
-
 }

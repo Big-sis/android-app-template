@@ -41,7 +41,7 @@
             android:name=".activity.RecordActivity"
             android:screenOrientation="userLandscape" />
         <activity
-            android:name=".activity.InfoVideoActivity"
+            android:name=".activity.EditSessionActivity"
             android:screenOrientation="userLandscape"
             android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity

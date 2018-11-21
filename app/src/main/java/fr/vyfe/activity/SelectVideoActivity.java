@@ -26,9 +26,9 @@ public class SelectVideoActivity extends VyfeActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selected_video);
 
-        Button play = findViewById(R.id.bt_play);
-        Button edit = findViewById(R.id.btn_edit);
-        ImageView video = findViewById(R.id.vv_preview);
+        Button playBtn = findViewById(R.id.bt_play);
+        Button editBtn = findViewById(R.id.btn_edit);
+        ImageView videoBtn = findViewById(R.id.vv_preview);
         final TextView tvTitle = findViewById(R.id.tv_title);
         final TextView tvDescription = findViewById(R.id.tv_description);
 
@@ -50,9 +50,16 @@ public class SelectVideoActivity extends VyfeActivity {
         tvTitle.setText(viewModel.getSession().getName());
 
 
-        clickButton(play, new Intent(this, PlayVideoActivity.class));
-        clickButton(video, new Intent(this, PlayVideoActivity.class));
-        clickButton(edit, new Intent(this, InfoVideoActivity.class));
+        clickButton(playBtn, new Intent(this, PlayVideoActivity.class));
+        clickButton(videoBtn, new Intent(this, PlayVideoActivity.class));
+        editBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SelectVideoActivity.this, EditSessionActivity.class);
+                intent.putExtra(Constants.SESSIONMODELID_EXTRA, viewModel.getSession().getId());
+                startActivity(intent);
+            }
+        });
     }
 
     public void clickButton(View view, final Intent intent) {
