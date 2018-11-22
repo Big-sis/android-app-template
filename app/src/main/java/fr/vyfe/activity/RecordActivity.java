@@ -20,6 +20,7 @@ import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import fr.vyfe.Constants;
 import fr.vyfe.R;
 import fr.vyfe.RestartSession;
 import fr.vyfe.fragment.RecordVideoFragment;
@@ -93,15 +94,9 @@ public class RecordActivity extends VyfeActivity {
         btnRestart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String nameTitleSession = RestartSession.implementTitleGrid(viewModel.getSession().getName());
-
-                viewModel.getSession().setName(nameTitleSession);
-
                 Intent intent = new Intent(RecordActivity.this, CreateSessionActivity.class);
-                intent.putExtra("restartSession", viewModel.getSession());
-
+                intent.putExtra(Constants.SESSIONMODEL_EXTRA, viewModel.getSession());
                 startActivity(intent);
-
             }
         });
 

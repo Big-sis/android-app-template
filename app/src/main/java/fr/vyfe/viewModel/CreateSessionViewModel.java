@@ -3,6 +3,7 @@ package fr.vyfe.viewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
+import android.se.omapi.Session;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ public class CreateSessionViewModel extends ViewModel {
     private MutableLiveData<TagSetModel> selectedTagSet;
     private MutableLiveData<String> sessionName;
     private String userId;
+    private String selectedTagSetId;
 
     public CreateSessionViewModel(String userId, String companyId) {
         tagSetRepository = new TagSetRepository(userId, companyId);
@@ -31,6 +33,11 @@ public class CreateSessionViewModel extends ViewModel {
         tagSets = new MutableLiveData<>();
         sessionName = new MutableLiveData<>();
         this.userId = userId;
+    }
+
+    public void init(SessionModel session) {
+        this.setSessionName(session.getName());
+        this.selectedTagSetId = session.getTagSetId();
     }
 
     public MutableLiveData<TagSetModel> getSelectedTagSet() {
@@ -41,6 +48,7 @@ public class CreateSessionViewModel extends ViewModel {
 
     public void setSelectedTagSet(TagSetModel selectedTagSet) {
         this.selectedTagSet.setValue(selectedTagSet);
+        if (selectedTagSet != null) this.selectedTagSetId = selectedTagSet.getId();
     }
 
     public LiveData<ArrayList<TagSetModel>> getTagSets() {
@@ -63,6 +71,11 @@ public class CreateSessionViewModel extends ViewModel {
         tagSetRepository.addListListener(new BaseListValueEventListener.CallbackInterface<TagSetModel>() {
             @Override
             public void onSuccess(List<TagSetModel> result) {
+                if (selectedTagSetId != null)
+                    for (TagSetModel tagSet: result) {
+                        if (selectedTagSetId.equals(tagSet.getId()))
+                            selectedTagSet.setValue(tagSet);
+                    }
                 tagSets.setValue((ArrayList) result);
             }
 
@@ -83,5 +96,9 @@ public class CreateSessionViewModel extends ViewModel {
             session.setTags(this.selectedTagSet.getValue().getTags());
         }
         return session;
+    }
+
+    public String getSessionName() {
+        return this.sessionName != null ? this.sessionName.getValue() : "";
     }
 }

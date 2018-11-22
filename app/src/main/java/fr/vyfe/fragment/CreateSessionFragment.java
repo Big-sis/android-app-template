@@ -58,7 +58,6 @@ public class CreateSessionFragment extends Fragment {
     private ScrollView scrollMain;
     private EditText mEtVideoTitle;
     private TagSetSpinnerAdapter tagSetsSpinnerAdapter;
-    private SessionModel sessionRestart;
 
     public static CreateSessionFragment newInstance() {
         return new CreateSessionFragment();
@@ -67,7 +66,6 @@ public class CreateSessionFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sessionRestart = getActivity().getIntent().getParcelableExtra("restartSession");
         viewModel = ViewModelProviders.of(getActivity()).get(CreateSessionViewModel.class);
     }
 
@@ -90,7 +88,7 @@ public class CreateSessionFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
 
-        if (sessionRestart != null) mEtVideoTitle.setText(sessionRestart.getName());
+        mEtVideoTitle.setText(viewModel.getSessionName());
 
         if (((CreateSessionActivity) getActivity()).isMulti) buttonGo.setText(R.string.next);
 
@@ -122,14 +120,14 @@ public class CreateSessionFragment extends Fragment {
         viewModel.getTagSets().observe(getActivity(), new Observer<ArrayList<TagSetModel>>() {
             @Override
             public void onChanged(@Nullable ArrayList<TagSetModel> tagSetModels) {
-                // Android spinner view is very tricky to bind to LiveDate objects.
+                // Android spinner view is very tricky to bind to LiveData objects.
                 // This is the most efficient solution I've found to make it work,
                 // it means rebuilding the sipnner and adapter after each data change event
                 tagSetsSpinnerAdapter = new TagSetSpinnerAdapter(getContext(), tagSetModels);
                 spinner.setAdapter(tagSetsSpinnerAdapter);
-                if (sessionRestart != null && viewModel.getSelectedTagSet().getValue()==null && tagSetModels!=null) {
+                if (viewModel.getSelectedTagSet().getValue()!=null && tagSetModels!=null) {
                     for (int i=0; i<tagSetModels.size(); i++ ) {
-                        if (tagSetModels.get(i).getId().equals(sessionRestart.getTagSetId()))
+                        if (tagSetModels.get(i).getId()!=null && tagSetModels.get(i).getId().equals(viewModel.getSelectedTagSet().getValue().getId()))
                             spinner.setSelection(i+1);
                     }
                 }
