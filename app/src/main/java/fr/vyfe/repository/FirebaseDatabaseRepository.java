@@ -22,21 +22,24 @@ public abstract class FirebaseDatabaseRepository<Model> {
     private FirebaseMapper mapper;
     private String company;
     private String user;
+    private String session;
     private String orderByChildKey;
     private String equalToKey;
     private String childKey;
 
     public FirebaseDatabaseRepository(FirebaseMapper mapper, String company) {
-        this.mapper = mapper;
-        this.company = company;
-        databaseReference = FirebaseDatabase.getInstance(Constants.FIREBASE_DB_VERSION_URL).getReference(getRootNode());
-        databaseReference.keepSynced(true);
+        this(mapper, company, null);
     }
 
     public FirebaseDatabaseRepository(FirebaseMapper mapper, String company, String user) {
+        this(mapper, company, user, null);
+    }
+
+    public FirebaseDatabaseRepository(FirebaseMapper mapper, String company, String user, String session) {
         this.mapper = mapper;
         this.company = company;
         this.user = user;
+        this.session = session;
         databaseReference = FirebaseDatabase.getInstance(Constants.FIREBASE_DB_VERSION_URL).getReference(getRootNode());
         databaseReference.keepSynced(true);
     }
@@ -48,6 +51,10 @@ public abstract class FirebaseDatabaseRepository<Model> {
 
     protected String getUser() {
         return this.user;
+    }
+
+    protected String getSession() {
+        return session;
     }
 
     public void setOrderByChildKey(String orderByChildKey) {
@@ -69,9 +76,16 @@ public abstract class FirebaseDatabaseRepository<Model> {
     }
 
     public void addChildListener(String childId, BaseSingleValueEventListener.CallbackInterface<Model> callback) {
+        this.addChildListener(childId, false, callback);
+    }
+
+    public void addChildListener(String childId, boolean singleValueEvent, BaseSingleValueEventListener.CallbackInterface<Model> callback) {
         this.childKey = childId;
         childListener = new BaseSingleValueEventListener(mapper, callback);
-        databaseReference.child(childId).addValueEventListener(childListener);
+        if (singleValueEvent)
+            databaseReference.child(childId).addListenerForSingleValueEvent(childListener);
+        else
+            databaseReference.child(childId).addValueEventListener(childListener);
     }
 
     public void removeListeners() {

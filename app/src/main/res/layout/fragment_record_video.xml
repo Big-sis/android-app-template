@@ -4,19 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <FrameLayout
-        android:id="@+id/video_view"
+    <fr.vyfe.view.AutoFitTextureView
+        android:id="@+id/texture"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintDimensionRatio="1920:1080"
         app:layout_constraintEnd_toEndOf="@+id/video_control"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-    </FrameLayout>
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tv_space"
+        android:id="@+id/tv_storage_space_left"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -36,19 +33,19 @@
         android:orientation="vertical"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
-        app:layout_constraintBottom_toBottomOf="@+id/video_view"
+        app:layout_constraintBottom_toBottomOf="@+id/texture"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/video_view">
+        app:layout_constraintTop_toTopOf="@+id/texture">
 
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/bt_record"
+            android:id="@+id/btn_record"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:backgroundTint="@color/color4" />
 
 
         <fr.vyfe.view.StopwatchView
-            android:id="@+id/chronometer"
+            android:id="@+id/stopwatch"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
@@ -57,8 +54,7 @@
             android:padding="10dp"
             android:textColor="@color/color9"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/bt_finish" />
+            app:layout_constraintEnd_toEndOf="parent"/>
 
 
     </LinearLayout>

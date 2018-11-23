@@ -82,7 +82,7 @@ public class MyVideosActivity extends VyfeActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(MyVideosActivity.this, SelectVideoActivity.class);
                 SessionModel sessionModel = (SessionModel) parent.getItemAtPosition(position);
-                intent.putExtra(Constants.SESSIONMODEL_EXTRA, sessionModel);
+                intent.putExtra(Constants.SESSIONMODELID_EXTRA, sessionModel.getId());
                 MyVideosActivity.this.startActivity(intent);
             }
         });

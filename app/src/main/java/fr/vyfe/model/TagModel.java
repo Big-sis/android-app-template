@@ -9,9 +9,9 @@ import fr.vyfe.Constants;
 
 public class TagModel implements Parcelable{
 
-    private String tagId;
+    private String id;
     private ColorModel color;
-    private String tagName;
+    private String name;
     private ArrayList<TimeModel> times;
     private String taggerId;
     private int leftOffset;
@@ -24,9 +24,9 @@ public class TagModel implements Parcelable{
     }
 
     protected TagModel(Parcel in) {
-        tagId = in.readString();
+        id = in.readString();
         color = in.readParcelable(ColorModel.class.getClassLoader());
-        tagName = in.readString();
+        name = in.readString();
         taggerId = in.readString();
         leftOffset = in.readInt();
         rigthOffset = in.readInt();
@@ -80,12 +80,12 @@ public class TagModel implements Parcelable{
         this.color = color;
     }
 
-    public String getTagName() {
-        return tagName;
+    public String getName() {
+        return name;
     }
 
     public void setName(String tagName) {
-        this.tagName = tagName;
+        this.name = tagName;
     }
 
     public ArrayList<TimeModel> getTimes() {
@@ -105,12 +105,12 @@ public class TagModel implements Parcelable{
         this.taggerId = taggerId;
     }
 
-    public String getTagId() {
-        return tagId;
+    public String getId() {
+        return id;
     }
 
-    public void setTagId(String tagId) {
-        this.tagId = tagId;
+    public void setId(String id) {
+        this.id = id;
     }
 
     @Override
@@ -120,9 +120,9 @@ public class TagModel implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(tagId);
+        dest.writeString(id);
         dest.writeParcelable(color, 0);
-        dest.writeString(tagName);
+        dest.writeString(name);
         dest.writeString(taggerId);
         dest.writeInt(leftOffset);
         dest.writeInt(rigthOffset);

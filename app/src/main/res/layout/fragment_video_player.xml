@@ -47,7 +47,7 @@
             app:backgroundTint="@color/color2"
             app:srcCompat="@drawable/replay_black" />
 
-        <fr.wildcodeschool.vyfe.view.StopwatchView
+        <fr.vyfe.view.StopwatchView
             android:id="@+id/chronometer_play"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

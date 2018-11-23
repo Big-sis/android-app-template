@@ -4,12 +4,12 @@ import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProvider;
 import android.support.annotation.NonNull;
 
-public class PlayVideoViewModelFactory implements ViewModelProvider.Factory {
+public class SelectVideoViewModelFactory implements ViewModelProvider.Factory {
 
     private final String companyId;
     private final String userId;
 
-    public PlayVideoViewModelFactory(String companyId, String userId) {
+    public SelectVideoViewModelFactory(String companyId, String userId) {
         this.companyId = companyId;
         this.userId = userId;
     }
@@ -17,8 +17,8 @@ public class PlayVideoViewModelFactory implements ViewModelProvider.Factory {
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
-        if (modelClass.isAssignableFrom(PlayVideoViewModel.class))
-            return (T) new PlayVideoViewModel(companyId, userId);
+        if (modelClass.isAssignableFrom(SelectVideoViewModel.class))
+            return (T) new SelectVideoViewModel(companyId, userId);
         throw new IllegalArgumentException("Unkowm ViewModel class");
     }
 }

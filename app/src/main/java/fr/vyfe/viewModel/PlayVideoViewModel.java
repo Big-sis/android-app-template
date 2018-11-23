@@ -2,29 +2,27 @@ package fr.vyfe.viewModel;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.ViewModel;
 
-import fr.vyfe.model.SessionModel;
 import fr.vyfe.repository.SessionRepository;
+import fr.vyfe.repository.TagSetRepository;
 
 
-public class PlayVideoViewModel extends ViewModel {
+public class PlayVideoViewModel extends VyfeViewModel {
 
-    private SessionModel session;
-    private SessionRepository sessionRepository;
     private MutableLiveData<Integer> videoPosition;
     private MutableLiveData<Boolean> isPlaying;
 
-    public PlayVideoViewModel(String company) {
-        sessionRepository = new SessionRepository(company);
+    public PlayVideoViewModel(String companyId, String userId) {
+        sessionRepository = new SessionRepository(companyId);
+        tagSetRepository = new TagSetRepository(userId, companyId);
         isPlaying = new MutableLiveData<>();
-        isPlaying.setValue(false);
         videoPosition = new MutableLiveData<>();
-        videoPosition.setValue(0);
     }
 
-    public void init(SessionModel session) {
-        this.session = session;
+    public void init(String sessionId) {
+        this.sessionId = sessionId;
+        isPlaying.setValue(false);
+        videoPosition.setValue(0);
     }
 
     public LiveData<Integer> getVideoPosition() {
@@ -45,14 +43,5 @@ public class PlayVideoViewModel extends ViewModel {
 
     public void pause(){
         isPlaying.setValue(false);
-    }
-
-    public SessionModel getSession(){
-        return session;
-    }
-
-    @Override
-    protected void onCleared() {
-        sessionRepository.removeListeners();
     }
 }

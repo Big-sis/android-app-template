@@ -30,8 +30,9 @@ import fr.vyfe.viewModel.PlayVideoViewModel;
 public class TimelineFragment extends Fragment {
     private static final int WIDTH_THUMB = 15;
 
-    private SeekBar mSeekBar;
     private PlayVideoViewModel viewModel;
+    private SeekBar mSeekBar;
+    private LinearLayout mLlMain;
     private int mSizeTitle = 300;
     private int mWidth;
 
@@ -39,10 +40,18 @@ public class TimelineFragment extends Fragment {
         return new TimelineFragment();
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        viewModel = ViewModelProviders.of(getActivity()).get(PlayVideoViewModel.class);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_timeline, container, false);
+        mSeekBar = view.findViewById(R.id.seek_bar_selected);
+        mLlMain = view.findViewById(R.id.ll_main_playvideo);
         return view;
     }
 
@@ -51,8 +60,16 @@ public class TimelineFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         Display display = getActivity().getWindowManager().getDefaultDisplay();
         mWidth = display.getWidth();
+    }
 
-        viewModel = ViewModelProviders.of(getActivity()).get(PlayVideoViewModel.class);
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
+        // Applique les paramètres à la seekBar
+        RelativeLayout.LayoutParams seekBarParams = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        seekBarParams.setMargins(-WIDTH_THUMB, 0, 0, 0);
+
+        mSeekBar.setLayoutParams(seekBarParams);
 
         viewModel.getVideoPosition().observe(getActivity(), new Observer<Integer>() {
             @Override
@@ -61,10 +78,62 @@ public class TimelineFragment extends Fragment {
             }
         });
 
-        if (viewModel.getSession().getTags() != null) {
-            ArrayList<TagModel> tags = new ArrayList<TagModel>(viewModel.getSession().getTags());
-        }
-        mSeekBar.setMax(viewModel.getSession().getDuration());
+        viewModel.getSession().observe(getActivity(), new Observer<SessionModel>() {
+            @Override
+            public void onChanged(@Nullable SessionModel session) {
+                if (session == null) return;
+                mSeekBar.setMax(session.getDuration());
+                if (session.getTags() == null) return;
+
+                for (TagModel tag : session.getTags()) {
+                    String tagName = tag.getName();
+
+                    //Creation de chaque etage de tags sur la timeline
+                    final RelativeLayout timelineRow = new RelativeLayout(getActivity());
+                    mLlMain.addView(timelineRow);
+
+                    TextView tvNameTimeline = new TextView(getActivity());
+                    tvNameTimeline.setText(tagName);
+                    tvNameTimeline.setTextColor(Color.WHITE);
+
+                    //Creation des noms pour chaque timeline
+                    RelativeLayout.LayoutParams layoutParamsTv = new RelativeLayout.LayoutParams(
+                            convertToDp(mSizeTitle), LinearLayout.LayoutParams.WRAP_CONTENT);
+                    layoutParamsTv.setMargins(convertToDp(15), convertToDp(8), 0, convertToDp(8));
+                    tvNameTimeline.setTextColor(Color.WHITE);
+                    tvNameTimeline.setMinimumHeight(convertToDp(25));
+
+                    if (tag.getTimes() != null) {
+
+                        // Créé une image par utilisation du tag en cour
+                        for (final TimeModel tagTime : tag.getTimes()) {
+                            //TODO: affichage ne fonctionne pas
+                            double start = convertIntoTimelineViewRef(tagTime.getStart(), mWidth, session);
+                            double end = convertIntoTimelineViewRef(tagTime.getEnd(), mWidth, session);
+
+                            final ImageView tagImageView = new ImageView(getActivity());
+                            RelativeLayout.LayoutParams layoutParamsIv = new RelativeLayout.LayoutParams(
+                                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+                            layoutParamsIv.setMargins((int) Math.floor(start), convertToDp(8), 0, convertToDp(8));
+
+                            tagImageView.setMinimumHeight(convertToDp(25));
+                            tagImageView.setMinimumWidth(Math.max(convertToDp(50), (int) (end - start)));
+
+                            tagImageView.setBackgroundResource(ColorHelper.getInstance().findColorById(tag.getColor().getId()).getImage());
+
+                            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                            timelineRow.setLayoutParams(layoutParams);
+                            timelineRow.setBackgroundColor(getActivity().getResources().getColor(R.color.colorCharcoalGrey));
+                            timelineRow.addView(tagImageView, layoutParamsIv);
+
+                        }
+                        timelineRow.addView(tvNameTimeline);
+                    }
+                }
+            }
+        });
 
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -82,68 +151,6 @@ public class TimelineFragment extends Fragment {
                 viewModel.play();
             }
         });
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-
-        // Applique les paramètres à la seekBar
-        RelativeLayout.LayoutParams seekBarParams = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-        seekBarParams.setMargins(-WIDTH_THUMB, 0, 0, 0);
-        mSeekBar = view.findViewById(R.id.seek_bar_selected);
-        mSeekBar.setLayoutParams(seekBarParams);
-        viewModel = ViewModelProviders.of(getActivity()).get(PlayVideoViewModel.class);
-
-        final LinearLayout mLlMain = view.findViewById(R.id.ll_main_playvideo);
-
-        for (TagModel tag : viewModel.getSession().getTags()) {
-            String tagName = tag.getTagName();
-
-            //Creation de chaque etage de tags sur la timeline
-            final RelativeLayout timelineRow = new RelativeLayout(getActivity());
-            mLlMain.addView(timelineRow);
-
-            TextView tvNameTimeline = new TextView(getActivity());
-            tvNameTimeline.setText(tagName);
-            tvNameTimeline.setTextColor(Color.WHITE);
-
-            //Creation des noms pour chaque timeline
-            RelativeLayout.LayoutParams layoutParamsTv = new RelativeLayout.LayoutParams(
-                    convertToDp(mSizeTitle), LinearLayout.LayoutParams.WRAP_CONTENT);
-            layoutParamsTv.setMargins(convertToDp(15), convertToDp(8), 0, convertToDp(8));
-            tvNameTimeline.setTextColor(Color.WHITE);
-            tvNameTimeline.setMinimumHeight(convertToDp(25));
-
-            if (tag.getTimes() != null) {
-
-                // Créé une image par utilisation du tag en cour
-                for (final TimeModel tagTime : tag.getTimes()) {
-                    //TODO: affichage ne fonctionne pas
-                    double start = convertIntoTimelineViewRef(tagTime.getStart(), mWidth, viewModel.getSession());
-                    double end = convertIntoTimelineViewRef(tagTime.getEnd(), mWidth, viewModel.getSession());
-
-                    final ImageView tagImageView = new ImageView(getActivity());
-                    RelativeLayout.LayoutParams layoutParamsIv = new RelativeLayout.LayoutParams(
-                            LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
-                    layoutParamsIv.setMargins((int) Math.floor(start), convertToDp(8), 0, convertToDp(8));
-
-                    tagImageView.setMinimumHeight(convertToDp(25));
-                    tagImageView.setMinimumWidth(Math.max(convertToDp(50), (int) (end - start)));
-
-                    tagImageView.setBackgroundResource(ColorHelper.getInstance().findColorById(tag.getColor().getId()).getImage());
-
-                    LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                            LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                    timelineRow.setLayoutParams(layoutParams);
-                    timelineRow.setBackgroundColor(getActivity().getResources().getColor(R.color.colorCharcoalGrey));
-                    timelineRow.addView(tagImageView, layoutParamsIv);
-
-                }
-                timelineRow.addView(tvNameTimeline);
-            }
-        }
-
     }
 
     private double convertIntoTimelineViewRef(int value, int timelineWidth, SessionModel sessionModel) {

@@ -1,7 +1,6 @@
 package fr.vyfe.adapter;
 
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,7 +43,7 @@ public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.
         TagModel tagModel = tagList.get(position);
 
 
-        holder.tvName.setText(tagModel.getTagName());
+        holder.tvName.setText(tagModel.getName());
         holder.ivColor.setBackgroundResource(ColorHelper.getInstance().findColorById(tagModel.getColor().getId()).getImage());
         //TODO: Creer classe fille
         if (mFrom.equals("start")) {

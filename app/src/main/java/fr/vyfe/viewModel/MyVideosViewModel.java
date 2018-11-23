@@ -13,7 +13,7 @@ import fr.vyfe.repository.BaseListValueEventListener;
 import fr.vyfe.repository.SessionRepository;
 
 
-public class MyVideosViewModel extends ViewModel {
+public class MyVideosViewModel extends VyfeViewModel {
 
     private SessionRepository repository;
     private MutableLiveData<List<SessionModel>> sessions;

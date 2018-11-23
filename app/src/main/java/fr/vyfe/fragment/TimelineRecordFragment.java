@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.util.Pair;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -20,66 +21,60 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import fr.vyfe.R;
+import fr.vyfe.adapter.TimelineAdapter;
 import fr.vyfe.helper.ScrollHelper;
 import fr.vyfe.model.TagModel;
+import fr.vyfe.model.TagSetModel;
 import fr.vyfe.model.TimeModel;
 import fr.vyfe.viewModel.RecordVideoViewModel;
 
-public class TimelineRealTimeFragment extends Fragment {
+public class TimelineRecordFragment extends Fragment {
 
     private RecordVideoViewModel viewModel;
-    private HashMap<String, RelativeLayout> mTimelines = new HashMap<>();
-    private HashMap<String, ArrayList<Pair<Integer, Integer>>> newTagList = new HashMap<>();
+    private RecyclerView recyclerView;
+    private TimelineAdapter adapter;
 
-    public static TimelineRealTimeFragment newInstance() {
-        return new TimelineRealTimeFragment();
+    public static TimelineRecordFragment newInstance() {
+        return new TimelineRecordFragment();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        viewModel = ViewModelProviders.of(getActivity()).get(RecordVideoViewModel.class);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_timeline_real_time, container, false);
+        View view = inflater.inflate(R.layout.fragment_record_timeline, container, false);
+        recyclerView = view.findViewById(R.id.ll_main);
         return view;
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
-    }
-
-    @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
-        //Init variable
-        viewModel = ViewModelProviders.of(getActivity()).get(RecordVideoViewModel.class);
 
-        //Ajout des differentes timelines au conteneur principal
-        final LinearLayout llMain = view.findViewById(R.id.ll_main);
-        for (TagModel tagModel : viewModel.getSession().getTags()) {
-            String name = tagModel.getTagName();
-            //Ajout d'un Linear pour un tag
-            final RelativeLayout timeline = new RelativeLayout(getActivity());
-            timeline.setBackgroundResource(R.drawable.color_gradient_grey_nocolor);
-            llMain.addView(timeline);
-            mTimelines.put(name, timeline);
-        }
-
-        viewModel.getTagPosition().observe(getActivity(), new Observer<Integer>() {
+        viewModel.getTags().observe(getActivity(), new Observer<List<TagModel>>() {
             @Override
-            public void onChanged(@Nullable Integer integer) {
-                if (viewModel.isRecording().getValue().equals("recording")) {
+            public void onChanged(@Nullable List<TagModel> tags) {
+                adapter = new TimelineAdapter(tags, null);
+                recyclerView.setAdapter(adapter);
 
-                    String nameTag = viewModel.getSession().getTags().get(integer).getTagName();
-                    TextView tvNameTimeline = new TextView(getActivity());
+                /*
+                for (TagModel tag: tags) {
+                    String tagName = tag.getName();
+                    TextView tvNameTimeline = new TextView(getContext());
                     tvNameTimeline.setTextColor(Color.WHITE);
 
                     boolean isFirstTitle = false;
 
-                    if (!newTagList.containsKey(nameTag)) {
+                    if (!newTagList.containsKey(tagName)) {
                         ArrayList<Pair<Integer, Integer>> rTagList = new ArrayList<>();
-                        newTagList.put(nameTag, rTagList);
+                        newTagList.put(tagName, rTagList);
                         isFirstTitle = true;
                     }
 
@@ -102,7 +97,7 @@ public class TimelineRealTimeFragment extends Fragment {
 
                     //init chrono
                     final int[] timeChrono = new int[1];
-                    viewModel.getTimeChronometer().observe(getActivity(), new Observer<Long>() {
+                    viewModel.getVideoTime().observe(getActivity(), new Observer<Long>() {
                         @Override
                         public void onChanged(@Nullable Long time) {
                             timeChrono[0] = (int) ((time / (1000 / rapport)));
@@ -116,11 +111,11 @@ public class TimelineRealTimeFragment extends Fragment {
                     RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                             LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                     layoutParams.setMargins(convertToDp(startTime), convertToDp(10), 0, convertToDp(10));
-                    RelativeLayout timeline = mTimelines.get(nameTag);
+                    RelativeLayout timeline = mTimelineRowsMap.get(tagName);
 
                     timeline.addView(iv, layoutParams);
                     if (isFirstTitle) {
-                        tvNameTimeline.setText(viewModel.getSession().getTags().get(integer).getTagName());
+                        tvNameTimeline.setText(viewModel.getSession().getTags().get(integer).getName());
                         tvNameTimeline.setMinimumHeight(convertToDp(25));
                         RelativeLayout.LayoutParams layoutParamsTv = new RelativeLayout.LayoutParams(
                                 convertToDp(titleLength), LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -132,9 +127,9 @@ public class TimelineRealTimeFragment extends Fragment {
                     //Pour envoit sur firebase
                     Pair<Integer, Integer> timePair = new Pair<>(startTime / rapport, endTime / rapport);
                     TimeModel time = new TimeModel();
-                    time.setStart(startTime/rapport);
-                    time.setEnd(endTime/rapport);
-                    if(viewModel.getSession().getTags().get(integer).getTimes()==null){
+                    time.setStart(startTime / rapport);
+                    time.setEnd(endTime / rapport);
+                    if (viewModel.getSession().getTags().get(integer).getTimes() == null) {
                         viewModel.getSession().getTags().get(integer).setTimes(new ArrayList<TimeModel>());
                     }
                     viewModel.getSession().getTags().get(integer).getTimes().add(time);
@@ -147,9 +142,8 @@ public class TimelineRealTimeFragment extends Fragment {
                     //Scrool automatiquement suit l'ajout des tags
                     final HorizontalScrollView scrollView = view.findViewById(R.id.horizontal_scroll_view);
                     ScrollHelper.RigthScroll(scrollView);
-
                 }
-
+                */
             }
         });
     }

@@ -3,99 +3,147 @@ package fr.vyfe.viewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-import android.os.Environment;
 
-import java.io.File;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import fr.vyfe.model.SessionModel;
+import fr.vyfe.model.TagModel;
+import fr.vyfe.model.TagSetModel;
+import fr.vyfe.repository.BaseListValueEventListener;
+import fr.vyfe.repository.BaseSingleValueEventListener;
 import fr.vyfe.repository.SessionRepository;
+import fr.vyfe.repository.TagRepository;
+import fr.vyfe.repository.TagSetRepository;
 
-import static android.os.Environment.DIRECTORY_MOVIES;
+public class RecordVideoViewModel extends VyfeViewModel {
 
-public class RecordVideoViewModel extends ViewModel {
+    public static final String STEP_RECODRING = "recording";
+    public static final String STEP_STOP = "stop";
+    public static final String STEP_ERROR = "error";
+    public static final String STEP_SAVE = "save";
+    public static final String STEP_CLOSE = "close";
 
-    private SessionModel session;
+    private MutableLiveData<SessionModel> session;
     private SessionRepository sessionRepository;
-    private MutableLiveData<Integer> touchTagPosition;
+    private MutableLiveData<TagSetModel> tagSet;
+    private TagSetRepository tagSetRepository;
+    private TagRepository tagRepository;
     private MutableLiveData<String> stepRecord;
-    private MutableLiveData<Long> chronometer;
-    private MutableLiveData<Integer> count;
+    private MutableLiveData<Long> videoTime;
+    private MutableLiveData<List<TagModel>> tags;
+    private String sessionId;
 
-    public RecordVideoViewModel(String companyId) {
+    public RecordVideoViewModel(String userId, String companyId, String sessionId) {
         sessionRepository = new SessionRepository(companyId);
-        touchTagPosition = new MutableLiveData<>();
+        tagSetRepository = new TagSetRepository(userId, companyId);
+        tagRepository = new TagRepository(companyId, userId, sessionId);
         stepRecord = new MutableLiveData<>();
+        videoTime = new MutableLiveData<>();
+        this.sessionId = sessionId;
+    }
+
+    public void init() {
         stepRecord.setValue("init");
-        chronometer = new MutableLiveData<>();
-        chronometer.setValue((long)0);
-        count = new MutableLiveData<>();
-        count.setValue(0);
     }
 
-    public void init(SessionModel session) {
-        this.session = session;
-        session.setDate(new Date());
-
-        File f1 = new File(Environment.getExternalStoragePublicDirectory(DIRECTORY_MOVIES) + "/" + "Vyfe");
-        if (!f1.exists()) {
-            f1.mkdirs();
-        }
-        String mFileName = String.valueOf(Environment.getExternalStoragePublicDirectory(DIRECTORY_MOVIES) + "/" + "Vyfe");
-        mFileName += "/" + session.getName() + " - " + (new Date()).getTime() + ".mp4";
-        session.setDeviceVideoLink(mFileName);
+    public boolean isRecording() {
+        return stepRecord.getValue().equals(STEP_RECODRING);
     }
 
-    public LiveData<Integer> getCount() {
-        return count;
-    }
-
-    public void setCount(Integer count) {
-        this.count.setValue(count);
-    }
-
-    public LiveData<Integer> getTagPosition() {
-        return touchTagPosition;
-    }
-
-    public void setTagPosition(Integer tagPosition) {
-        this.touchTagPosition.setValue(tagPosition);
-    }
-
-    public LiveData<String> isRecording(){
+    public MutableLiveData<String> getStep() {
         return stepRecord;
     }
 
-    public void playRecord(){
-        stepRecord.setValue("recording");
-    }
-    public void stop(){
-        stepRecord.setValue("stop");
-    }
-    public void error(){
-        stepRecord.setValue("error");
-    }
-    public String save(){
-        stepRecord.setValue("save");
-        String key = sessionRepository.push(session);
-        session.setId(key);
-        return key;
-    }
-    public void close() {stepRecord.setValue("close");}
-
-    public LiveData<Long> getTimeChronometer() {
-        return chronometer;
+    public void startRecord() {
+        stepRecord.setValue(STEP_RECODRING);
     }
 
-    public void setTimeChronometer(Long chronometer) {
-        this.chronometer.setValue(chronometer);
+    public void stop() {
+        stepRecord.setValue(STEP_STOP);
     }
 
-    public SessionModel getSession() {
+    public void error() {
+        stepRecord.setValue(STEP_ERROR);
+    }
 
-        if (session == null) {
-            session = new SessionModel();
-        }
+    public void save() {
+        stepRecord.setValue(STEP_SAVE);
+    }
+
+    public void close() {
+        stepRecord.setValue(STEP_CLOSE);
+    }
+
+    public LiveData<Long> getVideoTime() {
+        return videoTime;
+    }
+
+    public void setVideoTime(Long time) {
+        this.videoTime.setValue(time);
+    }
+
+    public MutableLiveData<SessionModel> getSession() {
+        if (session == null)
+            loadSession(this.sessionId);
         return session;
+    }
+
+    public boolean addTag(int position) {
+        if (tagSet.getValue() != null) {
+            TagModel newTag = tagSet.getValue().getTags().get(position);
+            tagRepository.push(newTag);
+            return true;
+        } else return false;
+    }
+
+    private void loadTagSet(String id) {
+        tagSetRepository.addChildListener(id, true, new BaseSingleValueEventListener.CallbackInterface<TagSetModel>() {
+            @Override
+            public void onSuccess(TagSetModel result) {
+                tagSet.postValue(result);
+            }
+
+            @Override
+            public void onError(Exception e) {
+                tagSet.setValue(null);
+            }
+        });
+    }
+
+    public MutableLiveData<TagSetModel> getTagSet() {
+        if (tagSet == null) {
+            tagSet = new MutableLiveData<>();
+            // Load session here because loadTagSet function is chained with loadSession
+            loadSession(this.sessionId);
+        }
+        return tagSet;
+    }
+
+    public MutableLiveData<List<TagModel>> getTags() {
+        if (tags == null) {
+            tags = new MutableLiveData<>();
+            loadTags();
+        }
+        return tags;
+    }
+
+    private void loadTags() {
+        tagRepository.addListListener(new BaseListValueEventListener.CallbackInterface<TagModel>() {
+            @Override
+            public void onSuccess(List<TagModel> result) {
+                tags.postValue(result);
+            }
+
+            @Override
+            public void onError(Exception e) {
+                tags.setValue(null);
+            }
+        });
+    }
+
+    public String getSessionId() {
+        return sessionId;
     }
 }

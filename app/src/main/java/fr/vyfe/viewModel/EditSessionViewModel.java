@@ -10,9 +10,8 @@ import fr.vyfe.model.SessionModel;
 import fr.vyfe.repository.BaseSingleValueEventListener;
 import fr.vyfe.repository.SessionRepository;
 
-public class EditSessionViewModel extends ViewModel {
+public class EditSessionViewModel extends VyfeViewModel {
     public SessionRepository sessionRepository;
-    private MutableLiveData<SessionModel> session;
     private String newDescription;
     private String newName;
 
@@ -21,35 +20,13 @@ public class EditSessionViewModel extends ViewModel {
         sessionRepository = new SessionRepository(companyId);
     }
 
-
     public void init(String sessionId) {
         loadSession(sessionId);
-    }
-
-    public LiveData<SessionModel> getSession() {
-        return session;
     }
 
     @Override
     protected void onCleared() {
         sessionRepository.removeListeners();
-    }
-
-    private void loadSession(String sessionId) {
-        if (session == null) {
-            session = new MutableLiveData<>();
-        }
-        sessionRepository.addChildListener(sessionId, new BaseSingleValueEventListener.CallbackInterface<SessionModel>() {
-            @Override
-            public void onSuccess(SessionModel result) {
-                session.setValue(result);
-            }
-
-            @Override
-            public void onError(Exception e) {
-
-            }
-        });
     }
 
     public Task<Void> deleteSession() {

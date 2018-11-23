@@ -17,6 +17,7 @@ import fr.vyfe.fragment.TimelineFragment;
 import fr.vyfe.fragment.VideoPlayerFragment;
 import fr.vyfe.R;
 import fr.vyfe.model.SessionModel;
+import fr.vyfe.model.TagSetModel;
 import fr.vyfe.viewModel.PlayVideoViewModel;
 import fr.vyfe.viewModel.PlayVideoViewModelFactory;
 
@@ -34,8 +35,8 @@ public class PlayVideoActivity extends VyfeActivity implements LifecycleOwner {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        viewModel = ViewModelProviders.of(this, new PlayVideoViewModelFactory(mAuth.getCurrentUser().getId())).get(PlayVideoViewModel.class);
-        viewModel.init((SessionModel) getIntent().getParcelableExtra(Constants.SESSIONMODEL_EXTRA));
+        viewModel = ViewModelProviders.of(this, new PlayVideoViewModelFactory(mAuth.getCurrentUser().getCompany(), mAuth.getCurrentUser().getId())).get(PlayVideoViewModel.class);
+        viewModel.init(getIntent().getStringExtra(Constants.SESSIONMODELID_EXTRA));
 
         setContentView(R.layout.activity_play_video);
         //TODO: affichage des tags ne fonctionne pas
@@ -44,15 +45,28 @@ public class PlayVideoActivity extends VyfeActivity implements LifecycleOwner {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(viewModel.getSession().getName());
 
 
         mRecyclerView = findViewById(R.id.re_tags_selected);
 
-        mAdapterTags = new TagRecyclerAdapter(viewModel.getSession().getTags(), "count");
         RecyclerView.LayoutManager layoutManagerTags = new LinearLayoutManager(PlayVideoActivity.this, LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManagerTags);
 
-        mRecyclerView.setAdapter(mAdapterTags);
+        viewModel.getSession().observe(this, new Observer<SessionModel>() {
+            @Override
+            public void onChanged(@Nullable SessionModel session) {
+                getSupportActionBar().setTitle(session.getName());
+            }
+        });
+
+        viewModel.getTagSet().observe(this, new Observer<TagSetModel>() {
+            @Override
+            public void onChanged(@Nullable TagSetModel tagSet) {
+                if (tagSet != null) {
+                    mAdapterTags = new TagRecyclerAdapter(tagSet.getTags(), "count");
+                    mRecyclerView.setAdapter(mAdapterTags);
+                }
+            }
+        });
     }
 }

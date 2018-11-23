@@ -2,6 +2,7 @@ package fr.vyfe.activity;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.v7.widget.Toolbar;
 
 import fr.vyfe.Constants;
@@ -30,7 +31,8 @@ public class CreateSessionActivity extends VyfeActivity {
         super.onCreate(savedInstanceState);
 
         UserModel currentUser = mAuth.getCurrentUser();
-        viewModel = ViewModelProviders.of(this, new CreateSessionViewModelFactory(currentUser.getId(), currentUser.getCompany())).get(CreateSessionViewModel.class);
+        String androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        viewModel = ViewModelProviders.of(this, new CreateSessionViewModelFactory(currentUser.getId(), currentUser.getCompany(), androidId)).get(CreateSessionViewModel.class);
         if (getIntent().hasExtra(Constants.SESSIONMODEL_EXTRA))
             viewModel.init((SessionModel) getIntent().getParcelableExtra(Constants.SESSIONMODEL_EXTRA));
 

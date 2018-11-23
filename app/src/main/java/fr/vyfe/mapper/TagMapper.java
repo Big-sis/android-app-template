@@ -18,7 +18,7 @@ public class TagMapper extends FirebaseMapper<TagEntity, TagModel> {
         TagModel tag = new TagModel();
         tag.setColor(ColorHelper.getInstance().findColorById(tagEntity.getColor()));
         tag.setName(tagEntity.getName());
-        tag.setTagId(key);
+        tag.setId(key);
 
         if (tagEntity.getTimes() != null) {
             for (Map.Entry<String, ArrayList<TimeEntity>> mapTime : tagEntity.getTimes().entrySet()) {
@@ -52,7 +52,7 @@ public class TagMapper extends FirebaseMapper<TagEntity, TagModel> {
     @Override
     public TagEntity unMap(TagModel tagModel) {
         TagEntity tagEntity = new TagEntity();
-        tagEntity.setName(tagModel.getTagName());
+        tagEntity.setName(tagModel.getName());
         tagEntity.setColor(tagModel.getColor().getId());
         tagEntity.setLeftOffset(tagModel.getLeftOffset());
         tagEntity.setRigthOffset(tagModel.getRigthOffset());

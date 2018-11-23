@@ -3,6 +3,7 @@ package fr.vyfe.adapter;
 import android.content.Context;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -25,9 +26,9 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
     private List<TagModel> mList;
     private static int mVideoDuration;
 
-    public TimelineAdapter(List<TagModel> list, int videoDuration) {
+    public TimelineAdapter(List<TagModel> list, @Nullable Integer videoDuration) {
         mList = list;
-        mVideoDuration = videoDuration;
+        mVideoDuration = videoDuration != null ? videoDuration : 10000;
     }
 
     @NonNull
@@ -71,7 +72,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
 
         public void bind(TagModel tag){
 
-            String tagName = tag.getTagName();
+            String tagName = tag.getName();
 
             //Creation de chaque etage de tags sur la timeline
             final RelativeLayout timelineRow = new RelativeLayout(context);

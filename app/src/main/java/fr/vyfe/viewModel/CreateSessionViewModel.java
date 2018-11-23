@@ -17,22 +17,22 @@ import fr.vyfe.repository.SessionRepository;
 import fr.vyfe.repository.TagSetRepository;
 
 
-public class CreateSessionViewModel extends ViewModel {
+public class CreateSessionViewModel extends VyfeViewModel {
 
-    private TagSetRepository tagSetRepository;
-    private SessionRepository sessionRepository;
     private MutableLiveData<ArrayList<TagSetModel>> tagSets;
     private MutableLiveData<TagSetModel> selectedTagSet;
     private MutableLiveData<String> sessionName;
     private String userId;
     private String selectedTagSetId;
+    private String androidId;
 
-    public CreateSessionViewModel(String userId, String companyId) {
+    public CreateSessionViewModel(String userId, String companyId, String androidId) {
         tagSetRepository = new TagSetRepository(userId, companyId);
         sessionRepository = new SessionRepository(companyId);
         tagSets = new MutableLiveData<>();
         sessionName = new MutableLiveData<>();
         this.userId = userId;
+        this.androidId = androidId;
     }
 
     public void init(SessionModel session) {
@@ -87,7 +87,7 @@ public class CreateSessionViewModel extends ViewModel {
 
     }
 
-    public SessionModel getSession() {
+    public String pushSession() throws Exception {
         SessionModel session = new SessionModel();
         session.setName(this.sessionName.getValue());
         session.setAuthor(this.userId);
@@ -95,7 +95,7 @@ public class CreateSessionViewModel extends ViewModel {
             session.setIdTagSet(this.selectedTagSet.getValue().getId());
             session.setTags(this.selectedTagSet.getValue().getTags());
         }
-        return session;
+        return sessionRepository.push(session, this.androidId, this.userId);
     }
 
     public String getSessionName() {

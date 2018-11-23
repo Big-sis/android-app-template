@@ -12,14 +12,13 @@ import fr.vyfe.model.TagSetModel;
 import fr.vyfe.repository.TagSetRepository;
 
 
-public class CreateGridViewModel extends ViewModel {
+public class CreateGridViewModel extends VyfeViewModel {
 
-    private TagSetRepository repository;
     private MutableLiveData<String> tagSetName;
     private MutableLiveData<ArrayList<TagModel>> tags;
 
     CreateGridViewModel(String userId, String companyId) {
-        repository = new TagSetRepository(userId, companyId);
+        tagSetRepository = new TagSetRepository(userId, companyId);
         tagSetName = new MutableLiveData<>();
         tags = new MutableLiveData<>();
     }
@@ -38,7 +37,7 @@ public class CreateGridViewModel extends ViewModel {
 
     @Override
     protected void onCleared() {
-        repository.removeListeners();
+        tagSetRepository.removeListeners();
     }
 
     public void addTag(ColorModel color, String name) {
@@ -61,8 +60,8 @@ public class CreateGridViewModel extends ViewModel {
     public TagSetModel save() {
         TagSetModel tagSetModel = new TagSetModel();
         tagSetModel.setName(this.tagSetName.getValue());
-        String tagSetKey = repository.push(tagSetModel);
-        repository.createTags(tagSetKey, this.tags.getValue());
+        String tagSetKey = tagSetRepository.push(tagSetModel);
+        tagSetRepository.createTags(tagSetKey, this.tags.getValue());
         tagSetModel.setTags(this.tags.getValue());
         return tagSetModel;
     }

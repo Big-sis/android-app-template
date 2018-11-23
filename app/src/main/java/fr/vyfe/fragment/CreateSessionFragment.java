@@ -28,6 +28,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import fr.vyfe.Constants;
 import fr.vyfe.R;
 import fr.vyfe.activity.CreateGridActivity;
 import fr.vyfe.activity.CreateSessionActivity;
@@ -190,10 +191,9 @@ public class CreateSessionFragment extends Fragment {
 
                 Intent intent = new Intent(getContext(), RecordActivity.class);
 
-                if (viewModel.getSession().getTags() == null
-                        || viewModel.getSession().getTags().isEmpty()
-                        || viewModel.getSession().getName() == null
-                        || viewModel.getSession().getName().isEmpty()) {
+                if (viewModel.getSelectedTagSet() == null
+                        || viewModel.getSessionName() == null
+                        || viewModel.getSessionName().isEmpty()) {
                     Toast.makeText(getContext(), R.string.tagset_title_warning, Toast.LENGTH_LONG).show();
                 } else {
                     //TODO : à voir cmt on le gere quand la raspberry sera en place
@@ -213,8 +213,12 @@ public class CreateSessionFragment extends Fragment {
                         });
 
                     } else {
-                        intent.putExtra("SessionModel", viewModel.getSession());
-                        startActivity(intent);
+                        try {
+                            intent.putExtra(Constants.SESSIONMODELID_EXTRA, viewModel.pushSession());
+                            startActivity(intent);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }

@@ -23,7 +23,7 @@ public class TagSetMapper extends FirebaseMapper<TagSetEntity, TagSetModel> {
 
         for (Map.Entry<String, TagEntity> tags : tagSetEntity.getTags().entrySet()) {
             TagModel tagModel = new TagModel();
-            tagModel.setTagId(tags.getKey());
+            tagModel.setId(tags.getKey());
 
             tagModel.setLeftOffset(tags.getValue().getLeftOffset());
             tagModel.setRigthOffset(tags.getValue().getRigthOffset());

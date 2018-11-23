@@ -33,19 +33,52 @@ public class VideoPlayerFragment extends Fragment {
         return new VideoPlayerFragment();
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        viewModel = ViewModelProviders.of(getActivity()).get(PlayVideoViewModel.class);
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_video_player, container, false);
+        mVideoSelectedView = view.findViewById(R.id.video_view_selected);
+        mChronoView = view.findViewById(R.id.chronometer_play);
+        mPlayButtonView = view.findViewById(R.id.bt_play_selected);
+
+        mPlayButtonView.setImageResource(android.R.drawable.ic_media_play);
+        mButtonReplay = view.findViewById(R.id.bt_replay);
         return view;
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        viewModel = ViewModelProviders.of(getActivity()).get(PlayVideoViewModel.class);
 
-        mVideoSelectedView.setVideoPath(viewModel.getSession().getDeviceVideoLink());
+        mHandler = new Handler();
+
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (mVideoSelectedView != null) {
+                    int position = mVideoSelectedView.getCurrentPosition();
+                    viewModel.setVideoPosition(position/1000);
+                }
+                mHandler.postDelayed(this, 20);
+            }
+        });
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
+
+        viewModel.getSession().observe(getActivity(), new Observer<SessionModel>() {
+            @Override
+            public void onChanged(@Nullable SessionModel session) {
+                mVideoSelectedView.setVideoPath(session.getDeviceVideoLink());
+            }
+        });
 
         viewModel.getVideoPosition().observe(getActivity(), new Observer<Integer>() {
             @Override
@@ -71,30 +104,6 @@ public class VideoPlayerFragment extends Fragment {
                 }
             }
         });
-
-        mHandler = new Handler();
-
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (mVideoSelectedView != null) {
-                    int position = mVideoSelectedView.getCurrentPosition();
-                    viewModel.setVideoPosition(position/1000);
-                }
-                mHandler.postDelayed(this, 20);
-            }
-        });
-    }
-
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
-        viewModel = ViewModelProviders.of(getActivity()).get(PlayVideoViewModel.class);
-        mVideoSelectedView = view.findViewById(R.id.video_view_selected);
-        mChronoView = view.findViewById(R.id.chronometer_play);
-        mPlayButtonView = view.findViewById(R.id.bt_play_selected);
-
-        mPlayButtonView.setImageResource(android.R.drawable.ic_media_play);
-        mButtonReplay = view.findViewById(R.id.bt_replay);
 
         // Bouton play/pause
         mPlayButtonView.setOnClickListener(new View.OnClickListener() {
@@ -125,15 +134,5 @@ public class VideoPlayerFragment extends Fragment {
                 viewModel.setVideoPosition(0);
             }
         });
-
-
-
-
-
-
     }
-
-
-
-
 }

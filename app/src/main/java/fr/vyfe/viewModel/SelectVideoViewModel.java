@@ -1,22 +1,17 @@
 package fr.vyfe.viewModel;
 
-import android.arch.lifecycle.ViewModel;
-
-import fr.vyfe.model.SessionModel;
-
-
-public class SelectVideoViewModel extends ViewModel {
-    private SessionModel session;
+import fr.vyfe.repository.SessionRepository;
+import fr.vyfe.repository.TagSetRepository;
 
 
-    public SelectVideoViewModel() {
+public class SelectVideoViewModel extends VyfeViewModel {
+
+    public SelectVideoViewModel(String companyId, String userId) {
+        sessionRepository = new SessionRepository(companyId);
+        tagSetRepository = new TagSetRepository(userId, companyId);
     }
 
-    public void init(SessionModel session) {
-        this.session = session;
-    }
-
-    public SessionModel getSession() {
-        return session;
+    public void init(String sessionId) {
+        this.sessionId = sessionId;
     }
 }
