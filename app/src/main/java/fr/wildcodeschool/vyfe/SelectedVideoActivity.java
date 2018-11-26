@@ -1,11 +1,11 @@
 package fr.wildcodeschool.vyfe;
 
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
+import android.graphics.Bitmap;
+import android.media.ThumbnailUtils;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,13 +18,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.android.volley.AuthFailureError;
+
 import com.android.volley.NetworkResponse;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -33,42 +32,31 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
 public class SelectedVideoActivity extends AppCompatActivity {
 
+    public static final String TITLE_VIDEO = "titleVideo";
+    public static final String FILE_NAME = "filename";
+    public static final String ID_SESSION = "idSession";
+    final String mAuthUserId = SingletonFirebase.getInstance().getUid();
     ArrayList<TagModel> mTagModels = new ArrayList<>();
     ArrayList<TagModel> mTagedList = new ArrayList<>();
     FirebaseDatabase mDatabase;
     FirebaseAuth mAuth = FirebaseAuth.getInstance();
-    final String mAuthUserId = SingletonFirebase.getInstance().getUid();
     private String mIdTagSet;
     private SingletonSessions mSingletonSessions = SingletonSessions.getInstance();
     private String mIdSession;
     private String mFilename;
     private String mTitleVideo;
-
-
     private byte[] inputData = new byte[0];
     private InputStream iStream = null;
-
     private TagRecyclerAdapter mAdapterTags = new TagRecyclerAdapter(mTagModels, "record");
-
-    public static final String TITLE_VIDEO = "titleVideo";
-    public static final String FILE_NAME = "filename";
-    public static final String ID_SESSION = "idSession";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -184,7 +172,6 @@ public class SelectedVideoActivity extends AppCompatActivity {
         });
 
 
-
         final DatabaseReference tagSessionRef = mDatabase.getReference(mAuthUserId).child("sessions").child(mIdSession).child("idTagSet");
 
         tagSessionRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -224,7 +211,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
                         }
 
                         RecyclerView recyclerTags = findViewById(R.id.re_tags);
-                        TagRecyclerAdapter adapterTags = new TagRecyclerAdapter(mTagModels, mTagedList,"count");
+                        TagRecyclerAdapter adapterTags = new TagRecyclerAdapter(mTagModels, mTagedList, "count");
                         RecyclerView.LayoutManager layoutManagerTags = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
                         recyclerTags.setLayoutManager(layoutManagerTags);
                         recyclerTags.setAdapter(adapterTags);
@@ -252,7 +239,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
         ref.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot video: dataSnapshot.getChildren()) {
+                for (DataSnapshot video : dataSnapshot.getChildren()) {
                     SessionsModel model = video.getValue(SessionsModel.class);
                     if (mFilename.equals(model.getVideoLink())) {
                         if (video.hasChild("description")) {
@@ -269,6 +256,11 @@ public class SelectedVideoActivity extends AppCompatActivity {
 
             }
         });
+
+        //AFfichage miniature
+        ImageView videoView = findViewById(R.id.vv_preview);
+        Bitmap bmThumbnail = ThumbnailUtils.createVideoThumbnail(mFilename, MediaStore.Images.Thumbnails.MINI_KIND);
+        videoView.setImageBitmap(bmThumbnail);
     }
 
     @Override
