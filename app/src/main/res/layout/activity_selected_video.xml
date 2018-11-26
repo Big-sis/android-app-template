@@ -39,7 +39,7 @@
                         android:id="@+id/vv_preview"
                         android:layout_width="match_parent"
                         android:layout_height="217dp"
-                        android:alpha="0.3"
+                        android:alpha="0.5"
                         app:srcCompat="@android:color/darker_gray" />
 
                     <ImageView

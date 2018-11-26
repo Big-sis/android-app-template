@@ -2,6 +2,9 @@ package fr.vyfe.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.media.ThumbnailUtils;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,6 +75,12 @@ public class VideoGridAdapter extends BaseAdapter implements Filterable {
         if(mSession.getServerVideoLink()!= null){
            videoStatus.setImageResource(R.drawable.uploadtocloudblanc);
         }
+
+        //AFfichage miniature video
+        ImageView videoView = convertView.findViewById(R.id.img_item_video);
+        Bitmap bmThumbnail = ThumbnailUtils.createVideoThumbnail(video.getVideoLink(), MediaStore.Images.Thumbnails.MINI_KIND);
+        videoView.setImageBitmap(bmThumbnail);
+
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
