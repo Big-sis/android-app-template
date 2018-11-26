@@ -35,15 +35,10 @@ import java.util.Locale;
 @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
 public class MainActivity extends AppCompatActivity {
 
-    private static final int PERMISSIONS_REQUEST = 1;
+
     // Operation = 24(day) * 60(hour) * 60(minute) * 1000 (millis)
     private static final int TIME_IN_DAYS = 86400000;
-    private String[] permissions = {
-            Manifest.permission.RECORD_AUDIO,
-            Manifest.permission.CAMERA,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.READ_EXTERNAL_STORAGE
-    };
+
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private String todayDate;
     private boolean firstMessage;
@@ -151,16 +146,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        ActivityCompat.requestPermissions(this, permissions, PERMISSIONS_REQUEST);
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED
-                || ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
-                || ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(this,
-                    permissions,
-                    PERMISSIONS_REQUEST);
-        }
+     //   ActivityCompat.requestPermissions(this, permissions, PERMISSIONS_REQUEST);
+        //TODO: lors merge mettre sur chaque activity
+      PermissionsHelper.getInstance(this);
     }
 
 

@@ -82,8 +82,7 @@ public class GridAdapter extends BaseAdapter implements Filterable {
 
         //AFfichage miniature video
         ImageView videoView = convertView.findViewById(R.id.img_item_video);
-        Bitmap bmThumbnail = ThumbnailUtils.createVideoThumbnail(video.getVideoLink(), MediaStore.Images.Thumbnails.MINI_KIND);
-        videoView.setImageBitmap(bmThumbnail);
+        videoView.setImageBitmap(ImageViewSessionHelper.thumbnailSession(video.getVideoLink()));
 
 
         convertView.setOnClickListener(new View.OnClickListener() {

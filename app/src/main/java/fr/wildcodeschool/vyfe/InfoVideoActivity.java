@@ -1,19 +1,19 @@
 package fr.wildcodeschool.vyfe;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
+
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,6 +29,7 @@ public class InfoVideoActivity extends AppCompatActivity {
     FirebaseDatabase mDatabase;
     SingletonSessions mSingletonSessions = SingletonSessions.getInstance();
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,7 +38,7 @@ public class InfoVideoActivity extends AppCompatActivity {
         Button btnCancel = findViewById(R.id.btn_cancel);
         Button btnConfirmDelete = findViewById(R.id.btn_confirm_delete);
         Button btnDelete = findViewById(R.id.btn_delete);
-        Button btnEdit = findViewById(R.id.bt_edit);
+        final Button btnEdit = findViewById(R.id.bt_edit);
         final ConstraintLayout confirmDelete = findViewById(R.id.confirm_delete);
         final EditText etDescription = findViewById(R.id.et_description);
         final EditText etVideoTitle = findViewById(R.id.et_video_title);
@@ -62,6 +63,10 @@ public class InfoVideoActivity extends AppCompatActivity {
                         etVideoTitle.setText(model.getName());
                     }
                 }
+                //TODO: a mettre viewModel lors merge
+                listenerEditButton(etDescription);
+                listenerEditButton(etVideoTitle);
+
             }
 
             @Override
@@ -136,6 +141,7 @@ public class InfoVideoActivity extends AppCompatActivity {
             }
         });
 
+
     }
 
     @Override
@@ -157,5 +163,26 @@ public class InfoVideoActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void listenerEditButton(EditText editText){
+        final Button btnEdit = findViewById(R.id.bt_edit);
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                btnEdit.setAlpha(1);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
     }
 }

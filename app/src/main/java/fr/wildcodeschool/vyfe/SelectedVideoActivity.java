@@ -2,10 +2,7 @@ package fr.wildcodeschool.vyfe;
 
 
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.media.ThumbnailUtils;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -259,8 +256,7 @@ public class SelectedVideoActivity extends AppCompatActivity {
 
         //AFfichage miniature
         ImageView videoView = findViewById(R.id.vv_preview);
-        Bitmap bmThumbnail = ThumbnailUtils.createVideoThumbnail(mFilename, MediaStore.Images.Thumbnails.MINI_KIND);
-        videoView.setImageBitmap(bmThumbnail);
+        videoView.setImageBitmap(ImageViewSessionHelper.thumbnailSession(mFilename));
     }
 
     @Override
