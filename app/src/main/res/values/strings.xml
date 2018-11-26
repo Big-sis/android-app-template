@@ -56,7 +56,7 @@
     <string name="show_video">Visionner</string>
     <string name="confirm_delete_video">Voulez-vous vraiment supprimer cette vidéo ?</string>
     <string name="cancel">Annuler</string>
-    <string name="delete">Supprimer</string>
+    <string name="delete">Supprimer la vidéo</string>
     <string name="wait_few_minutes">Cela peut prendre plusieurs minutes...</string>
     <string name="save_in_progress">Sauvegarde en cours...</string>
     <string name="bad_authentifiaction">Mauvaise identifiaction</string>
@@ -132,4 +132,18 @@
     <string name="color_gradient_grey">Gris</string>
     <string name="grid_name_empty_warning">Vous devez renseigner un titre à votre grille et des tags</string>
     <string name="save_grid_info">Grid saved</string>
+    <string name="purple">Violet</string>
+    <string name="light_blue">Bleu clair</string>
+    <string name="orange">Orange</string>
+    <string name="light_green">Vert clair</string>
+    <string name="pink">Rose</string>
+    <string name="red">Rouge</string>
+    <string name="blue">Bleu</string>
+    <string name="yellow">Jaune</string>
+    <string name="light_purple">Violet clair</string>
+    <string name="green">Vert</string>
+    <string name="connection">Vous devez vous connecter</string>
+    <string name="ask_permissions">Demande de permissions</string>
+    <string name="ask_permissions_message">Pour fonctionner correctement, l\'application à besoin d\'utiliser le son, la caméra et le stockage de votre tablette</string>
+
 </resources>

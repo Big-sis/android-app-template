@@ -34,7 +34,9 @@
             android:textSize="18sp"
             app:fontFamily="@font/roboto_bold"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            android:alpha="0.4"
+            android:clickable="false"/>
 
         <EditText
             android:id="@+id/et_video_title"
