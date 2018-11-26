@@ -22,7 +22,7 @@ public class UserMapper extends FirebaseMapper<UserEntity, UserModel> {
     }
 
     @Override
-    public HashMap<String, UserEntity> unMapList(List<UserModel> to) {
+    public HashMap<String, UserEntity> unMapList(List<UserModel> models) {
         return null;
     }
 

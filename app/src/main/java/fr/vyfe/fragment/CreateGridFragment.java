@@ -21,15 +21,15 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 import fr.vyfe.R;
-import fr.vyfe.adapter.TagRecyclerAdapter;
-import fr.vyfe.model.TagModel;
+import fr.vyfe.adapter.TemplateRecyclerAdapter;
+import fr.vyfe.model.TemplateModel;
 import fr.vyfe.viewModel.CreateGridViewModel;
 
 public class CreateGridFragment extends Fragment implements View.OnClickListener {
     private CreateGridViewModel viewModel;
     private OnButtonClickedListener mCallback;
     private EditText gridTitleView;
-    private RecyclerView recyclerTagList;
+    private RecyclerView recyclerTemplateList;
     private Button saveGridBtn;
     private TextView tvAddTag;
 
@@ -58,7 +58,7 @@ public class CreateGridFragment extends Fragment implements View.OnClickListener
 
         gridTitleView = result.findViewById(R.id.grid_title_edit);
         saveGridBtn = result.findViewById(R.id.save_grid_btn);
-        recyclerTagList = result.findViewById(R.id.recycler_view2);
+        recyclerTemplateList = result.findViewById(R.id.recycler_view2);
         tvAddTag = result.findViewById(R.id.tv_add_tag2);
 
         result.findViewById(R.id.fab_add_moment2).setOnClickListener(this);
@@ -74,22 +74,22 @@ public class CreateGridFragment extends Fragment implements View.OnClickListener
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL, false);
-        recyclerTagList.setLayoutManager(layoutManager);
-        final TagRecyclerAdapter adapter = new TagRecyclerAdapter(viewModel.getTags().getValue(), "start");
-        recyclerTagList.setAdapter(adapter);
+        recyclerTemplateList.setLayoutManager(layoutManager);
+        final TemplateRecyclerAdapter adapter = new TemplateRecyclerAdapter(viewModel.getTemplates().getValue(), "start");
+        recyclerTemplateList.setAdapter(adapter);
 
-        viewModel.getTags().observe(getActivity(), new Observer<ArrayList<TagModel>>() {
+        viewModel.getTemplates().observe(getActivity(), new Observer<ArrayList<TemplateModel>>() {
             @Override
-            public void onChanged(@Nullable ArrayList<TagModel> tagModels) {
+            public void onChanged(@Nullable ArrayList<TemplateModel> templates) {
                 adapter.notifyDataSetChanged();
-                if (tagModels != null && tagModels.size() != 0) {
+                if (templates != null && templates.size() != 0) {
                     tvAddTag.setText(R.string.edit_tags);
-                    recyclerTagList.setVisibility(View.VISIBLE);
+                    recyclerTemplateList.setVisibility(View.VISIBLE);
                     saveGridBtn.setVisibility(View.VISIBLE);
                 }
                 else {
                     tvAddTag.setText(R.string.create_tags);
-                    recyclerTagList.setVisibility(View.GONE);
+                    recyclerTemplateList.setVisibility(View.GONE);
                     saveGridBtn.setVisibility(View.GONE);
                 }
             }

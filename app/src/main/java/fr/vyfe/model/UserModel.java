@@ -2,7 +2,7 @@ package fr.vyfe.model;
 
 import java.util.Date;
 
-public class UserModel {
+public class UserModel implements VyfeModel {
     private String id;
     private String email;
     private String firstname;

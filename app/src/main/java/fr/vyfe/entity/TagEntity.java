@@ -1,14 +1,12 @@
 package fr.vyfe.entity;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 public class TagEntity {
     private String color;
     private String name;
-    private HashMap<String, ArrayList<TimeEntity>> Times;
-    private int leftOffset;
-    private int rigthOffset;
+    private String templateId;
+    private String taggerId;
+    private int start;
+    private int end;
 
 
     public String getColor() {
@@ -27,27 +25,35 @@ public class TagEntity {
         this.name = name;
     }
 
-    public HashMap<String, ArrayList<TimeEntity>> getTimes() {
-        return Times;
+    public String getTemplateId() {
+        return templateId;
     }
 
-    public void setTimes(HashMap<String, ArrayList<TimeEntity>> times) {
-        Times = times;
+    public void setTemplateId(String templateId) {
+        this.templateId = templateId;
     }
 
-    public int getLeftOffset() {
-        return leftOffset;
+    public String getTaggerId() {
+        return taggerId;
     }
 
-    public void setLeftOffset(int leftOffset) {
-        this.leftOffset = leftOffset;
+    public void setTaggerId(String taggerId) {
+        this.taggerId = taggerId;
     }
 
-    public int getRigthOffset() {
-        return rigthOffset;
+    public int getStart() {
+        return start;
     }
 
-    public void setRigthOffset(int rigthOffset) {
-        this.rigthOffset = rigthOffset;
+    public void setStart(int start) {
+        this.start = start;
+    }
+
+    public int getEnd() {
+        return end;
+    }
+
+    public void setEnd(int end) {
+        this.end = end;
     }
 }

@@ -14,15 +14,16 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import fr.vyfe.R;
-import fr.vyfe.adapter.TagRecyclerAdapter;
+import fr.vyfe.adapter.TemplateRecyclerAdapter;
 import fr.vyfe.model.SessionModel;
+import fr.vyfe.model.TagSetModel;
 import fr.vyfe.viewModel.PlayVideoViewModel;
 
 public class TagsSetPlayFragment extends Fragment {
 
     private PlayVideoViewModel mViewModel;
     private RecyclerView mRecyclerView;
-    private TagRecyclerAdapter mAdapterTags;
+    private TemplateRecyclerAdapter mAdapterTags;
 
     public static TagsSetPlayFragment newInstance() {
         return new TagsSetPlayFragment();
@@ -43,11 +44,11 @@ public class TagsSetPlayFragment extends Fragment {
         RecyclerView.LayoutManager layoutManagerTags = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManagerTags);
 
-        mViewModel.getSession().observe(getActivity(), new Observer<SessionModel>() {
+        mViewModel.getTagSet().observe(getActivity(), new Observer<TagSetModel>() {
             @Override
-            public void onChanged(@Nullable SessionModel session) {
-                if (session != null) {
-                    mAdapterTags = new TagRecyclerAdapter(session.getTags(), "count");
+            public void onChanged(@Nullable TagSetModel tagSet) {
+                if (tagSet != null) {
+                    mAdapterTags = new TemplateRecyclerAdapter(tagSet.getTemplates(), "count");
                     mRecyclerView.setAdapter(mAdapterTags);
                 }
             }

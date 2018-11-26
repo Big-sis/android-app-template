@@ -25,9 +25,8 @@ public class SessionRepository extends FirebaseDatabaseRepository<SessionModel> 
         return getCompany() + "/Sessions/";
     }
 
-    public String push(SessionModel sessionModel, String androidId, String authorId) throws Exception {
+    public String push(SessionModel sessionModel, String androidId) throws Exception {
         sessionModel.setIdAndroid(Hashing.sha256().hashString(androidId, Charset.defaultCharset()).toString());
-        sessionModel.setAuthor(authorId);
         String filePath = createFile(sessionModel.getName());
         if (filePath != null) {
             sessionModel.setDeviceVideoLink(filePath);

@@ -25,26 +25,27 @@ import java.util.ArrayList;
 
 import fr.vyfe.R;
 import fr.vyfe.adapter.ColorSpinnerAdapter;
-import fr.vyfe.adapter.TagRecyclerAdapter;
+import fr.vyfe.adapter.TemplateRecyclerAdapter;
 import fr.vyfe.helper.ColorHelper;
 import fr.vyfe.helper.KeyboardHelper;
 import fr.vyfe.model.ColorModel;
 import fr.vyfe.model.TagModel;
+import fr.vyfe.model.TemplateModel;
 import fr.vyfe.viewModel.CreateGridViewModel;
 
-public class CreateTagsFragment extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener  {
+public class CreateTemplatesFragment extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener  {
 
     private CreateGridViewModel viewModel;
     ColorSpinnerAdapter colorSpinnerAdapter;
-    private CreateTagsFragment.OnButtonClickedListener mCallback;
+    private CreateTemplatesFragment.OnButtonClickedListener mCallback;
     Spinner colorSpinnerView;
-    private static TagRecyclerAdapter mAdapter;
+    private static TemplateRecyclerAdapter mAdapter;
     private static ImageView ivColor;
     private static ColorModel tagColor;
 
 
-    public static CreateTagsFragment newInstance() {
-        return new CreateTagsFragment();
+    public static CreateTemplatesFragment newInstance() {
+        return new CreateTemplatesFragment();
     }
 
     @Override
@@ -58,7 +59,7 @@ public class CreateTagsFragment extends Fragment implements AdapterView.OnItemSe
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(getActivity()).get(CreateGridViewModel.class);
         viewModel.init();
-        mAdapter = new TagRecyclerAdapter(viewModel.getTags().getValue(), "create");
+        mAdapter = new TemplateRecyclerAdapter(viewModel.getTemplates().getValue(), "create");
     }
 
     @Override
@@ -98,7 +99,7 @@ public class CreateTagsFragment extends Fragment implements AdapterView.OnItemSe
                 if (tagName.equals("")) {
                     Toast.makeText(getContext(), R.string.def_color, Toast.LENGTH_SHORT).show();
                 } else {
-                    viewModel.addTag(tagColor, tagName);
+                    viewModel.addTemplate(tagColor, tagName);
                     tagNameView.setText("");
 
                     //Fermer clavier après avoir rentré un tag
@@ -124,9 +125,9 @@ public class CreateTagsFragment extends Fragment implements AdapterView.OnItemSe
         });
         itemTouchHelper.attachToRecyclerView(recyclerTagList);
 
-        viewModel.getTags().observe(getActivity(), new Observer<ArrayList<TagModel>>() {
+        viewModel.getTemplates().observe(getActivity(), new Observer<ArrayList<TemplateModel>>() {
             @Override
-            public void onChanged(@Nullable ArrayList<TagModel> tagSetModel) {
+            public void onChanged(@Nullable ArrayList<TemplateModel> templates) {
                 mAdapter.notifyDataSetChanged();
             }
         });
@@ -155,7 +156,7 @@ public class CreateTagsFragment extends Fragment implements AdapterView.OnItemSe
     }
 
     public void deleteItem(int position) {
-        viewModel.getTags().getValue().remove(position);
+        viewModel.getTemplates().getValue().remove(position);
         mAdapter.notifyItemRemoved(position);
     }
 

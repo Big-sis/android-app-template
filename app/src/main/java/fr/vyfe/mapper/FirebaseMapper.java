@@ -8,7 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public abstract class FirebaseMapper<Entity, Model> implements IMapper<Entity, Model> {
+import fr.vyfe.model.VyfeModel;
+
+public abstract class FirebaseMapper<Entity, Model extends VyfeModel> implements IMapper<Entity, Model> {
 
     public Model map(DataSnapshot dataSnapshot, String key) {
         Entity entity = dataSnapshot.getValue(getEntityClass());
@@ -32,6 +34,16 @@ public abstract class FirebaseMapper<Entity, Model> implements IMapper<Entity, M
             }
         }
         return modelList;
+    }
+
+    @Override
+    public HashMap<String, Entity> unMapList(List<Model> models) {
+        if (models == null) return null;
+        HashMap<String, Entity> result = new HashMap<>();
+        for (Model model : models) {
+            result.put(model.getId(), unMap(model));
+        }
+        return result;
     }
 
     @SuppressWarnings("unchecked")

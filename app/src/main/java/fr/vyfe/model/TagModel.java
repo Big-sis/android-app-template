@@ -1,48 +1,34 @@
 package fr.vyfe.model;
 
+import android.graphics.Color;
+import android.nfc.Tag;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.ArrayList;
-
-import fr.vyfe.Constants;
-
-public class TagModel implements Parcelable{
+public class TagModel implements Parcelable, VyfeModel {
 
     private String id;
     private ColorModel color;
     private String name;
-    private ArrayList<TimeModel> times;
+    private String templateId;
+    private String sessionId;
     private String taggerId;
-    private int leftOffset;
-    private int rigthOffset;
+    private int start;
+    private int end;
 
 
     public TagModel() {
-        leftOffset = Constants.STANDARD_LEFT_OFFSET;
-        rigthOffset = Constants.STANDARD_RIGHT_OFFSET;
     }
 
     protected TagModel(Parcel in) {
         id = in.readString();
-        color = in.readParcelable(ColorModel.class.getClassLoader());
-        name = in.readString();
+        templateId = in.readString();
+        sessionId = in.readString();
         taggerId = in.readString();
-        leftOffset = in.readInt();
-        rigthOffset = in.readInt();
-        times = in.createTypedArrayList(TimeModel.CREATOR);
+        start = in.readInt();
+        end = in.readInt();
     }
 
-
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
-    }
-
-    private int count =0;
 
     public static final Creator<TagModel> CREATOR = new Creator<TagModel>() {
         @Override
@@ -56,46 +42,13 @@ public class TagModel implements Parcelable{
         }
     };
 
-    public int getLeftOffset() {
-        return leftOffset;
+    public static TagModel createFromTemplate(TemplateModel template) {
+        TagModel newTagModel = new TagModel();
+        newTagModel.setName(template.getName());
+        newTagModel.setTemplateId(template.getId());
+        newTagModel.setColor(template.getColor());
+        return newTagModel;
     }
-
-    public void setLeftOffset(int leftOffset) {
-        this.leftOffset = leftOffset;
-    }
-
-    public int getRigthOffset() {
-        return rigthOffset;
-    }
-
-    public void setRigthOffset(int rigthOffset) {
-        this.rigthOffset = rigthOffset;
-    }
-
-    public ColorModel getColor() {
-        return color;
-    }
-
-    public void setColor(ColorModel color) {
-        this.color = color;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String tagName) {
-        this.name = tagName;
-    }
-
-    public ArrayList<TimeModel> getTimes() {
-        return times;
-    }
-
-    public void setTimes(ArrayList<TimeModel> times) {
-        this.times = times;
-    }
-
 
     public String getTaggerId() {
         return taggerId;
@@ -113,6 +66,54 @@ public class TagModel implements Parcelable{
         this.id = id;
     }
 
+    public int getStart() {
+        return start;
+    }
+
+    public void setStart(int start) {
+        this.start = start;
+    }
+
+    public int getEnd() {
+        return end;
+    }
+
+    public void setEnd(int end) {
+        this.end = end;
+    }
+
+    public String getTemplateId() {
+        return templateId;
+    }
+
+    public void setTemplateId(String templateId) {
+        this.templateId = templateId;
+    }
+
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
+    }
+
+    public ColorModel getColor() {
+        return color;
+    }
+
+    public void setColor(ColorModel color) {
+        this.color = color;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -121,12 +122,11 @@ public class TagModel implements Parcelable{
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
-        dest.writeParcelable(color, 0);
-        dest.writeString(name);
+        dest.writeString(templateId);
+        dest.writeString(sessionId);
         dest.writeString(taggerId);
-        dest.writeInt(leftOffset);
-        dest.writeInt(rigthOffset);
-        dest.writeTypedList(times);
+        dest.writeInt(start);
+        dest.writeInt(end);
     }
 }
 

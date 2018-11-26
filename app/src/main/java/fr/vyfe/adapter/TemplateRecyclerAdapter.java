@@ -13,21 +13,22 @@ import java.util.List;
 import fr.vyfe.R;
 import fr.vyfe.helper.ColorHelper;
 import fr.vyfe.model.TagModel;
+import fr.vyfe.model.TemplateModel;
 
-public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.ViewHolder> {
+public class TemplateRecyclerAdapter extends RecyclerView.Adapter<TemplateRecyclerAdapter.ViewHolder> {
 
-    private List<TagModel> mTagModelList;
+    private List<TemplateModel> mTemplates;
     private String mFrom;
 
 
-    public TagRecyclerAdapter(List<TagModel> observations, String from) {
-        mTagModelList = observations;
+    public TemplateRecyclerAdapter(List<TemplateModel> observations, String from) {
+        mTemplates = observations;
         mFrom = from;
     }
 
 
     @Override
-    public TagRecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public TemplateRecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_tag, parent, false);
 
@@ -35,16 +36,16 @@ public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.
     }
 
     @Override
-    public void onBindViewHolder(TagRecyclerAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(TemplateRecyclerAdapter.ViewHolder holder, int position) {
 
-        List<TagModel> tagList = mTagModelList;
-
-
-        TagModel tagModel = tagList.get(position);
+        List<TemplateModel> templateList = mTemplates;
 
 
-        holder.tvName.setText(tagModel.getName());
-        holder.ivColor.setBackgroundResource(ColorHelper.getInstance().findColorById(tagModel.getColor().getId()).getImage());
+        TemplateModel template = templateList.get(position);
+
+
+        holder.tvName.setText(template.getName());
+        holder.ivColor.setBackgroundResource(ColorHelper.getInstance().findColorById(template.getColor().getId()).getImage());
         //TODO: Creer classe fille
         if (mFrom.equals("start")) {
             holder.tvNum.setVisibility(View.GONE);
@@ -53,27 +54,18 @@ public class TagRecyclerAdapter extends RecyclerView.Adapter<TagRecyclerAdapter.
             holder.ivMenu.setVisibility(View.VISIBLE);
         } else if (mFrom.equals("record")) {
             holder.tvNum.setVisibility(View.VISIBLE);
-            int count = tagModel.getCount();
-            holder.tvNum.setText(String.valueOf(count));
+            // TODO : set real value to count
+            holder.tvNum.setText("0");
         } else if (mFrom.equals("timelines")) {
             holder.tvNum.setVisibility(View.GONE);
         } else if (mFrom.equals("count")) {
             holder.tvNum.setVisibility(View.VISIBLE);
-            if (mTagModelList != null) {
-                holder.tvNum.setText(String.valueOf(tagModel.getCount()));
-            }
-            if (!(tagModel.getTimes() == null)) {
-                int count = tagModel.getTimes().size();
-                holder.tvNum.setText(String.valueOf(count));
-            } else {
-                holder.tvNum.setText("0");
-            }
         }
     }
 
     @Override
     public int getItemCount() {
-        return mTagModelList.size();
+        return mTemplates.size();
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

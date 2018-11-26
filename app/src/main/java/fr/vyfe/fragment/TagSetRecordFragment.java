@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 
 import fr.vyfe.R;
 import fr.vyfe.RecyclerTouchListener;
-import fr.vyfe.adapter.TagRecyclerAdapter;
+import fr.vyfe.adapter.TemplateRecyclerAdapter;
 import fr.vyfe.model.TagSetModel;
 import fr.vyfe.viewModel.RecordVideoViewModel;
 
@@ -23,7 +23,7 @@ public class TagSetRecordFragment extends Fragment {
 
     private RecordVideoViewModel viewModel;
     private RecyclerView mRecyclerView;
-    private TagRecyclerAdapter mTagAdpater;
+    private TemplateRecyclerAdapter mTagAdpater;
 
     public static TagSetRecordFragment newInstance() {
         return new TagSetRecordFragment();
@@ -63,7 +63,7 @@ public class TagSetRecordFragment extends Fragment {
             @Override
             public void onChanged(@Nullable TagSetModel tagSet) {
                 if (tagSet != null) {
-                    mTagAdpater = new TagRecyclerAdapter(tagSet.getTags(), "record");
+                    mTagAdpater = new TemplateRecyclerAdapter(tagSet.getTemplates(), "record");
                     mRecyclerView.setAdapter(mTagAdpater);
                 }
             }

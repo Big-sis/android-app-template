@@ -23,23 +23,29 @@ public abstract class FirebaseDatabaseRepository<Model> {
     private String company;
     private String user;
     private String session;
+    private String tagSetId;
     private String orderByChildKey;
     private String equalToKey;
     private String childKey;
 
     public FirebaseDatabaseRepository(FirebaseMapper mapper, String company) {
-        this(mapper, company, null);
+        this(mapper, company, null, null);
     }
 
     public FirebaseDatabaseRepository(FirebaseMapper mapper, String company, String user) {
-        this(mapper, company, user, null);
+        this(mapper, company, user, null, null);
     }
 
     public FirebaseDatabaseRepository(FirebaseMapper mapper, String company, String user, String session) {
+        this(mapper, company, user, session, null);
+    }
+
+    public FirebaseDatabaseRepository(FirebaseMapper mapper, String company, String user, String session, String tagSetId) {
         this.mapper = mapper;
         this.company = company;
         this.user = user;
         this.session = session;
+        this.tagSetId = tagSetId;
         databaseReference = FirebaseDatabase.getInstance(Constants.FIREBASE_DB_VERSION_URL).getReference(getRootNode());
         databaseReference.keepSynced(true);
     }
@@ -55,6 +61,10 @@ public abstract class FirebaseDatabaseRepository<Model> {
 
     protected String getSession() {
         return session;
+    }
+
+    protected String getTagSetId() {
+        return tagSetId;
     }
 
     public void setOrderByChildKey(String orderByChildKey) {

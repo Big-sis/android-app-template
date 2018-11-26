@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModel;
 
 import fr.vyfe.model.SessionModel;
 import fr.vyfe.model.TagSetModel;
+import fr.vyfe.model.TemplateModel;
 import fr.vyfe.repository.BaseSingleValueEventListener;
 import fr.vyfe.repository.SessionRepository;
 import fr.vyfe.repository.TagSetRepository;

@@ -2,37 +2,36 @@ package fr.vyfe.viewModel;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.ViewModel;
 
 import java.util.ArrayList;
 
 import fr.vyfe.model.ColorModel;
-import fr.vyfe.model.TagModel;
 import fr.vyfe.model.TagSetModel;
+import fr.vyfe.model.TemplateModel;
 import fr.vyfe.repository.TagSetRepository;
 
 
 public class CreateGridViewModel extends VyfeViewModel {
 
     private MutableLiveData<String> tagSetName;
-    private MutableLiveData<ArrayList<TagModel>> tags;
+    private MutableLiveData<ArrayList<TemplateModel>> templates;
 
     CreateGridViewModel(String userId, String companyId) {
         tagSetRepository = new TagSetRepository(userId, companyId);
         tagSetName = new MutableLiveData<>();
-        tags = new MutableLiveData<>();
+        templates = new MutableLiveData<>();
     }
 
     public void init() {
-        if (tags.getValue() == null) tags.setValue(new ArrayList<TagModel>());
+        if (templates.getValue() == null) templates.setValue(new ArrayList<TemplateModel>());
     }
 
     public LiveData<String> getTagSetName(){
         return tagSetName;
     }
 
-    public LiveData<ArrayList<TagModel>> getTags() {
-        return tags;
+    public LiveData<ArrayList<TemplateModel>> getTemplates() {
+        return templates;
     }
 
     @Override
@@ -40,17 +39,17 @@ public class CreateGridViewModel extends VyfeViewModel {
         tagSetRepository.removeListeners();
     }
 
-    public void addTag(ColorModel color, String name) {
-        TagModel tag = new TagModel();
-        tag.setColor(color);
-        tag.setName(name);
-        tags.getValue().add(tag);
+    public void addTemplate(ColorModel color, String name) {
+        TemplateModel template = new TemplateModel();
+        template.setColor(color);
+        template.setName(name);
+        templates.getValue().add(template);
     }
 
     public void moveTag(int from, int to) {
-        TagModel movingTag = tags.getValue().get(from);
-        tags.getValue().remove(movingTag);
-        tags.getValue().add(to, movingTag);
+        TemplateModel movingTemplate = templates.getValue().get(from);
+        templates.getValue().remove(movingTemplate);
+        templates.getValue().add(to, movingTemplate);
     }
 
     public void setTagSetName(String name){
@@ -61,8 +60,8 @@ public class CreateGridViewModel extends VyfeViewModel {
         TagSetModel tagSetModel = new TagSetModel();
         tagSetModel.setName(this.tagSetName.getValue());
         String tagSetKey = tagSetRepository.push(tagSetModel);
-        tagSetRepository.createTags(tagSetKey, this.tags.getValue());
-        tagSetModel.setTags(this.tags.getValue());
+        tagSetRepository.createTemplates(tagSetKey, this.templates.getValue());
+        tagSetModel.setTagTemplates(this.templates.getValue());
         return tagSetModel;
     }
 }

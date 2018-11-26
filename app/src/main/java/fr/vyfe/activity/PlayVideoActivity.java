@@ -12,8 +12,8 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
 import fr.vyfe.Constants;
-import fr.vyfe.adapter.TagRecyclerAdapter;
-import fr.vyfe.fragment.TimelineFragment;
+import fr.vyfe.adapter.TemplateRecyclerAdapter;
+import fr.vyfe.fragment.TimelinePlayFragment;
 import fr.vyfe.fragment.VideoPlayerFragment;
 import fr.vyfe.R;
 import fr.vyfe.model.SessionModel;
@@ -28,24 +28,23 @@ public class PlayVideoActivity extends VyfeActivity implements LifecycleOwner {
 
     private PlayVideoViewModel viewModel;
     private RecyclerView mRecyclerView;
-    private TagRecyclerAdapter mAdapterTags;
+    private TemplateRecyclerAdapter mAdapterTags;
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        viewModel = ViewModelProviders.of(this, new PlayVideoViewModelFactory(mAuth.getCurrentUser().getCompany(), mAuth.getCurrentUser().getId())).get(PlayVideoViewModel.class);
-        viewModel.init(getIntent().getStringExtra(Constants.SESSIONMODELID_EXTRA));
+        String sessionId = getIntent().getStringExtra(Constants.SESSIONMODELID_EXTRA);
+        viewModel = ViewModelProviders.of(this, new PlayVideoViewModelFactory(mAuth.getCurrentUser().getCompany(), mAuth.getCurrentUser().getId(), sessionId)).get(PlayVideoViewModel.class);
+        viewModel.init();
 
         setContentView(R.layout.activity_play_video);
         //TODO: affichage des tags ne fonctionne pas
-        replaceFragment(R.id.scrollTimeline, TimelineFragment.newInstance());
+        replaceFragment(R.id.scrollTimeline, TimelinePlayFragment.newInstance());
         replaceFragment(R.id.constraint_video_player, VideoPlayerFragment.newInstance());
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
         mRecyclerView = findViewById(R.id.re_tags_selected);
 
@@ -63,7 +62,7 @@ public class PlayVideoActivity extends VyfeActivity implements LifecycleOwner {
             @Override
             public void onChanged(@Nullable TagSetModel tagSet) {
                 if (tagSet != null) {
-                    mAdapterTags = new TagRecyclerAdapter(tagSet.getTags(), "count");
+                    mAdapterTags = new TemplateRecyclerAdapter(tagSet.getTemplates(), "count");
                     mRecyclerView.setAdapter(mAdapterTags);
                 }
             }

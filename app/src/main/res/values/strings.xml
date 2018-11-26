@@ -22,7 +22,7 @@
     <string name="add_description">Ajouter une description</string>
     <string name="my_analyse">Mes grilles d\'analyses</string>
     <string name="grid_title">Titre de la grille</string>
-    <string name="create_tags">Créer des tags</string>
+    <string name="create_tags">Créer des tagTemplates</string>
     <string name="go">Démarrer</string>
     <string name="back">Retour</string>
     <string name="share_url">Partagez l\'adresse URL à vos apprenants</string>
@@ -47,9 +47,9 @@
     <string name="infos_video">Informations sur la vidéo</string>
     <string name="video_name">Nom de la vidéo</string>
     <string name="record_session">Enregistrer une session</string>
-    <string name="modif_tags">Ajouter ou modifier les tags</string>
-    <string name="add_tags">Ajouter des tags</string>
-    <string name="edit_tags">Modifier les tags</string>
+    <string name="modif_tags">Ajouter ou modifier les tagTemplates</string>
+    <string name="add_tags">Ajouter des tagTemplates</string>
+    <string name="edit_tags">Modifier les tagTemplates</string>
     <string name="next">Suivant</string>
     <string name="video_save">Session enregistrée dans vos vidéos</string>
     <string name="back_to_main">Retour à l\'accueil</string>
@@ -71,7 +71,7 @@
     <string name="contact">Vous pouvez nous contacter sur : www.vyfe.fr</string>
     <string name="create_account">Créer un compte</string>
     <string name="havent_grid">Vous n\'avez pas encore de grille</string>
-    <string name="havent_tag">Vous n\'avez pas de tags</string>
+    <string name="havent_tag">Vous n\'avez pas de tagTemplates</string>
     <string name="description_added">Description ajoutée</string>
     <string name="title">Veuillez renseigner un titre de vidéo</string>
     <string name="double_name">Nom déjà utilisé. Veuillez renseigner un nouveau nom</string>
@@ -83,7 +83,7 @@
     <string name="import_grid_arrow">Sélectionner une grille</string>
     <string name="arrow"> \ \ \ ▼</string>
     <string name="choose_name_grid">Indiquez un titre à votre grille d\'observation :</string>
-    <string name="empty_grid">Veuiller indiquer des tags ou une grille d\'observation</string>
+    <string name="empty_grid">Veuiller indiquer des tagTemplates ou une grille d\'observation</string>
     <string name="title_session">Titre de votre vidéo :</string>
     <string name="add_tag">Ajouter le tag</string>
     <string name="restart_session">Relancer une Session</string>
@@ -121,7 +121,7 @@
     <string name="color_gradient_magenta_light">Violet Clair</string>
     <string name="color_gradient_green_lightgreen">Vert</string>
     <string name="color_gradient_grey">Gris</string>
-    <string name="grid_name_empty_warning">Vous devez renseigner un titre à votre grille et des tags</string>
+    <string name="grid_name_empty_warning">Vous devez renseigner un titre à votre grille et des tagTemplates</string>
     <string name="save_grid_info">Grid saved</string>
     <string name="permission_request">Vyfe app need permissions to record a video. Please check your config</string>
     <string name="camera_error">This device is not supported for video record</string>

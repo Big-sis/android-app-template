@@ -9,7 +9,7 @@ import java.util.Date;
 
 import fr.vyfe.Constants;
 
-public class SessionModel implements Parcelable {
+public class SessionModel implements Parcelable, VyfeModel {
     private String name;
     private String author;
     private String serverVideoLink;

@@ -65,56 +65,56 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
             this.ivColor = v.findViewById(R.id.iv_color);
             this.viewForeground = v.findViewById(R.id.view_foreground);
             this.ivMenu = v.findViewById(R.id.iv_menu);
-            this.mLlMain = v.findViewById(R.id.ll_main_playvideo);
+            this.mLlMain = v.findViewById(R.id.ll_timeline_container);
 
             this.context = v.getContext();
         }
 
         public void bind(TagModel tag){
 
-            String tagName = tag.getName();
-
-            //Creation de chaque etage de tags sur la timeline
-            final RelativeLayout timelineRow = new RelativeLayout(context);
-            //mLlMain.addView(timelineRow);
-
-            TextView tvNameTimeline = new TextView(context);
-            tvNameTimeline.setText(tagName);
-
-
-            //Creation des noms pour chaque timeline
-            RelativeLayout.LayoutParams layoutParamsTv = new RelativeLayout.LayoutParams(
-                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-            layoutParamsTv.setMargins(convertToDp(15), convertToDp(8), 0, convertToDp(8));
-            tvNameTimeline.setLayoutParams(layoutParamsTv);
-            tvNameTimeline.setTextColor(Color.WHITE);
-            tvNameTimeline.setMinimumHeight(convertToDp(25));
-
-            // Créé une image par utilisation du tag en cour
-            for (final TimeModel tagTime : tag.getTimes()) {
-
-                double start = convertIntoTimelineViewRef(tagTime.getStart(), timelineRow.getWidth());
-                double end = convertIntoTimelineViewRef(tagTime.getEnd(), timelineRow.getWidth());
-
-                final ImageView tagImageView = new ImageView(context);
-                RelativeLayout.LayoutParams layoutParamsIv = new RelativeLayout.LayoutParams(
-                        LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-
-                layoutParamsIv.setMargins((int) Math.floor(start), convertToDp(8), 0, convertToDp(8));
-
-                tagImageView.setLayoutParams(layoutParamsIv);
-                tagImageView.setMinimumHeight(convertToDp(25));
-                tagImageView.setMinimumWidth(Math.max(convertToDp(50), (int) (end - start)));
-
-
-                tagImageView.setBackgroundResource(ColorHelper.getInstance().findColorById(tag.getColor().getId()).getImage());
-
-                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                timelineRow.setLayoutParams(layoutParams);
-                timelineRow.setBackgroundColor(context.getResources().getColor(R.color.colorCharcoalGrey));
-                timelineRow.addView(tagImageView);
-            }
+//            String tagName = tag.getName();
+//
+//            //Creation de chaque etage de tags sur la timeline
+//            final RelativeLayout timelineRow = new RelativeLayout(context);
+//            //mLlMain.addView(timelineRow);
+//
+//            TextView tvNameTimeline = new TextView(context);
+//            tvNameTimeline.setText(tagName);
+//
+//
+//            //Creation des noms pour chaque timeline
+//            RelativeLayout.LayoutParams layoutParamsTv = new RelativeLayout.LayoutParams(
+//                    LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//            layoutParamsTv.setMargins(convertToDp(15), convertToDp(8), 0, convertToDp(8));
+//            tvNameTimeline.setLayoutParams(layoutParamsTv);
+//            tvNameTimeline.setTextColor(Color.WHITE);
+//            tvNameTimeline.setMinimumHeight(convertToDp(25));
+//
+//            // Créé une image par utilisation du tag en cour
+//            for (final TimeModel tagTime : tag.getTimes()) {
+//
+//                double start = convertIntoTimelineViewRef(tagTime.getStart(), timelineRow.getWidth());
+//                double end = convertIntoTimelineViewRef(tagTime.getEnd(), timelineRow.getWidth());
+//
+//                final ImageView tagImageView = new ImageView(context);
+//                RelativeLayout.LayoutParams layoutParamsIv = new RelativeLayout.LayoutParams(
+//                        LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//
+//                layoutParamsIv.setMargins((int) Math.floor(start), convertToDp(8), 0, convertToDp(8));
+//
+//                tagImageView.setLayoutParams(layoutParamsIv);
+//                tagImageView.setMinimumHeight(convertToDp(25));
+//                tagImageView.setMinimumWidth(Math.max(convertToDp(50), (int) (end - start)));
+//
+//
+//                tagImageView.setBackgroundResource(ColorHelper.getInstance().findColorById(tag.getColor().getId()).getImage());
+//
+//                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+//                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//                timelineRow.setLayoutParams(layoutParams);
+//                timelineRow.setBackgroundColor(context.getResources().getColor(R.color.colorCharcoalGrey));
+//                timelineRow.addView(tagImageView);
+//            }
         }
 
         private int convertToDp(int size) {

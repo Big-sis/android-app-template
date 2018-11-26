@@ -14,7 +14,7 @@ import android.widget.TextView;
 
 import fr.vyfe.Constants;
 import fr.vyfe.R;
-import fr.vyfe.adapter.TagRecyclerAdapter;
+import fr.vyfe.adapter.TemplateRecyclerAdapter;
 import fr.vyfe.model.SessionModel;
 import fr.vyfe.model.TagSetModel;
 import fr.vyfe.viewModel.SelectVideoViewModel;
@@ -61,7 +61,7 @@ public class SelectVideoActivity extends VyfeActivity {
             @Override
             public void onChanged(@Nullable TagSetModel tagSetModel) {
                 if (tagSetModel != null) {
-                    TagRecyclerAdapter adapterTags = new TagRecyclerAdapter(tagSetModel.getTags(), "count");
+                    TemplateRecyclerAdapter adapterTags = new TemplateRecyclerAdapter(tagSetModel.getTemplates(), "count");
                     recyclerTags.setAdapter(adapterTags);
                 }
             }

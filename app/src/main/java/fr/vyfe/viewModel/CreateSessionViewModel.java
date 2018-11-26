@@ -2,12 +2,8 @@ package fr.vyfe.viewModel;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.ViewModel;
-import android.se.omapi.Session;
 
-import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import fr.vyfe.model.SessionModel;
@@ -93,9 +89,8 @@ public class CreateSessionViewModel extends VyfeViewModel {
         session.setAuthor(this.userId);
         if (this.selectedTagSet.getValue() != null) {
             session.setIdTagSet(this.selectedTagSet.getValue().getId());
-            session.setTags(this.selectedTagSet.getValue().getTags());
         }
-        return sessionRepository.push(session, this.androidId, this.userId);
+        return sessionRepository.push(session, this.androidId);
     }
 
     public String getSessionName() {

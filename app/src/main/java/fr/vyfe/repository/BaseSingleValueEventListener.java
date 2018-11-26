@@ -5,8 +5,9 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 import fr.vyfe.mapper.FirebaseMapper;
+import fr.vyfe.model.VyfeModel;
 
-public class BaseSingleValueEventListener<Entity, Model> implements ValueEventListener {
+public class BaseSingleValueEventListener<Entity, Model extends VyfeModel> implements ValueEventListener {
 
     private FirebaseMapper<Entity, Model> mapper;
     private CallbackInterface<Model> callback;

@@ -4,7 +4,7 @@ import fr.vyfe.mapper.TagMapper;
 import fr.vyfe.model.TagModel;
 
 
-public class TagRepository extends FirebaseDatabaseRepository<TagModel>{
+public class TagRepository extends FirebaseDatabaseRepository<TagModel> {
 
     public TagRepository(String companyId, String userId, String sessionId) {
         super(new TagMapper(), companyId, userId, sessionId);

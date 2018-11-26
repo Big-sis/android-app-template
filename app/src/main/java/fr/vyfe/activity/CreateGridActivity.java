@@ -7,11 +7,11 @@ import android.view.View;
 
 import fr.vyfe.R;
 import fr.vyfe.fragment.CreateGridFragment;
-import fr.vyfe.fragment.CreateTagsFragment;
+import fr.vyfe.fragment.CreateTemplatesFragment;
 import fr.vyfe.viewModel.CreateGridViewModel;
 import fr.vyfe.viewModel.CreateGridViewModelFactory;
 
-public class CreateGridActivity extends VyfeActivity implements CreateGridFragment.OnButtonClickedListener, CreateTagsFragment.OnButtonClickedListener {
+public class CreateGridActivity extends VyfeActivity implements CreateGridFragment.OnButtonClickedListener, CreateTemplatesFragment.OnButtonClickedListener {
     private CreateGridViewModel viewModel;
 
     @Override
@@ -31,7 +31,7 @@ public class CreateGridActivity extends VyfeActivity implements CreateGridFragme
 
     @Override
     public void onCreateGridFragmentButtonClicked(View view) {
-        replaceFragment(R.id.create_grid_fragment_container, CreateTagsFragment.newInstance());
+        replaceFragment(R.id.create_grid_fragment_container, CreateTemplatesFragment.newInstance());
     }
 
     @Override
@@ -41,7 +41,7 @@ public class CreateGridActivity extends VyfeActivity implements CreateGridFragme
 
     @Override
     public void onBackPressed() {
-        if (getSupportFragmentManager().findFragmentById(R.id.create_grid_fragment_container).getClass() == CreateTagsFragment.class)
+        if (getSupportFragmentManager().findFragmentById(R.id.create_grid_fragment_container).getClass() == CreateTemplatesFragment.class)
             replaceFragment(R.id.create_grid_fragment_container, CreateGridFragment.newInstance());
         else
             super.onBackPressed();
