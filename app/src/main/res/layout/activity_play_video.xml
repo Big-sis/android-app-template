@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg"
     android:orientation="vertical"
-    tools:context=".activity.PlayVideoActivity">
+    tools:context="fr.vyfe.activity.PlayVideoActivity">
 
     <include
         android:id="@+id/appBar"

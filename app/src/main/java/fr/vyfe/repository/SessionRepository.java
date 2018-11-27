@@ -51,5 +51,9 @@ public class SessionRepository extends FirebaseDatabaseRepository<SessionModel> 
         File file = new File(DeviceVideoLink);
 
         return file.getAbsolutePath();
+  
+    public void createVimeoLink(String vimeoLink){
+        databaseReference.child("videoLink").setValue(vimeoLink);
+
     }
 }

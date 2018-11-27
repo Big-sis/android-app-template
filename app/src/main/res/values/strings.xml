@@ -56,7 +56,7 @@
     <string name="show_video">Visionner</string>
     <string name="confirm_delete_video">Voulez-vous vraiment supprimer cette vidéo ?</string>
     <string name="cancel">Annuler</string>
-    <string name="delete">Supprimer</string>
+    <string name="delete">Supprimer la vidéo</string>
     <string name="wait_few_minutes">Cela peut prendre plusieurs minutes...</string>
     <string name="save_in_progress">Sauvegarde en cours...</string>
     <string name="bad_authentifiaction">Mauvaise identifiaction</string>
@@ -69,6 +69,7 @@
     <string name="send">Envoyer</string>
     <string name="date">Date</string>
     <string name="contact">Vous pouvez nous contacter sur : www.vyfe.fr</string>
+    <string name="contact">Vous pouvez nous contacter sur : <u>www.vyfe-app.com</u></string>
     <string name="create_account">Créer un compte</string>
     <string name="havent_grid">Vous n\'avez pas encore de grille</string>
     <string name="havent_tag">Vous n\'avez pas de tagTemplates</string>
@@ -108,6 +109,15 @@
     <string name="edit_grid">1- Enregistrer une grille d\'observation</string>
     <string name="license">Vous ne disposez pas de licence</string>
     <string name="problem">Problème d\'authentification :</string>
+    <string name="title_tagSet">Vous devez indiquez un titre à votre session ET une grille d\'observation</string>
+    <string name="end_upload">Fin du téléchargement</string>
+    <string name="alert">Alerte</string>
+    <string name="upload_contact">Pour accéder à cette fonctionnalitée, vous devez possedez un accès à la plateforme   Vous pouvez nous contacter sur www.vyfe.fr</string>
+    <string name="ok">Ok</string>
+    <string name="start_upload">Téléchargement commencé</string>
+    <string name="have_internet_connection">Vous devez posseder une connexion Internet pour télécharger vos vidéos</string>
+    <string name="online">Vidéo en ligne</string>
+    <string name="upload_vimeo">Vidéo téléchargée</string>
     <string name="tagset_title_warning">Vous devez indiquez un titre à votre session ET une grille d\'observation</string>
     <string name="create_tagset_title">1- Créer votre grille d\'observation</string>
     <string name="color_gradient_blue_dark">Violet</string>
@@ -125,6 +135,7 @@
     <string name="save_grid_info">Grid saved</string>
     <string name="permission_request">Vyfe app need permissions to record a video. Please check your config</string>
     <string name="camera_error">This device is not supported for video record</string>
-
-
+    <string name="connection">Vous devez vous connecter</string>
+    <string name="ask_permissions">Demande de permissions</string>
+    <string name="ask_permissions_message">Pour fonctionner correctement, l\'application à besoin d\'utiliser le son, la caméra et le stockage de votre tablette</string>
 </resources>
