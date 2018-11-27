@@ -76,7 +76,7 @@ public class EditSessionActivity extends VyfeActivity {
                      public Void then(@NonNull Task<Void> task) throws Exception {
                          if (task.isSuccessful()) {
                              Toast.makeText(EditSessionActivity.this, "Vidéo supprimée", Toast.LENGTH_SHORT).show();
-                             Intent intent = new Intent(EditSessionActivity.this, MyVideosActivity.class);
+                             Intent intent = new Intent(EditSessionActivity.this, MySessionsActivity.class);
                              startActivity(intent);
                          }
                          else

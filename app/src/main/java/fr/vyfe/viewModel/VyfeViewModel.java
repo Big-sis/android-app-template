@@ -29,7 +29,8 @@ public abstract class VyfeViewModel extends ViewModel {
             @Override
             public void onSuccess(SessionModel result) {
                 session.postValue(result);
-                loadTagSet(result.getTagSetId());
+                if (tagSetRepository != null)
+                    loadTagSet(result.getTagSetId());
             }
 
             @Override

@@ -111,7 +111,7 @@ public class MainActivity extends VyfeActivity {
         btnVideos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, MyVideosActivity.class);
+                Intent intent = new Intent(MainActivity.this, MySessionsActivity.class);
                 startActivity(intent);
             }
         });

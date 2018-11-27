@@ -12,9 +12,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,14 +24,11 @@ import fr.vyfe.model.SessionModel;
 import fr.vyfe.viewModel.MyVideosViewModel;
 import fr.vyfe.viewModel.MyVideosViewModelFactory;
 
-import static android.os.Environment.DIRECTORY_MOVIES;
-import static android.os.Environment.getExternalStoragePublicDirectory;
-
 /**
  * Activity presents cache memory videos and device videos
  * The user can select one and view it
  */
-public class MyVideosActivity extends VyfeActivity {
+public class MySessionsActivity extends VyfeActivity {
     MyVideosViewModel viewModel;
 
     @Override
@@ -56,7 +51,7 @@ public class MyVideosActivity extends VyfeActivity {
         viewModel.getSessions().observe(this, new Observer<List<SessionModel>>() {
             @Override
             public void onChanged(@Nullable List<SessionModel> sessions) {
-                gridView.setAdapter(new VideoGridAdapter(MyVideosActivity.this, (ArrayList<SessionModel>) sessions));
+                gridView.setAdapter(new VideoGridAdapter(MySessionsActivity.this, (ArrayList<SessionModel>) sessions));
             }
         });
 
@@ -80,10 +75,10 @@ public class MyVideosActivity extends VyfeActivity {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(MyVideosActivity.this, SelectVideoActivity.class);
+                Intent intent = new Intent(MySessionsActivity.this, SelectVideoActivity.class);
                 SessionModel sessionModel = (SessionModel) parent.getItemAtPosition(position);
                 intent.putExtra(Constants.SESSIONMODELID_EXTRA, sessionModel.getId());
-                MyVideosActivity.this.startActivity(intent);
+                MySessionsActivity.this.startActivity(intent);
             }
         });
     }

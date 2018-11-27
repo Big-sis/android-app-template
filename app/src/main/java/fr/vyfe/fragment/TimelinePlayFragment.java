@@ -123,7 +123,6 @@ public class TimelinePlayFragment extends Fragment {
                         }
                     });
                 }
-
             }
         });
 
@@ -153,14 +152,6 @@ public class TimelinePlayFragment extends Fragment {
                 viewModel.play();
             }
         });
-    }
-
-    private double convertIntoTimelineViewRef(int value, int timelineWidth, SessionModel sessionModel) {
-        int micro = value * getActivity().getResources().getInteger(R.integer.second_to_micro);
-        double ratio = micro / sessionModel.getDuration();
-        double convertValue = (ratio * timelineWidth) / getActivity().getResources().getInteger(R.integer.micro_to_milli);
-
-        return convertValue;
     }
 
     private int convertToDp(int size) {
