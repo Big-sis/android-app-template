@@ -1,18 +1,12 @@
 package fr.wildcodeschool.vyfe;
 
-import android.Manifest;
-import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -57,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
         LinearLayout btnMultiSession = findViewById(R.id.btn_multi_session);
         LinearLayout btnVideos = findViewById(R.id.btn_videos);
         LinearLayout btnCreateGrid = findViewById(R.id.btn_create_grid);
+
+        PermissionsHelper.getInstance(this);
 
         FirebaseDatabase mDatabase = SingletonFirebase.getInstance().getDatabase();
         String authUserId = SingletonFirebase.getInstance().getUid();
@@ -114,27 +110,32 @@ public class MainActivity extends AppCompatActivity {
         btnStartSession.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, StartActivity.class);
-                startActivity(intent);
+                if (PermissionsHelper.isAcceptedRecordPermission(MainActivity.this)) {
+                    Intent intent = new Intent(MainActivity.this, StartActivity.class);
+                    startActivity(intent);
+                } else PermissionsHelper.getInstance(MainActivity.this);
             }
         });
 
         btnMultiSession.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (PermissionsHelper.isAcceptedRecordPermission(MainActivity.this)) {
+                    Intent intent = new Intent(MainActivity.this, StartActivity.class);
+                    intent.putExtra("multiSession", "multiSession");
 
-                Intent intent = new Intent(MainActivity.this, StartActivity.class);
-                intent.putExtra("multiSession", "multiSession");
-
-                startActivity(intent);
+                    startActivity(intent);
+                } else PermissionsHelper.getInstance(MainActivity.this);
             }
         });
 
         btnVideos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, MyVideoActivity.class);
-                startActivity(intent);
+                if (PermissionsHelper.isAcceptedStoragePermission(MainActivity.this)) {
+                    Intent intent = new Intent(MainActivity.this, MyVideoActivity.class);
+                    startActivity(intent);
+                } else PermissionsHelper.getInstance(MainActivity.this);
             }
         });
 
@@ -146,11 +147,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-     //   ActivityCompat.requestPermissions(this, permissions, PERMISSIONS_REQUEST);
-        //TODO: lors merge mettre sur chaque activity
-      PermissionsHelper.getInstance(this);
-    }
 
+
+    }
 
 
     @Override
