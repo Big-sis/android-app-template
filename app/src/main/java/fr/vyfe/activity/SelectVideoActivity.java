@@ -22,7 +22,8 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 
 import fr.vyfe.Constants;
-import fr.vyfe.model.VimeoTokenModel;
+import fr.vyfe.helper.InternetConnexionHelper;
+import fr.vyfe.model.CompanyModel;
 import fr.vyfe.service.UploadVideoService;
 import fr.vyfe.R;
 import fr.vyfe.adapter.TemplateRecyclerAdapter;
@@ -37,17 +38,8 @@ public class SelectVideoActivity extends VyfeActivity {
     private SelectVideoViewModel viewModel;
     private IntentFilter mIntentFilter;
     private ImageView mIvUpload;
-    private BroadcastReceiver mReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-
-            if (intent.getAction().equals("link")) {
-                String vimeoLink = intent.getStringExtra("videoLink");
-                viewModel.getSession().getValue().setVideoLink(vimeoLink);
-                viewModel.save();
-            }
-        }
-    };
+    private Button uploadButton;
+    ImageView videoMiniatureView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,11 +48,12 @@ public class SelectVideoActivity extends VyfeActivity {
 
         Button playBtn = findViewById(R.id.bt_play);
         Button editBtn = findViewById(R.id.btn_edit);
-        ImageView videoBtn = findViewById(R.id.vv_preview);
         final TextView tvTitle = findViewById(R.id.tv_title);
         final TextView tvDescription = findViewById(R.id.tv_description);
         final RecyclerView recyclerTags = findViewById(R.id.re_tags);
         mIvUpload = findViewById(R.id.iv_upload);
+        uploadButton = findViewById(R.id.btn_upload);
+        videoMiniatureView = findViewById(R.id.vv_preview);
 
         mIntentFilter = new IntentFilter();
         mIntentFilter.addAction("link");
@@ -73,26 +66,61 @@ public class SelectVideoActivity extends VyfeActivity {
 
         viewModel.getSession().observe(this, new Observer<SessionModel>() {
             @Override
-            public void onChanged(@Nullable SessionModel session) {
-                RecyclerView recyclerTags = findViewById(R.id.re_tags);
-                TagRecyclerAdapter adapterTags = new TagRecyclerAdapter(session.getTags(), "count");
-                RecyclerView.LayoutManager layoutManagerTags = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
-                recyclerTags.setLayoutManager(layoutManagerTags);
-                recyclerTags.setAdapter(adapterTags);
+            public void onChanged(@Nullable final SessionModel session) {
+                if (session != null) {
+                    if (session.getServerVideoLink() != null) {
+                        uploadButton.setTextColor(Color.GRAY);
+                        uploadButton.setClickable(false);
+                        uploadButton.setText(R.string.online);
+                        uploadButton.setAlpha(0.5f);
+                    }
+                    else {
+                        uploadButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if (InternetConnexionHelper.haveInternetConnection(SelectVideoActivity.this)) {
+                                    final AlertDialog.Builder popup = new AlertDialog.Builder(SelectVideoActivity.this);
+                                    if (null == viewModel.getCompany().getValue().getVimeoAccessToken()) {
+                                        uploadButton.setTextColor(Color.GRAY);
+                                        popup.setTitle(R.string.alert);
+                                        popup.setMessage(R.string.upload_contact);
+                                        popup.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                            }
+                                        });
+                                        popup.show();
+                                    }
+                                    else {
+                                        Intent intent = new Intent(SelectVideoActivity.this, UploadVideoService.class);
+                                        intent.putExtra(Constants.SESSIONMODEL_EXTRA, session);
+                                        intent.putExtra(Constants.VIMEO_TOKEN_EXTRA, viewModel.getCompany().getValue().getVimeoAccessToken());
+                                        intent.putExtra(Constants.COMPANYID_EXTRA, mAuth.getCurrentUser().getCompany());
+                                        SelectVideoActivity.this.startService(intent);
 
-                if (session.getServerVideoLink() != null) {
-                    upload.setClickable(false);
-                    upload.setText(R.string.online);
-                    upload.setAlpha(0.5f);
-                }
-              
-                if (session.getDescription() != null) {
-                    tvDescription.setText(session.getDescription());
-                } else {
-                    tvDescription.setText(R.string.no_description);
-                }
+                                        Toast.makeText(SelectVideoActivity.this, R.string.start_upload, Toast.LENGTH_LONG).show();
+                                        mIvUpload.setVisibility(View.VISIBLE);
+                                        Glide.with(SelectVideoActivity.this).load(R.drawable.animation_roue_white).into(mIvUpload);
+                                    }
+                                }
+                                else
+                                    Toast.makeText(SelectVideoActivity.this, R.string.have_internet_connection, Toast.LENGTH_LONG).show();
+                            }
+                        });
+                    }
 
-                tvTitle.setText(session.getName());
+                    if (session.getDescription() != null) {
+                        tvDescription.setText(session.getDescription());
+                    } else {
+                        tvDescription.setText(R.string.no_description);
+                    }
+
+                    tvTitle.setText(session.getName());
+
+                    //AFfichage miniature
+                    videoMiniatureView.setImageBitmap(session.getThumbnail());
+
+                }
             }
         });
 
@@ -106,57 +134,8 @@ public class SelectVideoActivity extends VyfeActivity {
             }
         });
 
-        upload.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Boolean connexion = viewModel.getHaveInternetConnexion(SelectVideoActivity.this).getValue();
-                assert connexion != null;
-                if (connexion) {
-                    viewModel.getVimeoToken().observe(SelectVideoActivity.this, new Observer<VimeoTokenModel>() {
-                        @Override
-                        public void onChanged(@Nullable VimeoTokenModel vimeoTokenModel) {
-                            final AlertDialog.Builder popup = new AlertDialog.Builder(SelectVideoActivity.this);
-                            if (vimeoTokenModel.getVimeoAccessToken() != null) {
-                                viewModel.getSession().observe(SelectVideoActivity.this, new Observer<SessionModel>() {
-                                    @Override
-                                    public void onChanged(@Nullable SessionModel sessionModel) {
-                                        if (viewModel.getSession().getValue().getVideoLink() == null) {
-
-                                            Intent intent = new Intent(SelectVideoActivity.this, UploadVideoService.class);
-                                            intent.putExtra("deviceUrl", viewModel.getSession().getValue().getDeviceVideoLink());
-                                            intent.putExtra("vimeoToken", viewModel.getVimeoToken().getValue().getVimeoAccessToken());
-                                            SelectVideoActivity.this.startService(intent);
-
-                                            Toast.makeText(SelectVideoActivity.this, R.string.start_upload, Toast.LENGTH_LONG).show();
-                                            mIvUpload.setVisibility(View.VISIBLE);
-                                            Glide.with(SelectVideoActivity.this).load(R.drawable.animation_roue_white).into(mIvUpload);
-                                        } else
-                                            Toast.makeText(SelectVideoActivity.this, R.string.upload_vimeo, Toast.LENGTH_SHORT).show();
-                                            mIvUpload.setVisibility(View.INVISIBLE);
-                                    }
-                                });
-
-
-                            } else {
-                                upload.setTextColor(Color.GRAY);
-                                popup.setTitle(R.string.alert);
-                                popup.setMessage(R.string.upload_contact);
-                                popup.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                    }
-                                });
-                                popup.show();
-                            }
-                        }
-                    });
-                } else
-                    Toast.makeText(SelectVideoActivity.this, R.string.have_internet_connection, Toast.LENGTH_LONG).show();
-            }
-        });
-
         clickButton(playBtn, new Intent(this, PlayVideoActivity.class));
-        clickButton(videoBtn, new Intent(this, PlayVideoActivity.class));
+        clickButton(videoMiniatureView, new Intent(this, PlayVideoActivity.class));
         clickButton(editBtn, new Intent(this, EditSessionActivity.class));
     }
 
@@ -169,18 +148,4 @@ public class SelectVideoActivity extends VyfeActivity {
             }
         });
     }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        registerReceiver(mReceiver, mIntentFilter);
-
-    }
-
-    @Override
-    protected void onPause() {
-        unregisterReceiver(mReceiver);
-        super.onPause();
-    }
-
 }

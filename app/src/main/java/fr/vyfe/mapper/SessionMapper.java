@@ -23,7 +23,7 @@ public class SessionMapper extends FirebaseMapper<SessionEntity, SessionModel> {
         session.setIdTagSet(sessionEntity.getTagSetId());
         session.setName(sessionEntity.getName());
         session.setDeviceVideoLink(sessionEntity.getPathApp());
-        session.setVideoLink(sessionEntity.getVideoLink());
+        session.setServerVideoLink(sessionEntity.getVideoLink());
         session.setThumbnail(sessionEntity.getThumbnailUrl());
         session.setDescription(sessionEntity.getDescription());
         session.setId(key);
@@ -44,8 +44,7 @@ public class SessionMapper extends FirebaseMapper<SessionEntity, SessionModel> {
         sessionEntity.setName(sessionModel.getName());
         sessionEntity.setPathApp(sessionModel.getDeviceVideoLink());
         sessionEntity.setTags((new TagMapper()).unMapList(sessionModel.getTags()));
-        sessionEntity.setThumbnailUrl(sessionModel.getThumbnail());
-        sessionEntity.setVideoLink(sessionModel.getVideoLink());
+        sessionEntity.setVideoLink(sessionModel.getServerVideoLink());
         return sessionEntity;
     }
 

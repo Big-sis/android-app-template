@@ -1,11 +1,9 @@
 package fr.vyfe.activity;
 
-import android.Manifest;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.os.Build;
@@ -13,8 +11,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.Menu;
@@ -27,19 +23,11 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 
 import fr.vyfe.R;
-import fr.vyfe.helper.AuthHelper;
 import fr.vyfe.RaspberryConnexion;
+import fr.vyfe.helper.AuthHelper;
 
 public class MainActivity extends VyfeActivity {
 
-    private static final int PERMISSIONS_REQUEST = 1;
-    private String[] permissions = {
-            Manifest.permission.RECORD_AUDIO,
-            Manifest.permission.CAMERA,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.ACCESS_FINE_LOCATION
-    };
     private WifiManager wifiManager;
     private String networkSSID;
     private String networkPass;
@@ -124,23 +112,6 @@ public class MainActivity extends VyfeActivity {
             }
         });
 
-        ActivityCompat.requestPermissions(this, permissions, PERMISSIONS_REQUEST);
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED
-                || ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
-                || ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
-                || ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
-            ActivityCompat.requestPermissions(this,
-                    permissions,
-                    PERMISSIONS_REQUEST);
-        }
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 87);
-            }
-        }
-
         wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         networkSSID = MainActivity.this.getString(R.string.networkSSID);
         networkPass = MainActivity.this.getString(R.string.networkPass);
@@ -156,11 +127,9 @@ public class MainActivity extends VyfeActivity {
         int remainingDays = mAuth.getLicenseRemainingDays();
         if (remainingDays <= 1) {
             Toast.makeText(this, R.string.expired_day, Toast.LENGTH_LONG).show();
-        }
-        else if (remainingDays < 7) {
+        } else if (remainingDays < 7) {
             Toast.makeText(this, R.string.expired_7_days, Toast.LENGTH_LONG).show();
-        }
-        else if (remainingDays < 30) {
+        } else if (remainingDays < 30) {
             Toast.makeText(this, R.string.expired_month, Toast.LENGTH_LONG).show();
         }
     }
@@ -222,7 +191,6 @@ public class MainActivity extends VyfeActivity {
             @Override
             public void onError() {
                 final ImageView progressRoue = findViewById(R.id.logo_multi_session);
-
 
 
                 final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);

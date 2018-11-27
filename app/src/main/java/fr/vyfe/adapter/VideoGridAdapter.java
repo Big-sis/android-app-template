@@ -19,12 +19,14 @@ import java.util.ArrayList;
 import fr.vyfe.Constants;
 import fr.vyfe.CustomVideoFilter;
 import fr.vyfe.R;
+import fr.vyfe.activity.MySessionsActivity;
 import fr.vyfe.activity.SelectVideoActivity;
+import fr.vyfe.activity.VyfeActivity;
 import fr.vyfe.model.SessionModel;
 
 public class VideoGridAdapter extends BaseAdapter implements Filterable {
 
-    private final Context mContext;
+    private final VyfeActivity mContext;
     public ArrayList<SessionModel> mSessions;
 
     private ArrayList<SessionModel> filterList;
@@ -32,7 +34,7 @@ public class VideoGridAdapter extends BaseAdapter implements Filterable {
 
     private SessionModel mSession;
 
-    public VideoGridAdapter(Context context, ArrayList<SessionModel> sessions) {
+    public VideoGridAdapter(VyfeActivity context, ArrayList<SessionModel> sessions) {
         this.mContext = context;
         this.mSessions = sessions;
         this.filterList = sessions;
@@ -79,8 +81,10 @@ public class VideoGridAdapter extends BaseAdapter implements Filterable {
 
         // TODO : Remove ImageViewSessionHelper
         //AFfichage miniature video
-        ImageView videoView = convertView.findViewById(R.id.img_item_video);
-        videoView.setImageBitmap(ImageViewSessionHelper.thumbnailSession(video.getVideoLink()));
+        if (mContext.checkPersmissions(MySessionsActivity.PERMISSIONS)) {
+            ImageView videoView = convertView.findViewById(R.id.img_item_video);
+            videoView.setImageBitmap(mSession.getThumbnail());
+        }
       
         return convertView;
     }

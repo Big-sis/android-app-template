@@ -1,5 +1,6 @@
 package fr.vyfe.activity;
 
+import android.Manifest;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
@@ -29,6 +30,8 @@ import fr.vyfe.viewModel.MyVideosViewModelFactory;
  * The user can select one and view it
  */
 public class MySessionsActivity extends VyfeActivity {
+    public static final String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
+
     MyVideosViewModel viewModel;
 
     @Override
@@ -82,5 +85,4 @@ public class MySessionsActivity extends VyfeActivity {
             }
         });
     }
-
 }

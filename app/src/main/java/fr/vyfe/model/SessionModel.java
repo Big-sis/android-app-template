@@ -1,8 +1,11 @@
 package fr.vyfe.model;
 
+import android.graphics.Bitmap;
 import android.media.MediaMetadataRetriever;
+import android.media.ThumbnailUtils;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.provider.MediaStore;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -91,14 +94,6 @@ public class SessionModel implements Parcelable, VyfeModel {
         this.author = author;
     }
 
-    public String getVideoLink() {
-        return serverVideoLink;
-    }
-
-    public void setVideoLink(String videoLink) {
-        this.serverVideoLink = videoLink;
-    }
-
     public Date getDate() {
         return date;
     }
@@ -174,8 +169,9 @@ public class SessionModel implements Parcelable, VyfeModel {
         this.deviceVideoLink = deviceVideoLink;
     }
 
-    public String getThumbnail() {
-        return thumbnail;
+    // TODO : Display Vimeo thumbnail once available
+    public Bitmap getThumbnail() {
+        return ThumbnailUtils.createVideoThumbnail(getDeviceVideoLink(), MediaStore.Images.Thumbnails.MINI_KIND);
     }
 
     public void setThumbnail(String thumbnail) {

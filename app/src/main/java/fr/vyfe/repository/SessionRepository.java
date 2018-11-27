@@ -31,12 +31,12 @@ public class SessionRepository extends FirebaseDatabaseRepository<SessionModel> 
         if (filePath != null) {
             sessionModel.setDeviceVideoLink(filePath);
             return super.push(sessionModel);
-        }
-        else throw new Exception("session cannot be created. No storage left on device");
+        } else throw new Exception("session cannot be created. No storage left on device");
     }
 
     /**
      * Create file to record video and return absolute path
+     *
      * @param sessionName
      * @return file absolute path
      */
@@ -51,9 +51,5 @@ public class SessionRepository extends FirebaseDatabaseRepository<SessionModel> 
         File file = new File(DeviceVideoLink);
 
         return file.getAbsolutePath();
-  
-    public void createVimeoLink(String vimeoLink){
-        databaseReference.child("videoLink").setValue(vimeoLink);
-
     }
 }

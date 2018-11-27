@@ -1,5 +1,6 @@
 package fr.vyfe.activity;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -36,11 +37,13 @@ public class RecordActivity extends VyfeActivity {
     private RecordVideoViewModel viewModel;
     private ConstraintLayout contrainOkRecord;
     private ConstraintLayout constraintErrorSpace;
+    public static final String[] PERMISSIONS = {Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
+
         //TODO: cmt utiliser mm fragment que timelineRealTime
         replaceFragment(R.id.scroll_timeline, TimelineRecordFragment.newInstance());
         replaceFragment(R.id.scroll_tagset, TagSetRecordFragment.newInstance());

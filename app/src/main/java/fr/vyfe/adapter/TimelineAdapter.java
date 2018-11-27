@@ -107,7 +107,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
 //                tagImageView.setMinimumWidth(Math.max(convertToDp(50), (int) (end - start)));
 //
 //
-//                tagImageView.setBackgroundResource(ColorHelper.getInstance().findColorById(tag.getColor().getId()).getImage());
+//                tagImageView.setBackgroundResource(ColorHelper.checkPersmissions().findColorById(tag.getColor().getId()).getImage());
 //
 //                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
 //                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);

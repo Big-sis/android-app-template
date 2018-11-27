@@ -1,8 +1,13 @@
-package fr.vyfe.model;
+package fr.vyfe.entity;
 
+import com.google.firebase.database.IgnoreExtraProperties;
 
-public class VimeoTokenModel  {
-    public VimeoTokenModel(){}
+import java.util.HashMap;
+
+@IgnoreExtraProperties
+public class CompanyEntity {
+
+    public CompanyEntity(){}
 
     public String getVimeoAccessToken() {
         return vimeoAccessToken;
@@ -13,4 +18,11 @@ public class VimeoTokenModel  {
     }
 
     private String vimeoAccessToken;
+
+
+
+
+
+
+
 }

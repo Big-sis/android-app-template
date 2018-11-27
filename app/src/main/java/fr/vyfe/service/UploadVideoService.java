@@ -26,25 +26,28 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import fr.vyfe.Constants;
 import fr.vyfe.R;
 import fr.vyfe.activity.MainActivity;
 import fr.vyfe.helper.LinkDeviceTranslateVideoHelper;
+import fr.vyfe.model.SessionModel;
+import fr.vyfe.repository.SessionRepository;
 import fr.vyfe.repository.VolleyMultipartRequest;
 
 
 public class UploadVideoService extends Service {
 
     private NotificationManager manager;
-    public static  String videoLink;
+    private SessionModel session;
+    private SessionRepository repository;
 
     public UploadVideoService() {
-
     }
 
-    public static void getLinkVimeo(final Context context, final String VimeoToken, final UploadVideoService.UrlResponse listener) {
+    public void getVimeoLink(final Context context, final String VimeoToken, final UploadVideoService.UrlResponse listener) {
         //1er requete en POST , recuperation upload_link
         RequestQueue queue = Volley.newRequestQueue(context);
-        JsonObjectRequest sr = new JsonObjectRequest(Request.Method.POST, "https://api.vimeo.com/me/videos", null, new Response.Listener<JSONObject>() {
+        JsonObjectRequest sr = new JsonObjectRequest(Request.Method.POST, Constants.VIMEO_API_VIDEOS_ENDPOINT, null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
                 try {
@@ -54,7 +57,7 @@ public class UploadVideoService extends Service {
                     //ici on peut aussi recucuperer le lien ou l'utilisateur pourras visialiser la vidéo, elle est dans upoad ->link
                     //deuxieme requete pour joindre la video
                     //uploadVideo(uploadLink, context);
-                    videoLink = Vimeolink;
+                    session.setServerVideoLink(Vimeolink);
                     listener.onSuccess(uploadLink);
 
                 } catch (JSONException e) {
@@ -92,11 +95,14 @@ public class UploadVideoService extends Service {
 
     }
 
-    public static void uploadVideo(String url, final Context context, final byte[] inputData, final UploadVideoService.UploadResponse listener) {
+    public void uploadVideo(String url, final Context context, final byte[] inputData, final UploadVideoService.UploadResponse listener) {
         RequestQueue queue2 = Volley.newRequestQueue(context);
         VolleyMultipartRequest sr2 = new VolleyMultipartRequest(Request.Method.POST, url, new Response.Listener<NetworkResponse>() {
             @Override
             public void onResponse(NetworkResponse response) {
+                if (response.statusCode == 200) {
+                    repository.put(session);
+                }
                 // Toast.makeText(ApiActivity.this, " response: " + response.data, Toast.LENGTH_LONG).DisconnectionAlert();
                 Toast.makeText(context, R.string.upload_video, Toast.LENGTH_LONG).show();
 
@@ -125,11 +131,13 @@ public class UploadVideoService extends Service {
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
-        String name = (String) intent.getExtras().get("deviceUrl");
-        String vimeoToken= (String) intent.getExtras().get("vimeoToken");
+        session = intent.getParcelableExtra(Constants.SESSIONMODEL_EXTRA);
+        String name = session.getDeviceVideoLink();
+        String vimeoToken = (String) intent.getExtras().get(Constants.VIMEO_TOKEN_EXTRA);
+        repository = new SessionRepository(intent.getStringExtra(Constants.COMPANYID_EXTRA));
         manager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
         final byte[] byteVideo = LinkDeviceTranslateVideoHelper.getVideo(name, getApplication());
-        getLinkVimeo(getApplicationContext(),vimeoToken, new UrlResponse() {
+        getVimeoLink(getApplicationContext(),vimeoToken, new UrlResponse() {
             @Override
             public void onSuccess(String url) {
 
@@ -149,12 +157,7 @@ public class UploadVideoService extends Service {
                         builder.setContentIntent(contentIntent);
                         manager.notify(0, builder.build());
 
-                        Intent videoLinkIntent = new Intent();
-                        videoLinkIntent.setAction("link");
-                        videoLinkIntent.putExtra("videoLink",videoLink);
-                        sendBroadcast(videoLinkIntent);
                         stopSelf();
-
                     }
 
                     @Override

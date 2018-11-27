@@ -1,61 +1,54 @@
 package fr.vyfe.viewModel;
 
+import android.arch.lifecycle.LiveData;
+import android.arch.lifecycle.MutableLiveData;
+
+import fr.vyfe.Constants;
+import fr.vyfe.repository.BaseSingleValueEventListener;
 import fr.vyfe.repository.SessionRepository;
 import fr.vyfe.repository.TagSetRepository;
-import fr.vyfe.helper.InternetConnexionHelper;
-import fr.vyfe.model.VimeoTokenModel;
-import fr.vyfe.repository.VimeoTokenRepository;
+import fr.vyfe.model.CompanyModel;
+import fr.vyfe.repository.CompanyRepository;
 
 
 public class SelectVideoViewModel extends VyfeViewModel {
-  
-  private VimeoTokenRepository vimeoTokenRepository;
-    private MutableLiveData<VimeoTokenModel> vimeoToken;
 
-    private MutableLiveData<Boolean> haveInternetConnexion;
+    private CompanyRepository companyRepository;
+    private MutableLiveData<CompanyModel> company;
 
     public SelectVideoViewModel(String companyId, String userId) {
-        vimeoTokenRepository = new VimeoTokenRepository(companyId);
-        haveInternetConnexion = new MutableLiveData<>();
+        companyRepository = new CompanyRepository(companyId);
         sessionRepository = new SessionRepository(companyId);
         tagSetRepository = new TagSetRepository(userId, companyId);
     }
 
     public void init(String sessionId) {
         this.sessionId = sessionId;
+        loadCompany();
     }
 
-    public LiveData<VimeoTokenModel> getVimeoToken() {
-        if (vimeoToken == null) {
-            vimeoToken = new MutableLiveData<>();
-            loadToken();
+    public LiveData<CompanyModel> getCompany() {
+        if (company == null) {
+            company = new MutableLiveData<>();
+            loadCompany();
         }
-        return vimeoToken;
+        return company;
     }
 
-    public LiveData<Boolean> getHaveInternetConnexion(Context context) {
-        haveInternetConnexion.setValue(InternetConnexionHelper.haveInternetConnection(context));
-        return haveInternetConnexion;
-    }
-
-    public void loadToken() {
-        if (vimeoToken == null) {
-            vimeoToken = new MutableLiveData<>();
+    public void loadCompany() {
+        if (company == null) {
+            company = new MutableLiveData<>();
         }
-        vimeoTokenRepository.addListListener(new BaseListValueEventListener.CallbackInterface<VimeoTokenModel>() {
+        companyRepository.addChildListener("", true, new BaseSingleValueEventListener.CallbackInterface<CompanyModel>() {
             @Override
-            public void onSuccess(List<VimeoTokenModel> result) {
-                vimeoToken.setValue(result.get(0));
+            public void onSuccess(CompanyModel result) {
+                company.setValue(result);
             }
 
             @Override
             public void onError(Exception e) {
-                vimeoToken.setValue(null);
+                company.setValue(null);
             }
         });
-    }
-
-    public void save() {
-        sessionRepository.createVimeoLink(this.session.getValue().getVideoLink());
     }
 }

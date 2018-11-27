@@ -6,21 +6,15 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
-<<<<<<< HEAD:app/src/main/java/fr/vyfe/activity/ConnexionActivity.java
-=======
-import android.support.annotation.NonNull;
->>>>>>> ad8da6af... redirection site:app/src/main/java/fr/wildcodeschool/vyfe/ConnexionActivity.java
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
-<<<<<<< HEAD:app/src/main/java/fr/vyfe/activity/ConnexionActivity.java
-=======
 import android.text.TextWatcher;
->>>>>>> ad8da6af... redirection site:app/src/main/java/fr/wildcodeschool/vyfe/ConnexionActivity.java
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
