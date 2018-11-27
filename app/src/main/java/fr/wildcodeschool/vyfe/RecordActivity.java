@@ -31,7 +31,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
@@ -83,6 +82,7 @@ public class RecordActivity extends AppCompatActivity {
     private ConstraintLayout sessionRecord;
     private String idTagSet;
     private boolean recordInProgress = false;
+    private boolean errorRecord = false;
 
     // Pour obtenir une instance de la caméra
     public static Camera getCameraInstance(int currentCameraId) {
@@ -213,17 +213,33 @@ public class RecordActivity extends AppCompatActivity {
                     public void onClick(View v) {
                         closeRecord();
                         recordInProgress = false;
-                        File file = new File(mFileName);
-                        long lengthFile = file.length();
+                        if (!errorRecord) {
+                            File file = new File(mFileName);
+                            long lengthFile = file.length();
 
-                        if (lengthFile >= freeSpace || lengthFile == 0) {
-                            sessionRecord.setVisibility(View.GONE);
-                            sessionErrorSpace.setVisibility(View.VISIBLE);
-                            file.delete();
+                            if (lengthFile >= freeSpace || lengthFile == 0) {
+                                sessionRecord.setVisibility(View.GONE);
+                                sessionErrorSpace.setVisibility(View.VISIBLE);
+                                file.delete();
 
+                            } else {
+                                // Toast.makeText(RecordActivity.this, "save", Toast.LENGTH_SHORT).show();
+                                saveSession();
+                            }
                         } else {
-                            Toast.makeText(RecordActivity.this, "save", Toast.LENGTH_SHORT).show();
-                            saveSession();
+                            sessionRecord.setVisibility(View.GONE);
+                            final AlertDialog.Builder popup = new AlertDialog.Builder(RecordActivity.this);
+
+                            popup.setTitle(R.string.alert);
+                            popup.setMessage(R.string.error_record);
+                            popup.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    startActivity(new Intent(RecordActivity.this, StartActivity.class));
+                                }
+                            });
+                            popup.show();
+
                         }
 
 /*
@@ -328,9 +344,16 @@ public class RecordActivity extends AppCompatActivity {
     }
 
     private void stopRecording() {
-        mRecorder.stop();
-        mRecorder.release();
-        mRecorder = null;
+        try {
+            mRecorder.stop();
+            mRecorder.release();
+            mRecorder = null;
+        } catch (RuntimeException error) {
+            errorRecord = true;
+
+        }
+
+
     }
 
 

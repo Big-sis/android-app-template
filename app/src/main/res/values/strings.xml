@@ -116,8 +116,12 @@
     <string name="light_purple">Violet clair</string>
     <string name="green">Vert</string>
     <string name="connection">Vous devez vous connecter</string>
+    <string name="alert">Alerte</string>
+    <string name="error_record">Une erreur est survenue, veuillez relancer une session</string>
+    <string name="ok">OK</string>
     <string name="ask_permissions">Demande de permissions</string>
     <string name="ask_permissions_message">Pour fonctionner correctement, l\'application à besoin d\'utiliser le son, la caméra et le stockage de votre tablette</string>
+
 
 
 </resources>
