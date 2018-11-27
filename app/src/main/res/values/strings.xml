@@ -56,7 +56,7 @@
     <string name="show_video">Visionner</string>
     <string name="confirm_delete_video">Voulez-vous vraiment supprimer cette vidéo ?</string>
     <string name="cancel">Annuler</string>
-    <string name="delete">Supprimer</string>
+    <string name="delete">Supprimer la vidéo</string>
     <string name="wait_few_minutes">Cela peut prendre plusieurs minutes...</string>
     <string name="save_in_progress">Sauvegarde en cours...</string>
     <string name="bad_authentifiaction">Mauvaise identifiaction</string>
@@ -68,7 +68,7 @@
     <string name="mail_unkown">Email inconnu</string>
     <string name="send">Envoyer</string>
     <string name="date">Date</string>
-    <string name="contact">Vous pouvez nous contacter sur : www.vyfe-app.com</string>
+    <string name="contact">Vous pouvez nous contacter sur : <u>www.vyfe-app.com</u></string>
     <string name="create_account">Créer un compte</string>
     <string name="havent_grid">Vous n\'avez pas encore de grille</string>
     <string name="havent_tag">Vous n\'avez pas de tags</string>
@@ -119,6 +119,9 @@
     <string name="alert">Alerte</string>
     <string name="error_record">Une erreur est survenue, veuillez relancer une session</string>
     <string name="ok">OK</string>
+    <string name="ask_permissions">Demande de permissions</string>
+    <string name="ask_permissions_message">Pour fonctionner correctement, l\'application à besoin d\'utiliser le son, la caméra et le stockage de votre tablette</string>
+
 
 
 </resources>
