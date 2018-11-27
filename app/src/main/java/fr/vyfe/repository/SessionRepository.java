@@ -39,4 +39,8 @@ public class SessionRepository extends FirebaseDatabaseRepository<SessionModel> 
         }
     }
 
+    public void createVimeoLink(String vimeoLink){
+        databaseReference.child("videoLink").setValue(vimeoLink);
+
+    }
 }

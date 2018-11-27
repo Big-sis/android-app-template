@@ -52,6 +52,7 @@ public class VideoGridAdapter extends BaseAdapter implements Filterable {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+
         mSession = this.mSessions.get(position);
 
         if (convertView == null) {
@@ -68,21 +69,19 @@ public class VideoGridAdapter extends BaseAdapter implements Filterable {
 
         ImageView videoStatus = convertView.findViewById(R.id.img_upload_video);
 
-        String lRegex = "^(https?)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
-
-        if (mSession.getDeviceVideoLink().equals(lRegex)) {
-            videoStatus.setImageResource(R.drawable.icons8_cloud_v_rifi__96);
+        if(mSession.getServerVideoLink()!= null){
+           videoStatus.setImageResource(R.drawable.uploadtocloudblanc);
         }
 
         convertView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(mContext, SelectVideoActivity.class);
+                //TODO: erreur envoit Session
                 intent.putExtra("SessionModel", mSession);
                 mContext.startActivity(intent);
             }
         });
-
 
         return convertView;
     }

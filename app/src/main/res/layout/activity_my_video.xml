@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg"
-    tools:context=".activity.MyVideosActivity">
+    tools:context="fr.vyfe.activity.MyVideosActivity">
 
     <include
         android:id="@+id/appBar"
