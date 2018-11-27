@@ -175,6 +175,7 @@ public class InfoVideoActivity extends AppCompatActivity {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
+                btnEdit.setClickable(true);
                 btnEdit.setAlpha(1);
             }
 
