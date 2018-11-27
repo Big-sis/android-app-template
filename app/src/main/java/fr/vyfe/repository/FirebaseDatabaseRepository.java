@@ -1,11 +1,16 @@
 package fr.vyfe.repository;
 
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import fr.vyfe.Constants;
 import fr.vyfe.mapper.FirebaseMapper;
+import fr.vyfe.model.SessionModel;
 
 public abstract class FirebaseDatabaseRepository<Model> {
 
@@ -17,20 +22,30 @@ public abstract class FirebaseDatabaseRepository<Model> {
     private FirebaseMapper mapper;
     private String company;
     private String user;
+    private String session;
+    private String tagSetId;
     private String orderByChildKey;
     private String equalToKey;
+    private String childKey;
 
     public FirebaseDatabaseRepository(FirebaseMapper mapper, String company) {
-        this.mapper = mapper;
-        this.company = company;
-        databaseReference = FirebaseDatabase.getInstance(Constants.FIREBASE_DB_VERSION_URL).getReference(getRootNode());
-        databaseReference.keepSynced(true);
+        this(mapper, company, null, null);
     }
 
     public FirebaseDatabaseRepository(FirebaseMapper mapper, String company, String user) {
+        this(mapper, company, user, null, null);
+    }
+
+    public FirebaseDatabaseRepository(FirebaseMapper mapper, String company, String user, String session) {
+        this(mapper, company, user, session, null);
+    }
+
+    public FirebaseDatabaseRepository(FirebaseMapper mapper, String company, String user, String session, String tagSetId) {
         this.mapper = mapper;
         this.company = company;
         this.user = user;
+        this.session = session;
+        this.tagSetId = tagSetId;
         databaseReference = FirebaseDatabase.getInstance(Constants.FIREBASE_DB_VERSION_URL).getReference(getRootNode());
         databaseReference.keepSynced(true);
     }
@@ -42,6 +57,14 @@ public abstract class FirebaseDatabaseRepository<Model> {
 
     protected String getUser() {
         return this.user;
+    }
+
+    protected String getSession() {
+        return session;
+    }
+
+    protected String getTagSetId() {
+        return tagSetId;
     }
 
     public void setOrderByChildKey(String orderByChildKey) {
@@ -63,20 +86,44 @@ public abstract class FirebaseDatabaseRepository<Model> {
     }
 
     public void addChildListener(String childId, BaseSingleValueEventListener.CallbackInterface<Model> callback) {
+        this.addChildListener(childId, false, callback);
+    }
+
+    public void addChildListener(String childId, boolean singleValueEvent, BaseSingleValueEventListener.CallbackInterface<Model> callback) {
+        this.childKey = childId;
         childListener = new BaseSingleValueEventListener(mapper, callback);
-        databaseReference.child(childId).addValueEventListener(childListener);
+        if (singleValueEvent)
+            databaseReference.child(childId).addListenerForSingleValueEvent(childListener);
+        else
+            databaseReference.child(childId).addValueEventListener(childListener);
     }
 
     public void removeListeners() {
         if (listListener != null)
             databaseReference.removeEventListener(listListener);
         if (childListener != null)
-            databaseReference.removeEventListener(childListener);
+            databaseReference.child(childKey).removeEventListener(childListener);
     }
 
     public String push(Model model) {
         String key = databaseReference.push().getKey();
         databaseReference.child(key).setValue(mapper.unMap(model));
         return key;
+    }
+
+    public Task<Void> remove(String key) {
+        if (childListener != null)
+            databaseReference.child(key).removeEventListener(childListener);
+        return databaseReference.child(key).removeValue();
+    }
+
+    public void patch(String entityKey, HashMap<String, Object> properties) {
+        for (Map.Entry<String, Object> property : properties.entrySet()) {
+            databaseReference.child(entityKey).child(property.getKey()).setValue(property.getValue());
+        }
+    }
+
+    public Task<Void> put(SessionModel sessionModel) {
+        return databaseReference.child(sessionModel.getId()).setValue(mapper.unMap(sessionModel));
     }
 }

@@ -2,10 +2,10 @@ package fr.vyfe.repository;
 
 import java.util.List;
 
-import fr.vyfe.mapper.TagMapper;
 import fr.vyfe.mapper.TagSetMapper;
-import fr.vyfe.model.TagModel;
+import fr.vyfe.mapper.TemplateMapper;
 import fr.vyfe.model.TagSetModel;
+import fr.vyfe.model.TemplateModel;
 
 
 public class TagSetRepository extends FirebaseDatabaseRepository<TagSetModel>{
@@ -21,10 +21,10 @@ public class TagSetRepository extends FirebaseDatabaseRepository<TagSetModel>{
 
     // This methods has to work with BDD V2 strange architecture
     // It will be refactored with next BDD version
-    public void createTags(String key, List<TagModel> tags){
-        TagMapper mapper = new TagMapper();
-        for (TagModel tagModel: tags) {
-            databaseReference.child(key).child("Tags").push().setValue(mapper.unMap(tagModel));
+    public void createTemplates(String key, List<TemplateModel> templates){
+        TemplateMapper mapper = new TemplateMapper();
+        for (TemplateModel templateModel: templates) {
+            databaseReference.child(key).child("Tags").push().setValue(mapper.unMap(templateModel));
         }
     }
 }

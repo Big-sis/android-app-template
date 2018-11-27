@@ -3,7 +3,9 @@ package fr.vyfe.viewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
+import android.se.omapi.Session;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import fr.vyfe.model.SessionModel;
@@ -11,7 +13,7 @@ import fr.vyfe.repository.BaseListValueEventListener;
 import fr.vyfe.repository.SessionRepository;
 
 
-public class MyVideosViewModel extends ViewModel {
+public class MyVideosViewModel extends VyfeViewModel {
 
     private SessionRepository repository;
     private MutableLiveData<List<SessionModel>> sessions;
@@ -42,11 +44,12 @@ public class MyVideosViewModel extends ViewModel {
         repository.addListListener(new BaseListValueEventListener.CallbackInterface<SessionModel>() {
             @Override
             public void onSuccess(List<SessionModel> result) {
+                ArrayList<SessionModel> filtered = new ArrayList<>();
                 for (SessionModel session: result) {
-                    if (!session.getName().contains(filter))
-                        result.remove(session);
+                    if (session.getName().contains(filter))
+                        filtered.add(session);
                 }
-                sessions.setValue(result);
+                sessions.setValue(filtered);
             }
 
             @Override

@@ -2,28 +2,35 @@ package fr.vyfe.viewModel;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
-import android.arch.lifecycle.ViewModel;
 
-import fr.vyfe.model.SessionModel;
-import fr.vyfe.repository.BaseSingleValueEventListener;
+import java.util.List;
+
+import fr.vyfe.model.TagModel;
+import fr.vyfe.repository.BaseListValueEventListener;
 import fr.vyfe.repository.SessionRepository;
+import fr.vyfe.repository.TagRepository;
+import fr.vyfe.repository.TagSetRepository;
 
 
-public class PlayVideoViewModel extends ViewModel {
+public class PlayVideoViewModel extends VyfeViewModel {
 
-    private MutableLiveData<SessionModel> session;
-    private SessionRepository sessionRepository;
     private MutableLiveData<Integer> videoPosition;
     private MutableLiveData<Boolean> isPlaying;
-    private String sessionId;
+    private TagRepository tagRepository;
+    private MutableLiveData<List<TagModel>> tags;
 
-    public PlayVideoViewModel(String company, String sessionId) {
-        sessionRepository = new SessionRepository(company);
+    public PlayVideoViewModel(String companyId, String userId, String sessionId) {
+        sessionRepository = new SessionRepository(companyId);
+        tagSetRepository = new TagSetRepository(userId, companyId);
+        tagRepository = new TagRepository(companyId, userId, sessionId);
         isPlaying = new MutableLiveData<>();
-        isPlaying.setValue(false);
         videoPosition = new MutableLiveData<>();
-        videoPosition.setValue(0);
         this.sessionId = sessionId;
+    }
+
+    public void init() {
+        isPlaying.setValue(false);
+        videoPosition.setValue(0);
     }
 
     public LiveData<Integer> getVideoPosition() {
@@ -46,28 +53,25 @@ public class PlayVideoViewModel extends ViewModel {
         isPlaying.setValue(false);
     }
 
-    public LiveData<SessionModel> getSession(){
-        if (session == null) {
-            session = new MutableLiveData<>();
-            loadSession();
+    public MutableLiveData<List<TagModel>> getTags() {
+        if (tags == null) {
+            tags = new MutableLiveData<>();
+            loadTags();
         }
-        return session;
+        return tags;
     }
 
-    @Override
-    protected void onCleared() {
-        sessionRepository.removeListeners();
-    }
-
-    private void loadSession(){
-
-        sessionRepository.addChildListener(sessionId, new BaseSingleValueEventListener.CallbackInterface<SessionModel>() {
+    private void loadTags() {
+        tagRepository.addListListener(new BaseListValueEventListener.CallbackInterface<TagModel>() {
             @Override
-            public void onSuccess(SessionModel result) { session.setValue(result); }
+            public void onSuccess(List<TagModel> result) {
+                tags.postValue(result);
+            }
 
             @Override
-            public void onError(Exception e) { session.setValue(null); }
+            public void onError(Exception e) {
+                tags.setValue(null);
+            }
         });
-
     }
 }

@@ -21,19 +21,19 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 
+import fr.vyfe.Constants;
 import fr.vyfe.model.VimeoTokenModel;
 import fr.vyfe.service.UploadVideoService;
 import fr.vyfe.R;
-import fr.vyfe.adapter.TagRecyclerAdapter;
+import fr.vyfe.adapter.TemplateRecyclerAdapter;
 import fr.vyfe.model.SessionModel;
+import fr.vyfe.model.TagSetModel;
 import fr.vyfe.viewModel.SelectVideoViewModel;
 import fr.vyfe.viewModel.SelectVideoViewModelFactory;
 
 //TODO: Mise en place de Fragment?
 public class SelectVideoActivity extends VyfeActivity {
 
-    public static final String ID_SESSION = "idSession";
-    private SessionModel sessionModel;
     private SelectVideoViewModel viewModel;
     private IntentFilter mIntentFilter;
     private ImageView mIvUpload;
@@ -54,53 +54,57 @@ public class SelectVideoActivity extends VyfeActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selected_video);
 
-        Button play = findViewById(R.id.bt_play);
-        Button edit = findViewById(R.id.btn_edit);
-        final Button upload = findViewById(R.id.bt_upload);
-        ImageView video = findViewById(R.id.vv_preview);
+        Button playBtn = findViewById(R.id.bt_play);
+        Button editBtn = findViewById(R.id.btn_edit);
+        ImageView videoBtn = findViewById(R.id.vv_preview);
         final TextView tvTitle = findViewById(R.id.tv_title);
         final TextView tvDescription = findViewById(R.id.tv_description);
+        final RecyclerView recyclerTags = findViewById(R.id.re_tags);
         mIvUpload = findViewById(R.id.iv_upload);
 
         mIntentFilter = new IntentFilter();
         mIntentFilter.addAction("link");
 
-        sessionModel = getIntent().getParcelableExtra("SessionModel");
+        RecyclerView.LayoutManager layoutManagerTags = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
+        recyclerTags.setLayoutManager(layoutManagerTags);
 
-        if (sessionModel != null) {
-            viewModel = ViewModelProviders.of(this, new SelectVideoViewModelFactory( mAuth.getCurrentUser().getCompany(), sessionModel.getId())).get(SelectVideoViewModel.class);
-        }
+        viewModel = ViewModelProviders.of(this, new SelectVideoViewModelFactory(mAuth.getCurrentUser().getCompany(), mAuth.getCurrentUser().getId())).get(SelectVideoViewModel.class);
+        viewModel.init(getIntent().getStringExtra(Constants.SESSIONMODELID_EXTRA));
 
-        //TODO : Je passerais tt par des intent au lieu dapl mapper (moins long?)?
         viewModel.getSession().observe(this, new Observer<SessionModel>() {
             @Override
-            public void onChanged(@Nullable SessionModel sessionModel) {
+            public void onChanged(@Nullable SessionModel session) {
                 RecyclerView recyclerTags = findViewById(R.id.re_tags);
-                TagRecyclerAdapter adapterTags = new TagRecyclerAdapter(sessionModel.getTags(), "count");
+                TagRecyclerAdapter adapterTags = new TagRecyclerAdapter(session.getTags(), "count");
                 RecyclerView.LayoutManager layoutManagerTags = new LinearLayoutManager(getApplicationContext(), LinearLayoutManager.VERTICAL, false);
                 recyclerTags.setLayoutManager(layoutManagerTags);
                 recyclerTags.setAdapter(adapterTags);
 
-                if (sessionModel.getServerVideoLink() != null) {
+                if (session.getServerVideoLink() != null) {
                     upload.setClickable(false);
                     upload.setText(R.string.online);
                     upload.setAlpha(0.5f);
                 }
+              
+                if (session.getDescription() != null) {
+                    tvDescription.setText(session.getDescription());
+                } else {
+                    tvDescription.setText(R.string.no_description);
+                }
+
+                tvTitle.setText(session.getName());
             }
         });
 
-        if (sessionModel.getDescription() != null) {
-            tvDescription.setText(sessionModel.getDescription());
-        } else {
-            tvDescription.setText(R.string.no_description);
-        }
-
-        tvTitle.setText(sessionModel.getName());
-
-        clickButton(play, new Intent(SelectVideoActivity.this, PlayVideoActivity.class));
-        clickButton(video, new Intent(SelectVideoActivity.this, PlayVideoActivity.class));
-        clickButton(edit, new Intent(SelectVideoActivity.this, InfoVideoActivity.class));
-
+        viewModel.getTagSet().observe(this, new Observer<TagSetModel>() {
+            @Override
+            public void onChanged(@Nullable TagSetModel tagSetModel) {
+                if (tagSetModel != null) {
+                    TemplateRecyclerAdapter adapterTags = new TemplateRecyclerAdapter(tagSetModel.getTemplates(), "count");
+                    recyclerTags.setAdapter(adapterTags);
+                }
+            }
+        });
 
         upload.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -150,20 +154,17 @@ public class SelectVideoActivity extends VyfeActivity {
                     Toast.makeText(SelectVideoActivity.this, R.string.have_internet_connection, Toast.LENGTH_LONG).show();
             }
         });
+
+        clickButton(playBtn, new Intent(this, PlayVideoActivity.class));
+        clickButton(videoBtn, new Intent(this, PlayVideoActivity.class));
+        clickButton(editBtn, new Intent(this, EditSessionActivity.class));
     }
 
-    @Override
-    public void onBackPressed() {
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-    }
-
-    public void clickButton(View view, final Intent intent) {
+    private void clickButton(View view, final Intent intent) {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                intent.putExtra(ID_SESSION, sessionModel.getId());
-                intent.putExtra("SessionModel", sessionModel);
+                intent.putExtra(Constants.SESSIONMODELID_EXTRA, viewModel.getSessionId());
                 startActivity(intent);
             }
         });

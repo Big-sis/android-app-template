@@ -6,19 +6,19 @@ import android.support.annotation.NonNull;
 
 public class SelectVideoViewModelFactory implements ViewModelProvider.Factory {
 
+    private final String companyId;
     private final String userId;
-    private final String sessionId;
 
-    public SelectVideoViewModelFactory(String userId, String sessionId) {
+    public SelectVideoViewModelFactory(String companyId, String userId) {
+        this.companyId = companyId;
         this.userId = userId;
-        this.sessionId = sessionId;
     }
 
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.isAssignableFrom(SelectVideoViewModel.class))
-            return (T) new SelectVideoViewModel(userId, sessionId);
+            return (T) new SelectVideoViewModel(companyId, userId);
         throw new IllegalArgumentException("Unkowm ViewModel class");
     }
 }

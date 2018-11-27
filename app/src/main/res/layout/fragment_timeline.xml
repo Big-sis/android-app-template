@@ -9,7 +9,7 @@
 
     <!--Timeline avec image tag-->
     <LinearLayout
-        android:id="@+id/ll_main_playvideo"
+        android:id="@+id/ll_timeline_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"

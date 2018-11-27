@@ -1,48 +1,34 @@
 package fr.vyfe.model;
 
+import android.graphics.Color;
+import android.nfc.Tag;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.util.ArrayList;
+public class TagModel implements Parcelable, VyfeModel {
 
-import fr.vyfe.Constants;
-
-public class TagModel implements Parcelable{
-
-    private String tagId;
+    private String id;
     private ColorModel color;
-    private String tagName;
-    private ArrayList<TimeModel> times;
+    private String name;
+    private String templateId;
+    private String sessionId;
     private String taggerId;
-    private int leftOffset;
-    private int rigthOffset;
+    private int start;
+    private int end;
 
 
     public TagModel() {
-        leftOffset = Constants.STANDARD_LEFT_OFFSET;
-        rigthOffset = Constants.STANDARD_RIGHT_OFFSET;
     }
 
     protected TagModel(Parcel in) {
-        tagId = in.readString();
-        color = in.readParcelable(ColorModel.class.getClassLoader());
-        tagName = in.readString();
+        id = in.readString();
+        templateId = in.readString();
+        sessionId = in.readString();
         taggerId = in.readString();
-        leftOffset = in.readInt();
-        rigthOffset = in.readInt();
-        times = in.createTypedArrayList(TimeModel.CREATOR);
+        start = in.readInt();
+        end = in.readInt();
     }
 
-
-    public int getCount() {
-        return count;
-    }
-
-    public void setCount(int count) {
-        this.count = count;
-    }
-
-    private int count =0;
 
     public static final Creator<TagModel> CREATOR = new Creator<TagModel>() {
         @Override
@@ -56,20 +42,60 @@ public class TagModel implements Parcelable{
         }
     };
 
-    public int getLeftOffset() {
-        return leftOffset;
+    public static TagModel createFromTemplate(TemplateModel template) {
+        TagModel newTagModel = new TagModel();
+        newTagModel.setName(template.getName());
+        newTagModel.setTemplateId(template.getId());
+        newTagModel.setColor(template.getColor());
+        return newTagModel;
     }
 
-    public void setLeftOffset(int leftOffset) {
-        this.leftOffset = leftOffset;
+    public String getTaggerId() {
+        return taggerId;
     }
 
-    public int getRigthOffset() {
-        return rigthOffset;
+    public void setTaggerId(String taggerId) {
+        this.taggerId = taggerId;
     }
 
-    public void setRigthOffset(int rigthOffset) {
-        this.rigthOffset = rigthOffset;
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public int getStart() {
+        return start;
+    }
+
+    public void setStart(int start) {
+        this.start = start;
+    }
+
+    public int getEnd() {
+        return end;
+    }
+
+    public void setEnd(int end) {
+        this.end = end;
+    }
+
+    public String getTemplateId() {
+        return templateId;
+    }
+
+    public void setTemplateId(String templateId) {
+        this.templateId = templateId;
+    }
+
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
     }
 
     public ColorModel getColor() {
@@ -80,37 +106,12 @@ public class TagModel implements Parcelable{
         this.color = color;
     }
 
-    public String getTagName() {
-        return tagName;
+    public String getName() {
+        return name;
     }
 
-    public void setName(String tagName) {
-        this.tagName = tagName;
-    }
-
-    public ArrayList<TimeModel> getTimes() {
-        return times;
-    }
-
-    public void setTimes(ArrayList<TimeModel> times) {
-        this.times = times;
-    }
-
-
-    public String getTaggerId() {
-        return taggerId;
-    }
-
-    public void setTaggerId(String taggerId) {
-        this.taggerId = taggerId;
-    }
-
-    public String getTagId() {
-        return tagId;
-    }
-
-    public void setTagId(String tagId) {
-        this.tagId = tagId;
+    public void setName(String name) {
+        this.name = name;
     }
 
     @Override
@@ -120,13 +121,12 @@ public class TagModel implements Parcelable{
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(tagId);
-        dest.writeParcelable(color, 0);
-        dest.writeString(tagName);
+        dest.writeString(id);
+        dest.writeString(templateId);
+        dest.writeString(sessionId);
         dest.writeString(taggerId);
-        dest.writeInt(leftOffset);
-        dest.writeInt(rigthOffset);
-        dest.writeTypedList(times);
+        dest.writeInt(start);
+        dest.writeInt(end);
     }
 }
 

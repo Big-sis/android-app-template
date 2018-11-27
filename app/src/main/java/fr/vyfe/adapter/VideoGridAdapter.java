@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import fr.vyfe.Constants;
 import fr.vyfe.CustomVideoFilter;
 import fr.vyfe.R;
 import fr.vyfe.activity.SelectVideoActivity;
@@ -48,7 +49,7 @@ public class VideoGridAdapter extends BaseAdapter implements Filterable {
     }
 
     @Override
-    public Object getItem(int position) {
+    public SessionModel getItem(int position) {
         return mSessions.get(position);
     }
 
@@ -76,21 +77,11 @@ public class VideoGridAdapter extends BaseAdapter implements Filterable {
            videoStatus.setImageResource(R.drawable.uploadtocloudblanc);
         }
 
+        // TODO : Remove ImageViewSessionHelper
         //AFfichage miniature video
         ImageView videoView = convertView.findViewById(R.id.img_item_video);
         videoView.setImageBitmap(ImageViewSessionHelper.thumbnailSession(video.getVideoLink()));
-
-
-        convertView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(mContext, SelectVideoActivity.class);
-                //TODO: erreur envoit Session
-                intent.putExtra("SessionModel", mSession);
-                mContext.startActivity(intent);
-            }
-        });
-
+      
         return convertView;
     }
 

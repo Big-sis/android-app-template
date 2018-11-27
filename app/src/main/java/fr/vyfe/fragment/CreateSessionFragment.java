@@ -28,15 +28,15 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import fr.vyfe.Constants;
 import fr.vyfe.R;
 import fr.vyfe.activity.CreateGridActivity;
 import fr.vyfe.activity.CreateSessionActivity;
 import fr.vyfe.activity.RecordActivity;
-import fr.vyfe.adapter.TagRecyclerAdapter;
+import fr.vyfe.adapter.TemplateRecyclerAdapter;
 import fr.vyfe.adapter.TagSetSpinnerAdapter;
 import fr.vyfe.helper.KeyboardHelper;
 import fr.vyfe.helper.ScrollHelper;
-import fr.vyfe.model.SessionModel;
 import fr.vyfe.model.TagSetModel;
 import fr.vyfe.viewModel.CreateSessionViewModel;
 
@@ -58,7 +58,6 @@ public class CreateSessionFragment extends Fragment {
     private ScrollView scrollMain;
     private EditText mEtVideoTitle;
     private TagSetSpinnerAdapter tagSetsSpinnerAdapter;
-    private SessionModel sessionRestart;
 
     public static CreateSessionFragment newInstance() {
         return new CreateSessionFragment();
@@ -67,7 +66,6 @@ public class CreateSessionFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sessionRestart = getActivity().getIntent().getParcelableExtra("restartSession");
         viewModel = ViewModelProviders.of(getActivity()).get(CreateSessionViewModel.class);
     }
 
@@ -90,7 +88,7 @@ public class CreateSessionFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
 
-        if (sessionRestart != null) mEtVideoTitle.setText(sessionRestart.getName());
+        mEtVideoTitle.setText(viewModel.getSessionName());
 
         if (((CreateSessionActivity) getActivity()).isMulti) buttonGo.setText(R.string.next);
 
@@ -122,14 +120,14 @@ public class CreateSessionFragment extends Fragment {
         viewModel.getTagSets().observe(getActivity(), new Observer<ArrayList<TagSetModel>>() {
             @Override
             public void onChanged(@Nullable ArrayList<TagSetModel> tagSetModels) {
-                // Android spinner view is very tricky to bind to LiveDate objects.
+                // Android spinner view is very tricky to bind to LiveData objects.
                 // This is the most efficient solution I've found to make it work,
                 // it means rebuilding the sipnner and adapter after each data change event
                 tagSetsSpinnerAdapter = new TagSetSpinnerAdapter(getContext(), tagSetModels);
                 spinner.setAdapter(tagSetsSpinnerAdapter);
-                if (sessionRestart != null && viewModel.getSelectedTagSet().getValue()==null && tagSetModels!=null) {
+                if (viewModel.getSelectedTagSet().getValue()!=null && tagSetModels!=null) {
                     for (int i=0; i<tagSetModels.size(); i++ ) {
-                        if (tagSetModels.get(i).getId().equals(sessionRestart.getTagSetId()))
+                        if (tagSetModels.get(i).getId()!=null && tagSetModels.get(i).getId().equals(viewModel.getSelectedTagSet().getValue().getId()))
                             spinner.setSelection(i+1);
                     }
                 }
@@ -142,7 +140,7 @@ public class CreateSessionFragment extends Fragment {
                 if (tagSetModel != null){
                     RecyclerView.LayoutManager layoutManagerImport = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
                     recyclerViewImport.setLayoutManager(layoutManagerImport);
-                    recyclerViewImport.setAdapter(new TagRecyclerAdapter(tagSetModel.getTags(), "start"));
+                    recyclerViewImport.setAdapter(new TemplateRecyclerAdapter(tagSetModel.getTemplates(), "start"));
                     ScrollHelper.DownScroll(scrollMain);
                 }
             }
@@ -192,10 +190,9 @@ public class CreateSessionFragment extends Fragment {
 
                 Intent intent = new Intent(getContext(), RecordActivity.class);
 
-                if (viewModel.getSession().getTags() == null
-                        || viewModel.getSession().getTags().isEmpty()
-                        || viewModel.getSession().getName() == null
-                        || viewModel.getSession().getName().isEmpty()) {
+                if (viewModel.getSelectedTagSet() == null
+                        || viewModel.getSessionName() == null
+                        || viewModel.getSessionName().isEmpty()) {
                     Toast.makeText(getContext(), R.string.tagset_title_warning, Toast.LENGTH_LONG).show();
                 } else {
                     //TODO : à voir cmt on le gere quand la raspberry sera en place
@@ -215,8 +212,12 @@ public class CreateSessionFragment extends Fragment {
                         });
 
                     } else {
-                        intent.putExtra("SessionModel", viewModel.getSession());
-                        startActivity(intent);
+                        try {
+                            intent.putExtra(Constants.SESSIONMODELID_EXTRA, viewModel.pushSession());
+                            startActivity(intent);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
             }

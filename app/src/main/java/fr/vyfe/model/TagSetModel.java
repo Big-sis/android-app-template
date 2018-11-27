@@ -7,17 +7,17 @@ import android.support.v7.util.DiffUtil;
 
 import java.util.ArrayList;
 
-public class TagSetModel implements Parcelable {
+public class TagSetModel implements Parcelable, VyfeModel {
     private String id;
     private String name;
-    private ArrayList<TagModel> tags;
+    private ArrayList<TemplateModel> tagTemplates;
 
     public TagSetModel() {}
 
     protected TagSetModel(Parcel in) {
         id = in.readString();
         name = in.readString();
-        tags = in.createTypedArrayList(TagModel.CREATOR);
+        tagTemplates = in.createTypedArrayList(TemplateModel.CREATOR);
     }
 
     public static final Creator<TagSetModel> CREATOR = new Creator<TagSetModel>() {
@@ -48,16 +48,16 @@ public class TagSetModel implements Parcelable {
         this.name = name;
     }
 
-    public ArrayList<TagModel> getTags() {
-        return tags;
+    public ArrayList<TemplateModel> getTemplates() {
+        return tagTemplates;
     }
 
-    public void setTags(ArrayList<TagModel> tags) {
-        this.tags = tags;
+    public void setTagTemplates(ArrayList<TemplateModel> tagTemplates) {
+        this.tagTemplates = tagTemplates;
     }
 
-    public void addTag(TagModel tag){
-        this.tags.add(tag);
+    public void addTag(TemplateModel tag){
+        this.tagTemplates.add(tag);
     }
 
     @Override
@@ -69,7 +69,7 @@ public class TagSetModel implements Parcelable {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
         dest.writeString(name);
-        dest.writeTypedList(tags);
+        dest.writeTypedList(tagTemplates);
     }
 
     public static final DiffUtil.ItemCallback<TagSetModel> DIFF_CALLBACK =

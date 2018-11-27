@@ -1,6 +1,8 @@
 package fr.vyfe.mapper;
 
 
+import android.support.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -13,7 +15,7 @@ import fr.vyfe.model.TagModel;
 public class SessionMapper extends FirebaseMapper<SessionEntity, SessionModel> {
 
     @Override
-    public SessionModel map(SessionEntity sessionEntity, String key) {
+    public SessionModel map(@NonNull SessionEntity sessionEntity, String key) {
         SessionModel session = new SessionModel();
         session.setAuthor(sessionEntity.getAuthor());
         session.setDate(new Date(sessionEntity.getDate()));
@@ -48,7 +50,7 @@ public class SessionMapper extends FirebaseMapper<SessionEntity, SessionModel> {
     }
 
     @Override
-    public HashMap<String, SessionEntity> unMapList(List<SessionModel> to) {
+    public HashMap<String, SessionEntity> unMapList(List<SessionModel> models) {
         return null;
     }
 

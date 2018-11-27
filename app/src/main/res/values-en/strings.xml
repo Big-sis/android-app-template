@@ -119,6 +119,8 @@
     <string name="color_gradient_magenta_light">Violet Clair</string>
     <string name="color_gradient_green_lightgreen">Vert</string>
     <string name="color_gradient_grey">Gris</string>
-    <string name="grid_name_empty_warning">Vous devez renseigner un titre à votre grille et des tags</string>
+    <string name="grid_name_empty_warning">Vous devez renseigner un titre à votre grille et des tagTemplates</string>
     <string name="save_grid_info">Grid saved</string>
+    <string name="permission_request">Vyfe app need permissions to record a video. Please check your config</string>
+    <string name="camera_error">This device is not supported for video record</string>
 </resources>

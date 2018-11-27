@@ -11,11 +11,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 
-import fr.vyfe.adapter.TagRecyclerAdapter;
-import fr.vyfe.fragment.TimelineFragment;
+import fr.vyfe.Constants;
+import fr.vyfe.adapter.TemplateRecyclerAdapter;
+import fr.vyfe.fragment.TimelinePlayFragment;
 import fr.vyfe.fragment.VideoPlayerFragment;
 import fr.vyfe.R;
 import fr.vyfe.model.SessionModel;
+import fr.vyfe.model.TagSetModel;
 import fr.vyfe.viewModel.PlayVideoViewModel;
 import fr.vyfe.viewModel.PlayVideoViewModelFactory;
 
@@ -24,44 +26,45 @@ import fr.vyfe.viewModel.PlayVideoViewModelFactory;
  */
 public class PlayVideoActivity extends VyfeActivity implements LifecycleOwner {
 
-    private String sessionId;
     private PlayVideoViewModel viewModel;
     private RecyclerView mRecyclerView;
-    private TagRecyclerAdapter mAdapterTags;
+    private TemplateRecyclerAdapter mAdapterTags;
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        sessionId = getIntent().getStringExtra(SelectVideoActivity.ID_SESSION);
-        viewModel = ViewModelProviders.of(this, new PlayVideoViewModelFactory(mAuth.getCurrentUser().getId(), sessionId)).get(PlayVideoViewModel.class);
+        String sessionId = getIntent().getStringExtra(Constants.SESSIONMODELID_EXTRA);
+        viewModel = ViewModelProviders.of(this, new PlayVideoViewModelFactory(mAuth.getCurrentUser().getCompany(), mAuth.getCurrentUser().getId(), sessionId)).get(PlayVideoViewModel.class);
+        viewModel.init();
 
         setContentView(R.layout.activity_play_video);
         //TODO: affichage des tags ne fonctionne pas
-        replaceFragment(R.id.scrollTimeline, TimelineFragment.newInstance());
+        replaceFragment(R.id.scrollTimeline, TimelinePlayFragment.newInstance());
         replaceFragment(R.id.constraint_video_player, VideoPlayerFragment.newInstance());
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        viewModel.getSession().observe(this, new Observer<SessionModel>() {
-            @Override                       //TODO BDD2
-            public void onChanged(@Nullable SessionModel sessionModel) {
-                getSupportActionBar().setTitle(sessionModel.getName());
-            }
-        });
-
 
         mRecyclerView = findViewById(R.id.re_tags_selected);
 
+        RecyclerView.LayoutManager layoutManagerTags = new LinearLayoutManager(PlayVideoActivity.this, LinearLayoutManager.VERTICAL, false);
+        mRecyclerView.setLayoutManager(layoutManagerTags);
+
         viewModel.getSession().observe(this, new Observer<SessionModel>() {
             @Override
-            public void onChanged(@Nullable SessionModel sessionModel) {
-                mAdapterTags = new TagRecyclerAdapter(sessionModel.getTags(), "count");
-                RecyclerView.LayoutManager layoutManagerTags = new LinearLayoutManager(PlayVideoActivity.this, LinearLayoutManager.VERTICAL, false);
-                mRecyclerView.setLayoutManager(layoutManagerTags);
+            public void onChanged(@Nullable SessionModel session) {
+                getSupportActionBar().setTitle(session.getName());
+            }
+        });
 
-                mRecyclerView.setAdapter(mAdapterTags);
+        viewModel.getTagSet().observe(this, new Observer<TagSetModel>() {
+            @Override
+            public void onChanged(@Nullable TagSetModel tagSet) {
+                if (tagSet != null) {
+                    mAdapterTags = new TemplateRecyclerAdapter(tagSet.getTemplates(), "count");
+                    mRecyclerView.setAdapter(mAdapterTags);
+                }
             }
         });
     }

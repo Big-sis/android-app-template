@@ -13,18 +13,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 
-import com.google.common.hash.HashCode;
 import com.google.common.hash.Hashing;
 
 import java.nio.charset.Charset;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
+import fr.vyfe.Constants;
 import fr.vyfe.R;
-import fr.vyfe.RestartSession;
-import fr.vyfe.fragment.RecordVideoFragment;
-import fr.vyfe.fragment.TagsSetFragment;
-import fr.vyfe.fragment.TimelineRealTimeFragment;
+import fr.vyfe.fragment.RecordPlayerFragment;
+import fr.vyfe.fragment.TagSetRecordFragment;
+import fr.vyfe.fragment.TimelineRecordFragment;
 import fr.vyfe.model.SessionModel;
 import fr.vyfe.viewModel.RecordVideoViewModel;
 import fr.vyfe.viewModel.RecordVideoViewModelFactory;
@@ -45,20 +42,17 @@ public class RecordActivity extends VyfeActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
         //TODO: cmt utiliser mm fragment que timelineRealTime
-        replaceFragment(R.id.scroll_timeline, TimelineRealTimeFragment.newInstance());
-        replaceFragment(R.id.scroll_tagset, TagsSetFragment.newInstance());
-        replaceFragment(R.id.constraint_video_record, RecordVideoFragment.newInstance());
+        replaceFragment(R.id.scroll_timeline, TimelineRecordFragment.newInstance());
+        replaceFragment(R.id.scroll_tagset, TagSetRecordFragment.newInstance());
+        replaceFragment(R.id.constraint_video_record, RecordPlayerFragment.newInstance());
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.record_session);
 
-        viewModel = ViewModelProviders.of(this, new RecordVideoViewModelFactory(mAuth.getCurrentUser().getCompany())).get(RecordVideoViewModel.class);
-        SessionModel session = getIntent().getParcelableExtra("SessionModel");
-        String idAndroid = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
-        session.setIdAndroid(Hashing.sha256().hashString(idAndroid, Charset.defaultCharset()).toString());
-        session.setAuthor(mAuth.getCurrentUser().getId());
-        viewModel.init(session);
+        String sessionId = getIntent().getStringExtra(Constants.SESSIONMODELID_EXTRA);
+        viewModel = ViewModelProviders.of(this, new RecordVideoViewModelFactory(mAuth.getCurrentUser().getId(), mAuth.getCurrentUser().getCompany(), sessionId)).get(RecordVideoViewModel.class);
+        viewModel.init();
 
         constraintErrorSpace = findViewById(R.id.session_error_space);
         contrainOkRecord = findViewById(R.id.session_record);
@@ -71,7 +65,7 @@ public class RecordActivity extends VyfeActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(RecordActivity.this, SelectVideoActivity.class);
-                intent.putExtra("SessionModel", viewModel.getSession());
+                intent.putExtra(Constants.SESSIONMODELID_EXTRA, viewModel.getSessionId());
                 startActivity(intent);
             }
         });
@@ -93,19 +87,13 @@ public class RecordActivity extends VyfeActivity {
         btnRestart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String nameTitleSession = RestartSession.implementTitleGrid(viewModel.getSession().getName());
-
-                viewModel.getSession().setName(nameTitleSession);
-
                 Intent intent = new Intent(RecordActivity.this, CreateSessionActivity.class);
-                intent.putExtra("restartSession", viewModel.getSession());
-
+                intent.putExtra(Constants.SESSIONMODELID_EXTRA, viewModel.getSessionId());
                 startActivity(intent);
-
             }
         });
 
-        viewModel.isRecording().observe(this, new Observer<String>() {
+        viewModel.getStep().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String step) {
                 if (step.equals("save")) {
@@ -128,7 +116,7 @@ public class RecordActivity extends VyfeActivity {
     }
 
     public void saveAlertDialog(final Intent intent) {
-        if (viewModel.isRecording().getValue().equals("recording")) {
+        if (viewModel.isRecording()) {
 
             //  sessionRecord.setVisibility(View.GONE);
             final AlertDialog.Builder builder = new AlertDialog.Builder(RecordActivity.this);

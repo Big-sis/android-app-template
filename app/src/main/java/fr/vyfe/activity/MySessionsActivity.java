@@ -2,20 +2,21 @@ package fr.vyfe.activity;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.vyfe.Constants;
 import fr.vyfe.R;
 import fr.vyfe.adapter.VideoGridAdapter;
 import fr.vyfe.helper.AndroidHelper;
@@ -23,14 +24,11 @@ import fr.vyfe.model.SessionModel;
 import fr.vyfe.viewModel.MyVideosViewModel;
 import fr.vyfe.viewModel.MyVideosViewModelFactory;
 
-import static android.os.Environment.DIRECTORY_MOVIES;
-import static android.os.Environment.getExternalStoragePublicDirectory;
-
 /**
  * Activity presents cache memory videos and device videos
  * The user can select one and view it
  */
-public class MyVideosActivity extends VyfeActivity {
+public class MySessionsActivity extends VyfeActivity {
     MyVideosViewModel viewModel;
 
     @Override
@@ -53,7 +51,7 @@ public class MyVideosActivity extends VyfeActivity {
         viewModel.getSessions().observe(this, new Observer<List<SessionModel>>() {
             @Override
             public void onChanged(@Nullable List<SessionModel> sessions) {
-                gridView.setAdapter(new VideoGridAdapter(MyVideosActivity.this, (ArrayList<SessionModel>) sessions));
+                gridView.setAdapter(new VideoGridAdapter(MySessionsActivity.this, (ArrayList<SessionModel>) sessions));
             }
         });
 
@@ -71,6 +69,16 @@ public class MyVideosActivity extends VyfeActivity {
             public boolean onQueryTextChange(String s) {
                 viewModel.setFilter(s);
                 return false;
+            }
+        });
+
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(MySessionsActivity.this, SelectVideoActivity.class);
+                SessionModel sessionModel = (SessionModel) parent.getItemAtPosition(position);
+                intent.putExtra(Constants.SESSIONMODELID_EXTRA, sessionModel.getId());
+                MySessionsActivity.this.startActivity(intent);
             }
         });
     }
