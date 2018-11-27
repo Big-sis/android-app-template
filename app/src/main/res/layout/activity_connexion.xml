@@ -58,24 +58,39 @@
                     app:fontFamily="@font/roboto_bold"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/iv_logo" />
-
-                <EditText
-                    android:id="@+id/et_mail"
-                    android:layout_width="match_parent"
+                <LinearLayout
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="25dp"
-                    android:background="@drawable/style_input"
-                    android:ems="10"
-                    android:hint="@string/email"
-                    android:includeFontPadding="false"
-                    android:inputType="textEmailAddress"
-                    android:padding="15dp"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/white"
-                    android:textSize="18sp"
-                    app:fontFamily="@font/roboto"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/tv_connected" />
+                    android:orientation="horizontal">
+                    <EditText
+                        android:id="@+id/et_mail"
+                        android:layout_width="0dp"
+                        android:layout_weight="0.9"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="25dp"
+                        android:background="@drawable/style_input"
+                        android:ems="10"
+                        android:hint="@string/email"
+                        android:includeFontPadding="false"
+                        android:inputType="textEmailAddress"
+                        android:padding="15dp"
+                        android:textColor="@color/white"
+                        android:textColorHint="@color/white"
+                        android:textSize="18sp"
+                        app:fontFamily="@font/roboto"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_connected" />
+                    <ImageView
+                        android:id="@+id/iv_show_password2"
+                        android:layout_width="0dp"
+                        android:layout_height="40dp"
+                        android:visibility="invisible"
+                        android:src="@drawable/keypassword"
+                        android:layout_gravity="bottom"
+                        android:layout_weight="0.1"/>
+
+                </LinearLayout>
+
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -103,9 +118,10 @@
                         android:id="@+id/iv_show_password"
                         android:layout_width="0dp"
                         android:layout_height="40dp"
+                        android:layout_weight="0.1"
                         android:src="@drawable/keypassword"
                         android:layout_gravity="bottom"
-                        android:layout_weight="0.1"/>
+                        />
                 </LinearLayout>
 
 
