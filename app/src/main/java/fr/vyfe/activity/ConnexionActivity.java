@@ -61,7 +61,7 @@ public class ConnexionActivity extends AppCompatActivity {
         });
 
 
-        Button connexion = findViewById(R.id.btn_connected);
+        Button connexion = findViewById(R.id.btn_connect);
         connexion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

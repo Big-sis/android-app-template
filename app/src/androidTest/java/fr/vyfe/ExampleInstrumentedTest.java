@@ -1,4 +1,4 @@
-package fr.wildcodeschool.vyfe;
+package fr.vyfe;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("fr.wildcodeschool.vyfe", appContext.getPackageName());
+        assertEquals("fr.vyfe", appContext.getPackageName());
     }
 }
