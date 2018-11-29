@@ -38,8 +38,10 @@ public class MySessionsActivity extends VyfeActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_video);
-
-        viewModel = ViewModelProviders.of(this, new MyVideosViewModelFactory(mAuth.getCurrentUser().getCompany(), AndroidHelper.getAndroidId(this))).get(MyVideosViewModel.class);
+        //TODO: revoir permission
+        checkPersmissions(MySessionsActivity.PERMISSIONS);
+        if (checkPersmissions(MySessionsActivity.PERMISSIONS))
+            viewModel = ViewModelProviders.of(this, new MyVideosViewModelFactory(mAuth.getCurrentUser().getCompany(), AndroidHelper.getAndroidId(this))).get(MyVideosViewModel.class);
 
         final GridView gridView = findViewById(R.id.grid_videos);
         SearchView searchView = findViewById(R.id.search_video);
@@ -51,7 +53,7 @@ public class MySessionsActivity extends VyfeActivity {
         ImageView search = searchView.findViewById(android.support.v7.appcompat.R.id.search_button);
         search.setImageResource(android.R.drawable.ic_menu_search);
 
-        viewModel.getSessions().observe(this, new Observer<List<SessionModel>>() {
+        if (checkPersmissions(MySessionsActivity.PERMISSIONS))viewModel.getSessions().observe(this, new Observer<List<SessionModel>>() {
             @Override
             public void onChanged(@Nullable List<SessionModel> sessions) {
                 gridView.setAdapter(new VideoGridAdapter(MySessionsActivity.this, (ArrayList<SessionModel>) sessions));
@@ -70,7 +72,7 @@ public class MySessionsActivity extends VyfeActivity {
 
             @Override
             public boolean onQueryTextChange(String s) {
-                viewModel.setFilter(s);
+                if (checkPersmissions(MySessionsActivity.PERMISSIONS))viewModel.setFilter(s);
                 return false;
             }
         });

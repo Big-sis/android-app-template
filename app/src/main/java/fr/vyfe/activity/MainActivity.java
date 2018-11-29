@@ -46,6 +46,7 @@ public class MainActivity extends VyfeActivity {
         LinearLayout btnVideos = findViewById(R.id.btn_videos);
         LinearLayout btnCreateGrid = findViewById(R.id.btn_create_grid);
 
+
         btnStartSession.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

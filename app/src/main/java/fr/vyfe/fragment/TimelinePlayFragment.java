@@ -2,7 +2,10 @@ package fr.vyfe.fragment;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,6 +15,7 @@ import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -110,7 +114,7 @@ public class TimelinePlayFragment extends Fragment {
 
                                 iv.setBackgroundResource(tag.getColor().getImage());
 
-                                int tagLength = (tag.getEnd() - tag.getStart()) * timelineWidth / videoDuration;
+                                int tagLength = Math.max(convertToDp(25), tag.getEnd() - tag.getStart()) * timelineWidth / videoDuration;
                                 RelativeLayout.LayoutParams layoutParamsIv = new RelativeLayout.LayoutParams(
                                         tagLength, LinearLayout.LayoutParams.WRAP_CONTENT);
                                 layoutParamsIv.setMargins(tag.getStart() * timelineWidth / videoDuration, convertToDp(8), 0, convertToDp(8));
@@ -120,6 +124,22 @@ public class TimelinePlayFragment extends Fragment {
                                 RelativeLayout timelineRow = containerLayout.findViewWithTag(tag.getTemplateId());
                                 timelineRow.addView(iv);
                             }
+                        }
+                    });
+
+                    //Thumb adapter à la Timeline
+                    ViewTreeObserver vto = mSeekBar.getViewTreeObserver();
+                    vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                        public boolean onPreDraw() {
+                            Drawable thumb = getResources().getDrawable(R.drawable.thumb_blue);
+                            int h = containerLayout.getMeasuredHeight();
+                            Bitmap bmpOrg = ((BitmapDrawable) thumb).getBitmap();
+                            Drawable newThumb = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bmpOrg, WIDTH_THUMB, h, true));
+                            newThumb.setBounds(0, 0, newThumb.getIntrinsicWidth(), newThumb.getIntrinsicHeight());
+                            mSeekBar.setThumb(newThumb);
+                            mSeekBar.getViewTreeObserver().removeOnPreDrawListener(this);
+
+                            return true;
                         }
                     });
                 }

@@ -1,8 +1,9 @@
 <resources>
     <string name="app_name">Vyfe</string>
-    <string name="video_tittle">Titre de la vidéo</string>
+    <string name="video_tittle">Nom : </string>
     <string name="video_info">Informations sur la vidéo</string>
-    <string name="no_description">Pas de description</string>
+    <string name="no_description">Pas de description </string>
+    <string name="description">Description : </string>
     <string name="play_video">Visionner</string>
     <string name="edit">Modifier</string>
     <string name="upload">Uploader</string>
@@ -22,7 +23,7 @@
     <string name="add_description">Ajouter une description</string>
     <string name="my_analyse">Mes grilles d\'analyses</string>
     <string name="grid_title">Titre de la grille</string>
-    <string name="create_tags">Créer des tagTemplates</string>
+    <string name="create_tags">Créer des tags</string>
     <string name="go">Démarrer</string>
     <string name="back">Retour</string>
     <string name="share_url">Partagez l\'adresse URL à vos apprenants</string>
@@ -96,7 +97,7 @@
     <string name="expired_day">Attention, il ne vous reste qu\'un jour d\'utilidation</string>
     <string name="invalid_date">Date invalide</string>
     <string name="expired_licence">Votre licence a expiré, merci de nous contacter pour la prolonger</string>
-    <string name="save_session">Voulez vous sauver la session en cours ?</string>
+    <string name="save_session">Voulez vous enregistré la session en cours ?</string>
     <string name="free_storage">Stockage disponible : </string>
     <string name="pourcentage"> %</string>
     <string name="fullstorage">\nAttention votre stockage est plein !\nFonctionnalités limitées</string>
@@ -131,10 +132,14 @@
     <string name="color_gradient_green_lightgreen">Vert</string>
     <string name="color_gradient_grey">Gris</string>
     <string name="grid_name_empty_warning">Vous devez renseigner un titre à votre grille et des tagTemplates</string>
-    <string name="save_grid_info">Grid saved</string>
+    <string name="save_grid_info">Grille enregistrée</string>
     <string name="permission_request">Vyfe app need permissions to record a video. Please check your config</string>
     <string name="camera_error">This device is not supported for video record</string>
     <string name="connection">Vous devez vous connecter</string>
     <string name="ask_permissions">Demande de permissions</string>
     <string name="ask_permissions_message">Pour fonctionner correctement, l\'application à besoin d\'utiliser le son, la caméra et le stockage de votre tablette</string>
+    <string name="used_grid">Grille utilisée : </string>
+    <string name="space" />
+    <string name="delete_session">Vidéo supprimée</string>
+    <string name="save_session_record">Video enregistré:</string>
 </resources>

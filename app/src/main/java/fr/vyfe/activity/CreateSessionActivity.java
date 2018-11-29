@@ -33,8 +33,9 @@ public class CreateSessionActivity extends VyfeActivity {
         UserModel currentUser = mAuth.getCurrentUser();
         String androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
         viewModel = ViewModelProviders.of(this, new CreateSessionViewModelFactory(currentUser.getId(), currentUser.getCompany(), androidId)).get(CreateSessionViewModel.class);
-        if (getIntent().hasExtra(Constants.SESSIONMODEL_EXTRA))
-            viewModel.init((SessionModel) getIntent().getParcelableExtra(Constants.SESSIONMODEL_EXTRA));
+        if (getIntent().hasExtra(Constants.SESSIONMODELID_EXTRA))
+            viewModel.init((SessionModel) getIntent().getParcelableExtra(Constants.SESSIONMODELID_EXTRA));
+
 
         setContentView(R.layout.activity_create_session);
 

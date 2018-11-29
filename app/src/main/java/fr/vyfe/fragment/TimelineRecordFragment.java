@@ -98,7 +98,7 @@ public class TimelineRecordFragment extends Fragment {
                     iv.setLayoutParams(layoutParamsIv);
                     iv.setMinimumHeight(convertToDp(25));
                     iv.setBackgroundResource(tag.getColor().getImage());
-                    iv.setMinimumWidth(convertToDp(tag.getEnd() - tag.getStart()));
+                    iv.setMinimumWidth(convertToDp((Math.max(convertToDp(25), tag.getEnd() - tag.getStart()))));
 
                     RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                             LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);

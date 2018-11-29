@@ -6,6 +6,7 @@ import android.arch.lifecycle.MutableLiveData;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.vyfe.RestartSession;
 import fr.vyfe.model.SessionModel;
 import fr.vyfe.model.TagSetModel;
 import fr.vyfe.repository.BaseListValueEventListener;
@@ -32,7 +33,7 @@ public class CreateSessionViewModel extends VyfeViewModel {
     }
 
     public void init(SessionModel session) {
-        this.setSessionName(session.getName());
+        this.setSessionName(RestartSession.implementTitleGrid(session.getName()));
         this.selectedTagSetId = session.getTagSetId();
     }
 

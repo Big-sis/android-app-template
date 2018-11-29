@@ -38,7 +38,7 @@ public class EditSessionActivity extends VyfeActivity {
         Button btnCancel = findViewById(R.id.btn_cancel);
         Button btnConfirmDelete = findViewById(R.id.btn_confirm_delete);
         Button btnDelete = findViewById(R.id.btn_delete);
-        Button btnEdit = findViewById(R.id.bt_edit);
+        final Button btnEdit = findViewById(R.id.bt_edit);
         final ConstraintLayout confirmDelete = findViewById(R.id.confirm_delete);
         final EditText etDescription = findViewById(R.id.et_description);
         final EditText etSessionTitle = findViewById(R.id.et_video_title);
@@ -58,6 +58,42 @@ public class EditSessionActivity extends VyfeActivity {
                     etDescription.setText(sessionModel.getDescription());
                     etSessionTitle.setText(sessionModel.getName());
                 }
+
+                etDescription.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        btnEdit.setAlpha(1);
+                        viewModel.setNewDescription(s.toString());
+                    }
+                });
+
+                etSessionTitle.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                    }
+
+                    @Override
+                    public void afterTextChanged(Editable s) {
+                        btnEdit.setAlpha(1);
+                        viewModel.setNewName(s.toString());
+                    }
+                });
             }
         });
 
@@ -75,7 +111,7 @@ public class EditSessionActivity extends VyfeActivity {
                      @Override
                      public Void then(@NonNull Task<Void> task) throws Exception {
                          if (task.isSuccessful()) {
-                             Toast.makeText(EditSessionActivity.this, "Vidéo supprimée", Toast.LENGTH_SHORT).show();
+                             Toast.makeText(EditSessionActivity.this, R.string.delete_session, Toast.LENGTH_SHORT).show();
                              Intent intent = new Intent(EditSessionActivity.this, MySessionsActivity.class);
                              startActivity(intent);
                          }
@@ -94,39 +130,9 @@ public class EditSessionActivity extends VyfeActivity {
             }
         });
 
-        etDescription.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-            }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
 
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                viewModel.setNewDescription(s.toString());
-            }
-        });
-
-        etSessionTitle.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                viewModel.setNewName(s.toString());
-            }
-        });
 
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override

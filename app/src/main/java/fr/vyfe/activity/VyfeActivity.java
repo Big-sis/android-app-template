@@ -83,6 +83,14 @@ public abstract class VyfeActivity extends AppCompatActivity {
             mAuth.signOut();
             finish();
         }
+
+        //TODO: revoir l'ordre d'execution
+        if(null==mAuth.getCurrentUser()){
+            Toast.makeText(this, "Vous devez vous co", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(this, ConnexionActivity.class);
+            this.startActivity(intent);
+            finish();}
+
     }
 
     public boolean checkPersmissions(final String[] permissions) {
@@ -107,4 +115,6 @@ public abstract class VyfeActivity extends AppCompatActivity {
         else
             return true;
     }
+
+
 }

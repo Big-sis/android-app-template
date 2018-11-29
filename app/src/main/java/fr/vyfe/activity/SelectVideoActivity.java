@@ -11,8 +11,10 @@ import android.content.IntentFilter;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.ActionBar;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -50,6 +52,7 @@ public class SelectVideoActivity extends VyfeActivity {
         Button editBtn = findViewById(R.id.btn_edit);
         final TextView tvTitle = findViewById(R.id.tv_title);
         final TextView tvDescription = findViewById(R.id.tv_description);
+        final TextView gridTextView = findViewById(R.id.tv_grid);
         final RecyclerView recyclerTags = findViewById(R.id.re_tags);
         mIvUpload = findViewById(R.id.iv_upload);
         uploadButton = findViewById(R.id.btn_upload);
@@ -131,6 +134,9 @@ public class SelectVideoActivity extends VyfeActivity {
                     TemplateRecyclerAdapter adapterTags = new TemplateRecyclerAdapter(tagSetModel.getTemplates(), "count");
                     recyclerTags.setAdapter(adapterTags);
                 }
+
+                assert tagSetModel != null;
+                gridTextView.setText(tagSetModel.getName());
             }
         });
 
@@ -148,4 +154,6 @@ public class SelectVideoActivity extends VyfeActivity {
             }
         });
     }
+
+
 }

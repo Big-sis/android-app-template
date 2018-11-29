@@ -7,6 +7,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.provider.MediaStore;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -200,6 +201,7 @@ public class SessionModel implements Parcelable, VyfeModel {
     }
 
     public String getFormatDate() {
-        return this.date.toString();
+        SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yy HH:mm");
+        return dt.format(new Date(this.date.getTime()));
     }
 }
