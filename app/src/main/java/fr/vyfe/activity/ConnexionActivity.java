@@ -18,8 +18,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
+import androidx.test.espresso.IdlingResource;
 import fr.vyfe.R;
 import fr.vyfe.helper.AuthHelper;
+import fr.vyfe.idlingResource.SimpleIdlingResource;
 import fr.vyfe.model.UserModel;
 
 
@@ -32,7 +37,11 @@ public class ConnexionActivity extends AppCompatActivity {
     /**
      * This activity allows the user to log in
      */
-  private int mPasswordHidden = 129;
+    private int mPasswordHidden = 129;
+
+    // The Idling Resource which will be null in production.
+    @Nullable
+    private SimpleIdlingResource mIdlingResource;
 
 
     @Override
@@ -55,7 +64,7 @@ public class ConnexionActivity extends AppCompatActivity {
                 if (inputPass.getInputType() == mPasswordHidden) {
                     inputPass.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                 } else {
-                    inputPass.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    inputPass.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
                 }
             }
         });
@@ -96,7 +105,6 @@ public class ConnexionActivity extends AppCompatActivity {
                         @Override
                         public void onLogginFailed(Exception e) {
                             Toast.makeText(ConnexionActivity.this, R.string.bad_authentifiaction, Toast.LENGTH_SHORT).show();
-
                         }
                     });
                 }
@@ -149,6 +157,18 @@ public class ConnexionActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    /**
+     * Only called from test, creates and returns a new {@link SimpleIdlingResource}.
+     */
+    @VisibleForTesting
+    @NonNull
+    public IdlingResource getIdlingResource() {
+        if (mIdlingResource == null) {
+            mIdlingResource = new SimpleIdlingResource();
+        }
+        return mIdlingResource;
     }
 
 }

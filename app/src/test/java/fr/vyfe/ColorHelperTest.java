@@ -25,7 +25,6 @@ public class ColorHelperTest {
         assertEquals(R.drawable.color_gradient_blue_light, ColorHelper.getInstance().findColorById("color_gradient_blue_light").getImage());
         assertEquals(R.drawable.color_gradient_faded_orange, ColorHelper.getInstance().findColorById("color_gradient_faded_orange").getImage());
         assertEquals(R.drawable.color_gradient_green, ColorHelper.getInstance().findColorById("color_gradient_green").getImage());
-        assertEquals(R.drawable.color_gradient_grey, ColorHelper.getInstance().findColorById("color_gradient_grey").getImage());
         assertEquals(R.drawable.color_gradient_rosy, ColorHelper.getInstance().findColorById("color_gradient_rosy").getImage());
     }
 }
