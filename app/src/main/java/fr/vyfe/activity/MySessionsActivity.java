@@ -41,7 +41,6 @@ public class MySessionsActivity extends VyfeActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_video);
         //TODO: revoir permission
-        if (!((VyfeActivity) getApplicationContext()).checkPersmissions(MySessionsActivity.PERMISSIONS)){
 
         viewModel = ViewModelProviders.of(this, new MyVideosViewModelFactory(mAuth.getCurrentUser().getCompany(), AndroidHelper.getAndroidId(this))).get(MyVideosViewModel.class);
 
@@ -92,5 +91,5 @@ public class MySessionsActivity extends VyfeActivity {
                 MySessionsActivity.this.startActivity(intent);
             }
         });
-    }}
+    }
 }
