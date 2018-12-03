@@ -1,4 +1,4 @@
-package fr.wildcodeschool.vyfe;
+package fr.vyfe;
 
 import android.content.Context;
 
@@ -7,15 +7,16 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import fr.wildcodeschool.vyfe.view.StopwatchView;
+import fr.vyfe.view.StopwatchView;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 public class StopwatchViewTest {
 
     StopwatchView stopwatch;
 
-    @Mock Context context;
+    @Mock
+    Context context;
 
     @Before
     public void setUp() throws Exception {
