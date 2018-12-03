@@ -26,15 +26,6 @@
 
     </android.support.v7.widget.SearchView>
 
-    <ImageView
-        android:id="@+id/iv_loading"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/grid_videos"
-        app:srcCompat="@drawable/animation_roue_white" />
-
     <GridView
         android:id="@+id/grid_videos"
         android:layout_width="wrap_content"

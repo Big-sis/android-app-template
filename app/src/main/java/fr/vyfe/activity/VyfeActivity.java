@@ -22,17 +22,16 @@ import fr.vyfe.helper.AuthHelper;
 public abstract class VyfeActivity extends AppCompatActivity {
 
     protected static AuthHelper mAuth;
-    protected Context context;
+    protected AppCompatActivity context;
 
-    public static void confirmedDisconnection(final Context context) {
+    public  void confirmedDisconnection() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setMessage(R.string.deconnected)
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(context, ConnexionActivity.class);
-                        context.startActivity(intent);
                         mAuth.signOut();
+                        context.finish();
                     }
                 })
                 .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
@@ -59,7 +58,7 @@ public abstract class VyfeActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.logout:
-                confirmedDisconnection(this);
+                confirmedDisconnection();
                 return true;
             case R.id.home:
                 Intent intentHome = new Intent(this, MainActivity.class);
@@ -84,12 +83,14 @@ public abstract class VyfeActivity extends AppCompatActivity {
             finish();
         }
 
-        //TODO: revoir l'ordre d'execution
-        if(null==mAuth.getCurrentUser()){
-            Toast.makeText(this, "Vous devez vous co", Toast.LENGTH_LONG).show();
+
+        if (null == mAuth.getCurrentUser()) {
+            Toast.makeText(this, "Vous devez vous connecter", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(this, ConnexionActivity.class);
             this.startActivity(intent);
-            finish();}
+            finish();
+        }
+
 
     }
 
@@ -111,8 +112,7 @@ public abstract class VyfeActivity extends AppCompatActivity {
             });
             popup.show();
             return false;
-        }
-        else
+        } else
             return true;
     }
 

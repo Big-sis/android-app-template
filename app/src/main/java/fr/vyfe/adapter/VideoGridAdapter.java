@@ -75,10 +75,10 @@ public class VideoGridAdapter extends BaseAdapter implements Filterable {
 
         // TODO : Remove ImageViewSessionHelper
         //AFfichage miniature video
-        if (mContext.checkPersmissions(MySessionsActivity.PERMISSIONS)) {
+
             ImageView videoView = convertView.findViewById(R.id.img_item_video);
             videoView.setImageBitmap(mSession.getThumbnail());
-        }
+
       
         return convertView;
     }

@@ -26,6 +26,7 @@ import fr.vyfe.helper.AndroidHelper;
 import fr.vyfe.model.SessionModel;
 import fr.vyfe.viewModel.MyVideosViewModel;
 import fr.vyfe.viewModel.MyVideosViewModelFactory;
+import pl.droidsonroids.gif.GifDrawable;
 
 /**
  * Activity presents cache memory videos and device videos
@@ -35,6 +36,7 @@ public class MySessionsActivity extends VyfeActivity {
     public static final String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
     MyVideosViewModel viewModel;
+    private GridView gridView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,9 +44,10 @@ public class MySessionsActivity extends VyfeActivity {
         setContentView(R.layout.activity_my_video);
         //TODO: revoir permission
 
+
         viewModel = ViewModelProviders.of(this, new MyVideosViewModelFactory(mAuth.getCurrentUser().getCompany(), AndroidHelper.getAndroidId(this))).get(MyVideosViewModel.class);
 
-        final GridView gridView = findViewById(R.id.grid_videos);
+        gridView = findViewById(R.id.grid_videos);
         SearchView searchView = findViewById(R.id.search_video);
         EditText searchText = searchView.findViewById(android.support.v7.appcompat.R.id.search_src_text);
         searchText.setTextColor(getResources().getColor(R.color.colorWhiteTwo));
@@ -53,17 +56,6 @@ public class MySessionsActivity extends VyfeActivity {
         closeSearch.setImageResource(android.R.drawable.ic_menu_close_clear_cancel);
         ImageView search = searchView.findViewById(android.support.v7.appcompat.R.id.search_button);
         search.setImageResource(android.R.drawable.ic_menu_search);
-        final ImageView loadingImageView = findViewById(R.id.iv_loading);
-
-        Glide.with(this).load(R.drawable.animation_roue_white).into(loadingImageView);
-
-        if (checkPersmissions(MySessionsActivity.PERMISSIONS))viewModel.getSessions().observe(this, new Observer<List<SessionModel>>() {
-            @Override
-            public void onChanged(@Nullable List<SessionModel> sessions) {
-                loadingImageView.setVisibility(View.INVISIBLE);
-                gridView.setAdapter(new VideoGridAdapter(MySessionsActivity.this, (ArrayList<SessionModel>) sessions));
-            }
-        });
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -91,5 +83,17 @@ public class MySessionsActivity extends VyfeActivity {
                 MySessionsActivity.this.startActivity(intent);
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (checkPersmissions(MySessionsActivity.PERMISSIONS))viewModel.getSessions().observe(this, new Observer<List<SessionModel>>() {
+            @Override
+            public void onChanged(@Nullable List<SessionModel> sessions) {
+                gridView.setAdapter(new VideoGridAdapter(MySessionsActivity.this, (ArrayList<SessionModel>) sessions));
+            }
+        });
+
     }
 }

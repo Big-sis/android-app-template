@@ -163,18 +163,7 @@ public class MainActivity extends VyfeActivity {
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.logout:
-                confirmedDisconnection(this);
-                return true;
-            case R.id.home:
-                return true;
-        }
 
-        return super.onOptionsItemSelected(item);
-    }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void connexionRasberry() {

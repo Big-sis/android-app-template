@@ -3,25 +3,21 @@ package fr.vyfe;
 public class RestartSession {
 
     public static String implementTitleGrid(String titleName) {
-
-        if (titleName.contains("_")) {
+        if (titleName.matches("^.*[_0-9]")) {
             String[] parts = titleName.split("_");
-            String part2 = parts[parts.length - 1];
+            String versionNum = parts[parts.length - 1];
 
-            String[] first = titleName.split(part2);
-            String part1 = first[0];
-
-            try {
-                int number = Integer.parseInt(part2);
-                part2 = String.valueOf(number += 1);
-                titleName = part1 + part2;
-
-            } catch (NumberFormatException nfe) {
-                titleName += "_2";
+            StringBuilder name = new StringBuilder();
+            for (int i = 0; i < parts.length - 1; i++){
+                if (i>0) name.append("_");
+                name.append(parts[i]);
             }
-        } else titleName += "_2";
 
-        return titleName;
+            int number = Integer.parseInt(versionNum);
+            return name.toString() + "_"+String.valueOf(number + 1);
+
+        } else
+            return titleName + "_2";
     }
 
 }

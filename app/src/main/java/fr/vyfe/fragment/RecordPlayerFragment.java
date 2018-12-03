@@ -594,9 +594,13 @@ public class RecordPlayerFragment extends Fragment implements View.OnClickListen
     }
 
     private void stopRecordingVideo() {
+        try{
         viewModel.stop();
         mMediaRecorder.stop();
-        mMediaRecorder.reset();
+        mMediaRecorder.reset();}
+        catch (RuntimeException error){
+            Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+        }
 
         Activity activity = getActivity();
         if (null != activity) {
