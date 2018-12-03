@@ -53,6 +53,18 @@ public class TagSetRecordFragment extends Fragment {
             public void onChanged(@Nullable String step) {
                 if (step.equals("recording")) {
                     mRecyclerView.setAlpha(1);
+
+                    mRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), mRecyclerView, new RecyclerTouchListener.ClickListener() {
+                        @Override
+                        public void onClick(View view, int position) { viewModel.addTag(position);
+                        }
+
+                        @Override
+                        public void onLongClick(View view, int position) {
+                            //TODO: ne fonctionne pas
+                            viewModel.addTag(position);
+                        }
+                    }));
                 } else {
                     mRecyclerView.setAlpha(0.5f);
                 }
@@ -69,16 +81,6 @@ public class TagSetRecordFragment extends Fragment {
             }
         });
 
-        mRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), mRecyclerView, new RecyclerTouchListener.ClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                viewModel.addTag(position);
-            }
 
-            @Override
-            public void onLongClick(View view, int position) {
-                viewModel.addTag(position);
-            }
-        }));
     }
 }

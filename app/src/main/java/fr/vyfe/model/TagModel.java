@@ -1,7 +1,6 @@
 package fr.vyfe.model;
 
-import android.graphics.Color;
-import android.nfc.Tag;
+
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -15,7 +14,6 @@ public class TagModel implements Parcelable, VyfeModel {
     private String taggerId;
     private int start;
     private int end;
-
 
     public TagModel() {
     }

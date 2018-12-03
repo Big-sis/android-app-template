@@ -12,6 +12,9 @@ public class TemplateModel implements Parcelable, VyfeModel {
     private String name;
     private int leftOffset;
     private int rigthOffset;
+    private int count =0;
+
+
 
     public TemplateModel() {
         leftOffset = Constants.STANDARD_LEFT_OFFSET;
@@ -76,6 +79,18 @@ public class TemplateModel implements Parcelable, VyfeModel {
 
     public void setName(String tagName) {
         this.name = tagName;
+    }
+
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public void incrCount() {
+        this.count++;
     }
 
     @Override

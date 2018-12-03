@@ -60,10 +60,16 @@ public class PlayVideoActivity extends VyfeActivity implements LifecycleOwner {
 
         viewModel.getTagSet().observe(this, new Observer<TagSetModel>() {
             @Override
-            public void onChanged(@Nullable TagSetModel tagSet) {
+            public void onChanged(@Nullable final TagSetModel tagSet) {
                 if (tagSet != null) {
-                    mAdapterTags = new TemplateRecyclerAdapter(tagSet.getTemplates(), "count");
-                    mRecyclerView.setAdapter(mAdapterTags);
+                    viewModel.getSession().observe(PlayVideoActivity.this, new Observer<SessionModel>() {
+                        @Override
+                        public void onChanged(@Nullable SessionModel session) {
+                            mAdapterTags = new TemplateRecyclerAdapter(tagSet.getTemplates(), "count");
+                            mRecyclerView.setAdapter(mAdapterTags);
+                        }
+                    });
+
                 }
             }
         });

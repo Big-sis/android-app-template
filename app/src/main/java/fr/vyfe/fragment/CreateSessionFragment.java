@@ -33,11 +33,12 @@ import fr.vyfe.R;
 import fr.vyfe.activity.CreateGridActivity;
 import fr.vyfe.activity.CreateSessionActivity;
 import fr.vyfe.activity.RecordActivity;
-import fr.vyfe.adapter.TemplateRecyclerAdapter;
 import fr.vyfe.adapter.TagSetSpinnerAdapter;
+import fr.vyfe.adapter.TemplateRecyclerAdapter;
 import fr.vyfe.helper.KeyboardHelper;
 import fr.vyfe.helper.ScrollHelper;
 import fr.vyfe.model.TagSetModel;
+import fr.vyfe.model.TemplateModel;
 import fr.vyfe.viewModel.CreateSessionViewModel;
 
 import static android.content.Context.CONNECTIVITY_SERVICE;
@@ -125,10 +126,10 @@ public class CreateSessionFragment extends Fragment {
                 // it means rebuilding the sipnner and adapter after each data change event
                 tagSetsSpinnerAdapter = new TagSetSpinnerAdapter(getContext(), tagSetModels);
                 spinner.setAdapter(tagSetsSpinnerAdapter);
-                if (viewModel.getSelectedTagSet().getValue()!=null && tagSetModels!=null) {
-                    for (int i=0; i<tagSetModels.size(); i++ ) {
-                        if (tagSetModels.get(i).getId()!=null && tagSetModels.get(i).getId().equals(viewModel.getSelectedTagSet().getValue().getId()))
-                            spinner.setSelection(i+1);
+                if (viewModel.getSelectedTagSet().getValue() != null && tagSetModels != null) {
+                    for (int i = 0; i < tagSetModels.size(); i++) {
+                        if (tagSetModels.get(i).getId() != null && tagSetModels.get(i).getId().equals(viewModel.getSelectedTagSet().getValue().getId()))
+                            spinner.setSelection(i);
                     }
                 }
             }
@@ -137,11 +138,13 @@ public class CreateSessionFragment extends Fragment {
         viewModel.getSelectedTagSet().observe(getActivity(), new Observer<TagSetModel>() {
             @Override
             public void onChanged(@Nullable TagSetModel tagSetModel) {
-                if (tagSetModel != null){
-                    RecyclerView.LayoutManager layoutManagerImport = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
-                    recyclerViewImport.setLayoutManager(layoutManagerImport);
+                RecyclerView.LayoutManager layoutManagerImport = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+                recyclerViewImport.setLayoutManager(layoutManagerImport);
+                if (tagSetModel != null) {
                     recyclerViewImport.setAdapter(new TemplateRecyclerAdapter(tagSetModel.getTemplates(), "start"));
                     ScrollHelper.DownScroll(scrollMain);
+                } else {
+                    recyclerViewImport.setAdapter(new TemplateRecyclerAdapter(new ArrayList<TemplateModel>(), "start"));
                 }
             }
         });
@@ -167,9 +170,10 @@ public class CreateSessionFragment extends Fragment {
         if (((CreateSessionActivity) getActivity()).isMulti) {
             buttonGo.setText(R.string.next);
             WifiManager wifiManager = (WifiManager) getContext().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-            final String networkSSID = getContext().getString(R.string.networkSSID);;
+            final String networkSSID = getContext().getString(R.string.networkSSID);
+            ;
             String wifiManagerConnectionInfo = wifiManager.getConnectionInfo().getSSID();
-            if (wifiManagerConnectionInfo.equals('"' + networkSSID + '"')){
+            if (wifiManagerConnectionInfo.equals('"' + networkSSID + '"')) {
                 Toast.makeText(getContext(), "Vous êtes co au rasberry", Toast.LENGTH_SHORT).show();
             }
 
@@ -179,8 +183,7 @@ public class CreateSessionFragment extends Fragment {
             final String wifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getExtraInfo();
             if (wifi != null && wifi.equals('"' + networkSSID + '"')) {
                 Toast.makeText(getContext(), "yes", Toast.LENGTH_SHORT).show();
-            }
-            else Toast.makeText(getContext(), "non", Toast.LENGTH_SHORT).show();
+            } else Toast.makeText(getContext(), "non", Toast.LENGTH_SHORT).show();
         }
 
 
@@ -223,4 +226,5 @@ public class CreateSessionFragment extends Fragment {
             }
         });
     }
+
 }

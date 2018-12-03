@@ -1,10 +1,6 @@
 package fr.vyfe.adapter;
 
-import android.content.Context;
-import android.content.Intent;
-import android.graphics.Bitmap;
-import android.media.ThumbnailUtils;
-import android.provider.MediaStore;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +12,9 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import fr.vyfe.Constants;
 import fr.vyfe.CustomVideoFilter;
 import fr.vyfe.R;
 import fr.vyfe.activity.MySessionsActivity;
-import fr.vyfe.activity.SelectVideoActivity;
 import fr.vyfe.activity.VyfeActivity;
 import fr.vyfe.model.SessionModel;
 

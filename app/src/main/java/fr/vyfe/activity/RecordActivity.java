@@ -106,10 +106,8 @@ public class RecordActivity extends VyfeActivity {
                 if (step.equals("error")) {
                     constraintErrorSpace.setVisibility(View.VISIBLE);
                 }
-
             }
         });
-
     }
 
 
@@ -158,11 +156,8 @@ public class RecordActivity extends VyfeActivity {
             case R.id.home:
                 final Intent intentHome = new Intent(this, MainActivity.class);
                 saveAlertDialog(intentHome);
-
-
                 return true;
         }
-
         return super.onOptionsItemSelected(item);
     }
 }

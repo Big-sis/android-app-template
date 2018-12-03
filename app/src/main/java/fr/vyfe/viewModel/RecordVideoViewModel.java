@@ -102,6 +102,8 @@ public class RecordVideoViewModel extends VyfeViewModel {
             newTag.setStart((int) Math.max(0, getVideoTime().getValue() / Constants.UNIT_TO_MILLI_FACTOR - template.getLeftOffset()));
             newTag.setEnd((int) (getVideoTime().getValue() / Constants.UNIT_TO_MILLI_FACTOR + template.getRigthOffset()));
             tagRepository.push(newTag);
+            template.incrCount();
+//            tagSet.postValue(tagSet.getValue());
             return true;
         } else return false;
     }
@@ -127,14 +129,4 @@ public class RecordVideoViewModel extends VyfeViewModel {
             }
         });
     }
-
-    public TemplateModel getTemplate(String templateId) {
-        if (tagSet.getValue() == null) return null;
-        for (TemplateModel template : tagSet.getValue().getTemplates()) {
-            if (template.getId().equals(templateId))
-                return template;
-        }
-        return null;
-    }
-
 }

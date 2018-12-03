@@ -12,6 +12,7 @@ import java.util.List;
 
 import fr.vyfe.R;
 import fr.vyfe.helper.ColorHelper;
+import fr.vyfe.model.SessionModel;
 import fr.vyfe.model.TagModel;
 import fr.vyfe.model.TemplateModel;
 
@@ -25,7 +26,7 @@ public class TemplateRecyclerAdapter extends RecyclerView.Adapter<TemplateRecycl
         mTemplates = observations;
         mFrom = from;
     }
-
+    
 
     @Override
     public TemplateRecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -40,9 +41,7 @@ public class TemplateRecyclerAdapter extends RecyclerView.Adapter<TemplateRecycl
 
         List<TemplateModel> templateList = mTemplates;
 
-
         TemplateModel template = templateList.get(position);
-
 
         holder.tvName.setText(template.getName());
         holder.ivColor.setBackgroundResource(ColorHelper.getInstance().findColorById(template.getColor().getId()).getImage());
@@ -55,11 +54,13 @@ public class TemplateRecyclerAdapter extends RecyclerView.Adapter<TemplateRecycl
         } else if (mFrom.equals("record")) {
             holder.tvNum.setVisibility(View.VISIBLE);
             // TODO : set real value to count
-            holder.tvNum.setText("0");
+           holder.tvNum.setText(String.valueOf(template.getCount()));
         } else if (mFrom.equals("timelines")) {
             holder.tvNum.setVisibility(View.GONE);
         } else if (mFrom.equals("count")) {
             holder.tvNum.setVisibility(View.VISIBLE);
+            holder.tvNum.setVisibility(View.VISIBLE);
+            holder.tvNum.setText(String.valueOf(template.getCount()));
         }
     }
 

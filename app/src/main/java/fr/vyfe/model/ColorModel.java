@@ -14,6 +14,9 @@ public class ColorModel implements Parcelable {
         this.name = name;
         this.image = image;
     }
+    public ColorModel() {
+
+    }
 
 
     protected ColorModel(Parcel in) {
