@@ -3,6 +3,9 @@ package fr.vyfe.viewModel;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
+import java.util.Collections;
+import java.util.Comparator;
+
 import fr.vyfe.model.SessionModel;
 import fr.vyfe.model.TagSetModel;
 import fr.vyfe.model.TemplateModel;
@@ -46,6 +49,13 @@ public abstract class VyfeViewModel extends ViewModel {
         tagSetRepository.addChildListener(id, true, new BaseSingleValueEventListener.CallbackInterface<TagSetModel>() {
             @Override
             public void onSuccess(TagSetModel result) {
+
+                Collections.sort(result.getTemplates(), new Comparator<TemplateModel>() {
+                    @Override
+                    public int compare(TemplateModel o1, TemplateModel o2) {
+                        return o1.getPosition()-o2.getPosition();
+                    }
+                });
                 tagSet.postValue(result);
             }
 

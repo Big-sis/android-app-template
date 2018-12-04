@@ -2,10 +2,11 @@ package fr.vyfe.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import fr.vyfe.Constants;
 
-public class TemplateModel implements Parcelable, VyfeModel {
+public class TemplateModel implements Parcelable, VyfeModel, Comparable<TemplateModel> {
 
     private String id;
     private ColorModel color;
@@ -115,6 +116,11 @@ public class TemplateModel implements Parcelable, VyfeModel {
         dest.writeInt(leftOffset);
         dest.writeInt(rigthOffset);
         dest.writeInt(position);
+    }
+
+    @Override
+    public int compareTo(@NonNull TemplateModel o) {
+        return (this.position - o.getPosition());
     }
 }
 

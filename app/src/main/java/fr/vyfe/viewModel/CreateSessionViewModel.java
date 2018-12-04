@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import fr.vyfe.RestartSession;
@@ -75,6 +76,14 @@ public class CreateSessionViewModel extends VyfeViewModel {
 
                 if (selectedTagSetId != null)
                     for (TagSetModel tagSet: result) {
+
+                    Collections.sort(tagSet.getTemplates(), new Comparator<TemplateModel>() {
+                        @Override
+                        public int compare(TemplateModel o1, TemplateModel o2) {
+                            return o1.getPosition()-o2.getPosition();
+                        }
+                    });
+
                         if (selectedTagSetId.equals(tagSet.getId()))
                             selectedTagSet.setValue(tagSet);
                     }
