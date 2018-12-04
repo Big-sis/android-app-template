@@ -100,7 +100,7 @@ public class SelectVideoActivity extends VyfeActivity {
                                     else {
                                         Intent intent = new Intent(SelectVideoActivity.this, UploadVideoService.class);
                                         intent.putExtra(Constants.SESSIONMODEL_EXTRA, session);
-                                        intent.putExtra(Constants.VIMEO_TOKEN_EXTRA, viewModel.getCompany().getValue().getVimeoAccessToken());
+                                        intent.putExtra(Constants.VIMEO_TOKEN_EXTRA, "bearer "+viewModel.getCompany().getValue().getVimeoAccessToken());
                                         intent.putExtra(Constants.COMPANYID_EXTRA, mAuth.getCurrentUser().getCompany());
                                         SelectVideoActivity.this.startService(intent);
 
