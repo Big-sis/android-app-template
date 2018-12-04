@@ -46,21 +46,23 @@ public class MyVideosViewModel extends VyfeViewModel {
         repository.addListListener(new BaseListValueEventListener.CallbackInterface<SessionModel>() {
             @Override
             public void onSuccess(List<SessionModel> result) {
-            //TODO: mettre les autorisations en placent
+                //TODO: mettre les autorisations en placent
                 File externalStorage = getExternalStoragePublicDirectory(DIRECTORY_MOVIES + "/" + "Vyfe");
                 final String racineExternalStorage = String.valueOf(externalStorage.getAbsoluteFile());
                 final String[] filesExternalStorage = externalStorage.list();
 
                 ArrayList<SessionModel> filtered = new ArrayList<>();
-                assert filesExternalStorage != null;
-                for (String nameFileExternalStorage : filesExternalStorage) {
-                    String nameCache = racineExternalStorage + "/" + nameFileExternalStorage;
-                    for (SessionModel session : result) {
-                        if (session.getName().contains(filter) && session.getDeviceVideoLink().equals(nameCache))
-                            filtered.add(session);
-                    }
+                if (filesExternalStorage != null) {
+                    for (String nameFileExternalStorage : filesExternalStorage) {
+                        String nameCache = racineExternalStorage + "/" + nameFileExternalStorage;
+                        for (SessionModel session : result) {
+                            if (session.getName().contains(filter) && session.getDeviceVideoLink().equals(nameCache))
+                                filtered.add(session);
+                        }
 
-                } sessions.setValue(filtered);
+                    }
+                }
+                sessions.setValue(filtered);
 
             }
 
