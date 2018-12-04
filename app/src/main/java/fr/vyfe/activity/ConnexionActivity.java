@@ -29,9 +29,7 @@ import fr.vyfe.model.UserModel;
  */
 
 public class ConnexionActivity extends AppCompatActivity {
-    /**
-     * This activity allows the user to log in
-     */
+
   private int mPasswordHidden = 129;
 
 

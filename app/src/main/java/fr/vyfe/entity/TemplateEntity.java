@@ -5,7 +5,15 @@ public class TemplateEntity {
     private String name;
     private int leftOffset;
     private int rigthOffset;
+    private int position;
 
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
 
     public String getColor() {
         return color;

@@ -152,7 +152,6 @@ public class MainActivity extends VyfeActivity {
                     }
                 })
                 .show();
-
     }
 
     @Override
@@ -162,7 +161,6 @@ public class MainActivity extends VyfeActivity {
         itemLogout.setVisible(true);
         return true;
     }
-
 
 
     @RequiresApi(api = Build.VERSION_CODES.O)

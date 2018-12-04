@@ -2,13 +2,16 @@ package fr.vyfe.viewModel;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import fr.vyfe.RestartSession;
 import fr.vyfe.model.SessionModel;
 import fr.vyfe.model.TagSetModel;
+import fr.vyfe.model.TemplateModel;
 import fr.vyfe.repository.BaseListValueEventListener;
 import fr.vyfe.repository.SessionRepository;
 import fr.vyfe.repository.TagSetRepository;
@@ -44,6 +47,7 @@ public class CreateSessionViewModel extends VyfeViewModel {
     }
 
     public void setSelectedTagSet(TagSetModel selectedTagSet) {
+
         this.selectedTagSet.setValue(selectedTagSet);
         if (selectedTagSet != null) this.selectedTagSetId = selectedTagSet.getId();
     }
@@ -68,6 +72,7 @@ public class CreateSessionViewModel extends VyfeViewModel {
         tagSetRepository.addListListener(new BaseListValueEventListener.CallbackInterface<TagSetModel>() {
             @Override
             public void onSuccess(List<TagSetModel> result) {
+
                 if (selectedTagSetId != null)
                     for (TagSetModel tagSet: result) {
                         if (selectedTagSetId.equals(tagSet.getId()))

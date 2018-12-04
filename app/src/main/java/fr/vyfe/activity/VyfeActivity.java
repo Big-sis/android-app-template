@@ -85,7 +85,7 @@ public abstract class VyfeActivity extends AppCompatActivity {
 
 
         if (null == mAuth.getCurrentUser()) {
-            Toast.makeText(this, "Vous devez vous connecter", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.ask_connection, Toast.LENGTH_LONG).show();
             Intent intent = new Intent(this, ConnexionActivity.class);
             this.startActivity(intent);
             finish();

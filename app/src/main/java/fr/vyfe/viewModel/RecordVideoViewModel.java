@@ -75,8 +75,9 @@ public class RecordVideoViewModel extends VyfeViewModel {
     public void delete() {
         stepRecord.setValue(STEP_DELETE);
         sessionRepository.remove(session.getValue().getId());
+        //TODO sur firebase proposer un clean des données "mortes" ex: si la 1er partie de l'enregistrement a été effectué mais pas de video
+        // TODO: idem pour les videos supprimées du device
     }
-
 
 
     public LiveData<Long> getVideoTime() {

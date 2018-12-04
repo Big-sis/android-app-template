@@ -13,7 +13,7 @@ public class TemplateModel implements Parcelable, VyfeModel {
     private int leftOffset;
     private int rigthOffset;
     private int count =0;
-
+    private int position;
 
 
     public TemplateModel() {
@@ -27,6 +27,7 @@ public class TemplateModel implements Parcelable, VyfeModel {
         name = in.readString();
         leftOffset = in.readInt();
         rigthOffset = in.readInt();
+        position= in.readInt();
     }
 
     public static final Creator<TemplateModel> CREATOR = new Creator<TemplateModel>() {
@@ -40,6 +41,14 @@ public class TemplateModel implements Parcelable, VyfeModel {
             return new TemplateModel[size];
         }
     };
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
 
     public String getId() {
         return id;
@@ -105,6 +114,7 @@ public class TemplateModel implements Parcelable, VyfeModel {
         dest.writeString(name);
         dest.writeInt(leftOffset);
         dest.writeInt(rigthOffset);
+        dest.writeInt(position);
     }
 }
 

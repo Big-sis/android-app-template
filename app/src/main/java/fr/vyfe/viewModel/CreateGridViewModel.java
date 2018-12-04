@@ -2,6 +2,7 @@ package fr.vyfe.viewModel;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.support.v7.widget.RecyclerView;
 
 import java.util.ArrayList;
 
@@ -43,6 +44,7 @@ public class CreateGridViewModel extends VyfeViewModel {
         TemplateModel template = new TemplateModel();
         template.setColor(color);
         template.setName(name);
+        template.setPosition(templates.getValue().size());
         templates.getValue().add(template);
     }
 
@@ -50,6 +52,7 @@ public class CreateGridViewModel extends VyfeViewModel {
         TemplateModel movingTemplate = templates.getValue().get(from);
         templates.getValue().remove(movingTemplate);
         templates.getValue().add(to, movingTemplate);
+        templates.getValue().get(to).setPosition(to);
     }
 
     public void setTagSetName(String name){

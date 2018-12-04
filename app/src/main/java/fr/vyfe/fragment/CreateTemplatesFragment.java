@@ -22,6 +22,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Objects;
 
 import fr.vyfe.R;
 import fr.vyfe.adapter.ColorSpinnerAdapter;
@@ -29,20 +31,18 @@ import fr.vyfe.adapter.TemplateRecyclerAdapter;
 import fr.vyfe.helper.ColorHelper;
 import fr.vyfe.helper.KeyboardHelper;
 import fr.vyfe.model.ColorModel;
-import fr.vyfe.model.TagModel;
 import fr.vyfe.model.TemplateModel;
 import fr.vyfe.viewModel.CreateGridViewModel;
 
-public class CreateTemplatesFragment extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener  {
+public class CreateTemplatesFragment extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener {
 
-    private CreateGridViewModel viewModel;
-    ColorSpinnerAdapter colorSpinnerAdapter;
-    private CreateTemplatesFragment.OnButtonClickedListener mCallback;
-    Spinner colorSpinnerView;
     private static TemplateRecyclerAdapter mAdapter;
     private static ImageView ivColor;
     private static ColorModel tagColor;
-
+    ColorSpinnerAdapter colorSpinnerAdapter;
+    Spinner colorSpinnerView;
+    private CreateGridViewModel viewModel;
+    private CreateTemplatesFragment.OnButtonClickedListener mCallback;
 
     public static CreateTemplatesFragment newInstance() {
         return new CreateTemplatesFragment();
@@ -70,7 +70,7 @@ public class CreateTemplatesFragment extends Fragment implements AdapterView.OnI
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
         final EditText tagNameView = view.findViewById(R.id.tag_name_edit);
         final RecyclerView recyclerTagList = view.findViewById(R.id.recycler_view);
@@ -99,8 +99,11 @@ public class CreateTemplatesFragment extends Fragment implements AdapterView.OnI
                 if (tagName.equals("")) {
                     Toast.makeText(getContext(), R.string.def_color, Toast.LENGTH_SHORT).show();
                 } else {
+
                     viewModel.addTemplate(tagColor, tagName);
                     tagNameView.setText("");
+
+
 
                     //Fermer clavier après avoir rentré un tag
                     KeyboardHelper.CloseKeyboard(getContext(), btnAddTag);
@@ -151,12 +154,27 @@ public class CreateTemplatesFragment extends Fragment implements AdapterView.OnI
     }
 
     public void moveItem(int oldPos, int newPos) {
-        viewModel.moveTag(oldPos, newPos);
+        if (oldPos < newPos) {
+            for (int i = oldPos; i < newPos; i++) {
+                Collections.swap(Objects.requireNonNull(viewModel.getTemplates().getValue()), i, i + 1);
+                viewModel.getTemplates().getValue().get(i).setPosition(i);
+                viewModel.getTemplates().getValue().get(i+1).setPosition(i+1);
+            }
+        } else {
+            for (int i = oldPos; i > newPos; i--) {
+                Collections.swap(Objects.requireNonNull(viewModel.getTemplates().getValue()), i, i - 1);
+                viewModel.getTemplates().getValue().get(i).setPosition(i);
+                viewModel.getTemplates().getValue().get(i-1).setPosition(i-1);
+            }
+        }
         mAdapter.notifyItemMoved(oldPos, newPos);
     }
 
     public void deleteItem(int position) {
-        viewModel.getTemplates().getValue().remove(position);
+        Objects.requireNonNull(viewModel.getTemplates().getValue()).remove(position);
+        for(int i = position-1; i<viewModel.getTemplates().getValue().size()-position;i++){
+            viewModel.getTemplates().getValue().get(i+1).setPosition(viewModel.getTemplates().getValue().get(i+1).getPosition()-1);
+        }
         mAdapter.notifyItemRemoved(position);
     }
 
@@ -165,11 +183,11 @@ public class CreateTemplatesFragment extends Fragment implements AdapterView.OnI
         mCallback.onCreateTagsFragmentButtonClicked(view);
     }
 
-    private void createCallbackToParentActivity(){
+    private void createCallbackToParentActivity() {
         try {
             mCallback = (OnButtonClickedListener) getActivity();
         } catch (ClassCastException e) {
-            throw new ClassCastException(e.toString()+ " must implement OnButtonClickedListener");
+            throw new ClassCastException(e.toString() + " must implement OnButtonClickedListener");
         }
     }
 
