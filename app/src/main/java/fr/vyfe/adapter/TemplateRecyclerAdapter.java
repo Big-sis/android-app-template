@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import fr.vyfe.R;
@@ -20,13 +21,20 @@ public class TemplateRecyclerAdapter extends RecyclerView.Adapter<TemplateRecycl
 
     private List<TemplateModel> mTemplates;
     private String mFrom;
+    private SessionModel mSession;
 
 
     public TemplateRecyclerAdapter(List<TemplateModel> observations, String from) {
         mTemplates = observations;
         mFrom = from;
     }
-    
+
+    public TemplateRecyclerAdapter(List<TemplateModel> observations, SessionModel mSession, String from) {
+        mTemplates = observations;
+        this.mSession = mSession;
+        mFrom = from;
+    }
+
 
     @Override
     public TemplateRecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -40,8 +48,17 @@ public class TemplateRecyclerAdapter extends RecyclerView.Adapter<TemplateRecycl
     public void onBindViewHolder(TemplateRecyclerAdapter.ViewHolder holder, int position) {
 
         List<TemplateModel> templateList = mTemplates;
-
         TemplateModel template = templateList.get(position);
+
+        if (null != mSession && null !=mSession.getTags()) {
+            ArrayList<TagModel> tags = mSession.getTags();
+            for (int i = 0; i < tags.size(); i++) {
+                if (template.getId().equals(tags.get(i).getTemplateId())) {
+                    template.incrCount();
+                }
+
+            }
+        }
 
         holder.tvName.setText(template.getName());
         holder.ivColor.setBackgroundResource(ColorHelper.getInstance().findColorById(template.getColor().getId()).getImage());
@@ -52,9 +69,9 @@ public class TemplateRecyclerAdapter extends RecyclerView.Adapter<TemplateRecycl
             holder.tvNum.setVisibility(View.GONE);
             holder.ivMenu.setVisibility(View.VISIBLE);
         } else if (mFrom.equals("record")) {
-            holder.tvNum.setVisibility(View.VISIBLE);
+            holder.tvNum.setVisibility(View.INVISIBLE);
             // TODO : set real value to count
-           holder.tvNum.setText(String.valueOf(template.getCount()));
+            holder.tvNum.setText(String.valueOf(template.getCount()));
         } else if (mFrom.equals("timelines")) {
             holder.tvNum.setVisibility(View.GONE);
         } else if (mFrom.equals("count")) {

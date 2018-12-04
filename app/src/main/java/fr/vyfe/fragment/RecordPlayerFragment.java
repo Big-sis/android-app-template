@@ -566,6 +566,7 @@ public class RecordPlayerFragment extends Fragment implements View.OnClickListen
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            //TODO: erreur
                             viewModel.startRecord();
                             mMediaRecorder.start();
                         }

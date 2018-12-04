@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import fr.vyfe.R;
 import fr.vyfe.RecyclerTouchListener;
 import fr.vyfe.adapter.TemplateRecyclerAdapter;
+import fr.vyfe.model.SessionModel;
 import fr.vyfe.model.TagSetModel;
 import fr.vyfe.viewModel.RecordVideoViewModel;
 
@@ -56,13 +57,14 @@ public class TagSetRecordFragment extends Fragment {
 
                     mRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), mRecyclerView, new RecyclerTouchListener.ClickListener() {
                         @Override
-                        public void onClick(View view, int position) { viewModel.addTag(position);
+                        public void onClick(View view, int position) {
+                            viewModel.addTag(position);
                         }
 
                         @Override
                         public void onLongClick(View view, int position) {
                             //TODO: ne fonctionne pas
-                            viewModel.addTag(position);
+                           // viewModel.addTag(position);
                         }
                     }));
                 } else {
@@ -73,11 +75,17 @@ public class TagSetRecordFragment extends Fragment {
 
         viewModel.getTagSet().observe(getActivity(), new Observer<TagSetModel>() {
             @Override
-            public void onChanged(@Nullable TagSetModel tagSet) {
-                if (tagSet != null) {
-                    mTagAdpater = new TemplateRecyclerAdapter(tagSet.getTemplates(), "record");
-                    mRecyclerView.setAdapter(mTagAdpater);
-                }
+            public void onChanged(@Nullable final TagSetModel tagSet) {
+                viewModel.getSession().observe(getActivity(), new Observer<SessionModel>() {
+                    @Override
+                    public void onChanged(@Nullable SessionModel sessionModel) {
+                        if (tagSet != null) {
+                            mTagAdpater = new TemplateRecyclerAdapter(tagSet.getTemplates(), "record");
+                            mRecyclerView.setAdapter(mTagAdpater);
+                        }
+                    }
+                });
+
             }
         });
 

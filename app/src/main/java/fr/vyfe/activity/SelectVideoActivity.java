@@ -134,7 +134,7 @@ public class SelectVideoActivity extends VyfeActivity {
             @Override
             public void onChanged(@Nullable TagSetModel tagSetModel) {
                 if (tagSetModel != null) {
-                    TemplateRecyclerAdapter adapterTags = new TemplateRecyclerAdapter(tagSetModel.getTemplates(), "count");
+                    TemplateRecyclerAdapter adapterTags = new TemplateRecyclerAdapter(tagSetModel.getTemplates(),viewModel.getSession().getValue(), "count");
                     recyclerTags.setAdapter(adapterTags);
                 }
 
