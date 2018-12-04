@@ -10,7 +10,7 @@ public class TagSetMapper extends FirebaseMapper<TagSetEntity, TagSetModel> {
     public TagSetModel map(TagSetEntity tagSetEntity, String key) {
         TagSetModel tagSet = new TagSetModel();
         tagSet.setName(tagSetEntity.getName());
-        tagSet.setTagTemplates((new TemplateMapper()).mapList(tagSetEntity.getTags()));
+        tagSet.setTagTemplates((new TemplateMapper()).mapList(tagSetEntity.getTemplates()));
         tagSet.setId(key);
         return tagSet;
     }
@@ -19,7 +19,7 @@ public class TagSetMapper extends FirebaseMapper<TagSetEntity, TagSetModel> {
     public TagSetEntity unMap(TagSetModel tagSetModel) {
         TagSetEntity tagSetEntity = new TagSetEntity();
         tagSetEntity.setName(tagSetModel.getName());
-        tagSetEntity.setTags((new TemplateMapper()).unMapList(tagSetModel.getTemplates()));
+        tagSetEntity.setTemplates((new TemplateMapper()).unMapList(tagSetModel.getTemplates()));
         return tagSetEntity;
     }
 }

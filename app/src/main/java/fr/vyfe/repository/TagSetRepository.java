@@ -24,7 +24,7 @@ public class TagSetRepository extends FirebaseDatabaseRepository<TagSetModel>{
     public void createTemplates(String key, List<TemplateModel> templates){
         TemplateMapper mapper = new TemplateMapper();
         for (TemplateModel templateModel: templates) {
-            databaseReference.child(key).child("Tags").push().setValue(mapper.unMap(templateModel));
+            databaseReference.child(key).child("Templates").push().setValue(mapper.unMap(templateModel));
         }
     }
 }

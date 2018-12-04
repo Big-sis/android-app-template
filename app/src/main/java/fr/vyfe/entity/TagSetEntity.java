@@ -5,15 +5,15 @@ import java.util.HashMap;
 public class TagSetEntity {
     private String name;
 
-    private HashMap<String, TemplateEntity> Tags;
+    private HashMap<String, TemplateEntity> Templates;
 
 
-    public HashMap<String, TemplateEntity> getTags() {
-        return Tags;
+    public HashMap<String, TemplateEntity> getTemplates() {
+        return Templates;
     }
 
-    public void setTags(HashMap<String, TemplateEntity> tags) {
-        this.Tags = tags;
+    public void setTemplates(HashMap<String, TemplateEntity> templates) {
+        this.Templates = templates;
     }
 
     public String getName() {
