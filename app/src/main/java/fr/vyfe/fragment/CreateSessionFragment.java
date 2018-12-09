@@ -67,12 +67,14 @@ public class CreateSessionFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //Instancie les objets
         viewModel = ViewModelProviders.of(getActivity()).get(CreateSessionViewModel.class);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        //Instancie la vue et les composant gaphique
         View result = inflater.inflate(R.layout.fragment_create_session, container, false);
         buttonBack = result.findViewById(R.id.button_back);
         buttonGo = result.findViewById(R.id.button_go);

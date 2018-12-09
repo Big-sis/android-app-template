@@ -84,6 +84,7 @@ public class CreateSessionViewModel extends VyfeViewModel {
                         }
                     });
 
+
                         if (selectedTagSetId.equals(tagSet.getId()))
                             selectedTagSet.setValue(tagSet);
                     }
