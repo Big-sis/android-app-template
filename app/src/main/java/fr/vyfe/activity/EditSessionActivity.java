@@ -50,7 +50,7 @@ public class EditSessionActivity extends VyfeActivity {
 
         viewModel = ViewModelProviders.of(this, new EditSessionViewModelFactory(mAuth.getCurrentUser().getCompany())).get(EditSessionViewModel.class);
         viewModel.init(getIntent().getStringExtra(Constants.SESSIONMODELID_EXTRA));
-
+        btnEdit.setClickable(false);
         viewModel.getSession().observe(this, new Observer<SessionModel>() {
             @Override
             public void onChanged(@Nullable SessionModel sessionModel) {
@@ -72,6 +72,7 @@ public class EditSessionActivity extends VyfeActivity {
 
                     @Override
                     public void afterTextChanged(Editable s) {
+                        btnEdit.setClickable(true);
                         btnEdit.setAlpha(1);
                         viewModel.setNewDescription(s.toString());
                     }
@@ -141,7 +142,7 @@ public class EditSessionActivity extends VyfeActivity {
                     @Override
                     public Void then(@NonNull Task<Void> task) throws Exception {
                         if (task.isSuccessful())
-                            Toast.makeText(EditSessionActivity.this, R.string.save_session, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(EditSessionActivity.this, "Modifiactions enregistrées", Toast.LENGTH_SHORT).show();
                         else
                             Toast.makeText(EditSessionActivity.this, "Error", Toast.LENGTH_SHORT).show();
                         return null;

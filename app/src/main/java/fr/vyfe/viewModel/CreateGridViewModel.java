@@ -4,6 +4,8 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Objects;
 
 import fr.vyfe.model.ColorModel;
 import fr.vyfe.model.TagSetModel;
@@ -26,8 +28,12 @@ public class CreateGridViewModel extends VyfeViewModel {
         if (templates.getValue() == null) templates.setValue(new ArrayList<TemplateModel>());
     }
 
-    public LiveData<String> getTagSetName(){
+    public LiveData<String> getTagSetName() {
         return tagSetName;
+    }
+
+    public void setTagSetName(String name) {
+        this.tagSetName.setValue(name);
     }
 
     public LiveData<ArrayList<TemplateModel>> getTemplates() {
@@ -43,7 +49,7 @@ public class CreateGridViewModel extends VyfeViewModel {
         TemplateModel template = new TemplateModel();
         template.setColor(color);
         template.setName(name);
-        if(templates.getValue().size()!=0)template.setPosition(templates.getValue().size());
+        template.setPosition(templates.getValue().size());
         templates.getValue().add(template);
     }
 
@@ -53,8 +59,27 @@ public class CreateGridViewModel extends VyfeViewModel {
         templates.getValue().add(to, movingTemplate);
     }
 
-    public void setTagSetName(String name){
-        this.tagSetName.setValue(name);
+    public void moveItem(int oldPos, int newPos) {
+        if (oldPos < newPos) {
+            for (int i = oldPos; i < newPos; i++) {
+                Collections.swap(Objects.requireNonNull(getTemplates().getValue()), i, i + 1);
+                getTemplates().getValue().get(i).setPosition(i);
+                getTemplates().getValue().get(i + 1).setPosition(i + 1);
+            }
+        } else {
+            for (int i = oldPos; i > newPos; i--) {
+                Collections.swap(Objects.requireNonNull(getTemplates().getValue()), i, i - 1);
+                getTemplates().getValue().get(i).setPosition(i);
+                getTemplates().getValue().get(i - 1).setPosition(i - 1);
+            }
+        }
+    }
+
+    public void deleteItem(int position) {
+        Objects.requireNonNull(getTemplates().getValue()).remove(position);
+        for (int i = position - 1; i < getTemplates().getValue().size() - position; i++) {
+            getTemplates().getValue().get(i + 1).setPosition(getTemplates().getValue().get(i + 1).getPosition() - 1);
+        }
     }
 
     public TagSetModel save() {

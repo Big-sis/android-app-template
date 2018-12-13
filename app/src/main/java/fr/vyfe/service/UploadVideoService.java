@@ -56,11 +56,9 @@ public class UploadVideoService extends Service {
                     String Vimeolink= (String) response.get("link");
                     String uploadLink = (String) groups.get("upload_link");
 
-                    JSONObject a = response.getJSONObject("pictures");
-                    Object b = a.get("sizes");
                     //ici on peut aussi recucuperer le lien ou l'utilisateur pourras visialiser la vidéo, elle est dans upoad ->link
                     //deuxieme requete pour joindre la video
-                    //uploadVideo(uploadLink, context);
+                    //uploadVideo(uploadLink, self);
                     session.setServerVideoLink(Vimeolink);
                     listener.onSuccess(uploadLink);
 

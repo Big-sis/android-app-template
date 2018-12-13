@@ -2,14 +2,12 @@ package fr.vyfe.viewModel;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
-import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-import fr.vyfe.RestartSession;
 import fr.vyfe.model.SessionModel;
 import fr.vyfe.model.TagSetModel;
 import fr.vyfe.model.TemplateModel;
@@ -37,7 +35,7 @@ public class CreateSessionViewModel extends VyfeViewModel {
     }
 
     public void init(SessionModel session) {
-        this.setSessionName(RestartSession.implementTitleGrid(session.getName()));
+        this.setSessionName( implementGridTitle(session.getName()));
         this.selectedTagSetId = session.getTagSetId();
     }
 
@@ -111,5 +109,23 @@ public class CreateSessionViewModel extends VyfeViewModel {
 
     public String getSessionName() {
         return this.sessionName != null ? this.sessionName.getValue() : "";
+    }
+
+    private String implementGridTitle(String titleName) {
+        if (titleName.matches("^.*[_0-9]+")) {
+            String[] parts = titleName.split("_");
+            String versionNum = parts[parts.length - 1];
+
+            StringBuilder name = new StringBuilder();
+            for (int i = 0; i < parts.length - 1; i++){
+                if (i>0) name.append("_");
+                name.append(parts[i]);
+            }
+
+            int number = Integer.parseInt(versionNum);
+            return name.toString() + "_"+String.valueOf(number + 1);
+
+        } else
+            return titleName + "_2";
     }
 }

@@ -1,7 +1,6 @@
 package fr.vyfe.repository;
 
-import java.util.Collections;
-import java.util.Comparator;
+
 import java.util.List;
 
 import fr.vyfe.mapper.TagSetMapper;
@@ -26,12 +25,6 @@ public class TagSetRepository extends FirebaseDatabaseRepository<TagSetModel>{
     public void createTemplates(String key, List<TemplateModel> templates){
         TemplateMapper mapper = new TemplateMapper();
 
-        Collections.sort(templates, new Comparator<TemplateModel>() {
-            @Override
-            public int compare(TemplateModel o1, TemplateModel o2) {
-                return o1.getPosition()-o2.getPosition();
-            }
-        });
         for (TemplateModel templateModel: templates) {
             databaseReference.child(key).child("Templates").push().setValue(mapper.unMap(templateModel));
         }

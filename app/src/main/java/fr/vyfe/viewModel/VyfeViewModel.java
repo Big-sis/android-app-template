@@ -53,7 +53,7 @@ public abstract class VyfeViewModel extends ViewModel {
                 Collections.sort(result.getTemplates(), new Comparator<TemplateModel>() {
                     @Override
                     public int compare(TemplateModel o1, TemplateModel o2) {
-                        return o1.getPosition()-o2.getPosition();
+                        return o1.getPosition() - o2.getPosition();
                     }
                 });
                 tagSet.postValue(result);
@@ -75,8 +75,8 @@ public abstract class VyfeViewModel extends ViewModel {
     public MutableLiveData<TagSetModel> getTagSet() {
         if (tagSet == null) {
             tagSet = new MutableLiveData<>();
-            loadSession(this.sessionId);
         }
+        loadSession(this.sessionId);
         return tagSet;
     }
 

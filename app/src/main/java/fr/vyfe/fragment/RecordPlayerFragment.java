@@ -229,6 +229,9 @@ public class RecordPlayerFragment extends Fragment implements View.OnClickListen
 
             @Override
             public void onError(@NonNull CameraDevice cameraDevice, int error) {
+                //TODO : gestion erreur nexus
+                //Une fois enregistré essaie de relancer la cam
+                //error 1 seulement sur la nexus : app photo deja utilisé
                 mCameraOpenCloseLock.release();
                 cameraDevice.close();
                 mCameraDevice = null;

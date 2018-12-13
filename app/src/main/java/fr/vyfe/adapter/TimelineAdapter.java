@@ -75,10 +75,10 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
 //            String tagName = tag.getName();
 //
 //            //Creation de chaque etage de tags sur la timeline
-//            final RelativeLayout timelineRow = new RelativeLayout(context);
+//            final RelativeLayout timelineRow = new RelativeLayout(self);
 //            //mLlMain.addView(timelineRow);
 //
-//            TextView tvNameTimeline = new TextView(context);
+//            TextView tvNameTimeline = new TextView(self);
 //            tvNameTimeline.setText(tagName);
 //
 //
@@ -96,7 +96,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
 //                double start = convertIntoTimelineViewRef(tagTime.getStart(), timelineRow.getWidth());
 //                double end = convertIntoTimelineViewRef(tagTime.getEnd(), timelineRow.getWidth());
 //
-//                final ImageView tagImageView = new ImageView(context);
+//                final ImageView tagImageView = new ImageView(self);
 //                RelativeLayout.LayoutParams layoutParamsIv = new RelativeLayout.LayoutParams(
 //                        LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 //
@@ -112,7 +112,7 @@ public class TimelineAdapter extends RecyclerView.Adapter<TimelineAdapter.ViewHo
 //                LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
 //                        LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 //                timelineRow.setLayoutParams(layoutParams);
-//                timelineRow.setBackgroundColor(context.getResources().getColor(R.color.colorCharcoalGrey));
+//                timelineRow.setBackgroundColor(self.getResources().getColor(R.color.colorCharcoalGrey));
 //                timelineRow.addView(tagImageView);
 //            }
         }

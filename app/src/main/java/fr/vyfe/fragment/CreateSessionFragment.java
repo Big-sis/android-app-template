@@ -173,7 +173,6 @@ public class CreateSessionFragment extends Fragment {
             buttonGo.setText(R.string.next);
             WifiManager wifiManager = (WifiManager) getContext().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
             final String networkSSID = getContext().getString(R.string.networkSSID);
-            ;
             String wifiManagerConnectionInfo = wifiManager.getConnectionInfo().getSSID();
             if (wifiManagerConnectionInfo.equals('"' + networkSSID + '"')) {
                 Toast.makeText(getContext(), "Vous êtes co au rasberry", Toast.LENGTH_SHORT).show();

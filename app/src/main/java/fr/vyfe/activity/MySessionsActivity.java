@@ -38,6 +38,7 @@ public class MySessionsActivity extends VyfeActivity {
     MyVideosViewModel viewModel;
     private GridView gridView;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,6 +93,7 @@ public class MySessionsActivity extends VyfeActivity {
             @Override
             public void onChanged(@Nullable List<SessionModel> sessions) {
                 gridView.setAdapter(new VideoGridAdapter(MySessionsActivity.this, (ArrayList<SessionModel>) sessions));
+
             }
         });
 

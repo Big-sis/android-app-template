@@ -154,27 +154,13 @@ public class CreateTemplatesFragment extends Fragment implements AdapterView.OnI
     }
 
     public void moveItem(int oldPos, int newPos) {
-        if (oldPos < newPos) {
-            for (int i = oldPos; i < newPos; i++) {
-                Collections.swap(Objects.requireNonNull(viewModel.getTemplates().getValue()), i, i + 1);
-                viewModel.getTemplates().getValue().get(i).setPosition(i);
-                viewModel.getTemplates().getValue().get(i+1).setPosition(i+1);
-            }
-        } else {
-            for (int i = oldPos; i > newPos; i--) {
-                Collections.swap(Objects.requireNonNull(viewModel.getTemplates().getValue()), i, i - 1);
-                viewModel.getTemplates().getValue().get(i).setPosition(i);
-                viewModel.getTemplates().getValue().get(i-1).setPosition(i-1);
-            }
-        }
+        viewModel.moveItem(oldPos,newPos);
         mAdapter.notifyItemMoved(oldPos, newPos);
     }
 
     public void deleteItem(int position) {
-        Objects.requireNonNull(viewModel.getTemplates().getValue()).remove(position);
-        for(int i = position-1; i<viewModel.getTemplates().getValue().size()-position;i++){
-            viewModel.getTemplates().getValue().get(i+1).setPosition(viewModel.getTemplates().getValue().get(i+1).getPosition()-1);
-        }
+        // TODO : les 1eres suppressions fonctionnent mais apres erreur
+        viewModel.deleteItem(position);
         mAdapter.notifyItemRemoved(position);
     }
 

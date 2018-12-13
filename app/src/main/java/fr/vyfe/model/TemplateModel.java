@@ -13,7 +13,7 @@ public class TemplateModel implements Parcelable, VyfeModel, Comparable<Template
     private String name;
     private int leftOffset;
     private int rigthOffset;
-    private int count =0;
+    private int count = 0;
     private int position;
 
 
