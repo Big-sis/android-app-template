@@ -46,7 +46,7 @@ public class MyVideosViewModel extends VyfeViewModel {
         repository.addListListener(new BaseListValueEventListener.CallbackInterface<SessionModel>() {
             @Override
             public void onSuccess(List<SessionModel> result) {
-                //TODO: mettre les autorisations en placent
+
                 File externalStorage = getExternalStoragePublicDirectory(DIRECTORY_MOVIES + "/" + "Vyfe");
                 final String racineExternalStorage = String.valueOf(externalStorage.getAbsoluteFile());
                 final String[] filesExternalStorage = externalStorage.list();
@@ -56,23 +56,37 @@ public class MyVideosViewModel extends VyfeViewModel {
                     for (String nameFileExternalStorage : filesExternalStorage) {
                         String nameCache = racineExternalStorage + "/" + nameFileExternalStorage;
                         for (SessionModel session : result) {
-                            if (session.getName().contains(filter) && session.getDeviceVideoLink().equals(nameCache))
+                            //TODO : pb plante si fiilter pas rempli
+                             if (session.getName().contains(filter) && session.getDeviceVideoLink().equals(nameCache))
                                 filtered.add(session);
+
+                            //TODO verifier si ca marche avec nouveau code
+                            /**
+                            if (!filter.equals("") && session.getName().contains(filter) &&
+                                    session.getDeviceVideoLink().equals(nameCache))
+                                filtered.add(session);
+
+                            if (filter.equals("") && session.getDeviceVideoLink().equals(nameCache))
+                                filtered.add(session);
+                             **/
                         }
 
+
                     }
+
                 }
+
                 sessions.setValue(filtered);
 
-            }
+        }
 
-            @Override
-            public void onError(Exception e) {
-                sessions.setValue(null);
-            }
-        });
+        @Override
+        public void onError (Exception e){
+            sessions.setValue(null);
+        }
+    });
 
-    }
+}
 
     public void setFilter(String filter) {
         this.filter = filter;

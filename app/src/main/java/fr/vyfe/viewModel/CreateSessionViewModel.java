@@ -34,11 +34,11 @@ public class CreateSessionViewModel extends VyfeViewModel {
         this.androidId = androidId;
     }
 
-    public void init(SessionModel session) {
-        this.setSessionName( implementGridTitle(session.getName()));
-        this.selectedTagSetId = session.getTagSetId();
-    }
 
+    public void init(String titleSession, String tagSetId) {
+        this.setSessionName( implementGridTitle(titleSession));
+        this.selectedTagSetId = tagSetId;
+    }
     public MutableLiveData<TagSetModel> getSelectedTagSet() {
         if (selectedTagSet == null)
             this.selectedTagSet = new MutableLiveData<>();
@@ -112,7 +112,7 @@ public class CreateSessionViewModel extends VyfeViewModel {
     }
 
     private String implementGridTitle(String titleName) {
-        if (titleName.matches("^.*[_0-9]+")) {
+        if (titleName.matches("^.*[_0-9]")) {
             String[] parts = titleName.split("_");
             String versionNum = parts[parts.length - 1];
 

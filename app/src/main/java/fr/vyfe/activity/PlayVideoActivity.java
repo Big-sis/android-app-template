@@ -39,7 +39,6 @@ public class PlayVideoActivity extends VyfeActivity implements LifecycleOwner {
         viewModel.init();
 
         setContentView(R.layout.activity_play_video);
-        //TODO: affichage des tags ne fonctionne pas
         replaceFragment(R.id.scrollTimeline, TimelinePlayFragment.newInstance());
         replaceFragment(R.id.constraint_video_player, VideoPlayerFragment.newInstance());
 
@@ -56,23 +55,24 @@ public class PlayVideoActivity extends VyfeActivity implements LifecycleOwner {
             public void onChanged(@Nullable SessionModel session) {
                 getSupportActionBar().setTitle(session.getName());
 
-                viewModel.getTagSet().observe(PlayVideoActivity.this, new Observer<TagSetModel>() {
-                    @Override
-                    public void onChanged(@Nullable final TagSetModel tagSet) {
-                        if (tagSet != null) {
-                            viewModel.getSession().observe(PlayVideoActivity.this, new Observer<SessionModel>() {
-                                @Override
-                                public void onChanged(@Nullable SessionModel session) {
-                                    mAdapterTags = new TemplateRecyclerAdapter(tagSet.getTemplates(), session, "count");
-                                    mRecyclerView.setAdapter(mAdapterTags);
-                                }
-                            });
 
-                        }
-                    }
-                });
             }
         });
+        viewModel.getTagSet().observe(PlayVideoActivity.this, new Observer<TagSetModel>() {
+            @Override
+            public void onChanged(@Nullable final TagSetModel tagSet) {
+                if (tagSet != null) {
+                    viewModel.getSession().observe(PlayVideoActivity.this, new Observer<SessionModel>() {
+                        @Override
+                        public void onChanged(@Nullable SessionModel session) {
+                            mAdapterTags = new TemplateRecyclerAdapter(tagSet.getTemplates(), session, "count");
+                            mRecyclerView.setAdapter(mAdapterTags);
+                        }
+                    });
+
+                }
+            }
+        })
 
 
     }

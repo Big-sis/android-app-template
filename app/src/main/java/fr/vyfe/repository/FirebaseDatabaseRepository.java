@@ -84,7 +84,7 @@ public abstract class FirebaseDatabaseRepository<Model> {
         if (equalToKey != null) query = query.equalTo(equalToKey);
         query.addValueEventListener(listListener);
 
-        //TODO: voir cmt mettre deux filtres sur la meme requete (filtre verification video ds storage)
+        //TODO: voir cmt mettre deux filtres sur la meme requete (filtre verification video ds s
     }
 
     public void addChildListener(String childId, BaseSingleValueEventListener.CallbackInterface<Model> callback) {

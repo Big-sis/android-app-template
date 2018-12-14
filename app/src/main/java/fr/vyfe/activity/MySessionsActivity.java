@@ -35,15 +35,14 @@ import pl.droidsonroids.gif.GifDrawable;
 public class MySessionsActivity extends VyfeActivity {
     public static final String[] PERMISSIONS = {Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
-    MyVideosViewModel viewModel;
+    private MyVideosViewModel viewModel;
     private GridView gridView;
-
+    private VideoGridAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_video);
-        //TODO: revoir permission
 
 
         viewModel = ViewModelProviders.of(this, new MyVideosViewModelFactory(mAuth.getCurrentUser().getCompany(), AndroidHelper.getAndroidId(this))).get(MyVideosViewModel.class);
@@ -75,6 +74,7 @@ public class MySessionsActivity extends VyfeActivity {
             }
         });
 
+
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -89,11 +89,17 @@ public class MySessionsActivity extends VyfeActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (checkPersmissions(MySessionsActivity.PERMISSIONS))viewModel.getSessions().observe(this, new Observer<List<SessionModel>>() {
+        //TODO : verifier si affichage en direct
+        if (checkPersmissions(MySessionsActivity.PERMISSIONS)){
+            adapter = new VideoGridAdapter(MySessionsActivity.this, new ArrayList<SessionModel>());
+            gridView.setAdapter(adapter);
+        }
+
+            viewModel.getSessions().observe(this, new Observer<List<SessionModel>>() {
             @Override
             public void onChanged(@Nullable List<SessionModel> sessions) {
                 gridView.setAdapter(new VideoGridAdapter(MySessionsActivity.this, (ArrayList<SessionModel>) sessions));
-
+                adapter.notifyDataSetChanged();
             }
         });
 

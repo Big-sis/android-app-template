@@ -53,11 +53,6 @@ public class CreateGridViewModel extends VyfeViewModel {
         templates.getValue().add(template);
     }
 
-    public void moveTag(int from, int to) {
-        TemplateModel movingTemplate = templates.getValue().get(from);
-        templates.getValue().remove(movingTemplate);
-        templates.getValue().add(to, movingTemplate);
-    }
 
     public void moveItem(int oldPos, int newPos) {
         if (oldPos < newPos) {

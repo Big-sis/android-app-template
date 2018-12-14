@@ -33,4 +33,7 @@ public final class Constants {
     public static final String VIMEO_API_VIDEOS_ENDPOINT = "https://api.vimeo.com/me/videos";
     public static final String VIMEO_TOKEN_EXTRA = "vimeo_token";
     public static final String COMPANYID_EXTRA = "company_id";
+
+    public static final String SESSIONTITLE_EXTRA = "sessionTitle";
+    public static final String TAGSETID_EXTRA = "tagSetID";
 }
