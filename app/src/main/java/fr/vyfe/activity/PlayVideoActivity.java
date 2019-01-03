@@ -72,7 +72,7 @@ public class PlayVideoActivity extends VyfeActivity implements LifecycleOwner {
 
                 }
             }
-        })
+        });
 
 
     }

@@ -71,6 +71,7 @@ public class TimelineRecordFragment extends Fragment {
                         TextView tvNameRow = new TextView(getContext());
                         tvNameRow.setText(template.getName());
                         tvNameRow.setMinimumHeight(convertToDp(25));
+                        tvNameRow.setTextColor(Color.WHITE);
                         RelativeLayout.LayoutParams layoutParamsTv = new RelativeLayout.LayoutParams(
                                 convertToDp(titleLength), LinearLayout.LayoutParams.WRAP_CONTENT);
                         layoutParamsTv.setMargins(convertToDp(15), convertToDp(10), convertToDp(8), convertToDp(10));

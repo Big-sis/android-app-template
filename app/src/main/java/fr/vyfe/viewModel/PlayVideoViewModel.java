@@ -30,11 +30,11 @@ public class PlayVideoViewModel extends VyfeViewModel {
 
     public void init() {
         isPlaying.setValue(false);
-        videoPosition.setValue(0);
+        this.videoPosition.setValue(0);
     }
 
     public LiveData<Integer> getVideoPosition() {
-        return videoPosition;
+        return this.videoPosition;
     }
 
     public void setVideoPosition(Integer videoPosition) {

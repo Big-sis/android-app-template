@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import fr.vyfe.model.SessionModel;
+import fr.vyfe.model.TagModel;
 import fr.vyfe.model.TagSetModel;
 import fr.vyfe.model.TemplateModel;
 import fr.vyfe.repository.BaseSingleValueEventListener;
@@ -28,12 +29,16 @@ public abstract class VyfeViewModel extends ViewModel {
     protected void loadSession(String id) {
         if (session == null)
             session = new MutableLiveData<>();
+
+
         sessionRepository.addChildListener(id, true, new BaseSingleValueEventListener.CallbackInterface<SessionModel>() {
             @Override
             public void onSuccess(SessionModel result) {
+
                 session.postValue(result);
                 if (tagSetRepository != null)
                     loadTagSet(result.getTagSetId());
+
             }
 
             @Override

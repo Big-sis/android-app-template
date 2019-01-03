@@ -14,8 +14,6 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +24,6 @@ import fr.vyfe.helper.AndroidHelper;
 import fr.vyfe.model.SessionModel;
 import fr.vyfe.viewModel.MyVideosViewModel;
 import fr.vyfe.viewModel.MyVideosViewModelFactory;
-import pl.droidsonroids.gif.GifDrawable;
 
 /**
  * Activity presents cache memory videos and device videos
@@ -43,7 +40,6 @@ public class MySessionsActivity extends VyfeActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_video);
-
 
         viewModel = ViewModelProviders.of(this, new MyVideosViewModelFactory(mAuth.getCurrentUser().getCompany(), AndroidHelper.getAndroidId(this))).get(MyVideosViewModel.class);
 
@@ -69,11 +65,10 @@ public class MySessionsActivity extends VyfeActivity {
 
             @Override
             public boolean onQueryTextChange(String s) {
-                if (checkPersmissions(MySessionsActivity.PERMISSIONS))viewModel.setFilter(s);
+                if (checkPersmissions(MySessionsActivity.PERMISSIONS)) viewModel.setFilter(s);
                 return false;
             }
         });
-
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -84,24 +79,36 @@ public class MySessionsActivity extends VyfeActivity {
                 MySessionsActivity.this.startActivity(intent);
             }
         });
+
+
+        viewModel.getPermissions().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean aBoolean) {
+                if (aBoolean!=null && aBoolean) {
+                    adapter = new VideoGridAdapter(MySessionsActivity.this, new ArrayList<SessionModel>());
+                    viewModel.getSessions().observe(MySessionsActivity.this, new Observer<List<SessionModel>>() {
+                        @Override
+                        public void onChanged(@Nullable List<SessionModel> sessions) {
+                            gridView.setAdapter(new VideoGridAdapter(MySessionsActivity.this, (ArrayList<SessionModel>) sessions));
+                            if (adapter != null) adapter.notifyDataSetChanged();
+                        }
+                    });
+                }
+            }
+        });
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        //TODO : verifier si affichage en direct
-        if (checkPersmissions(MySessionsActivity.PERMISSIONS)){
-            adapter = new VideoGridAdapter(MySessionsActivity.this, new ArrayList<SessionModel>());
-            gridView.setAdapter(adapter);
+        if (checkPersmissions(MySessionsActivity.PERMISSIONS)) {
+            viewModel.permissionsAccepted();
         }
 
-            viewModel.getSessions().observe(this, new Observer<List<SessionModel>>() {
-            @Override
-            public void onChanged(@Nullable List<SessionModel> sessions) {
-                gridView.setAdapter(new VideoGridAdapter(MySessionsActivity.this, (ArrayList<SessionModel>) sessions));
-                adapter.notifyDataSetChanged();
-            }
-        });
+
+
+
+
 
     }
 }

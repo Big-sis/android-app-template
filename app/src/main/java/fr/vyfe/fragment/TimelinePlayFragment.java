@@ -114,7 +114,7 @@ public class TimelinePlayFragment extends Fragment {
 
                                 iv.setBackgroundResource(tag.getColor().getImage());
 
-                                int tagLength = Math.max(convertToDp(25), tag.getEnd() - tag.getStart()) * timelineWidth / videoDuration;
+                                int tagLength = Math.max(convertToDp(25), (tag.getEnd() - tag.getStart()) * timelineWidth / videoDuration);
                                 RelativeLayout.LayoutParams layoutParamsIv = new RelativeLayout.LayoutParams(
                                         tagLength, LinearLayout.LayoutParams.WRAP_CONTENT);
                                 layoutParamsIv.setMargins(tag.getStart() * timelineWidth / videoDuration, convertToDp(8), 0, convertToDp(8));

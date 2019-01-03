@@ -15,6 +15,7 @@ public class TagModel implements Parcelable, VyfeModel {
     private int start;
     private int end;
 
+
     public TagModel() {
     }
 
@@ -116,6 +117,7 @@ public class TagModel implements Parcelable, VyfeModel {
     public int describeContents() {
         return 0;
     }
+
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {

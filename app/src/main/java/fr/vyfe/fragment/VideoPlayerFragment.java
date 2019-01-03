@@ -21,13 +21,13 @@ import fr.vyfe.viewModel.PlayVideoViewModel;
 
 public class VideoPlayerFragment extends Fragment {
 
+    Runnable mRunnable;
     private PlayVideoViewModel viewModel;
     private StopwatchView mChronoView;
     private FloatingActionButton mPlayButtonView;
     private VideoView mVideoSelectedView;
     private FloatingActionButton mButtonReplay;
     private Handler mHandler;
-
 
     public static VideoPlayerFragment newInstance() {
         return new VideoPlayerFragment();
@@ -58,44 +58,61 @@ public class VideoPlayerFragment extends Fragment {
 
         mHandler = new Handler();
 
-        getActivity().runOnUiThread(new Runnable() {
+        /**  getActivity().runOnUiThread(new Runnable() {
+        @Override public void run() {
+        if (mVideoSelectedView != null) {
+        int position = mVideoSelectedView.getCurrentPosition();
+        viewModel.setVideoPosition(position/1000);
+        }
+        mHandler.postDelayed(this, 20);
+        }
+        });
+         **/
+
+        mRunnable = new Runnable() {
             @Override
             public void run() {
                 if (mVideoSelectedView != null) {
                     int position = mVideoSelectedView.getCurrentPosition();
-                    viewModel.setVideoPosition(position/1000);
+                    viewModel.setVideoPosition(position / 1000);
                 }
                 mHandler.postDelayed(this, 20);
+
             }
-        });
+        };
+        mHandler.post(mRunnable);
+
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState){
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
         viewModel.getSession().observe(getActivity(), new Observer<SessionModel>() {
             @Override
             public void onChanged(@Nullable SessionModel session) {
                 mVideoSelectedView.setVideoPath(session.getDeviceVideoLink());
+
             }
         });
 
         viewModel.getVideoPosition().observe(getActivity(), new Observer<Integer>() {
             @Override
             public void onChanged(@Nullable Integer position) {
-                //mVideoSelectedView.seekTo(position);
-                //mChronoView.setTime(position);
+                // Ne fonctionne pas
+                //  mVideoSelectedView.seekTo(position);
+                // mChronoView.setTime( position);
             }
         });
 
         viewModel.isPlaying().observe(getActivity(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean isPlaying) {
-                if (isPlaying){
+                if (isPlaying) {
                     mVideoSelectedView.start();
                     mChronoView.start();
                     mPlayButtonView.setBackgroundColor(getResources().getColor(R.color.colorFadedOrange));
                     mPlayButtonView.setImageResource(android.R.drawable.ic_media_pause);
+                    viewModel.setVideoPosition(mVideoSelectedView.getCurrentPosition());
                 } else {
                     mVideoSelectedView.pause();
                     mChronoView.stop();
@@ -121,8 +138,12 @@ public class VideoPlayerFragment extends Fragment {
         mButtonReplay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewModel.play();
+                //TODO ono ne fonctionne pas
+                //  viewModel.play();
                 viewModel.setVideoPosition(0);
+                mChronoView.setTime(0);
+                if (viewModel != null)
+                    mVideoSelectedView.seekTo(viewModel.getVideoPosition().getValue());
             }
         });
 
@@ -130,8 +151,10 @@ public class VideoPlayerFragment extends Fragment {
         mVideoSelectedView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
-                viewModel.pause();
-                viewModel.setVideoPosition(0);
+                //TODO pourquoi init ne marche pas ici???
+                viewModel.init();
+                mVideoSelectedView.seekTo(0);
+                if (viewModel != null) mChronoView.setTime(0);
             }
         });
     }

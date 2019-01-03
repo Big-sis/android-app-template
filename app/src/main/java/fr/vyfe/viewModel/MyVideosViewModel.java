@@ -20,12 +20,23 @@ public class MyVideosViewModel extends VyfeViewModel {
     private SessionRepository repository;
     private MutableLiveData<List<SessionModel>> sessions;
     private String filter;
+    private MutableLiveData<Boolean> permissions;
 
     public MyVideosViewModel(String companyId, String androidId) {
         repository = new SessionRepository(companyId);
         repository.setOrderByChildKey("idAndroid");
         repository.setEqualToKey(androidId);
         filter = "";
+        permissions = new MutableLiveData<>();
+        permissions.setValue(false);
+    }
+
+    public void permissionsAccepted(){
+        permissions.setValue(true);
+    }
+
+    public MutableLiveData<Boolean> getPermissions() {
+        return permissions;
     }
 
     public LiveData<List<SessionModel>> getSessions() {
