@@ -71,10 +71,10 @@ public class CreateGridViewModel extends VyfeViewModel {
     }
 
     public void deleteItem(int position) {
-        Objects.requireNonNull(getTemplates().getValue()).remove(position);
-        for (int i = position - 1; i < getTemplates().getValue().size() - position; i++) {
-            getTemplates().getValue().get(i + 1).setPosition(getTemplates().getValue().get(i + 1).getPosition() - 1);
+        for (int i = position + 1; i < getTemplates().getValue().size(); i++) {
+            getTemplates().getValue().get(i).setPosition(getTemplates().getValue().get(i).getPosition() - 1);
         }
+        Objects.requireNonNull(getTemplates().getValue()).remove(position);
     }
 
     public TagSetModel save() {

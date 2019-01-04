@@ -92,7 +92,6 @@ public class RecordVideoViewModel extends VyfeViewModel {
     public MutableLiveData<SessionModel> getSession() {
         if (session == null)
             loadSession(this.sessionId);
-        SessionModel a = session.getValue();
         return session;
     }
 

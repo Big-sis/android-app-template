@@ -144,4 +144,7 @@
     <string name="save_session_record">Video enregistré:</string>
     <string name="info_movie">Informations sur votre vidéo</string>
     <string name="ask_connection">Vous devez vous connecter</string>
+    <string name="save_edit">Modifiactions enregistrées</string>
+    <string name="change_movie">Modifier la vidéo</string>
+    <string name="confirm_change_movie">Voulez-vous vraiment modifier cette vidéo ?</string>
 </resources>

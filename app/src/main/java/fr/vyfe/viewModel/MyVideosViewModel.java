@@ -31,7 +31,7 @@ public class MyVideosViewModel extends VyfeViewModel {
         permissions.setValue(false);
     }
 
-    public void permissionsAccepted(){
+    public void permissionsAccepted() {
         permissions.setValue(true);
     }
 
@@ -67,42 +67,25 @@ public class MyVideosViewModel extends VyfeViewModel {
                     for (String nameFileExternalStorage : filesExternalStorage) {
                         String nameCache = racineExternalStorage + "/" + nameFileExternalStorage;
                         for (SessionModel session : result) {
-                            //TODO : pb plante si fiilter pas rempli
-                             if (session.getName().contains(filter) && session.getDeviceVideoLink().equals(nameCache))
+                            if (session.getName() != null && session.getName().contains(filter) && session.getDeviceVideoLink().equals(nameCache))
                                 filtered.add(session);
-
-                            //TODO verifier si ca marche avec nouveau code
-                            /**
-                            if (!filter.equals("") && session.getName().contains(filter) &&
-                                    session.getDeviceVideoLink().equals(nameCache))
-                                filtered.add(session);
-
-                            if (filter.equals("") && session.getDeviceVideoLink().equals(nameCache))
-                                filtered.add(session);
-                             **/
                         }
-
-
                     }
-
                 }
 
                 sessions.setValue(filtered);
+            }
 
-        }
+            @Override
+            public void onError(Exception e) {
+                sessions.setValue(null);
+            }
+        });
 
-        @Override
-        public void onError (Exception e){
-            sessions.setValue(null);
-        }
-    });
-
-}
+    }
 
     public void setFilter(String filter) {
         this.filter = filter;
         loadSessions();
     }
-
-
 }

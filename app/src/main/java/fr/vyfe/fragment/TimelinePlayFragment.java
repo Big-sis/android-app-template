@@ -11,7 +11,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.TypedValue;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,9 +21,9 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import fr.vyfe.Constants;
 import fr.vyfe.R;
 import fr.vyfe.model.SessionModel;
 import fr.vyfe.model.TagModel;
@@ -38,6 +37,7 @@ public class TimelinePlayFragment extends Fragment {
     private PlayVideoViewModel viewModel;
     private SeekBar mSeekBar;
     private LinearLayout containerLayout;
+    private ArrayList<TextView> tvRowNameArray = new ArrayList<>();
 
     public static TimelinePlayFragment newInstance() {
         return new TimelinePlayFragment();
@@ -64,7 +64,7 @@ public class TimelinePlayFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
 
         // Applique les paramètres à la seekBar
         RelativeLayout.LayoutParams seekBarParams = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
@@ -75,9 +75,11 @@ public class TimelinePlayFragment extends Fragment {
         viewModel.getVideoPosition().observe(getActivity(), new Observer<Integer>() {
             @Override
             public void onChanged(@Nullable Integer position) {
-                mSeekBar.setProgress(position);
+            mSeekBar.setProgress(position);
             }
         });
+
+
 
         viewModel.getTagSet().observe(getActivity(), new Observer<TagSetModel>() {
             @Override
@@ -98,6 +100,8 @@ public class TimelinePlayFragment extends Fragment {
                         layoutParamsTv.setMargins(convertToDp(15), convertToDp(10), convertToDp(8), convertToDp(10));
                         tvNameRow.setLayoutParams(layoutParamsTv);
                         timelineRowView.addView(tvNameRow, layoutParamsTv);
+                        tvRowNameArray.add(tvNameRow);
+
 
                         containerLayout.addView(timelineRowView, new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                     }
@@ -106,24 +110,29 @@ public class TimelinePlayFragment extends Fragment {
                         @Override
                         public void onChanged(@Nullable List<TagModel> tags) {
 
-                            for (TagModel tag: tags) {
+                            for (TagModel tag : tags) {
 
                                 int timelineWidth = containerLayout.getWidth();
-                                int videoDuration = viewModel.getSession().getValue().getDuration();
+                                int videoDurationSecond = viewModel.getSession().getValue().getDuration()/1000;
                                 ImageView iv = new ImageView(getContext());
 
                                 iv.setBackgroundResource(tag.getColor().getImage());
 
-                                int tagLength = Math.max(convertToDp(25), (tag.getEnd() - tag.getStart()) * timelineWidth / videoDuration);
+                                int tagLength = Math.max(convertToDp(25), (tag.getEnd() - tag.getStart()) * timelineWidth / videoDurationSecond);
                                 RelativeLayout.LayoutParams layoutParamsIv = new RelativeLayout.LayoutParams(
                                         tagLength, LinearLayout.LayoutParams.WRAP_CONTENT);
-                                layoutParamsIv.setMargins(tag.getStart() * timelineWidth / videoDuration, convertToDp(8), 0, convertToDp(8));
+                                layoutParamsIv.setMargins(tag.getStart() * timelineWidth / videoDurationSecond, convertToDp(8), 0, convertToDp(8));
                                 iv.setMinimumHeight(convertToDp(25));
                                 iv.setLayoutParams(layoutParamsIv);
 
                                 RelativeLayout timelineRow = containerLayout.findViewWithTag(tag.getTemplateId());
                                 timelineRow.addView(iv);
                             }
+
+                            for (TextView textView : tvRowNameArray) {
+                                textView.bringToFront();
+                            }
+
                         }
                     });
 
@@ -138,14 +147,13 @@ public class TimelinePlayFragment extends Fragment {
                             newThumb.setBounds(0, 0, newThumb.getIntrinsicWidth(), newThumb.getIntrinsicHeight());
                             mSeekBar.setThumb(newThumb);
                             mSeekBar.getViewTreeObserver().removeOnPreDrawListener(this);
-
+                            mSeekBar.setMax(viewModel.getSession().getValue().getDuration());
                             return true;
                         }
                     });
                 }
             }
         });
-
 
 
         viewModel.getSession().observe(getActivity(), new Observer<SessionModel>() {
@@ -159,17 +167,23 @@ public class TimelinePlayFragment extends Fragment {
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                viewModel.setSeekPosition(i);
                 viewModel.setVideoPosition(i);
+                viewModel.isMoveSeek().setValue(false);
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
                 viewModel.pause();
+                viewModel.isMoveSeek().setValue(true);
+
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 viewModel.play();
+                viewModel.isMoveSeek().setValue(true);
+
             }
         });
     }

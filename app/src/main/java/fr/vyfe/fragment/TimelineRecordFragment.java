@@ -36,6 +36,7 @@ public class TimelineRecordFragment extends Fragment {
     private RecordVideoViewModel viewModel;
     private LinearLayout containerLayout;
     private TimelineAdapter adapter;
+    private ArrayList<TextView> tvRowNameArray = new ArrayList<>();
 
     public static TimelineRecordFragment newInstance() {
         return new TimelineRecordFragment();
@@ -77,7 +78,7 @@ public class TimelineRecordFragment extends Fragment {
                         layoutParamsTv.setMargins(convertToDp(15), convertToDp(10), convertToDp(8), convertToDp(10));
                         tvNameRow.setLayoutParams(layoutParamsTv);
                         timelineRowView.addView(tvNameRow, layoutParamsTv);
-
+                        tvRowNameArray.add(tvNameRow);
                         containerLayout.addView(timelineRowView, new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                     }
                 }
@@ -106,6 +107,9 @@ public class TimelineRecordFragment extends Fragment {
                     layoutParams.setMargins(convertToDp(tag.getStart()), convertToDp(10), 0, convertToDp(10));
                     ((RelativeLayout) containerLayout.findViewWithTag(tag.getTemplateId())).addView(iv, layoutParams);
 
+                }
+                for (TextView textView : tvRowNameArray) {
+                    textView.bringToFront();
                 }
             }
         });

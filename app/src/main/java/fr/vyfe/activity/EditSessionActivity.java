@@ -13,6 +13,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.Continuation;
@@ -36,12 +37,13 @@ public class EditSessionActivity extends VyfeActivity {
         setContentView(R.layout.activity_info_video);
 
         Button btnCancel = findViewById(R.id.btn_cancel);
-        Button btnConfirmDelete = findViewById(R.id.btn_confirm_delete);
+        final Button btnConfirmDelete = findViewById(R.id.btn_confirm_delete);
         Button btnDelete = findViewById(R.id.btn_delete);
         final Button btnEdit = findViewById(R.id.bt_edit);
         final ConstraintLayout confirmDelete = findViewById(R.id.confirm_delete);
         final EditText etDescription = findViewById(R.id.et_description);
         final EditText etSessionTitle = findViewById(R.id.et_video_title);
+        final TextView tvSave = findViewById(R.id.tv_video_save);
         Toolbar toolbar = findViewById(R.id.toolbar);
         mDatabase = FirebaseDatabase.getInstance();
 
@@ -54,7 +56,7 @@ public class EditSessionActivity extends VyfeActivity {
         viewModel.getSession().observe(this, new Observer<SessionModel>() {
             @Override
             public void onChanged(@Nullable SessionModel sessionModel) {
-                if(sessionModel!=null){
+                if (sessionModel != null) {
                     etDescription.setText(sessionModel.getDescription());
                     etSessionTitle.setText(sessionModel.getName());
                 }
@@ -108,19 +110,35 @@ public class EditSessionActivity extends VyfeActivity {
         btnConfirmDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 viewModel.deleteSession().continueWith(new Continuation<Void, Void>() {
-                     @Override
-                     public Void then(@NonNull Task<Void> task) throws Exception {
-                         if (task.isSuccessful()) {
-                             Toast.makeText(EditSessionActivity.this, R.string.delete_session, Toast.LENGTH_SHORT).show();
-                             Intent intent = new Intent(EditSessionActivity.this, MySessionsActivity.class);
-                             startActivity(intent);
-                         }
-                         else
-                             Toast.makeText(EditSessionActivity.this, "Error", Toast.LENGTH_SHORT).show();
-                         return null;
-                     }
-                 });
+
+                if (btnConfirmDelete.getText().equals(R.string.delete)) {
+                    viewModel.deleteSession().continueWith(new Continuation<Void, Void>() {
+                        @Override
+                        public Void then(@NonNull Task<Void> task) throws Exception {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(EditSessionActivity.this, R.string.delete_session, Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(EditSessionActivity.this, MySessionsActivity.class);
+                                startActivity(intent);
+                            } else
+                                Toast.makeText(EditSessionActivity.this, R.string.error, Toast.LENGTH_SHORT).show();
+                            return null;
+                        }
+                    });
+                } else {
+                    viewModel.editSession().continueWith(new Continuation<Void, Void>() {
+                        @Override
+                        public Void then(@NonNull Task<Void> task) throws Exception {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(EditSessionActivity.this, R.string.save_edit, Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(EditSessionActivity.this, SelectVideoActivity.class);
+                                intent.putExtra(Constants.SESSIONMODELID_EXTRA, viewModel.getSession().getValue().getId());
+                                EditSessionActivity.this.startActivity(intent);
+                            } else
+                                Toast.makeText(EditSessionActivity.this, R.string.error, Toast.LENGTH_SHORT).show();
+                            return null;
+                        }
+                    });
+                }
             }
         });
 
@@ -131,26 +149,13 @@ public class EditSessionActivity extends VyfeActivity {
             }
         });
 
-
-
-
-
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewModel.editSession().continueWith(new Continuation<Void, Void>() {
-                    @Override
-                    public Void then(@NonNull Task<Void> task) throws Exception {
-                        if (task.isSuccessful())
-                            Toast.makeText(EditSessionActivity.this, "Modifiactions enregistrées", Toast.LENGTH_SHORT).show();
-                        else
-                            Toast.makeText(EditSessionActivity.this, "Error", Toast.LENGTH_SHORT).show();
-                        return null;
-                    }
-                });
+                btnConfirmDelete.setText(R.string.change_movie);
+                tvSave.setText(R.string.confirm_change_movie);
+                confirmDelete.setVisibility(View.VISIBLE);
             }
         });
-
     }
-
 }

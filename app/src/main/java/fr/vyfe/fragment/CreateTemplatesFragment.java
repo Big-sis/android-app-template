@@ -159,7 +159,6 @@ public class CreateTemplatesFragment extends Fragment implements AdapterView.OnI
     }
 
     public void deleteItem(int position) {
-        // TODO : les 1eres suppressions fonctionnent mais apres erreur
         viewModel.deleteItem(position);
         mAdapter.notifyItemRemoved(position);
     }

@@ -18,6 +18,8 @@ public class PlayVideoViewModel extends VyfeViewModel {
     private MutableLiveData<Boolean> isPlaying;
     private TagRepository tagRepository;
     private MutableLiveData<List<TagModel>> tags;
+    private MutableLiveData<Integer> seekPosition;
+    private MutableLiveData<Boolean> moveSeek;
 
     public PlayVideoViewModel(String companyId, String userId, String sessionId) {
         sessionRepository = new SessionRepository(companyId);
@@ -26,6 +28,9 @@ public class PlayVideoViewModel extends VyfeViewModel {
         isPlaying = new MutableLiveData<>();
         videoPosition = new MutableLiveData<>();
         this.sessionId = sessionId;
+        seekPosition = new MutableLiveData<>();
+        moveSeek = new MutableLiveData<>();
+        moveSeek.setValue(false);
     }
 
     public void init() {
@@ -41,8 +46,20 @@ public class PlayVideoViewModel extends VyfeViewModel {
         this.videoPosition.setValue(videoPosition);
     }
 
+    public MutableLiveData<Integer> getSeekPosition() {
+        return seekPosition;
+    }
+
+    public void setSeekPosition(Integer seekPosition){
+        this.seekPosition.setValue(seekPosition);
+    }
+
     public LiveData<Boolean> isPlaying(){
         return isPlaying;
+    }
+
+    public MutableLiveData<Boolean> isMoveSeek() {
+        return moveSeek;
     }
 
     public void play(){

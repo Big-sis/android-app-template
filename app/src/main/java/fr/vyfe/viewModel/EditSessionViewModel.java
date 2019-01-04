@@ -38,6 +38,8 @@ public class EditSessionViewModel extends VyfeViewModel {
 
     public Task<Void> editSession() {
         SessionModel sessionModel = session.getValue();
+        if(newName==null)newName=getSession().getValue().getName();
+        if(newDescription==null)newDescription=getSession().getValue().getDescription();
         sessionModel.setName(this.newName);
         sessionModel.setDescription(this.newDescription);
         return sessionRepository.put(sessionModel);
