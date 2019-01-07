@@ -1,5 +1,6 @@
 package fr.vyfe.repository;
 
+import fr.vyfe.Constants;
 import fr.vyfe.mapper.TagMapper;
 import fr.vyfe.model.TagModel;
 
@@ -12,6 +13,6 @@ public class TemplateRepository extends FirebaseDatabaseRepository<TagModel>{
 
     @Override
     protected String getRootNode() {
-        return getCompany() + "/Users/" + this.getUser() + "/TagSets/" + this.getTagSetId() + "/Tags";
+        return getCompany() + "/"+ Constants.BDDV2_USERS_KEY+"/" + this.getUser() + "/"+Constants.BDDV2_USERS_TAGSETS_KEY+"/" + this.getTagSetId() + "/"+Constants.BDDV2_USERS_TAGS_KEY;
     }
 }

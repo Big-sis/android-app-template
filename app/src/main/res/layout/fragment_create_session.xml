@@ -110,10 +110,10 @@
                         android:layout_marginLeft="32dp"
                         android:layout_marginStart="32dp"
                         android:layout_marginTop="20dp"
+                        android:layout_weight="0.7"
                         android:background="@drawable/style_input"
                         android:visibility="visible"
-                        app:layout_constraintStart_toStartOf="parent"
-                        android:layout_weight="0.6"/>
+                        app:layout_constraintStart_toStartOf="parent" />
 
                     <Button
                         android:id="@+id/btn_intent_create_grid"

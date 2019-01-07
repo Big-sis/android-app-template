@@ -99,6 +99,7 @@ public class AuthHelper {
                                                 FirebaseFunctionsException.Code code = ffe.getCode();
                                                 Object details = ffe.getDetails();
                                             }
+
                                         }
                                     }
                                 });

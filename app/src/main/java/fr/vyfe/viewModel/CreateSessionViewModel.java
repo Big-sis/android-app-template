@@ -27,11 +27,14 @@ public class CreateSessionViewModel extends VyfeViewModel {
 
     public CreateSessionViewModel(String userId, String companyId, String androidId) {
         tagSetRepository = new TagSetRepository(userId, companyId);
+        tagSetRepository.setOrderByChildKey("archived");
+        tagSetRepository.setEqualToKeyBoolean(false);
         sessionRepository = new SessionRepository(companyId);
         tagSets = new MutableLiveData<>();
         sessionName = new MutableLiveData<>();
         this.userId = userId;
         this.androidId = androidId;
+
     }
 
 
@@ -64,8 +67,11 @@ public class CreateSessionViewModel extends VyfeViewModel {
         tagSetRepository.removeListeners();
     }
 
+
+
+
     private void loadTagSets() {
-        tagSetRepository.addListListener(new BaseListValueEventListener.CallbackInterface<TagSetModel>() {
+        tagSetRepository.addListListenerBoolean(new BaseListValueEventListener.CallbackInterface<TagSetModel>() {
             @Override
             public void onSuccess(List<TagSetModel> result) {
 
@@ -102,6 +108,9 @@ public class CreateSessionViewModel extends VyfeViewModel {
                 tagSets.setValue(null);
             }
         });
+
+        //test
+
 
     }
 

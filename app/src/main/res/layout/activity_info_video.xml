@@ -11,98 +11,118 @@
         android:id="@+id/appBar"
         layout="@layout/toolbar" />
 
-
-    <android.support.constraint.ConstraintLayout
+    <ScrollView
+        android:layout_marginTop="50dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_marginBottom="20dp">
 
-        <Button
-            android:id="@+id/bt_edit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="60dp"
-            android:layout_marginTop="100dp"
-            android:layout_marginStart="5dp"
-            android:alpha="0.4"
-            android:background="@drawable/style_button"
-            android:clickable="false"
-            android:text="@string/edit"
-            android:textColor="@color/white"
-            android:textSize="18sp"
-            app:fontFamily="@font/roboto_bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent">
 
-        <EditText
-            android:id="@+id/et_video_title"
-            android:layout_width="350dp"
-            android:layout_height="40dp"
-            android:layout_marginStart="60dp"
-            android:layout_marginTop="25dp"
-            android:background="@drawable/style_input"
-            android:ems="10"
-            android:hint="@string/video_tittle"
-            android:inputType="textPersonName"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
-            app:fontFamily="@font/roboto"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="0.3"
+                android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/et_description"
-            android:layout_width="350dp"
-            android:layout_height="112dp"
-            android:layout_marginLeft="60dp"
-            android:layout_marginStart="60dp"
-            android:layout_marginTop="25dp"
-            android:background="@drawable/style_input"
-            android:ems="10"
-            android:hint="@string/no_description"
-            android:inputType="textMultiLine"
-            android:textColor="@color/white"
-            android:textColorHint="@color/white"
-            app:fontFamily="@font/roboto"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/et_video_title" />
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="60dp"
+                    android:layout_marginStart="60dp"
+                    android:layout_marginTop="50dp"
+                    android:text="@string/video_info"
+                    android:textColor="@color/white"
+                    android:textSize="24sp"
+                    app:fontFamily="@font/roboto_bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="60dp"
-            android:layout_marginStart="60dp"
-            android:layout_marginTop="100dp"
-            android:text="@string/video_info"
-            android:textColor="@color/white"
-            android:textSize="24sp"
-            app:fontFamily="@font/roboto_bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+                <EditText
+                    android:id="@+id/et_video_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:layout_marginStart="60dp"
+                    android:layout_marginTop="25dp"
+                    android:background="@drawable/style_input"
+                    android:ems="10"
+                    android:hint="@string/video_tittle"
+                    android:inputType="textPersonName"
+                    android:minWidth="500dp"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white"
+                    app:fontFamily="@font/roboto"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 
-        <Button
-            android:id="@+id/btn_delete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="60dp"
-            android:layout_marginRight="60dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/style_button_white"
-            android:text="@string/delete"
-            android:textSize="18sp"
-            app:fontFamily="@font/roboto_bold"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/bt_edit" />
+                <EditText
+                    android:id="@+id/et_description"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="60dp"
+                    android:layout_marginStart="60dp"
+                    android:layout_marginTop="25dp"
+                    android:background="@drawable/style_input"
+                    android:ems="10"
+                    android:hint="@string/no_description"
+                    android:inputType="textMultiLine"
+                    android:minHeight="200dp"
+                    android:minWidth="500dp"
+                    android:textColor="@color/white"
+                    android:textColorHint="@color/white"
+                    app:fontFamily="@font/roboto"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/et_video_title" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="0.8"
+                android:orientation="vertical">
+
+                <Button
+                    android:id="@+id/bt_edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="60dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="160dp"
+                    android:alpha="0.4"
+                    android:background="@drawable/style_button"
+                    android:clickable="false"
+                    android:text="@string/edit"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    app:fontFamily="@font/roboto_bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <Button
+                    android:id="@+id/btn_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="60dp"
+                    android:layout_marginRight="60dp"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/style_button_white"
+                    android:text="@string/delete"
+                    android:textSize="18sp"
+                    app:fontFamily="@font/roboto_bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/bt_edit" />
 
 
-    </android.support.constraint.ConstraintLayout>
-
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
     <android.support.constraint.ConstraintLayout
         android:id="@+id/confirm_delete"
         android:layout_width="match_parent"
@@ -189,4 +209,7 @@
         </android.support.constraint.ConstraintLayout>
 
     </android.support.constraint.ConstraintLayout>
+
+
+
 </android.support.constraint.ConstraintLayout>

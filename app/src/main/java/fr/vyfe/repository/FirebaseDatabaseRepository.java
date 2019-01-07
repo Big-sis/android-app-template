@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import fr.vyfe.Constants;
+import fr.vyfe.entity.SessionEntity;
 import fr.vyfe.mapper.FirebaseMapper;
 import fr.vyfe.model.SessionModel;
 
@@ -27,6 +28,7 @@ public abstract class FirebaseDatabaseRepository<Model> {
     private String orderByChildKey;
     private String equalToKey;
     private String childKey;
+    private boolean archived;
 
     public FirebaseDatabaseRepository(FirebaseMapper mapper, String company) {
         this(mapper, company, null, null);
@@ -75,6 +77,10 @@ public abstract class FirebaseDatabaseRepository<Model> {
         this.equalToKey = equalToKey;
     }
 
+    public void setEqualToKeyBoolean(Boolean archived) {
+        this.archived = archived;
+    }
+
     protected abstract String getRootNode();
 
     public void addListListener(BaseListValueEventListener.CallbackInterface<Model> callback) {
@@ -82,6 +88,14 @@ public abstract class FirebaseDatabaseRepository<Model> {
         Query query = databaseReference;
         if (orderByChildKey != null) query = query.orderByChild(orderByChildKey);
         if (equalToKey != null) query = query.equalTo(equalToKey);
+        query.addValueEventListener(listListener);
+    }
+
+    public void addListListenerBoolean(BaseListValueEventListener.CallbackInterface<Model> callback) {
+        listListener = new BaseListValueEventListener(mapper, callback);
+        Query query = databaseReference;
+        if (orderByChildKey != null) query = query.orderByChild(orderByChildKey);
+        if (archived != true) query = query.equalTo(archived);
         query.addValueEventListener(listListener);
     }
 
@@ -124,6 +138,7 @@ public abstract class FirebaseDatabaseRepository<Model> {
     }
 
     public Task<Void> put(SessionModel sessionModel) {
-        return databaseReference.child(sessionModel.getId()).setValue(mapper.unMap(sessionModel));
+        SessionEntity sessionEntityTest = (SessionEntity) mapper.unMap(sessionModel);
+        return databaseReference.child(sessionModel.getId()).setValue(sessionEntityTest);
     }
 }

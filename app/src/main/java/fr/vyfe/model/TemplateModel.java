@@ -15,7 +15,7 @@ public class TemplateModel implements Parcelable, VyfeModel, Comparable<Template
     private int rigthOffset;
     private int count = 0;
     private int position;
-
+    private boolean touch = false;
 
     public TemplateModel() {
         leftOffset = Constants.STANDARD_LEFT_OFFSET;
@@ -103,6 +103,13 @@ public class TemplateModel implements Parcelable, VyfeModel, Comparable<Template
         this.count++;
     }
 
+    public boolean isTouch() {
+        return touch;
+    }
+
+    public void setTouch(boolean touch) {
+        this.touch = touch;
+    }
     @Override
     public int describeContents() {
         return 0;

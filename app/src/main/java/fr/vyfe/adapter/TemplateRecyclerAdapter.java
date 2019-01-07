@@ -1,5 +1,6 @@
 package fr.vyfe.adapter;
 
+import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.vyfe.Constants;
 import fr.vyfe.R;
 import fr.vyfe.helper.ColorHelper;
 import fr.vyfe.model.SessionModel;
@@ -45,12 +47,12 @@ public class TemplateRecyclerAdapter extends RecyclerView.Adapter<TemplateRecycl
     }
 
     @Override
-    public void onBindViewHolder(TemplateRecyclerAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(final TemplateRecyclerAdapter.ViewHolder holder, int position) {
 
         List<TemplateModel> templateList = mTemplates;
         TemplateModel template = templateList.get(position);
 
-        if (null != mSession && null !=mSession.getTags()) {
+        if (null != mSession && null != mSession.getTags()) {
             ArrayList<TagModel> tags = mSession.getTags();
             for (int i = 0; i < tags.size(); i++) {
                 if (template.getId().equals(tags.get(i).getTemplateId())) {
@@ -69,9 +71,19 @@ public class TemplateRecyclerAdapter extends RecyclerView.Adapter<TemplateRecycl
             holder.tvNum.setVisibility(View.GONE);
             holder.ivMenu.setVisibility(View.VISIBLE);
         } else if (mFrom.equals("record")) {
-            holder.tvNum.setVisibility(View.INVISIBLE);
-            // TODO : set real value to count
+            holder.tvNum.setVisibility(View.VISIBLE);
             holder.tvNum.setText(String.valueOf(template.getCount()));
+
+            if (template.isTouch()) {
+                holder.viewForeground.setBackgroundResource(R.drawable.color_gradient_yellow);
+                templateList.get(position).setTouch(false);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        holder.viewForeground.setBackgroundResource(R.drawable.color_gradient_grey);
+                    }
+                }, Constants.SPLASH_TIME_OUT);
+            }
         } else if (mFrom.equals("timelines")) {
             holder.tvNum.setVisibility(View.GONE);
         } else if (mFrom.equals("count")) {

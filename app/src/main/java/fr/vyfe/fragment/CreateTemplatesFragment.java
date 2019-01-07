@@ -108,6 +108,7 @@ public class CreateTemplatesFragment extends Fragment implements AdapterView.OnI
                     //Fermer clavier après avoir rentré un tag
                     KeyboardHelper.CloseKeyboard(getContext(), btnAddTag);
                     randomSelectSpinnerColor();
+                    mAdapter.notifyDataSetChanged();
                 }
             }
         });

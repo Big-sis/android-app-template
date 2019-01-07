@@ -16,7 +16,7 @@ public class SessionEntity {
     private String videoLink;
     private String thumbnailUrl;
     private String description;
-    private HashMap<String, TagEntity> Tags;
+    private HashMap<String, TagEntity> tags;
 
 
     public SessionEntity(){}
@@ -95,10 +95,10 @@ public class SessionEntity {
     }
 
     public HashMap<String, TagEntity> getTags() {
-        return Tags;
+        return tags;
     }
 
     public void setTags(HashMap<String, TagEntity> tags) {
-        Tags = tags;
+        this.tags = tags;
     }
 }

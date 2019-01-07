@@ -5,11 +5,13 @@ import android.arch.lifecycle.ViewModel;
 
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 import fr.vyfe.model.SessionModel;
 import fr.vyfe.model.TagModel;
 import fr.vyfe.model.TagSetModel;
 import fr.vyfe.model.TemplateModel;
+import fr.vyfe.repository.BaseListValueEventListener;
 import fr.vyfe.repository.BaseSingleValueEventListener;
 import fr.vyfe.repository.SessionRepository;
 import fr.vyfe.repository.TagSetRepository;
@@ -69,6 +71,7 @@ public abstract class VyfeViewModel extends ViewModel {
                 tagSet.setValue(null);
             }
         });
+
     }
 
     public MutableLiveData<SessionModel> getSession() {

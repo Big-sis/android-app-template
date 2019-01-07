@@ -7,6 +7,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import fr.vyfe.Constants;
 import fr.vyfe.model.SessionModel;
 import fr.vyfe.repository.BaseListValueEventListener;
 import fr.vyfe.repository.SessionRepository;
@@ -58,7 +59,7 @@ public class MyVideosViewModel extends VyfeViewModel {
             @Override
             public void onSuccess(List<SessionModel> result) {
 
-                File externalStorage = getExternalStoragePublicDirectory(DIRECTORY_MOVIES + "/" + "Vyfe");
+                File externalStorage = getExternalStoragePublicDirectory(DIRECTORY_MOVIES + "/" + Constants.VYFE);
                 final String racineExternalStorage = String.valueOf(externalStorage.getAbsoluteFile());
                 final String[] filesExternalStorage = externalStorage.list();
 

@@ -48,9 +48,4 @@ public class SessionMapper extends FirebaseMapper<SessionEntity, SessionModel> {
         return sessionEntity;
     }
 
-    @Override
-    public HashMap<String, SessionEntity> unMapList(List<SessionModel> models) {
-        return null;
-    }
-
 }
