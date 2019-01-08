@@ -86,6 +86,7 @@ public class TagSetRecordFragment extends Fragment {
                         if (tagSet != null) {
                             mTagAdpater = new TemplateRecyclerAdapter(tagSet.getTemplates(), "record");
                             mRecyclerView.setAdapter(mTagAdpater);
+                            mTagAdpater.notifyDataSetChanged();
                         }
                     }
                 });
