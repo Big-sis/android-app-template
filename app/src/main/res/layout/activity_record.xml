@@ -26,10 +26,11 @@
                 android:layout_marginRight="5dp">
 
                 <android.support.constraint.ConstraintLayout
+                    android:layout_gravity="center"
                     android:id="@+id/constraint_video_record"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.8"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
@@ -39,20 +40,20 @@
                 <ScrollView
                     android:id="@+id/scroll_timeline"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.8"
+                    android:layout_height="0dp"
+                    android:layout_weight="0.2"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/constraint_video_record"/>
             </LinearLayout>
 
-            <RelativeLayout
+            <ScrollView
                 android:id="@+id/scroll_tagset"
-                android:layout_width="fill_parent"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="0.8">
 
-            </RelativeLayout>
+            </ScrollView>
 
         </LinearLayout>
 

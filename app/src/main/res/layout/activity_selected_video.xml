@@ -202,9 +202,9 @@
                 <android.support.v7.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
                     xmlns:tools="http://schemas.android.com/tools"
                     android:id="@+id/re_tags"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_gravity="center"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
 
                     android:padding="20dp" />
             </LinearLayout>

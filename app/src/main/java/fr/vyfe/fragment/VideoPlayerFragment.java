@@ -83,6 +83,7 @@ public class VideoPlayerFragment extends Fragment {
             }
         });
 
+
         viewModel.getVideoPosition().observe(getActivity(), new Observer<Integer>() {
             @Override
             public void onChanged(@Nullable Integer position) {
