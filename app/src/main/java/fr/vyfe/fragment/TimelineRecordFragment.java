@@ -71,11 +71,11 @@ public class TimelineRecordFragment extends Fragment {
 
                         TextView tvNameRow = new TextView(getContext());
                         tvNameRow.setText(template.getName());
-                        tvNameRow.setMinimumHeight(convertToDp(25));
+                        tvNameRow.setMinimumHeight(convertToDp(20));
                         tvNameRow.setTextColor(Color.WHITE);
                         RelativeLayout.LayoutParams layoutParamsTv = new RelativeLayout.LayoutParams(
                                 convertToDp(titleLength), LinearLayout.LayoutParams.WRAP_CONTENT);
-                        layoutParamsTv.setMargins(convertToDp(15), convertToDp(10), convertToDp(8), convertToDp(10));
+                        layoutParamsTv.setMargins(convertToDp(15), convertToDp(8), convertToDp(8), convertToDp(8));
                         tvNameRow.setLayoutParams(layoutParamsTv);
                         timelineRowView.addView(tvNameRow, layoutParamsTv);
                         tvRowNameArray.add(tvNameRow);
@@ -98,7 +98,7 @@ public class TimelineRecordFragment extends Fragment {
                             titleLength, LinearLayout.LayoutParams.WRAP_CONTENT);
                     layoutParamsIv.setMargins(0, convertToDp(8), 0, convertToDp(8));
                     iv.setLayoutParams(layoutParamsIv);
-                    iv.setMinimumHeight(convertToDp(25));
+                    iv.setMinimumHeight(convertToDp(20));
                     iv.setBackgroundResource(tag.getColor().getImage());
                     iv.setMinimumWidth(convertToDp((Math.max(convertToDp(25), tag.getEnd() - tag.getStart()))));
 

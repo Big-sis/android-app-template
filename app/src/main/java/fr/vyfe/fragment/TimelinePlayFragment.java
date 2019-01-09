@@ -39,6 +39,8 @@ public class TimelinePlayFragment extends Fragment {
     private LinearLayout containerLayout;
     private ArrayList<TextView> tvRowNameArray = new ArrayList<>();
 
+    private RelativeLayout relativeLayout;
+
     public static TimelinePlayFragment newInstance() {
         return new TimelinePlayFragment();
     }
@@ -55,6 +57,9 @@ public class TimelinePlayFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_timeline, container, false);
         mSeekBar = view.findViewById(R.id.seek_bar_selected);
         containerLayout = view.findViewById(R.id.ll_timeline_container);
+
+        relativeLayout = view.findViewById(R.id.time_lines_container);
+
         return view;
     }
 
@@ -75,10 +80,9 @@ public class TimelinePlayFragment extends Fragment {
         viewModel.getVideoPosition().observe(getActivity(), new Observer<Integer>() {
             @Override
             public void onChanged(@Nullable Integer position) {
-            mSeekBar.setProgress(position);
+                mSeekBar.setProgress(position);
             }
         });
-
 
 
         viewModel.getTagSet().observe(getActivity(), new Observer<TagSetModel>() {
@@ -94,10 +98,10 @@ public class TimelinePlayFragment extends Fragment {
                         TextView tvNameRow = new TextView(getContext());
                         tvNameRow.setTextColor(Color.WHITE);
                         tvNameRow.setText(template.getName());
-                        tvNameRow.setMinimumHeight(convertToDp(25));
+                        tvNameRow.setMinimumHeight(convertToDp(15));
                         RelativeLayout.LayoutParams layoutParamsTv = new RelativeLayout.LayoutParams(
                                 convertToDp(titleLength), LinearLayout.LayoutParams.WRAP_CONTENT);
-                        layoutParamsTv.setMargins(convertToDp(15), convertToDp(10), convertToDp(8), convertToDp(10));
+                        layoutParamsTv.setMargins(convertToDp(15), convertToDp(8), convertToDp(8), convertToDp(8));
                         tvNameRow.setLayoutParams(layoutParamsTv);
                         timelineRowView.addView(tvNameRow, layoutParamsTv);
                         tvRowNameArray.add(tvNameRow);
@@ -113,7 +117,7 @@ public class TimelinePlayFragment extends Fragment {
                             for (TagModel tag : tags) {
 
                                 int timelineWidth = containerLayout.getWidth();
-                                int videoDurationSecond = viewModel.getSession().getValue().getDuration()/1000;
+                                int videoDurationSecond = viewModel.getSession().getValue().getDuration() / 1000;
                                 ImageView iv = new ImageView(getContext());
 
                                 iv.setBackgroundResource(tag.getColor().getImage());
@@ -122,7 +126,7 @@ public class TimelinePlayFragment extends Fragment {
                                 RelativeLayout.LayoutParams layoutParamsIv = new RelativeLayout.LayoutParams(
                                         tagLength, LinearLayout.LayoutParams.WRAP_CONTENT);
                                 layoutParamsIv.setMargins(tag.getStart() * timelineWidth / videoDurationSecond, convertToDp(8), 0, convertToDp(8));
-                                iv.setMinimumHeight(convertToDp(25));
+                                iv.setMinimumHeight(convertToDp(20));
                                 iv.setLayoutParams(layoutParamsIv);
 
                                 RelativeLayout timelineRow = containerLayout.findViewWithTag(tag.getTemplateId());
@@ -148,9 +152,13 @@ public class TimelinePlayFragment extends Fragment {
                             mSeekBar.setThumb(newThumb);
                             mSeekBar.getViewTreeObserver().removeOnPreDrawListener(this);
                             mSeekBar.setMax(viewModel.getSession().getValue().getDuration());
+
+                            viewModel.setTimelinesize(containerLayout.getMeasuredHeight());
                             return true;
                         }
                     });
+
+
                 }
             }
         });

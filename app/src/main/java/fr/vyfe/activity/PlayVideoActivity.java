@@ -3,22 +3,19 @@ package fr.vyfe.activity;
 import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.ScrollingTabContainerView;
 import android.support.v7.widget.Toolbar;
-import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 import fr.vyfe.Constants;
+import fr.vyfe.R;
 import fr.vyfe.adapter.TemplateRecyclerAdapter;
 import fr.vyfe.fragment.TimelinePlayFragment;
 import fr.vyfe.fragment.VideoPlayerFragment;
-import fr.vyfe.R;
 import fr.vyfe.model.SessionModel;
 import fr.vyfe.model.TagSetModel;
 import fr.vyfe.viewModel.PlayVideoViewModel;
@@ -29,9 +26,11 @@ import fr.vyfe.viewModel.PlayVideoViewModelFactory;
  */
 public class PlayVideoActivity extends VyfeActivity implements LifecycleOwner {
 
+    private LinearLayout containerLayout;
     private PlayVideoViewModel viewModel;
     private RecyclerView mRecyclerView;
     private TemplateRecyclerAdapter mAdapterTags;
+    private ScrollView scrollView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +43,9 @@ public class PlayVideoActivity extends VyfeActivity implements LifecycleOwner {
         setContentView(R.layout.activity_play_video);
         replaceFragment(R.id.scrollTimeline, TimelinePlayFragment.newInstance());
         replaceFragment(R.id.constraint_video_player, VideoPlayerFragment.newInstance());
+
+        containerLayout = findViewById(R.id.linear_layoutVideo);
+        scrollView = findViewById(R.id.scrollTimeline);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -77,7 +79,28 @@ public class PlayVideoActivity extends VyfeActivity implements LifecycleOwner {
             }
         });
 
+        viewModel.getTimelinesize().observe(this, new Observer<Integer>() {
+            @Override
+            public void onChanged(@Nullable Integer timelinesize) {
+                int sizePart1 = containerLayout.getMeasuredHeight();
+                int sizePart2 = scrollView.getMeasuredHeight();
 
+                if (timelinesize < sizePart2) {
+                    containerSizeAdapter(timelinesize, sizePart1, sizePart2);
+                }
+            }
+        });
 
+    }
+
+    public void containerSizeAdapter(Integer timelinesize, Integer sizePart1, Integer sizePart2) {
+        LinearLayout.LayoutParams layoutParamsPart2 = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, timelinesize);
+
+        LinearLayout.LayoutParams layoutParamsPart1 = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, (sizePart2 - timelinesize) + sizePart1);
+
+        scrollView.setLayoutParams(layoutParamsPart2);
+        containerLayout.setLayoutParams(layoutParamsPart1);
     }
 }
