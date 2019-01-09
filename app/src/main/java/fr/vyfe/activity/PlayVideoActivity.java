@@ -8,8 +8,11 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
+import android.widget.Toast;
 
 import fr.vyfe.Constants;
 import fr.vyfe.R;
@@ -31,6 +34,7 @@ public class PlayVideoActivity extends VyfeActivity implements LifecycleOwner {
     private RecyclerView mRecyclerView;
     private TemplateRecyclerAdapter mAdapterTags;
     private ScrollView scrollView;
+    private boolean UP = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +50,7 @@ public class PlayVideoActivity extends VyfeActivity implements LifecycleOwner {
 
         containerLayout = findViewById(R.id.linear_layoutVideo);
         scrollView = findViewById(R.id.scrollTimeline);
+        final ImageView ivSizeContainer = findViewById(R.id.iv_arrow_size);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -81,13 +86,38 @@ public class PlayVideoActivity extends VyfeActivity implements LifecycleOwner {
 
         viewModel.getTimelinesize().observe(this, new Observer<Integer>() {
             @Override
-            public void onChanged(@Nullable Integer timelinesize) {
-                int sizePart1 = containerLayout.getMeasuredHeight();
-                int sizePart2 = scrollView.getMeasuredHeight();
+            public void onChanged(@Nullable final Integer timelinesize) {
+                final int sizePart1 = containerLayout.getMeasuredHeight();
+                final int sizePart2 = scrollView.getMeasuredHeight();
+                viewModel.setSize2(sizePart2);
+                viewModel.setSize1(sizePart1);
 
                 if (timelinesize < sizePart2) {
                     containerSizeAdapter(timelinesize, sizePart1, sizePart2);
                 }
+
+            }
+        });
+
+        ivSizeContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+//TODO : enlever le boolean trouver maniere av idDrawable
+                if (!UP) {
+                    Toast.makeText(PlayVideoActivity.this, "fleche bas", Toast.LENGTH_SHORT).show();
+                    chooseSize((viewModel.getSize1().getValue() + viewModel.getSize2().getValue()) / 2, (viewModel.getSize1().getValue() + viewModel.getSize2().getValue() / 2));
+                    if (viewModel.getTimelinesize().getValue() < viewModel.getSize1().getValue()) {
+                        containerSizeAdapter(viewModel.getTimelinesize().getValue(), viewModel.getSize1().getValue(), viewModel.getSize2().getValue());
+                    }
+                    UP = true;
+                    ivSizeContainer.setBackground(getDrawable(R.drawable.caret_arrow_up));
+                } else {
+                    chooseSize(0, viewModel.getSize1().getValue() + viewModel.getSize2().getValue());
+                    ivSizeContainer.setBackground(getDrawable(R.drawable.arrowdown));
+                    UP = false;
+                    Toast.makeText(PlayVideoActivity.this, "fleche haut", Toast.LENGTH_SHORT).show();
+                }
+
             }
         });
 
@@ -102,5 +132,19 @@ public class PlayVideoActivity extends VyfeActivity implements LifecycleOwner {
 
         scrollView.setLayoutParams(layoutParamsPart2);
         containerLayout.setLayoutParams(layoutParamsPart1);
+    }
+
+    public void chooseSize(Integer part1, Integer part2) {
+        LinearLayout.LayoutParams layoutParamsPart1 = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, part1);
+
+        LinearLayout.LayoutParams layoutParamsPart2 = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, part2);
+
+
+        containerLayout.setLayoutParams(layoutParamsPart1);
+        scrollView.setLayoutParams(layoutParamsPart2);
+
+
     }
 }

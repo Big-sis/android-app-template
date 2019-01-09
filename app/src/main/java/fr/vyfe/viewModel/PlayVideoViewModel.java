@@ -22,6 +22,8 @@ public class PlayVideoViewModel extends VyfeViewModel {
     private MutableLiveData<Boolean> moveSeek;
 
     private MutableLiveData<Integer> timelinesize;
+    private MutableLiveData<Integer> size1;
+    private MutableLiveData<Integer> size2;
 
     public PlayVideoViewModel(String companyId, String userId, String sessionId) {
         sessionRepository = new SessionRepository(companyId);
@@ -35,17 +37,33 @@ public class PlayVideoViewModel extends VyfeViewModel {
         moveSeek.setValue(false);
 
         timelinesize = new MutableLiveData<>();
+        size1 = new MutableLiveData<>();
+        size2 = new MutableLiveData<>();
     }
 
     public MutableLiveData<Integer> getTimelinesize() {
         return timelinesize;
     }
 
+    public MutableLiveData<Integer> getSize2() {
+        return size2;
+    }
 
-    public void setTimelinesize(Integer timelinesize) {
+    public void setTimelinesize(Integer timelinesize){
         this.timelinesize.setValue(timelinesize);
     }
 
+    public void setSize2(Integer integer){
+        this.size2.setValue(integer);
+    }
+
+    public MutableLiveData<Integer> getSize1() {
+        return size1;
+    }
+
+    public void setSize1(Integer size1) {
+        this.size1.setValue(size1);
+    }
 
     public void init() {
         isPlaying.setValue(false);
@@ -64,11 +82,11 @@ public class PlayVideoViewModel extends VyfeViewModel {
         return seekPosition;
     }
 
-    public void setSeekPosition(Integer seekPosition) {
+    public void setSeekPosition(Integer seekPosition){
         this.seekPosition.setValue(seekPosition);
     }
 
-    public LiveData<Boolean> isPlaying() {
+    public LiveData<Boolean> isPlaying(){
         return isPlaying;
     }
 
@@ -76,11 +94,11 @@ public class PlayVideoViewModel extends VyfeViewModel {
         return moveSeek;
     }
 
-    public void play() {
+    public void play(){
         isPlaying.setValue(true);
     }
 
-    public void pause() {
+    public void pause(){
         isPlaying.setValue(false);
     }
 

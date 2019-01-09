@@ -43,11 +43,20 @@
 
     </LinearLayout>
 
+    <ImageView
+        android:id="@+id/iv_arrow_size"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_gravity="right"
+        android:background="@drawable/caret_arrow_up"
+       />
     <ScrollView
         android:id="@+id/scrollTimeline"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="0.5" />
+        android:layout_weight="0.5" >
+
+    </ScrollView>
 </LinearLayout>
 
 
