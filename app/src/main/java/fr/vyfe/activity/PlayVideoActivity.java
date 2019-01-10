@@ -104,8 +104,7 @@ public class PlayVideoActivity extends VyfeActivity implements LifecycleOwner {
             public void onClick(View v) {
 //TODO : enlever le boolean trouver maniere av idDrawable
                 if (!UP) {
-                    Toast.makeText(PlayVideoActivity.this, "fleche bas", Toast.LENGTH_SHORT).show();
-                    chooseSize((viewModel.getSize1().getValue() + viewModel.getSize2().getValue()) / 2, (viewModel.getSize1().getValue() + viewModel.getSize2().getValue() / 2));
+                    chooseSize(((viewModel.getSize1().getValue() + viewModel.getSize2().getValue()) / 2), ((viewModel.getSize1().getValue() + viewModel.getSize2().getValue() / 2)));
                     if (viewModel.getTimelinesize().getValue() < viewModel.getSize1().getValue()) {
                         containerSizeAdapter(viewModel.getTimelinesize().getValue(), viewModel.getSize1().getValue(), viewModel.getSize2().getValue());
                     }
@@ -115,7 +114,6 @@ public class PlayVideoActivity extends VyfeActivity implements LifecycleOwner {
                     chooseSize(0, viewModel.getSize1().getValue() + viewModel.getSize2().getValue());
                     ivSizeContainer.setBackground(getDrawable(R.drawable.arrowdown));
                     UP = false;
-                    Toast.makeText(PlayVideoActivity.this, "fleche haut", Toast.LENGTH_SHORT).show();
                 }
 
             }
