@@ -172,6 +172,7 @@ public class TimelinePlayFragment extends Fragment {
             }
         });
 
+
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
@@ -182,16 +183,15 @@ public class TimelinePlayFragment extends Fragment {
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                viewModel.pause();
                 viewModel.isMoveSeek().setValue(true);
-
             }
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                viewModel.play();
+                if(viewModel.isPlaying().getValue()){
+                    viewModel.play();
+                }else  viewModel.pause();
                 viewModel.isMoveSeek().setValue(true);
-
             }
         });
     }

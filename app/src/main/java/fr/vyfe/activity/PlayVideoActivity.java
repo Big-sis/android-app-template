@@ -122,6 +122,8 @@ public class PlayVideoActivity extends VyfeActivity implements LifecycleOwner {
     }
 
     public void containerSizeAdapter(Integer timelinesize, Integer sizePart1, Integer sizePart2) {
+
+
         LinearLayout.LayoutParams layoutParamsPart2 = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, timelinesize);
 
