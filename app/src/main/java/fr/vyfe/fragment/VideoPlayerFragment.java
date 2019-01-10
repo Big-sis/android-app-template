@@ -7,27 +7,23 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.MediaController;
 import android.widget.VideoView;
-
 import fr.vyfe.R;
 import fr.vyfe.model.SessionModel;
-import fr.vyfe.view.StopwatchView;
 import fr.vyfe.viewModel.PlayVideoViewModel;
 
 public class VideoPlayerFragment extends Fragment {
 
     Runnable mRunnable;
     private PlayVideoViewModel viewModel;
-    private StopwatchView mChronoView;
-    private FloatingActionButton mPlayButtonView;
     private VideoView mVideoSelectedView;
-    private FloatingActionButton mButtonReplay;
     private Handler mHandler;
+    private MediaController mediaController;
 
     public static VideoPlayerFragment newInstance() {
         return new VideoPlayerFragment();
@@ -44,11 +40,6 @@ public class VideoPlayerFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_video_player, container, false);
         mVideoSelectedView = view.findViewById(R.id.video_view_selected);
-        mChronoView = view.findViewById(R.id.chronometer_play);
-        mPlayButtonView = view.findViewById(R.id.bt_play_selected);
-
-        mPlayButtonView.setImageResource(android.R.drawable.ic_media_play);
-        mButtonReplay = view.findViewById(R.id.bt_replay);
         return view;
     }
 
@@ -69,11 +60,30 @@ public class VideoPlayerFragment extends Fragment {
         });
          **/
 
+        mRunnable = new Runnable() {
+            @Override
+            public void run() {
+                if (mVideoSelectedView != null) {
+                    int position = mVideoSelectedView.getCurrentPosition();
+                    viewModel.setVideoPosition(position);
+                }
+                mHandler.postDelayed(this, 20);
+            }
+        };
 
+        mHandler.post(mRunnable);
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
+
+
+        if (mediaController == null) {
+            mediaController = new MediaController(getActivity());
+            mediaController.setAnchorView(mVideoSelectedView );
+            mVideoSelectedView.setMediaController(mediaController);
+        }
+
 
         viewModel.getSession().observe(getActivity(), new Observer<SessionModel>() {
             @Override
@@ -84,12 +94,6 @@ public class VideoPlayerFragment extends Fragment {
         });
 
 
-        viewModel.getVideoPosition().observe(getActivity(), new Observer<Integer>() {
-            @Override
-            public void onChanged(@Nullable Integer position) {
-                mChronoView.setTime(position);
-            }
-        });
         viewModel.isMoveSeek().observe(getActivity(), new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean aBoolean) {
@@ -99,62 +103,19 @@ public class VideoPlayerFragment extends Fragment {
             }
         });
 
-
         viewModel.isPlaying().observe(getActivity(), new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean isPlaying) {
 
                 if (isPlaying) {
                     mVideoSelectedView.start();
-                    mChronoView.start();
-                    mPlayButtonView.setBackgroundColor(getResources().getColor(R.color.colorFadedOrange));
-                    mPlayButtonView.setImageResource(android.R.drawable.ic_media_pause);
-
-                    mRunnable = new Runnable() {
-                        @Override
-                        public void run() {
-                            if (mVideoSelectedView != null) {
-                                int position = mVideoSelectedView.getCurrentPosition();
-                                viewModel.setVideoPosition(position);
-                            }
-                            mHandler.postDelayed(this, 20);
-                        }
-                    };
-
-                    mHandler.post(mRunnable);
 
                 } else {
                     mVideoSelectedView.pause();
-                    mChronoView.stop();
-                    mPlayButtonView.setBackgroundColor(getResources().getColor(R.color.colorLightGreenishBlue));
-                    mPlayButtonView.setImageResource(android.R.drawable.ic_media_play);
-
-                    //TODO stop runner
                 }
             }
         });
 
-        // Bouton play/pause
-        mPlayButtonView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (viewModel.isPlaying().getValue()) {
-                    viewModel.pause();
-                } else {
-                    viewModel.play();
-                }
-            }
-        });
-
-        // Bouton replay remet la vidéo, la seekBar et le chrono à 0
-        mButtonReplay.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                viewModel.setVideoPosition(0);
-                if (viewModel != null)
-                    mVideoSelectedView.seekTo(viewModel.getVideoPosition().getValue());
-            }
-        });
 
         // Remet la vidéo à zéro quand la lecture est terminée
         mVideoSelectedView.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -162,7 +123,6 @@ public class VideoPlayerFragment extends Fragment {
             public void onCompletion(MediaPlayer mp) {
                 viewModel.init();
                 mVideoSelectedView.seekTo(0);
-                if (viewModel != null) mChronoView.setTime(0);
             }
         });
     }

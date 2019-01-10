@@ -9,52 +9,10 @@
         android:id="@+id/video_view_selected"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:foregroundGravity="center"
-        />
-
-    <LinearLayout
-        android:id="@+id/video_control"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="@+id/video_view_selected"
-        app:layout_constraintEnd_toEndOf="@+id/video_view_selected"
-        app:layout_constraintTop_toTopOf="@+id/video_view_selected">
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/bt_play_selected"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:src="@android:drawable/ic_media_play"
-            app:backgroundTint="@color/color12" />
-
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/bt_replay"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:clickable="true"
-            android:focusable="true"
-            android:longClickable="false"
-            app:backgroundTint="@color/color2"
-            app:srcCompat="@drawable/replay_black" />
-
-        <fr.vyfe.view.StopwatchView
-            android:id="@+id/chronometer_play"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:background="@color/colorCharcoal"
-            android:padding="10dp"
-            android:textColor="@color/colorFadedOrange"
-            android:textStyle="bold" />
-    </LinearLayout>
+        android:layout_marginStart="8dp"
+        android:foregroundGravity="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

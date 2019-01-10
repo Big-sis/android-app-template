@@ -188,9 +188,6 @@ public class TimelinePlayFragment extends Fragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                if(viewModel.isPlaying().getValue()){
-                    viewModel.play();
-                }else  viewModel.pause();
                 viewModel.isMoveSeek().setValue(true);
             }
         });
