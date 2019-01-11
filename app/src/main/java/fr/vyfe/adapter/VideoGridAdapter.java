@@ -16,6 +16,7 @@ import fr.vyfe.CustomVideoFilter;
 import fr.vyfe.R;
 import fr.vyfe.activity.MySessionsActivity;
 import fr.vyfe.activity.VyfeActivity;
+import fr.vyfe.helper.TimeHelper;
 import fr.vyfe.model.SessionModel;
 
 public class VideoGridAdapter extends BaseAdapter implements Filterable {
@@ -65,7 +66,7 @@ public class VideoGridAdapter extends BaseAdapter implements Filterable {
         tvName.setText(mSession.getName());
 
         final TextView tvDate = convertView.findViewById(R.id.video_date);
-        tvDate.setText(mSession.getFormatDate());
+        tvDate.setText(mContext.getString(R.string.date_session)+mSession.getFormatDate());
 
         ImageView videoStatus = convertView.findViewById(R.id.img_upload_video);
 
@@ -73,12 +74,8 @@ public class VideoGridAdapter extends BaseAdapter implements Filterable {
            videoStatus.setImageResource(R.drawable.uploadtocloudblanc);
         }
 
-        // TODO : Remove ImageViewSessionHelper
-        //AFfichage miniature video
-
-            ImageView videoView = convertView.findViewById(R.id.img_item_video);
-            videoView.setImageBitmap(mSession.getThumbnail());
-
+        TextView tvDuration = convertView.findViewById(R.id.video_duration);
+        tvDuration.setText(mContext.getString(R.string.duration_session)+ TimeHelper.mllsConvert(mSession.getDuration()));
       
         return convertView;
     }
