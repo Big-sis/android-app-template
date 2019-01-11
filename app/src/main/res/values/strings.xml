@@ -147,4 +147,6 @@
     <string name="save_edit">Modifiactions enregistrées</string>
     <string name="change_movie">Modifier la vidéo</string>
     <string name="confirm_change_movie">Voulez-vous vraiment modifier cette vidéo ?</string>
+    <string name="date_session">Date :</string>
+    <string name="duration_session">Durée :</string>
 </resources>

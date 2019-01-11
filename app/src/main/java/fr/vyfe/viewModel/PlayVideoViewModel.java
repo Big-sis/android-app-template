@@ -25,6 +25,8 @@ public class PlayVideoViewModel extends VyfeViewModel {
     private MutableLiveData<Integer> size1;
     private MutableLiveData<Integer> size2;
 
+    private MutableLiveData<Boolean> fullTimeline;
+
     public PlayVideoViewModel(String companyId, String userId, String sessionId) {
         sessionRepository = new SessionRepository(companyId);
         tagSetRepository = new TagSetRepository(userId, companyId);
@@ -39,6 +41,8 @@ public class PlayVideoViewModel extends VyfeViewModel {
         timelinesize = new MutableLiveData<>();
         size1 = new MutableLiveData<>();
         size2 = new MutableLiveData<>();
+        fullTimeline = new MutableLiveData<>();
+        fullTimeline.setValue(false);
     }
 
     public MutableLiveData<Integer> getTimelinesize() {
@@ -100,6 +104,17 @@ public class PlayVideoViewModel extends VyfeViewModel {
 
     public void pause(){
         isPlaying.setValue(false);
+    }
+
+    public MutableLiveData<Boolean> isFullTimeline() {
+        return fullTimeline;
+    }
+
+    public void fullTimline(){fullTimeline.setValue(true);
+
+    }
+    public void smallTimeline(){
+        fullTimeline.setValue(false);
     }
 
     public MutableLiveData<List<TagModel>> getTags() {

@@ -38,7 +38,6 @@ public class TimelinePlayFragment extends Fragment {
     private SeekBar mSeekBar;
     private LinearLayout containerLayout;
     private ArrayList<TextView> tvRowNameArray = new ArrayList<>();
-
     private RelativeLayout relativeLayout;
 
     public static TimelinePlayFragment newInstance() {
@@ -57,9 +56,7 @@ public class TimelinePlayFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_timeline, container, false);
         mSeekBar = view.findViewById(R.id.seek_bar_selected);
         containerLayout = view.findViewById(R.id.ll_timeline_container);
-
         relativeLayout = view.findViewById(R.id.time_lines_container);
-
         return view;
     }
 
@@ -157,8 +154,6 @@ public class TimelinePlayFragment extends Fragment {
                             return true;
                         }
                     });
-
-
                 }
             }
         });
@@ -171,7 +166,6 @@ public class TimelinePlayFragment extends Fragment {
                 mSeekBar.setMax(session.getDuration());
             }
         });
-
 
         mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override

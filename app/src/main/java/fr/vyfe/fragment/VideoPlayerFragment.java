@@ -11,7 +11,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.MediaController;
+import android.widget.Toast;
 import android.widget.VideoView;
 import fr.vyfe.R;
 import fr.vyfe.model.SessionModel;
@@ -23,7 +25,7 @@ public class VideoPlayerFragment extends Fragment {
     private PlayVideoViewModel viewModel;
     private VideoView mVideoSelectedView;
     private Handler mHandler;
-    private MediaController mediaController;
+    private ImageView mPlayPause;
 
     public static VideoPlayerFragment newInstance() {
         return new VideoPlayerFragment();
@@ -40,6 +42,7 @@ public class VideoPlayerFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_video_player, container, false);
         mVideoSelectedView = view.findViewById(R.id.video_view_selected);
+        mPlayPause = view.findViewById(R.id.button_play);
         return view;
     }
 
@@ -47,18 +50,8 @@ public class VideoPlayerFragment extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 
-        mHandler = new Handler();
 
-        /**  getActivity().runOnUiThread(new Runnable() {
-        @Override public void run() {
-        if (mVideoSelectedView != null) {
-        int position = mVideoSelectedView.getCurrentPosition();
-        viewModel.setVideoPosition(position/1000);
-        }
-        mHandler.postDelayed(this, 20);
-        }
-        });
-         **/
+        mHandler = new Handler();
 
         mRunnable = new Runnable() {
             @Override
@@ -77,14 +70,6 @@ public class VideoPlayerFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
 
-
-        if (mediaController == null) {
-            mediaController = new MediaController(getActivity());
-            mediaController.setAnchorView(mVideoSelectedView );
-            mVideoSelectedView.setMediaController(mediaController);
-        }
-
-
         viewModel.getSession().observe(getActivity(), new Observer<SessionModel>() {
             @Override
             public void onChanged(@Nullable SessionModel session) {
@@ -92,7 +77,6 @@ public class VideoPlayerFragment extends Fragment {
 
             }
         });
-
 
         viewModel.isMoveSeek().observe(getActivity(), new Observer<Boolean>() {
             @Override
@@ -109,9 +93,11 @@ public class VideoPlayerFragment extends Fragment {
 
                 if (isPlaying) {
                     mVideoSelectedView.start();
+                    mPlayPause.setBackgroundResource(R.drawable.round_pause_button);
 
                 } else {
                     mVideoSelectedView.pause();
+                    mPlayPause.setBackgroundResource(R.drawable.play_button);
                 }
             }
         });
@@ -123,6 +109,23 @@ public class VideoPlayerFragment extends Fragment {
             public void onCompletion(MediaPlayer mp) {
                 viewModel.init();
                 mVideoSelectedView.seekTo(0);
+
+            }
+        });
+
+        mPlayPause.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+          if(viewModel.isPlaying().getValue()){
+              viewModel.pause();
+              mVideoSelectedView.pause();
+          }else {
+              viewModel.play();
+              mVideoSelectedView.start();
+
+
+          }
+
             }
         });
     }

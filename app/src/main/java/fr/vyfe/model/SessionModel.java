@@ -6,6 +6,7 @@ import android.media.ThumbnailUtils;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ import java.util.Date;
 
 import fr.vyfe.Constants;
 
-public class SessionModel implements Parcelable, VyfeModel {
+public class SessionModel implements Parcelable, VyfeModel,Comparable<SessionModel> {
     private String name;
     private String author;
     private String serverVideoLink;
@@ -203,5 +204,10 @@ public class SessionModel implements Parcelable, VyfeModel {
     public String getFormatDate() {
         SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yy HH:mm");
         return dt.format(new Date(this.date.getTime()));
+    }
+
+    @Override
+    public int compareTo(@NonNull SessionModel o) {
+        return ((int)(this.date.getTime() - o.getDate().getTime()));
     }
 }

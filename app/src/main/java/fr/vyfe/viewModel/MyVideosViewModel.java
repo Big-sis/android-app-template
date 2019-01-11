@@ -5,6 +5,8 @@ import android.arch.lifecycle.MutableLiveData;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import fr.vyfe.Constants;
@@ -59,6 +61,7 @@ public class MyVideosViewModel extends VyfeViewModel {
             @Override
             public void onSuccess(List<SessionModel> result) {
 
+
                 File externalStorage = getExternalStoragePublicDirectory(DIRECTORY_MOVIES + "/" + Constants.VYFE);
                 final String racineExternalStorage = String.valueOf(externalStorage.getAbsoluteFile());
                 final String[] filesExternalStorage = externalStorage.list();
@@ -73,6 +76,15 @@ public class MyVideosViewModel extends VyfeViewModel {
                         }
                     }
                 }
+
+                //TODO: respository is filtered by author
+                // for moment, to save time, second filter is here
+                Collections.sort(filtered, new Comparator<SessionModel>() {
+                    @Override
+                    public int compare(SessionModel o1, SessionModel o2) {
+                        return (int) (o2.getDate().getTime() - o1.getDate().getTime());
+                    }
+                });
 
                 sessions.setValue(filtered);
             }
