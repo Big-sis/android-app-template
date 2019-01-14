@@ -66,6 +66,7 @@ public class PlayVideoActivity extends VyfeActivity implements LifecycleOwner {
         llprogressvideo = findViewById(R.id.ll_progress_video);
         llInfoProgress = findViewById(R.id.ll_info_progress);
 
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -129,6 +130,7 @@ public class PlayVideoActivity extends VyfeActivity implements LifecycleOwner {
 
                 if (sizePart2Create < sizePart2) {
                     containerSizeAdapter(sizePart2Create, (sizePart1 + sizePart2) - sizePart2Create);
+                    ivSizeContainer.setVisibility(View.GONE);
                 }
 
             }
