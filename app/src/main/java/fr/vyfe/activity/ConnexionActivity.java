@@ -99,9 +99,10 @@ public class ConnexionActivity extends AppCompatActivity {
                             finish();
                         }
 
+
                         @Override
                         public void onLogginFailed(Exception e) {
-                            Toast.makeText(ConnexionActivity.this, R.string.bad_authentifiaction, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ConnexionActivity.this, R.string.bad_authentifiaction, Toast.LENGTH_LONG).show();
                         }
                     });
                 }

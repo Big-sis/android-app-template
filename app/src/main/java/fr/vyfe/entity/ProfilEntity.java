@@ -4,7 +4,7 @@ public class ProfilEntity {
     String firstname;
     String lastname;
     String promo;
-    String mail;
+    String email;
 
     public String getFirstname() {
         return firstname;
@@ -31,10 +31,10 @@ public class ProfilEntity {
     }
 
     public String getMail() {
-        return mail;
+        return email;
     }
 
     public void setMail(String mail) {
-        this.mail = mail;
+        this.email = mail;
     }
 }
