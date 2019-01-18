@@ -1,0 +1,4 @@
+HOTSPOT_SSID="Vyfe-HotSpot"
+HOTSPOT_PWD="dietpihotspot"
+HOTSPOT_URL="http://10.42.0.1/vyfe-pi/teacher.php"
+VIMEO_TOKEN="f809d258eb7f7e83d8c5a3e468e53d9b"

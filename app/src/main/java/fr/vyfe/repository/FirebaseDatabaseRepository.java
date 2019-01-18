@@ -17,9 +17,9 @@ public abstract class FirebaseDatabaseRepository<Model> {
     // databaserefence is supposed to be private but we need access it in TagSetRepository since the
     // database is not perfectly architectured
     DatabaseReference databaseReference;
-    private BaseListValueEventListener listListener;
+    BaseListValueEventListener listListener;
     private BaseSingleValueEventListener childListener;
-    private FirebaseMapper mapper;
+    protected FirebaseMapper mapper;
     private String company;
     private String user;
     private String session;
@@ -27,7 +27,6 @@ public abstract class FirebaseDatabaseRepository<Model> {
     private String orderByChildKey;
     private String equalToKey;
     private String childKey;
-    private boolean archived;
     static boolean isPersistenceEnabled = false;
 
     public FirebaseDatabaseRepository(FirebaseMapper mapper, String company) {
@@ -82,10 +81,6 @@ public abstract class FirebaseDatabaseRepository<Model> {
         this.equalToKey = equalToKey;
     }
 
-    public void setEqualToKeyBoolean(Boolean archived) {
-        this.archived = archived;
-    }
-
     protected abstract String getRootNode();
 
     public void addListListener(BaseListValueEventListener.CallbackInterface<Model> callback) {
@@ -93,14 +88,6 @@ public abstract class FirebaseDatabaseRepository<Model> {
         Query query = databaseReference;
         if (orderByChildKey != null) query = query.orderByChild(orderByChildKey);
         if (equalToKey != null) query = query.equalTo(equalToKey);
-        query.addValueEventListener(listListener);
-    }
-
-    public void addListListenerBoolean(BaseListValueEventListener.CallbackInterface<Model> callback) {
-        listListener = new BaseListValueEventListener(mapper, callback);
-        Query query = databaseReference;
-        if (orderByChildKey != null) query = query.orderByChild(orderByChildKey);
-        if (archived != true) query = query.equalTo(archived);
         query.addValueEventListener(listListener);
     }
 

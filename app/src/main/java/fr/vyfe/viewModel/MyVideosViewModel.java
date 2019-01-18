@@ -64,7 +64,6 @@ public class MyVideosViewModel extends VyfeViewModel {
             @Override
             public void onSuccess(List<SessionModel> result) {
 
-
                 File externalStorage = getExternalStoragePublicDirectory(DIRECTORY_MOVIES + "/" + Constants.VIDEO_DIRECTORY_NAME);
                 final String racineExternalStorage = String.valueOf(externalStorage.getAbsoluteFile());
                 final String[] filesExternalStorage = externalStorage.list();
@@ -74,20 +73,16 @@ public class MyVideosViewModel extends VyfeViewModel {
                     for (String nameFileExternalStorage : filesExternalStorage) {
                         String nameCache = racineExternalStorage + "/" + nameFileExternalStorage;
                         for (SessionModel session : result) {
-                            if (session.getName() != null && session.getName().contains(filter) && session.getDeviceVideoLink().equals(nameCache))
+                            if (session.getName() != null &&
+                                    session.getName().contains(filter) &&
+                                    session.getDeviceVideoLink().equals(nameCache) &&
+                                    session.getAuthor().equals(mAuth))
                                 filtered.add(session);
                         }
                     }
                 }
-                // For moment,to save time,"Index Your Data" is the "future"
-                for(int i =0; i< filtered.size();i++){
-                    if(!filtered.get(i).getAuthor().equals(mAuth)){
-                        filtered.remove(i);
-                }
-
-                }
-                //TODO: respository is filtered by idAndroid
-                // for moment, to save time, second filter is here
+                //TODO: Filter data server side
+                // for now, to save time, second filter is here
                 Collections.sort(filtered, new Comparator<SessionModel>() {
                     @Override
                     public int compare(SessionModel o1, SessionModel o2) {
