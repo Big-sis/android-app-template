@@ -3,8 +3,6 @@ package fr.vyfe.activity;
 import android.app.AlertDialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -20,11 +18,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-
 import fr.vyfe.Constants;
 import fr.vyfe.helper.InternetConnexionHelper;
-import fr.vyfe.model.CompanyModel;
 import fr.vyfe.service.UploadVideoService;
 import fr.vyfe.R;
 import fr.vyfe.adapter.TemplateRecyclerAdapter;
@@ -106,7 +101,8 @@ public class SelectVideoActivity extends VyfeActivity {
 
                                         Toast.makeText(SelectVideoActivity.this, R.string.start_upload, Toast.LENGTH_LONG).show();
                                         mIvUpload.setVisibility(View.VISIBLE);
-                                        Glide.with(SelectVideoActivity.this).load(R.drawable.animation_roue_white).into(mIvUpload);
+                                        //TODO : convert to smaller file
+                                        // Glide.with(SelectVideoActivity.this).load(R.drawable.animation_roue_white).into(mIvUpload);
                                     }
                                 }
                                 else

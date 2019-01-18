@@ -20,7 +20,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 
 import fr.vyfe.R;
 import fr.vyfe.RaspberryConnexion;
@@ -189,8 +188,8 @@ public class MainActivity extends VyfeActivity {
                                 Toast.makeText(MainActivity.this, "La connexion prend environ 1 min ...", Toast.LENGTH_LONG).show();
                                 progressRoue.setMaxWidth(convertToDp(100));
                                 progressRoue.setMaxHeight(convertToDp(100));
-                                Glide.with(MainActivity.this).load(R.drawable.roue2).into(progressRoue);
-
+                                //TODO : convert to smaller file
+                                //Glide.with(MainActivity.this).load(R.drawable.roue2).into(progressRoue);
 
                                 new Handler().postDelayed(new Runnable() {
                                     @Override
