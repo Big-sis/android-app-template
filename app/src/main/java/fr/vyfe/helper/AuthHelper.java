@@ -9,6 +9,7 @@ import android.text.format.DateFormat;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -104,6 +105,11 @@ public class AuthHelper {
                                     }
                                 });
                     }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        authListener.onLogginFailed(e);
+                    }
                 });
 
 
@@ -153,7 +159,6 @@ public class AuthHelper {
         SharedPreferences.Editor editor= mySharedPreferences.edit();
         editor.putString(SHARED_PREF_USER_ID, currentUser.getId());
         editor.putString(SHARED_PREF_USER_COMPANY, currentUser.getCompany());
-        editor.putString(SHARED_PREF_USER_EMAIL, currentUser.getEmail());
         editor.putString(SHARED_PREF_USER_FIRSTNAME, currentUser.getFirstname());
         editor.putString(SHARED_PREF_USER_LASTNAME, currentUser.getLastName());
         editor.putString(SHARED_PREF_USER_PROMO, currentUser.getPromo());
@@ -166,7 +171,6 @@ public class AuthHelper {
         UserModel user = new UserModel();
         user.setId(mySharedPreferences.getString(SHARED_PREF_USER_ID, ""));
         user.setCompany(mySharedPreferences.getString(SHARED_PREF_USER_COMPANY, ""));
-        user.setEmail(mySharedPreferences.getString(SHARED_PREF_USER_EMAIL, ""));
         user.setFirstname(mySharedPreferences.getString(SHARED_PREF_USER_FIRSTNAME, ""));
         user.setLastName(mySharedPreferences.getString(SHARED_PREF_USER_LASTNAME, ""));
         user.setPromo(mySharedPreferences.getString(SHARED_PREF_USER_PROMO, ""));

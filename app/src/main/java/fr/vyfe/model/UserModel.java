@@ -4,7 +4,6 @@ import java.util.Date;
 
 public class UserModel implements VyfeModel {
     private String id;
-    private String email;
     private String firstname;
     private String lastName;
     private String promo;
@@ -26,14 +25,6 @@ public class UserModel implements VyfeModel {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getFirstname() {
