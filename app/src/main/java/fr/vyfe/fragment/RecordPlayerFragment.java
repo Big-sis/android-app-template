@@ -229,6 +229,9 @@ public class RecordPlayerFragment extends Fragment implements View.OnClickListen
 
             @Override
             public void onError(@NonNull CameraDevice cameraDevice, int error) {
+                //TODO : gestion erreur nexus
+                //Une fois enregistré essaie de relancer la cam
+                //error 1 seulement sur la nexus : app photo deja utilisé
                 mCameraOpenCloseLock.release();
                 cameraDevice.close();
                 mCameraDevice = null;
@@ -495,7 +498,7 @@ public class RecordPlayerFragment extends Fragment implements View.OnClickListen
             bufferRect.offset(centerX - bufferRect.centerX(), centerY - bufferRect.centerY());
             matrix.setRectToRect(viewRect, bufferRect, Matrix.ScaleToFit.FILL);
             float scale = Math.max(
-                    (float) viewHeight / mPreviewSize.getHeight(),
+                    (float) viewHeight / (mPreviewSize.getHeight()),
                     (float) viewWidth / mPreviewSize.getWidth());
             matrix.postScale(scale, scale, centerX, centerY);
             matrix.postRotate(90 * (rotation - 2), centerX, centerY);
@@ -566,6 +569,7 @@ public class RecordPlayerFragment extends Fragment implements View.OnClickListen
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
+                            //TODO: erreur
                             viewModel.startRecord();
                             mMediaRecorder.start();
                         }
@@ -594,13 +598,17 @@ public class RecordPlayerFragment extends Fragment implements View.OnClickListen
     }
 
     private void stopRecordingVideo() {
+        try{
         viewModel.stop();
         mMediaRecorder.stop();
-        mMediaRecorder.reset();
+        mMediaRecorder.reset();}
+        catch (RuntimeException error){
+            Toast.makeText(getActivity(), error.getMessage(), Toast.LENGTH_SHORT).show();
+        }
 
         Activity activity = getActivity();
         if (null != activity) {
-            Toast.makeText(activity, "Video saved: " + mNextVideoAbsolutePath,
+            Toast.makeText(activity, getString(R.string.save_session_record) + mNextVideoAbsolutePath,
                     Toast.LENGTH_SHORT).show();
             Log.d(TAG, "Video saved: " + mNextVideoAbsolutePath);
         }

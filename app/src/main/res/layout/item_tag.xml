@@ -5,70 +5,86 @@
     android:id="@+id/view_foreground"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="10dp"
     android:background="@drawable/color_gradient_grey"
     android:orientation="horizontal"
+    android:weightSum="10"
+    android:layout_marginBottom="5dp"
     tools:layout_editor_absoluteY="25dp">
 
-
-    <ImageView
-        android:id="@+id/iv_color"
-        android:layout_width="15dp"
-        android:layout_height="match_parent"
-        android:background="@android:color/holo_blue_light" />
-
     <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_weight="1"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/tv_name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:singleLine="false"
-            android:textColor="@color/white"
-            android:textSize="20sp"
-            app:fontFamily="@font/roboto"
-            tools:text="@string/name_observation" />
-
-        <TextView
-            android:id="@+id/tv_stats"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="8dp"
-            android:gravity="center_vertical"
-            android:textColor="@android:color/white"
-            android:visibility="visible"
-            app:fontFamily="@font/roboto"
-            tools:text="4"
-            tools:visibility="visible" />
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        android:orientation="horizontal"
+        android:weightSum="10">
 
         <ImageView
-            android:id="@+id/iv_menu"
-            android:visibility="gone"
-            android:layout_marginRight="15dp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:src="@drawable/icons8_trier_52" />
+            android:id="@+id/iv_color"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:background="@android:color/holo_blue_light"
+            android:minHeight="10dp"
+            android:minWidth="10dp" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_weight="9"
+            android:weightSum="10">
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_weight="8"
+                android:gravity="center_vertical"
+                android:singleLine="false"
+                android:textColor="@color/white"
+                android:textSize="17sp"
+                app:fontFamily="@font/roboto"
+                tools:text="@string/name_observation" />
+
+            <TextView
+                android:id="@+id/tv_stats"
+                android:textSize="15sp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_weight="2"
+                android:gravity="center_vertical"
+                android:textColor="@android:color/white"
+                android:visibility="visible"
+                app:fontFamily="@font/roboto"
+                tools:text="4"
+                android:textAlignment="textEnd"
+                tools:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/iv_menu"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginBottom="5dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="5dp"
+                android:layout_weight="1"
+                android:src="@drawable/icons8_trier_52"
+                android:visibility="gone" />
+        </LinearLayout>
+
 
     </LinearLayout>
+
 
 </LinearLayout>

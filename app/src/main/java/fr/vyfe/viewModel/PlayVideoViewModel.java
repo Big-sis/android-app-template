@@ -18,6 +18,14 @@ public class PlayVideoViewModel extends VyfeViewModel {
     private MutableLiveData<Boolean> isPlaying;
     private TagRepository tagRepository;
     private MutableLiveData<List<TagModel>> tags;
+    private MutableLiveData<Integer> seekPosition;
+    private MutableLiveData<Boolean> moveSeek;
+
+    private MutableLiveData<Integer> timelinesize;
+    private MutableLiveData<Integer> videoContainerHeight;
+    private MutableLiveData<Integer> timelineContainerHeight;
+
+    private MutableLiveData<Boolean> fullTimeline;
 
     public PlayVideoViewModel(String companyId, String userId, String sessionId) {
         sessionRepository = new SessionRepository(companyId);
@@ -26,23 +34,68 @@ public class PlayVideoViewModel extends VyfeViewModel {
         isPlaying = new MutableLiveData<>();
         videoPosition = new MutableLiveData<>();
         this.sessionId = sessionId;
+        seekPosition = new MutableLiveData<>();
+        moveSeek = new MutableLiveData<>();
+        moveSeek.setValue(false);
+
+        timelinesize = new MutableLiveData<>();
+        videoContainerHeight = new MutableLiveData<>();
+        timelineContainerHeight = new MutableLiveData<>();
+        fullTimeline = new MutableLiveData<>();
+        fullTimeline.setValue(false);
+    }
+
+    public MutableLiveData<Integer> getTimelinesize() {
+        return timelinesize;
+    }
+
+    public MutableLiveData<Integer> getTimelineContainerHeight() {
+        return timelineContainerHeight;
+    }
+
+    public void setTimelinesize(Integer timelinesize){
+        this.timelinesize.setValue(timelinesize);
+    }
+
+    public void setTimelineContainerHeight(Integer integer){
+        this.timelineContainerHeight.setValue(integer);
+    }
+
+    public MutableLiveData<Integer> getVideoContainerHeight() {
+        return videoContainerHeight;
+    }
+
+    public void setVideoContainerHeight(Integer videoContainerHeight) {
+        this.videoContainerHeight.setValue(videoContainerHeight);
     }
 
     public void init() {
         isPlaying.setValue(false);
-        videoPosition.setValue(0);
+        this.videoPosition.setValue(0);
     }
 
     public LiveData<Integer> getVideoPosition() {
-        return videoPosition;
+        return this.videoPosition;
     }
 
     public void setVideoPosition(Integer videoPosition) {
         this.videoPosition.setValue(videoPosition);
     }
 
+    public MutableLiveData<Integer> getSeekPosition() {
+        return seekPosition;
+    }
+
+    public void setSeekPosition(Integer seekPosition){
+        this.seekPosition.setValue(seekPosition);
+    }
+
     public LiveData<Boolean> isPlaying(){
         return isPlaying;
+    }
+
+    public MutableLiveData<Boolean> isMoveSeek() {
+        return moveSeek;
     }
 
     public void play(){
@@ -51,6 +104,17 @@ public class PlayVideoViewModel extends VyfeViewModel {
 
     public void pause(){
         isPlaying.setValue(false);
+    }
+
+    public MutableLiveData<Boolean> isFullTimeline() {
+        return fullTimeline;
+    }
+
+    public void fullTimline(){fullTimeline.setValue(true);
+
+    }
+    public void smallTimeline(){
+        fullTimeline.setValue(false);
     }
 
     public MutableLiveData<List<TagModel>> getTags() {

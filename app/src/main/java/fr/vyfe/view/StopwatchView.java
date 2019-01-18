@@ -48,6 +48,7 @@ public class StopwatchView extends Chronometer {
         latestStop = getTime();
     }
 
+    // millis second
     public void setTime(long t) {
         setBase(SystemClock.elapsedRealtime() - t);
         latestStop = getTime();

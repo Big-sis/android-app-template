@@ -4,6 +4,8 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Objects;
 
 import fr.vyfe.model.ColorModel;
 import fr.vyfe.model.TagSetModel;
@@ -26,8 +28,12 @@ public class CreateGridViewModel extends VyfeViewModel {
         if (templates.getValue() == null) templates.setValue(new ArrayList<TemplateModel>());
     }
 
-    public LiveData<String> getTagSetName(){
+    public LiveData<String> getTagSetName() {
         return tagSetName;
+    }
+
+    public void setTagSetName(String name) {
+        this.tagSetName.setValue(name);
     }
 
     public LiveData<ArrayList<TemplateModel>> getTemplates() {
@@ -43,17 +49,32 @@ public class CreateGridViewModel extends VyfeViewModel {
         TemplateModel template = new TemplateModel();
         template.setColor(color);
         template.setName(name);
+        template.setPosition(templates.getValue().size());
         templates.getValue().add(template);
     }
 
-    public void moveTag(int from, int to) {
-        TemplateModel movingTemplate = templates.getValue().get(from);
-        templates.getValue().remove(movingTemplate);
-        templates.getValue().add(to, movingTemplate);
+
+    public void moveItem(int oldPos, int newPos) {
+        if (oldPos < newPos) {
+            for (int i = oldPos; i < newPos; i++) {
+                Collections.swap(Objects.requireNonNull(getTemplates().getValue()), i, i + 1);
+                getTemplates().getValue().get(i).setPosition(i);
+                getTemplates().getValue().get(i + 1).setPosition(i + 1);
+            }
+        } else {
+            for (int i = oldPos; i > newPos; i--) {
+                Collections.swap(Objects.requireNonNull(getTemplates().getValue()), i, i - 1);
+                getTemplates().getValue().get(i).setPosition(i);
+                getTemplates().getValue().get(i - 1).setPosition(i - 1);
+            }
+        }
     }
 
-    public void setTagSetName(String name){
-        this.tagSetName.setValue(name);
+    public void deleteItem(int position) {
+        for (int i = position + 1; i < getTemplates().getValue().size(); i++) {
+            getTemplates().getValue().get(i).setPosition(getTemplates().getValue().get(i).getPosition() - 1);
+        }
+        Objects.requireNonNull(getTemplates().getValue()).remove(position);
     }
 
     public TagSetModel save() {

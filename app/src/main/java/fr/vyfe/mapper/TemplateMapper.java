@@ -13,6 +13,7 @@ public class TemplateMapper extends FirebaseMapper<TemplateEntity, TemplateModel
         templateModel.setName(templateEntity.getName());
         templateModel.setLeftOffset(templateEntity.getLeftOffset());
         templateModel.setRigthOffset(templateEntity.getRigthOffset());
+        templateModel.setPosition(templateEntity.getPosition());
         templateModel.setId(key);
         return templateModel;
     }
@@ -24,6 +25,7 @@ public class TemplateMapper extends FirebaseMapper<TemplateEntity, TemplateModel
         templateEntity.setColor(templateModel.getColor().getId());
         templateEntity.setLeftOffset(templateModel.getLeftOffset());
         templateEntity.setRigthOffset(templateModel.getRigthOffset());
+        templateEntity.setPosition(templateModel.getPosition());
         return templateEntity;
     }
 }

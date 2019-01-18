@@ -123,4 +123,6 @@
     <string name="save_grid_info">Grid saved</string>
     <string name="permission_request">Vyfe app need permissions to record a video. Please check your config</string>
     <string name="camera_error">This device is not supported for video record</string>
+    <string name="change_movie">Change movie</string>
+    <string name="confirm_change_movie">Do you want to change the session?</string>
 </resources>

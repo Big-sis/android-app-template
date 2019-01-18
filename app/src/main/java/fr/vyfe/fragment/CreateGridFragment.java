@@ -3,6 +3,7 @@ package fr.vyfe.fragment;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -20,7 +21,9 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+import fr.vyfe.Constants;
 import fr.vyfe.R;
+import fr.vyfe.activity.CreateSessionActivity;
 import fr.vyfe.adapter.TemplateRecyclerAdapter;
 import fr.vyfe.model.TemplateModel;
 import fr.vyfe.viewModel.CreateGridViewModel;
@@ -33,16 +36,15 @@ public class CreateGridFragment extends Fragment implements View.OnClickListener
     private Button saveGridBtn;
     private TextView tvAddTag;
 
-
     public static CreateGridFragment newInstance() {
         return new CreateGridFragment();
     }
-
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         this.createCallbackToParentActivity();
+
     }
 
     @Override

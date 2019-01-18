@@ -9,6 +9,7 @@ import java.io.File;
 import java.nio.charset.Charset;
 import java.util.Date;
 
+import fr.vyfe.Constants;
 import fr.vyfe.mapper.SessionMapper;
 import fr.vyfe.model.SessionModel;
 
@@ -22,10 +23,11 @@ public class SessionRepository extends FirebaseDatabaseRepository<SessionModel> 
 
     @Override
     protected String getRootNode() {
-        return getCompany() + "/Sessions/";
+        return getCompany() + "/" + Constants.BDDV2_SESSIONS_KEY + "/";
     }
 
     public String push(SessionModel sessionModel, String androidId) throws Exception {
+        //TODO pourquoi pas mettre date, auteur etc de fixe
         sessionModel.setIdAndroid(Hashing.sha256().hashString(androidId, Charset.defaultCharset()).toString());
         String filePath = createFile(sessionModel.getName());
         if (filePath != null) {
@@ -41,11 +43,11 @@ public class SessionRepository extends FirebaseDatabaseRepository<SessionModel> 
      * @return file absolute path
      */
     private String createFile(String sessionName) {
-        File f1 = new File(Environment.getExternalStoragePublicDirectory(DIRECTORY_MOVIES) + "/" + "Vyfe");
+        File f1 = new File(Environment.getExternalStoragePublicDirectory(DIRECTORY_MOVIES) + "/" + Constants.VIDEO_DIRECTORY_NAME);
         if (!f1.exists()) {
             f1.mkdirs();
         }
-        String mFileName = String.valueOf(Environment.getExternalStoragePublicDirectory(DIRECTORY_MOVIES) + "/" + "Vyfe");
+        String mFileName = String.valueOf(Environment.getExternalStoragePublicDirectory(DIRECTORY_MOVIES) + "/" + Constants.VIDEO_DIRECTORY_NAME);
         mFileName += "/" + sessionName + "-" + (new Date()).getTime() + ".mp4";
         String DeviceVideoLink = mFileName;
         File file = new File(DeviceVideoLink);

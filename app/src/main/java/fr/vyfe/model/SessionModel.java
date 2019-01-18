@@ -6,20 +6,22 @@ import android.media.ThumbnailUtils;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
 import fr.vyfe.Constants;
 
-public class SessionModel implements Parcelable, VyfeModel {
+public class SessionModel implements Parcelable, VyfeModel,Comparable<SessionModel> {
     private String name;
     private String author;
     private String serverVideoLink;
     private Date date;
     private String id;
     private String idTagSet;
-    private ArrayList<TagModel> tags;
+    private ArrayList<TagModel> Tags;
     private String description;
     private String idAndroid;
     private String deviceVideoLink;
@@ -38,7 +40,7 @@ public class SessionModel implements Parcelable, VyfeModel {
     public SessionModel(String name, ArrayList<TagModel> tags,String idTagSet ){
         this();
         this.name = name;
-        this.tags = tags;
+        this.Tags = tags;
         this.idTagSet = idTagSet;
     }
 
@@ -59,7 +61,7 @@ public class SessionModel implements Parcelable, VyfeModel {
         date = new Date(in.readLong());
         id = in.readString();
         idTagSet = in.readString();
-        tags = in.createTypedArrayList(TagModel.CREATOR);
+        Tags = in.createTypedArrayList(TagModel.CREATOR);
         description = in.readString();
         idAndroid = in.readString();
         deviceVideoLink = in.readString();
@@ -142,7 +144,7 @@ public class SessionModel implements Parcelable, VyfeModel {
 
         retriever.release();
 
-        return timeInMillisec / Constants.UNIT_TO_MILLI_FACTOR;
+        return timeInMillisec ;
     }
 
     public String getServerVideoLink() {
@@ -154,11 +156,11 @@ public class SessionModel implements Parcelable, VyfeModel {
     }
 
     public ArrayList<TagModel> getTags() {
-        return tags;
+        return Tags;
     }
 
     public void setTags(ArrayList<TagModel> tags) {
-        this.tags = tags;
+        this.Tags = tags;
     }
 
     public String getDeviceVideoLink() {
@@ -192,7 +194,7 @@ public class SessionModel implements Parcelable, VyfeModel {
         dest.writeLong(date.getTime());
         dest.writeString(id);
         dest.writeString(idTagSet);
-        dest.writeTypedList(tags);
+        dest.writeTypedList(Tags);
         dest.writeString(description);
         dest.writeString(idAndroid);
         dest.writeString(deviceVideoLink);
@@ -200,6 +202,12 @@ public class SessionModel implements Parcelable, VyfeModel {
     }
 
     public String getFormatDate() {
-        return this.date.toString();
+        SimpleDateFormat dt = new SimpleDateFormat("dd-MM-yy HH:mm");
+        return dt.format(new Date(this.date.getTime()));
+    }
+
+    @Override
+    public int compareTo(@NonNull SessionModel o) {
+        return ((int)(this.date.getTime() - o.getDate().getTime()));
     }
 }

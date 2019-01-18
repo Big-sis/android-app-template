@@ -4,6 +4,7 @@ package fr.vyfe.fragment;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,9 +14,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import fr.vyfe.Constants;
 import fr.vyfe.R;
 import fr.vyfe.RecyclerTouchListener;
 import fr.vyfe.adapter.TemplateRecyclerAdapter;
+import fr.vyfe.model.SessionModel;
 import fr.vyfe.model.TagSetModel;
 import fr.vyfe.viewModel.RecordVideoViewModel;
 
@@ -53,6 +56,21 @@ public class TagSetRecordFragment extends Fragment {
             public void onChanged(@Nullable String step) {
                 if (step.equals("recording")) {
                     mRecyclerView.setAlpha(1);
+
+                    mRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), mRecyclerView, new RecyclerTouchListener.ClickListener() {
+                        @Override
+                        public void onClick(final View view, int position) {
+
+                            viewModel.addTag(position);
+                            mTagAdpater.notifyDataSetChanged();
+                        }
+
+                        @Override
+                        public void onLongClick(View view, int position) {
+                            //TODO: ne fonctionne pas
+                           // viewModel.addTag(position);
+                        }
+                    }));
                 } else {
                     mRecyclerView.setAlpha(0.5f);
                 }
@@ -61,24 +79,21 @@ public class TagSetRecordFragment extends Fragment {
 
         viewModel.getTagSet().observe(getActivity(), new Observer<TagSetModel>() {
             @Override
-            public void onChanged(@Nullable TagSetModel tagSet) {
-                if (tagSet != null) {
-                    mTagAdpater = new TemplateRecyclerAdapter(tagSet.getTemplates(), "record");
-                    mRecyclerView.setAdapter(mTagAdpater);
-                }
+            public void onChanged(@Nullable final TagSetModel tagSet) {
+                viewModel.getSession().observe(getActivity(), new Observer<SessionModel>() {
+                    @Override
+                    public void onChanged(@Nullable SessionModel sessionModel) {
+                        if (tagSet != null) {
+                            mTagAdpater = new TemplateRecyclerAdapter(tagSet.getTemplates(), "record");
+                            mRecyclerView.setAdapter(mTagAdpater);
+                            mTagAdpater.notifyDataSetChanged();
+                        }
+                    }
+                });
+
             }
         });
 
-        mRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), mRecyclerView, new RecyclerTouchListener.ClickListener() {
-            @Override
-            public void onClick(View view, int position) {
-                viewModel.addTag(position);
-            }
 
-            @Override
-            public void onLongClick(View view, int position) {
-                viewModel.addTag(position);
-            }
-        }));
     }
 }

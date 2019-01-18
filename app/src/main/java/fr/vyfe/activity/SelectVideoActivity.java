@@ -3,8 +3,6 @@ package fr.vyfe.activity;
 import android.app.AlertDialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -13,17 +11,15 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-
 import fr.vyfe.Constants;
 import fr.vyfe.helper.InternetConnexionHelper;
-import fr.vyfe.model.CompanyModel;
 import fr.vyfe.service.UploadVideoService;
 import fr.vyfe.R;
 import fr.vyfe.adapter.TemplateRecyclerAdapter;
@@ -46,10 +42,15 @@ public class SelectVideoActivity extends VyfeActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_selected_video);
 
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(R.string.info_movie);
+
         Button playBtn = findViewById(R.id.bt_play);
         Button editBtn = findViewById(R.id.btn_edit);
         final TextView tvTitle = findViewById(R.id.tv_title);
         final TextView tvDescription = findViewById(R.id.tv_description);
+        final TextView gridTextView = findViewById(R.id.tv_grid);
         final RecyclerView recyclerTags = findViewById(R.id.re_tags);
         mIvUpload = findViewById(R.id.iv_upload);
         uploadButton = findViewById(R.id.btn_upload);
@@ -94,13 +95,14 @@ public class SelectVideoActivity extends VyfeActivity {
                                     else {
                                         Intent intent = new Intent(SelectVideoActivity.this, UploadVideoService.class);
                                         intent.putExtra(Constants.SESSIONMODEL_EXTRA, session);
-                                        intent.putExtra(Constants.VIMEO_TOKEN_EXTRA, viewModel.getCompany().getValue().getVimeoAccessToken());
+                                        intent.putExtra(Constants.VIMEO_TOKEN_EXTRA, "bearer "+viewModel.getCompany().getValue().getVimeoAccessToken());
                                         intent.putExtra(Constants.COMPANYID_EXTRA, mAuth.getCurrentUser().getCompany());
                                         SelectVideoActivity.this.startService(intent);
 
                                         Toast.makeText(SelectVideoActivity.this, R.string.start_upload, Toast.LENGTH_LONG).show();
                                         mIvUpload.setVisibility(View.VISIBLE);
-                                        Glide.with(SelectVideoActivity.this).load(R.drawable.animation_roue_white).into(mIvUpload);
+                                        //TODO : convert to smaller file
+                                        // Glide.with(SelectVideoActivity.this).load(R.drawable.animation_roue_white).into(mIvUpload);
                                     }
                                 }
                                 else
@@ -128,9 +130,12 @@ public class SelectVideoActivity extends VyfeActivity {
             @Override
             public void onChanged(@Nullable TagSetModel tagSetModel) {
                 if (tagSetModel != null) {
-                    TemplateRecyclerAdapter adapterTags = new TemplateRecyclerAdapter(tagSetModel.getTemplates(), "count");
+                    TemplateRecyclerAdapter adapterTags = new TemplateRecyclerAdapter(tagSetModel.getTemplates(),viewModel.getSession().getValue(), "count");
                     recyclerTags.setAdapter(adapterTags);
                 }
+
+                assert tagSetModel != null;
+                gridTextView.setText(tagSetModel.getName());
             }
         });
 

@@ -2,16 +2,20 @@ package fr.vyfe.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 import fr.vyfe.Constants;
 
-public class TemplateModel implements Parcelable, VyfeModel {
+public class TemplateModel implements Parcelable, VyfeModel, Comparable<TemplateModel> {
 
     private String id;
     private ColorModel color;
     private String name;
     private int leftOffset;
     private int rigthOffset;
+    private int count = 0;
+    private int position;
+    private boolean touch = false;
 
     public TemplateModel() {
         leftOffset = Constants.STANDARD_LEFT_OFFSET;
@@ -24,6 +28,7 @@ public class TemplateModel implements Parcelable, VyfeModel {
         name = in.readString();
         leftOffset = in.readInt();
         rigthOffset = in.readInt();
+        position= in.readInt();
     }
 
     public static final Creator<TemplateModel> CREATOR = new Creator<TemplateModel>() {
@@ -37,6 +42,14 @@ public class TemplateModel implements Parcelable, VyfeModel {
             return new TemplateModel[size];
         }
     };
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(int position) {
+        this.position = position;
+    }
 
     public String getId() {
         return id;
@@ -78,6 +91,25 @@ public class TemplateModel implements Parcelable, VyfeModel {
         this.name = tagName;
     }
 
+    public int getCount() {
+        return count;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public void incrCount() {
+        this.count++;
+    }
+
+    public boolean isTouch() {
+        return touch;
+    }
+
+    public void setTouch(boolean touch) {
+        this.touch = touch;
+    }
     @Override
     public int describeContents() {
         return 0;
@@ -90,6 +122,12 @@ public class TemplateModel implements Parcelable, VyfeModel {
         dest.writeString(name);
         dest.writeInt(leftOffset);
         dest.writeInt(rigthOffset);
+        dest.writeInt(position);
+    }
+
+    @Override
+    public int compareTo(@NonNull TemplateModel o) {
+        return (this.position - o.getPosition());
     }
 }
 

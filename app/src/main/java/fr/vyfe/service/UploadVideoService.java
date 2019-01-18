@@ -23,6 +23,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -54,6 +55,7 @@ public class UploadVideoService extends Service {
                     JSONObject groups = response.getJSONObject("upload");
                     String Vimeolink= (String) response.get("link");
                     String uploadLink = (String) groups.get("upload_link");
+
                     //ici on peut aussi recucuperer le lien ou l'utilisateur pourras visialiser la vidéo, elle est dans upoad ->link
                     //deuxieme requete pour joindre la video
                     //uploadVideo(uploadLink, context);
@@ -104,7 +106,7 @@ public class UploadVideoService extends Service {
                     repository.put(session);
                 }
                 // Toast.makeText(ApiActivity.this, " response: " + response.data, Toast.LENGTH_LONG).DisconnectionAlert();
-                Toast.makeText(context, R.string.upload_video, Toast.LENGTH_LONG).show();
+                Toast.makeText(context, R.string.upload_video + "( "+session.getName()+" )", Toast.LENGTH_LONG).show();
 
                 listener.onSuccess();
                 Log.d("Volley", "onResponse: " + response.toString());
@@ -124,9 +126,13 @@ public class UploadVideoService extends Service {
 
                 return params;
             }
+
+
         };
         queue2.add(sr2);
     }
+
+
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {

@@ -2,7 +2,6 @@ package fr.vyfe.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -22,17 +21,16 @@ import fr.vyfe.helper.AuthHelper;
 public abstract class VyfeActivity extends AppCompatActivity {
 
     protected static AuthHelper mAuth;
-    protected Context context;
+    protected AppCompatActivity self;
 
-    public static void confirmedDisconnection(final Context context) {
-        final AlertDialog.Builder builder = new AlertDialog.Builder(context);
+    public void confirmDisconnection() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(self);
         builder.setMessage(R.string.deconnected)
                 .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Intent intent = new Intent(context, ConnexionActivity.class);
-                        context.startActivity(intent);
                         mAuth.signOut();
+                        self.finish();
                     }
                 })
                 .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
@@ -59,7 +57,7 @@ public abstract class VyfeActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.logout:
-                confirmedDisconnection(this);
+                confirmDisconnection();
                 return true;
             case R.id.home:
                 Intent intentHome = new Intent(this, MainActivity.class);
@@ -73,7 +71,7 @@ public abstract class VyfeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        context = this;
+        self = this;
         mAuth = AuthHelper.getInstance(this);
         if (mAuth.getLicenseRemainingDays() == 0) {
             if (mAuth.getCurrentUser() != null)
@@ -83,6 +81,16 @@ public abstract class VyfeActivity extends AppCompatActivity {
             mAuth.signOut();
             finish();
         }
+
+
+        if (null == mAuth.getCurrentUser()) {
+            Toast.makeText(this, R.string.ask_connection, Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(this, ConnexionActivity.class);
+            this.startActivity(intent);
+            finish();
+        }
+
+
     }
 
     public boolean checkPersmissions(final String[] permissions) {
@@ -98,13 +106,14 @@ public abstract class VyfeActivity extends AppCompatActivity {
             popup.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
-                    ActivityCompat.requestPermissions((Activity) context, permissions, 1);
+                    ActivityCompat.requestPermissions((Activity) self, permissions, 1);
                 }
             });
             popup.show();
             return false;
-        }
-        else
+        } else
             return true;
     }
+
+
 }

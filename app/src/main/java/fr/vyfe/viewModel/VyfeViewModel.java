@@ -3,9 +3,15 @@ package fr.vyfe.viewModel;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
 import fr.vyfe.model.SessionModel;
+import fr.vyfe.model.TagModel;
 import fr.vyfe.model.TagSetModel;
 import fr.vyfe.model.TemplateModel;
+import fr.vyfe.repository.BaseListValueEventListener;
 import fr.vyfe.repository.BaseSingleValueEventListener;
 import fr.vyfe.repository.SessionRepository;
 import fr.vyfe.repository.TagSetRepository;
@@ -25,12 +31,16 @@ public abstract class VyfeViewModel extends ViewModel {
     protected void loadSession(String id) {
         if (session == null)
             session = new MutableLiveData<>();
+
+
         sessionRepository.addChildListener(id, true, new BaseSingleValueEventListener.CallbackInterface<SessionModel>() {
             @Override
             public void onSuccess(SessionModel result) {
+
                 session.postValue(result);
                 if (tagSetRepository != null)
                     loadTagSet(result.getTagSetId());
+
             }
 
             @Override
@@ -46,6 +56,13 @@ public abstract class VyfeViewModel extends ViewModel {
         tagSetRepository.addChildListener(id, true, new BaseSingleValueEventListener.CallbackInterface<TagSetModel>() {
             @Override
             public void onSuccess(TagSetModel result) {
+
+                Collections.sort(result.getTemplates(), new Comparator<TemplateModel>() {
+                    @Override
+                    public int compare(TemplateModel o1, TemplateModel o2) {
+                        return o1.getPosition() - o2.getPosition();
+                    }
+                });
                 tagSet.postValue(result);
             }
 
@@ -54,6 +71,7 @@ public abstract class VyfeViewModel extends ViewModel {
                 tagSet.setValue(null);
             }
         });
+
     }
 
     public MutableLiveData<SessionModel> getSession() {
@@ -65,8 +83,8 @@ public abstract class VyfeViewModel extends ViewModel {
     public MutableLiveData<TagSetModel> getTagSet() {
         if (tagSet == null) {
             tagSet = new MutableLiveData<>();
-            loadSession(this.sessionId);
         }
+        loadSession(this.sessionId);
         return tagSet;
     }
 

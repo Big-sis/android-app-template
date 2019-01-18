@@ -4,16 +4,25 @@ import java.util.HashMap;
 
 public class TagSetEntity {
     private String name;
+    private boolean archived;
 
-    private HashMap<String, TemplateEntity> Tags;
-
-
-    public HashMap<String, TemplateEntity> getTags() {
-        return Tags;
+    public boolean isArchived() {
+        return archived;
     }
 
-    public void setTags(HashMap<String, TemplateEntity> tags) {
-        this.Tags = tags;
+    public void setArchived(boolean archived) {
+        this.archived = archived;
+    }
+
+    private HashMap<String, TemplateEntity> Templates;
+
+
+    public HashMap<String, TemplateEntity> getTemplates() {
+        return Templates;
+    }
+
+    public void setTemplates(HashMap<String, TemplateEntity> templates) {
+        this.Templates = templates;
     }
 
     public String getName() {

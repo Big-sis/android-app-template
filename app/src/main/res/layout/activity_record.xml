@@ -11,51 +11,50 @@
         android:id="@+id/appBar"
         layout="@layout/toolbar" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="50dp"
+        android:orientation="horizontal">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="horizontal"
-            android:layout_marginTop="50dp">
+            android:layout_marginRight="5dp"
+            android:layout_weight="0.2"
+            android:orientation="vertical">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="0.2"
-                android:orientation="vertical"
-                android:layout_marginRight="5dp">
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/constraint_video_record"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center"
+                android:layout_weight="0.8"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <android.support.constraint.ConstraintLayout
-                    android:id="@+id/constraint_video_record"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.2"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                </android.support.constraint.ConstraintLayout>
-
-                <ScrollView
-                    android:id="@+id/scroll_timeline"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_weight="0.8"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="@+id/constraint_video_record"/>
-            </LinearLayout>
+            </android.support.constraint.ConstraintLayout>
 
             <ScrollView
-                android:id="@+id/scroll_tagset"
+                android:id="@+id/scroll_timeline"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="0.8">
-
-            </ScrollView>
-
+                android:layout_height="0dp"
+                android:layout_weight="0.2"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/constraint_video_record" />
         </LinearLayout>
 
+        <RelativeLayout
+            android:id="@+id/scroll_tagset"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.8">
+
+        </RelativeLayout>
+
+    </LinearLayout>
 
 
     <android.support.constraint.ConstraintLayout
@@ -104,7 +103,7 @@
                 android:layout_marginTop="8dp"
                 android:text="@string/video_save"
                 android:textColor="@color/white"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 app:fontFamily="@font/roboto_bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -133,6 +132,19 @@
                     app:layout_constraintStart_toStartOf="parent" />
 
                 <Button
+                    android:id="@+id/btn_restart"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="36dp"
+                    android:layout_marginStart="36dp"
+                    android:background="@null"
+                    android:padding="5dp"
+                    android:text="@string/restart_session"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    android:visibility="visible" />
+
+                <Button
                     android:id="@+id/btn_play"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -144,18 +156,7 @@
                     android:textColor="@color/white"
                     android:textSize="18sp" />
 
-                <Button
-                    android:id="@+id/btn_restart"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="36dp"
-                    android:layout_marginStart="36dp"
-                    android:background="@drawable/style_button"
-                    android:padding="5dp"
-                    android:text="@string/restart_session"
-                    android:textColor="@color/white"
-                    android:textSize="18sp"
-                    android:visibility="visible" />
+
             </LinearLayout>
         </android.support.constraint.ConstraintLayout>
     </android.support.constraint.ConstraintLayout>

@@ -17,25 +17,19 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-
 import fr.vyfe.R;
-import fr.vyfe.adapter.TimelineAdapter;
-import fr.vyfe.helper.ScrollHelper;
 import fr.vyfe.model.TagModel;
 import fr.vyfe.model.TagSetModel;
 import fr.vyfe.model.TemplateModel;
-import fr.vyfe.model.TimeModel;
 import fr.vyfe.viewModel.RecordVideoViewModel;
 
 public class TimelineRecordFragment extends Fragment {
 
     private RecordVideoViewModel viewModel;
     private LinearLayout containerLayout;
-    private TimelineAdapter adapter;
+    private ArrayList<TextView> tvRowNameArray = new ArrayList<>();
 
     public static TimelineRecordFragment newInstance() {
         return new TimelineRecordFragment();
@@ -70,13 +64,14 @@ public class TimelineRecordFragment extends Fragment {
 
                         TextView tvNameRow = new TextView(getContext());
                         tvNameRow.setText(template.getName());
-                        tvNameRow.setMinimumHeight(convertToDp(25));
+                        tvNameRow.setMinimumHeight(convertToDp(20));
+                        tvNameRow.setTextColor(Color.WHITE);
                         RelativeLayout.LayoutParams layoutParamsTv = new RelativeLayout.LayoutParams(
                                 convertToDp(titleLength), LinearLayout.LayoutParams.WRAP_CONTENT);
-                        layoutParamsTv.setMargins(convertToDp(15), convertToDp(10), convertToDp(8), convertToDp(10));
+                        layoutParamsTv.setMargins(convertToDp(15), convertToDp(8), convertToDp(8), convertToDp(8));
                         tvNameRow.setLayoutParams(layoutParamsTv);
                         timelineRowView.addView(tvNameRow, layoutParamsTv);
-
+                        tvRowNameArray.add(tvNameRow);
                         containerLayout.addView(timelineRowView, new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
                     }
                 }
@@ -96,15 +91,18 @@ public class TimelineRecordFragment extends Fragment {
                             titleLength, LinearLayout.LayoutParams.WRAP_CONTENT);
                     layoutParamsIv.setMargins(0, convertToDp(8), 0, convertToDp(8));
                     iv.setLayoutParams(layoutParamsIv);
-                    iv.setMinimumHeight(convertToDp(25));
+                    iv.setMinimumHeight(convertToDp(20));
                     iv.setBackgroundResource(tag.getColor().getImage());
-                    iv.setMinimumWidth(convertToDp(tag.getEnd() - tag.getStart()));
+                    iv.setMinimumWidth(convertToDp((Math.max(convertToDp(25), tag.getEnd() - tag.getStart()))));
 
                     RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                             LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                     layoutParams.setMargins(convertToDp(tag.getStart()), convertToDp(10), 0, convertToDp(10));
                     ((RelativeLayout) containerLayout.findViewWithTag(tag.getTemplateId())).addView(iv, layoutParams);
 
+                }
+                for (TextView textView : tvRowNameArray) {
+                    textView.bringToFront();
                 }
             }
         });

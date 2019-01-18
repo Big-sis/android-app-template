@@ -4,21 +4,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class UserEntity {
-    private ProfilEntity Profil;
-    private AccountInformationsEntity AccountInformations;
+    private ProfilEntity profile;
+    private AccountInformationsEntity accountInformations;
     private boolean confirmed;
     private String role[];
-    private ArrayList<String> AutorizeSessions;
-    private HashMap<String,TagSetEntity>TagSets;
+    private ArrayList<String> autorizeSessions;
+    private HashMap<String,TagSetEntity> tagSets;
 
 
 
     public HashMap<String, TagSetEntity> getTagSets() {
-        return TagSets;
+        return tagSets;
     }
 
     public void setTagSets(HashMap<String, TagSetEntity> tagSets) {
-        TagSets = tagSets;
+        this.tagSets = tagSets;
     }
 
 
@@ -30,20 +30,20 @@ public class UserEntity {
         this.confirmed = confirmed;
     }
 
-    public ProfilEntity getProfil() {
-        return Profil;
+    public ProfilEntity getProfile() {
+        return profile;
     }
 
-    public void setProfil(ProfilEntity profil) {
-        Profil = profil;
+    public void setProfile(ProfilEntity profile) {
+        this.profile = profile;
     }
 
     public AccountInformationsEntity getAccountInformations() {
-        return AccountInformations;
+        return accountInformations;
     }
 
     public void setAccountInformations(AccountInformationsEntity accountInformations) {
-        AccountInformations = accountInformations;
+        this.accountInformations = accountInformations;
     }
 
 
@@ -56,11 +56,11 @@ public class UserEntity {
     }
 
     public ArrayList<String> getAutorizeSessions() {
-        return AutorizeSessions;
+        return autorizeSessions;
     }
 
     public void setAutorizeSessions(ArrayList<String> autorizeSessions) {
-        AutorizeSessions = autorizeSessions;
+        this.autorizeSessions = autorizeSessions;
     }
 
 

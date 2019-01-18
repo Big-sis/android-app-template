@@ -11,8 +11,12 @@ import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 
 import com.google.common.hash.Hashing;
 
@@ -37,7 +41,7 @@ public class RecordActivity extends VyfeActivity {
     private RecordVideoViewModel viewModel;
     private ConstraintLayout contrainOkRecord;
     private ConstraintLayout constraintErrorSpace;
-    public static final String[] PERMISSIONS = {Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA};
+    public static final String[] PERMISSIONS = {Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,8 +95,10 @@ public class RecordActivity extends VyfeActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(RecordActivity.this, CreateSessionActivity.class);
-                intent.putExtra(Constants.SESSIONMODELID_EXTRA, viewModel.getSessionId());
+                intent.putExtra(Constants.SESSIONTITLE_EXTRA, viewModel.getSession().getValue().getName());
+                intent.putExtra(Constants.TAGSETID_EXTRA,viewModel.getSession().getValue().getTagSetId());
                 startActivity(intent);
+
             }
         });
 
@@ -107,7 +113,6 @@ public class RecordActivity extends VyfeActivity {
                 }
             }
         });
-
     }
 
 
@@ -129,6 +134,7 @@ public class RecordActivity extends VyfeActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             viewModel.stop();
                             viewModel.save();
+
                             startActivity(intent);
 
                         }
@@ -137,13 +143,26 @@ public class RecordActivity extends VyfeActivity {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
                             viewModel.close();
+                            viewModel.delete();
                             dialog.cancel();
                             startActivity(intent);
                         }
                     })
                     .show();
 
-        } else startActivity(intent);
+        } else {
+            viewModel.delete();
+            startActivity(intent);}
     }
 
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+
+            case R.id.home:
+                final Intent intentHome = new Intent(this, MainActivity.class);
+                saveAlertDialog(intentHome);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
 }

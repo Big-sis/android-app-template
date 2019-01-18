@@ -20,7 +20,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 
 import fr.vyfe.R;
 import fr.vyfe.RaspberryConnexion;
@@ -45,6 +44,7 @@ public class MainActivity extends VyfeActivity {
         LinearLayout btnMultiSession = findViewById(R.id.btn_multi_session);
         LinearLayout btnVideos = findViewById(R.id.btn_videos);
         LinearLayout btnCreateGrid = findViewById(R.id.btn_create_grid);
+
 
         btnStartSession.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -151,7 +151,6 @@ public class MainActivity extends VyfeActivity {
                     }
                 })
                 .show();
-
     }
 
     @Override
@@ -162,18 +161,6 @@ public class MainActivity extends VyfeActivity {
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.logout:
-                confirmedDisconnection(this);
-                return true;
-            case R.id.home:
-                return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     public void connexionRasberry() {
@@ -201,8 +188,8 @@ public class MainActivity extends VyfeActivity {
                                 Toast.makeText(MainActivity.this, "La connexion prend environ 1 min ...", Toast.LENGTH_LONG).show();
                                 progressRoue.setMaxWidth(convertToDp(100));
                                 progressRoue.setMaxHeight(convertToDp(100));
-                                Glide.with(MainActivity.this).load(R.drawable.roue2).into(progressRoue);
-
+                                //TODO : convert to smaller file
+                                //Glide.with(MainActivity.this).load(R.drawable.roue2).into(progressRoue);
 
                                 new Handler().postDelayed(new Runnable() {
                                     @Override
