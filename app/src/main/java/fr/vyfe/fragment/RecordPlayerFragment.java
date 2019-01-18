@@ -426,7 +426,7 @@ public class RecordPlayerFragment extends Fragment implements View.OnClickListen
             closePreviewSession();
             SurfaceTexture texture = mTextureView.getSurfaceTexture();
             assert texture != null;
-            texture.setDefaultBufferSize((mPreviewSize.getWidth()), mPreviewSize.getHeight());
+            texture.setDefaultBufferSize(mPreviewSize.getWidth(), mPreviewSize.getHeight());
             mPreviewBuilder = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
 
             Surface previewSurface = new Surface(texture);

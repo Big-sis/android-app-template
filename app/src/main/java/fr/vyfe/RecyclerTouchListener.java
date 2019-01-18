@@ -8,7 +8,6 @@ import android.view.MotionEvent;
 import android.view.View;
 
 public class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
-    //TODO: trouver solution pour le flash marche av le compteur des tags
     private GestureDetector gestureDetector;
     private ClickListener clickListener;
 

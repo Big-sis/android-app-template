@@ -62,7 +62,7 @@ public class MyVideosViewModel extends VyfeViewModel {
             public void onSuccess(List<SessionModel> result) {
 
 
-                File externalStorage = getExternalStoragePublicDirectory(DIRECTORY_MOVIES + "/" + Constants.VYFE);
+                File externalStorage = getExternalStoragePublicDirectory(DIRECTORY_MOVIES + "/" + Constants.VIDEO_DIRECTORY_NAME);
                 final String racineExternalStorage = String.valueOf(externalStorage.getAbsoluteFile());
                 final String[] filesExternalStorage = externalStorage.list();
 

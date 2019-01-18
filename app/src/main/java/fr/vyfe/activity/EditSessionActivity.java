@@ -52,7 +52,6 @@ public class EditSessionActivity extends VyfeActivity {
 
         viewModel = ViewModelProviders.of(this, new EditSessionViewModelFactory(mAuth.getCurrentUser().getCompany())).get(EditSessionViewModel.class);
         viewModel.init(getIntent().getStringExtra(Constants.SESSIONMODELID_EXTRA));
-        btnEdit.setClickable(false);
         viewModel.getSession().observe(this, new Observer<SessionModel>() {
             @Override
             public void onChanged(@Nullable SessionModel sessionModel) {
@@ -75,6 +74,7 @@ public class EditSessionActivity extends VyfeActivity {
                     @Override
                     public void afterTextChanged(Editable s) {
                         btnEdit.setClickable(true);
+                        btnEdit.setEnabled(true);
                         btnEdit.setAlpha(1);
                         viewModel.setNewDescription(s.toString());
                     }

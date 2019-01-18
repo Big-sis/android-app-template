@@ -39,7 +39,7 @@ public class CreateSessionViewModel extends VyfeViewModel {
 
 
     public void init(String titleSession, String tagSetId) {
-        this.setSessionName(implementGridTitle(titleSession));
+        this.setSessionName(incrementGridTitle(titleSession));
         this.selectedTagSetId = tagSetId;
     }
 
@@ -74,30 +74,19 @@ public class CreateSessionViewModel extends VyfeViewModel {
         tagSetRepository.addListListenerBoolean(new BaseListValueEventListener.CallbackInterface<TagSetModel>() {
             @Override
             public void onSuccess(List<TagSetModel> result) {
-
+                for (TagSetModel tagSet : result) {
+                    Collections.sort(tagSet.getTemplates(), new Comparator<TemplateModel>() {
+                        @Override
+                        public int compare(TemplateModel o1, TemplateModel o2) {
+                            return o1.getPosition() - o2.getPosition();
+                        }
+                    });
+                }
                 if (selectedTagSetId != null) {
                     for (TagSetModel tagSet : result) {
 
-                        Collections.sort(tagSet.getTemplates(), new Comparator<TemplateModel>() {
-                            @Override
-                            public int compare(TemplateModel o1, TemplateModel o2) {
-                                return o1.getPosition() - o2.getPosition();
-                            }
-                        });
-
-
                         if (selectedTagSetId.equals(tagSet.getId()))
                             selectedTagSet.setValue(tagSet);
-                    }
-                } else {
-                    for (TagSetModel tagSet : result) {
-
-                        Collections.sort(tagSet.getTemplates(), new Comparator<TemplateModel>() {
-                            @Override
-                            public int compare(TemplateModel o1, TemplateModel o2) {
-                                return o1.getPosition() - o2.getPosition();
-                            }
-                        });
                     }
                 }
                 tagSets.setValue((ArrayList) result);
@@ -132,7 +121,7 @@ public class CreateSessionViewModel extends VyfeViewModel {
         this.sessionName.setValue(name);
     }
 
-    private String implementGridTitle(String titleName) {
+    private String incrementGridTitle(String titleName) {
         if (titleName.matches("^.*_[0-9]+")) {
             String[] parts = titleName.split("_");
             String versionNum = parts[parts.length - 1];

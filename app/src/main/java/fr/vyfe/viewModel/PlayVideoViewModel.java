@@ -22,8 +22,8 @@ public class PlayVideoViewModel extends VyfeViewModel {
     private MutableLiveData<Boolean> moveSeek;
 
     private MutableLiveData<Integer> timelinesize;
-    private MutableLiveData<Integer> size1;
-    private MutableLiveData<Integer> size2;
+    private MutableLiveData<Integer> videoContainerHeight;
+    private MutableLiveData<Integer> timelineContainerHeight;
 
     private MutableLiveData<Boolean> fullTimeline;
 
@@ -39,8 +39,8 @@ public class PlayVideoViewModel extends VyfeViewModel {
         moveSeek.setValue(false);
 
         timelinesize = new MutableLiveData<>();
-        size1 = new MutableLiveData<>();
-        size2 = new MutableLiveData<>();
+        videoContainerHeight = new MutableLiveData<>();
+        timelineContainerHeight = new MutableLiveData<>();
         fullTimeline = new MutableLiveData<>();
         fullTimeline.setValue(false);
     }
@@ -49,24 +49,24 @@ public class PlayVideoViewModel extends VyfeViewModel {
         return timelinesize;
     }
 
-    public MutableLiveData<Integer> getSize2() {
-        return size2;
+    public MutableLiveData<Integer> getTimelineContainerHeight() {
+        return timelineContainerHeight;
     }
 
     public void setTimelinesize(Integer timelinesize){
         this.timelinesize.setValue(timelinesize);
     }
 
-    public void setSize2(Integer integer){
-        this.size2.setValue(integer);
+    public void setTimelineContainerHeight(Integer integer){
+        this.timelineContainerHeight.setValue(integer);
     }
 
-    public MutableLiveData<Integer> getSize1() {
-        return size1;
+    public MutableLiveData<Integer> getVideoContainerHeight() {
+        return videoContainerHeight;
     }
 
-    public void setSize1(Integer size1) {
-        this.size1.setValue(size1);
+    public void setVideoContainerHeight(Integer videoContainerHeight) {
+        this.videoContainerHeight.setValue(videoContainerHeight);
     }
 
     public void init() {

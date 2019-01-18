@@ -10,7 +10,7 @@ public final class Constants {
     public static final int STANDARD_RIGHT_OFFSET = 3;
     public static final String SESSIONMODEL_EXTRA = "SessionModel";
     public static final String SESSIONMODELID_EXTRA = "SessionModelId";
-    public static final String VYFE = "Vyfe";
+    public static final String VIDEO_DIRECTORY_NAME = "Vyfe";
 
     public static final String BDDV2_LICENSES_KEY = "Licenses";
     public static final String BDDV2_LICENSES_START_KEY = "start";

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 public class UserEntity {
-    private ProfilEntity profil;
+    private ProfilEntity profile;
     private AccountInformationsEntity accountInformations;
     private boolean confirmed;
     private String role[];
@@ -30,12 +30,12 @@ public class UserEntity {
         this.confirmed = confirmed;
     }
 
-    public ProfilEntity getProfil() {
-        return profil;
+    public ProfilEntity getProfile() {
+        return profile;
     }
 
-    public void setProfil(ProfilEntity profil) {
-        this.profil = profil;
+    public void setProfile(ProfilEntity profile) {
+        this.profile = profile;
     }
 
     public AccountInformationsEntity getAccountInformations() {

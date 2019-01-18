@@ -43,11 +43,11 @@ public class SessionRepository extends FirebaseDatabaseRepository<SessionModel> 
      * @return file absolute path
      */
     private String createFile(String sessionName) {
-        File f1 = new File(Environment.getExternalStoragePublicDirectory(DIRECTORY_MOVIES) + "/" + Constants.VYFE);
+        File f1 = new File(Environment.getExternalStoragePublicDirectory(DIRECTORY_MOVIES) + "/" + Constants.VIDEO_DIRECTORY_NAME);
         if (!f1.exists()) {
             f1.mkdirs();
         }
-        String mFileName = String.valueOf(Environment.getExternalStoragePublicDirectory(DIRECTORY_MOVIES) + "/" + Constants.VYFE);
+        String mFileName = String.valueOf(Environment.getExternalStoragePublicDirectory(DIRECTORY_MOVIES) + "/" + Constants.VIDEO_DIRECTORY_NAME);
         mFileName += "/" + sessionName + "-" + (new Date()).getTime() + ".mp4";
         String DeviceVideoLink = mFileName;
         File file = new File(DeviceVideoLink);

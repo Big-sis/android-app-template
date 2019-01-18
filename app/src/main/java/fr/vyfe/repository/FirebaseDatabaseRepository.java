@@ -138,7 +138,6 @@ public abstract class FirebaseDatabaseRepository<Model> {
     }
 
     public Task<Void> put(SessionModel sessionModel) {
-        SessionEntity sessionEntityTest = (SessionEntity) mapper.unMap(sessionModel);
-        return databaseReference.child(sessionModel.getId()).setValue(sessionEntityTest);
+        return databaseReference.child(sessionModel.getId()).setValue(mapper.unMap(sessionModel));
     }
 }

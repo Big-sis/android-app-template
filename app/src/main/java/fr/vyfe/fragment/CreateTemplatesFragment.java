@@ -39,10 +39,10 @@ public class CreateTemplatesFragment extends Fragment implements AdapterView.OnI
     private static TemplateRecyclerAdapter mAdapter;
     private static ImageView ivColor;
     private static ColorModel tagColor;
-    ColorSpinnerAdapter colorSpinnerAdapter;
-    Spinner colorSpinnerView;
-    private CreateGridViewModel viewModel;
-    private CreateTemplatesFragment.OnButtonClickedListener mCallback;
+    private static ColorSpinnerAdapter colorSpinnerAdapter;
+    private static Spinner colorSpinnerView;
+    private static CreateGridViewModel viewModel;
+    private static CreateTemplatesFragment.OnButtonClickedListener mCallback;
 
     public static CreateTemplatesFragment newInstance() {
         return new CreateTemplatesFragment();

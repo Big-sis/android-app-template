@@ -84,7 +84,7 @@ public class PlayVideoActivity extends VyfeActivity implements LifecycleOwner {
             public void onChanged(@Nullable SessionModel session) {
                 getSupportActionBar().setTitle(session.getName());
                 mSeekBarTimer.setMax(session.getDuration());
-                tvEndVideo.setText(TimeHelper.mllsConvert(session.getDuration()));
+                tvEndVideo.setText(TimeHelper.formatMillisecTime(session.getDuration()));
 
 
             }
@@ -92,9 +92,9 @@ public class PlayVideoActivity extends VyfeActivity implements LifecycleOwner {
 
         viewModel.getSeekPosition().observe(this, new Observer<Integer>() {
             @Override
-            public void onChanged(@Nullable Integer integer) {
-                mSeekBarTimer.setProgress(integer);
-                tvPositionSeek.setText(TimeHelper.mllsConvert(integer));
+            public void onChanged(@Nullable Integer seekPosition) {
+                mSeekBarTimer.setProgress(seekPosition);
+                tvPositionSeek.setText(TimeHelper.formatMillisecTime(seekPosition));
             }
         });
 
@@ -117,19 +117,20 @@ public class PlayVideoActivity extends VyfeActivity implements LifecycleOwner {
         viewModel.getTimelinesize().observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(@Nullable final Integer timelinesize) {
-                //TODO : For adapte size device
-                // Video and tagSet is 1er module = sizePart1 (70% vertical)
+                // For adapte size device:
+                // Video and tagSet is first module = sizePart1 (70% vertical)
                 // Timeline and time seekBar is second module = sizePart2 (30% vertical)
-                final int sizePart1 = VideocontainerLayout.getMeasuredHeight();
-                final int sizePart2 = llInfoProgress.getMeasuredHeight();
+                // if timeline height < 30%  , containertimeline height equal timeline height. And the video can take up more space
+                final int videoContainerHeight = VideocontainerLayout.getMeasuredHeight();
+                final int timelineContainerHeight = llInfoProgress.getMeasuredHeight();
                 final int sizePartProgresse = llprogressvideo.getMeasuredHeight();
                 final int sizePart2Create = timelinesize + sizePartProgresse;
 
-                viewModel.setSize2(sizePart2);
-                viewModel.setSize1(sizePart1);
+                viewModel.setTimelineContainerHeight(timelineContainerHeight);
+                viewModel.setVideoContainerHeight(videoContainerHeight);
 
-                if (sizePart2Create < sizePart2) {
-                    containerSizeAdapter(sizePart2Create, (sizePart1 + sizePart2) - sizePart2Create);
+                if (sizePart2Create < timelineContainerHeight) {
+                    containerSizeAdapter(sizePart2Create, (videoContainerHeight + timelineContainerHeight) - sizePart2Create);
                     ivSizeContainer.setVisibility(View.GONE);
                 }
 
@@ -141,10 +142,10 @@ public class PlayVideoActivity extends VyfeActivity implements LifecycleOwner {
             public void onClick(View v) {
 
                 if (viewModel.isFullTimeline().getValue()) {
-                    containerSizeAdapter(viewModel.getSize2().getValue(), viewModel.getSize1().getValue());
+                    containerSizeAdapter(viewModel.getTimelineContainerHeight().getValue(), viewModel.getVideoContainerHeight().getValue());
                     ivSizeContainer.setBackground(getDrawable(R.drawable.caret_arrow_up));
                 } else {
-                    containerSizeAdapter(viewModel.getSize1().getValue() + viewModel.getSize2().getValue(), 0);
+                    containerSizeAdapter(viewModel.getVideoContainerHeight().getValue() + viewModel.getTimelineContainerHeight().getValue(), 0);
                     ivSizeContainer.setBackground(getDrawable(R.drawable.arrowdown));
                 }
 
@@ -156,7 +157,7 @@ public class PlayVideoActivity extends VyfeActivity implements LifecycleOwner {
 
     }
 
-    public void containerSizeAdapter(Integer sizePart2Create, Integer sizePart1) {
+    private void containerSizeAdapter(Integer sizePart2Create, Integer sizePart1) {
 
         LinearLayout.LayoutParams layoutParamsPart2 = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, sizePart2Create);

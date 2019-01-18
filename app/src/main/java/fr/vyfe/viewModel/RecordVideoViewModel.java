@@ -106,7 +106,6 @@ public class RecordVideoViewModel extends VyfeViewModel {
             tagRepository.push(newTag);
             template.incrCount();
             template.setTouch(true);
-//            tagSet.postValue(tagSet.getValue());
             return true;
         } else return false;
     }

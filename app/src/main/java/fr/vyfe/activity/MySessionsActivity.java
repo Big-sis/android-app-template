@@ -104,11 +104,5 @@ public class MySessionsActivity extends VyfeActivity {
         if (checkPersmissions(MySessionsActivity.PERMISSIONS)) {
             viewModel.permissionsAccepted();
         }
-
-
-
-
-
-
     }
 }

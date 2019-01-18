@@ -58,7 +58,7 @@ public class UploadVideoService extends Service {
 
                     //ici on peut aussi recucuperer le lien ou l'utilisateur pourras visialiser la vidéo, elle est dans upoad ->link
                     //deuxieme requete pour joindre la video
-                    //uploadVideo(uploadLink, self);
+                    //uploadVideo(uploadLink, context);
                     session.setServerVideoLink(Vimeolink);
                     listener.onSuccess(uploadLink);
 

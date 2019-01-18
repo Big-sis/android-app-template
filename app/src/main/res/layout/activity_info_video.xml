@@ -96,13 +96,13 @@
                     android:layout_marginTop="160dp"
                     android:alpha="0.4"
                     android:background="@drawable/style_button"
-                    android:clickable="false"
                     android:text="@string/edit"
                     android:textColor="@color/white"
                     android:textSize="18sp"
                     app:fontFamily="@font/roboto_bold"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:enabled="false"/>
 
                 <Button
                     android:id="@+id/btn_delete"
