@@ -10,6 +10,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import fr.vyfe.Constants;
+import fr.vyfe.helper.AuthHelper;
 import fr.vyfe.model.SessionModel;
 import fr.vyfe.repository.BaseListValueEventListener;
 import fr.vyfe.repository.SessionRepository;
@@ -24,14 +25,16 @@ public class MyVideosViewModel extends VyfeViewModel {
     private MutableLiveData<List<SessionModel>> sessions;
     private String filter;
     private MutableLiveData<Boolean> permissions;
+    private static String mAuth;
 
-    public MyVideosViewModel(String companyId, String androidId) {
+    public MyVideosViewModel(String companyId, String androidId, String mAuth) {
         repository = new SessionRepository(companyId);
         repository.setOrderByChildKey("idAndroid");
         repository.setEqualToKey(androidId);
         filter = "";
         permissions = new MutableLiveData<>();
         permissions.setValue(false);
+        this.mAuth = mAuth;
     }
 
     public void permissionsAccepted() {
@@ -76,8 +79,14 @@ public class MyVideosViewModel extends VyfeViewModel {
                         }
                     }
                 }
+                // For moment,to save time,"Index Your Data" is the "future"
+                for(int i =0; i< filtered.size();i++){
+                    if(!filtered.get(i).getAuthor().equals(mAuth)){
+                        filtered.remove(i);
+                }
 
-                //TODO: respository is filtered by author
+                }
+                //TODO: respository is filtered by idAndroid
                 // for moment, to save time, second filter is here
                 Collections.sort(filtered, new Comparator<SessionModel>() {
                     @Override
