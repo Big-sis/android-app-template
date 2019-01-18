@@ -72,7 +72,6 @@ public class UploadVideoService extends Service {
             public void onErrorResponse(VolleyError error) {
                 Log.d("Volley", "onError: " + error);
                 listener.onError(error.getMessage());
-                // Toast.makeText(SelectedVideoActivity.this, "erreur :" + error.toString(), Toast.LENGTH_SHORT).DisconnectionAlert();
             }
         }) {
             @Override
@@ -105,7 +104,6 @@ public class UploadVideoService extends Service {
                 if (response.statusCode == 200) {
                     repository.put(session);
                 }
-                // Toast.makeText(ApiActivity.this, " response: " + response.data, Toast.LENGTH_LONG).DisconnectionAlert();
                 Toast.makeText(context, R.string.upload_video + "( "+session.getName()+" )", Toast.LENGTH_LONG).show();
 
                 listener.onSuccess();
