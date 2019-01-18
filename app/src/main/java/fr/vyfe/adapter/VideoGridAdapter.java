@@ -14,7 +14,6 @@ import java.util.ArrayList;
 
 import fr.vyfe.CustomVideoFilter;
 import fr.vyfe.R;
-import fr.vyfe.activity.MySessionsActivity;
 import fr.vyfe.activity.VyfeActivity;
 import fr.vyfe.helper.TimeHelper;
 import fr.vyfe.model.SessionModel;
@@ -75,7 +74,7 @@ public class VideoGridAdapter extends BaseAdapter implements Filterable {
         }
 
         TextView tvDuration = convertView.findViewById(R.id.video_duration);
-        tvDuration.setText(mContext.getString(R.string.duration_session)+ TimeHelper.mllsConvert(mSession.getDuration()));
+        tvDuration.setText(mContext.getString(R.string.duration_session)+ TimeHelper.formatMillisecTime(mSession.getDuration()));
       
         return convertView;
     }

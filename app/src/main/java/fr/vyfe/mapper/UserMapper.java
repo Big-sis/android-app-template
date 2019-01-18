@@ -42,7 +42,6 @@ public class UserMapper extends FirebaseMapper<UserEntity, UserModel> {
         user.setId((String) userMap.get("id"));
         user.setCompany((String) userMap.get("company"));
         if (userMap.containsKey("profile")) {
-            user.setEmail(((HashMap<String, String>) userMap.get("profile")).get("email"));
             user.setFirstname(((HashMap<String, String>) userMap.get("profile")).get("firstName"));
             user.setLastName(((HashMap<String, String>) userMap.get("profile")).get("lastName"));
             user.setPromo(((HashMap<String, String>) userMap.get("profile")).get("promo"));

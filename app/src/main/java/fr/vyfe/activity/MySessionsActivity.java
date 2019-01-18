@@ -21,6 +21,7 @@ import fr.vyfe.Constants;
 import fr.vyfe.R;
 import fr.vyfe.adapter.VideoGridAdapter;
 import fr.vyfe.helper.AndroidHelper;
+import fr.vyfe.helper.AuthHelper;
 import fr.vyfe.model.SessionModel;
 import fr.vyfe.viewModel.MyVideosViewModel;
 import fr.vyfe.viewModel.MyVideosViewModelFactory;
@@ -41,7 +42,7 @@ public class MySessionsActivity extends VyfeActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_video);
 
-        viewModel = ViewModelProviders.of(this, new MyVideosViewModelFactory(mAuth.getCurrentUser().getCompany(), AndroidHelper.getAndroidId(this))).get(MyVideosViewModel.class);
+        viewModel = ViewModelProviders.of(this, new MyVideosViewModelFactory(mAuth.getCurrentUser().getCompany(), AndroidHelper.getAndroidId(this), mAuth.getCurrentUser().getId())).get(MyVideosViewModel.class);
 
         gridView = findViewById(R.id.grid_videos);
         SearchView searchView = findViewById(R.id.search_video);
@@ -104,11 +105,5 @@ public class MySessionsActivity extends VyfeActivity {
         if (checkPersmissions(MySessionsActivity.PERMISSIONS)) {
             viewModel.permissionsAccepted();
         }
-
-
-
-
-
-
     }
 }

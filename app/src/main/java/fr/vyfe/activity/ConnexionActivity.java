@@ -6,6 +6,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.InputType;
@@ -26,7 +27,6 @@ import fr.vyfe.R;
 import fr.vyfe.helper.AuthHelper;
 import fr.vyfe.idlingResource.SimpleIdlingResource;
 import fr.vyfe.model.UserModel;
-
 
 
 /**
@@ -102,7 +102,20 @@ public class ConnexionActivity extends AppCompatActivity {
 
                         @Override
                         public void onLogginFailed(Exception e) {
-                            Toast.makeText(ConnexionActivity.this, R.string.bad_authentifiaction, Toast.LENGTH_LONG).show();
+                            final Snackbar snackbar = Snackbar.make(ConnexionActivity.this.findViewById(R.id.linear_layout_add), R.string.bad_authentifiaction, Snackbar.LENGTH_INDEFINITE).setDuration(9000).setAction("Réessayer", new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    inputMail.setText("");
+                                    inputPass.setText("");
+                                    inputMail.requestFocus();
+                                }
+                            });
+                            View snackBarView = snackbar.getView();
+                            TextView textView = snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                            textView.setMaxLines(3);
+                            textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                            snackbar.setDuration(7000);
+                            snackbar.show();
                         }
                     });
                 }

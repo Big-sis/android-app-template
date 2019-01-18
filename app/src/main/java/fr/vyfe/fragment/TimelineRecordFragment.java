@@ -17,25 +17,18 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-
 import fr.vyfe.R;
-import fr.vyfe.adapter.TimelineAdapter;
-import fr.vyfe.helper.ScrollHelper;
 import fr.vyfe.model.TagModel;
 import fr.vyfe.model.TagSetModel;
 import fr.vyfe.model.TemplateModel;
-import fr.vyfe.model.TimeModel;
 import fr.vyfe.viewModel.RecordVideoViewModel;
 
 public class TimelineRecordFragment extends Fragment {
 
     private RecordVideoViewModel viewModel;
     private LinearLayout containerLayout;
-    private TimelineAdapter adapter;
     private ArrayList<TextView> tvRowNameArray = new ArrayList<>();
 
     public static TimelineRecordFragment newInstance() {
