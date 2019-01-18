@@ -32,10 +32,12 @@ public class UserMapper extends FirebaseMapper<UserEntity, UserModel> {
 
     /**
      * Map the result of getCompanyAndUser Firebase Function
+     *
      * @param userMap
      * @return
      */
-    public UserModel map(HashMap<String,Object> userMap) {
+
+    public UserModel map(HashMap<String, Object> userMap) {
         UserModel user = new UserModel();
         user.setId((String) userMap.get("id"));
         user.setCompany((String) userMap.get("company"));
@@ -45,16 +47,17 @@ public class UserMapper extends FirebaseMapper<UserEntity, UserModel> {
             user.setPromo(((HashMap<String, String>) userMap.get("profile")).get("promo"));
         }
         try {
-            user.setLicenceEnd((new SimpleDateFormat("dd-MM-yy")).parse((String) userMap.get("license")));
+            if (userMap.get("license") != null)
+                user.setLicenceEnd((new SimpleDateFormat("dd-MM-yy")).parse((String) userMap.get("license")));
         } catch (ParseException e) {
             e.printStackTrace();
         }
         ArrayList<String> roles = new ArrayList<>();
-        if (((HashMap<String, Boolean>)userMap.get("roles")).get("admin"))
+        if (((HashMap<String, Boolean>) userMap.get("roles")).get("admin"))
             roles.add("admin");
-        if (((HashMap<String, Boolean>)userMap.get("roles")).get("teacher"))
+        if (((HashMap<String, Boolean>) userMap.get("roles")).get("teacher"))
             roles.add("teacher");
-        if (((HashMap<String, Boolean>)userMap.get("roles")).get("viewer"))
+        if (((HashMap<String, Boolean>) userMap.get("roles")).get("viewer"))
             roles.add("reviewer");
         user.setRoles(roles.toArray(new String[roles.size()]));
 

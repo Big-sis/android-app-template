@@ -28,5 +28,4 @@ public class ProfilEntity {
     public void setPromo(String promo) {
         this.promo = promo;
     }
-
 }

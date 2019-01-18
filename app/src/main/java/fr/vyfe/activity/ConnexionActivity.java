@@ -99,6 +99,7 @@ public class ConnexionActivity extends AppCompatActivity {
                             finish();
                         }
 
+
                         @Override
                         public void onLogginFailed(Exception e) {
                             final Snackbar snackbar = Snackbar.make(ConnexionActivity.this.findViewById(R.id.linear_layout_add), R.string.bad_authentifiaction, Snackbar.LENGTH_INDEFINITE).setDuration(9000).setAction("Réessayer", new View.OnClickListener() {

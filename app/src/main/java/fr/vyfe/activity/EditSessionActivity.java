@@ -13,6 +13,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,6 +45,7 @@ public class EditSessionActivity extends VyfeActivity {
         final EditText etDescription = findViewById(R.id.et_description);
         final EditText etSessionTitle = findViewById(R.id.et_video_title);
         final TextView tvSave = findViewById(R.id.tv_video_save);
+        final ImageView imageViewDelete = findViewById(R.id.iv_delete);
         Toolbar toolbar = findViewById(R.id.toolbar);
         mDatabase = FirebaseDatabase.getInstance();
 
@@ -104,6 +106,7 @@ public class EditSessionActivity extends VyfeActivity {
             @Override
             public void onClick(View v) {
                 confirmDelete.setVisibility(View.VISIBLE);
+                imageViewDelete.setVisibility(View.VISIBLE);
             }
         });
 
@@ -125,6 +128,7 @@ public class EditSessionActivity extends VyfeActivity {
                         }
                     });
                 } else {
+
                     viewModel.editSession().continueWith(new Continuation<Void, Void>() {
                         @Override
                         public Void then(@NonNull Task<Void> task) throws Exception {
@@ -146,6 +150,8 @@ public class EditSessionActivity extends VyfeActivity {
             @Override
             public void onClick(View v) {
                 confirmDelete.setVisibility(View.GONE);
+                btnConfirmDelete.setText(R.string.delete);
+                tvSave.setText(R.string.confirm_delete_video);
             }
         });
 
@@ -155,6 +161,7 @@ public class EditSessionActivity extends VyfeActivity {
                 btnConfirmDelete.setText(R.string.change_movie);
                 tvSave.setText(R.string.confirm_change_movie);
                 confirmDelete.setVisibility(View.VISIBLE);
+                imageViewDelete.setVisibility(View.GONE);
             }
         });
     }
