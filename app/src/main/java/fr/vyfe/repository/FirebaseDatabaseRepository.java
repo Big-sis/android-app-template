@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import fr.vyfe.Constants;
-import fr.vyfe.entity.SessionEntity;
 import fr.vyfe.mapper.FirebaseMapper;
 import fr.vyfe.model.SessionModel;
 
@@ -29,6 +28,7 @@ public abstract class FirebaseDatabaseRepository<Model> {
     private String equalToKey;
     private String childKey;
     private boolean archived;
+    static boolean isPersistenceEnabled = false;
 
     public FirebaseDatabaseRepository(FirebaseMapper mapper, String company) {
         this(mapper, company, null, null);
@@ -48,6 +48,11 @@ public abstract class FirebaseDatabaseRepository<Model> {
         this.user = user;
         this.session = session;
         this.tagSetId = tagSetId;
+        if (!isPersistenceEnabled)
+        {
+            FirebaseDatabase.getInstance(Constants.FIREBASE_DB_VERSION_URL).setPersistenceEnabled(true);
+            isPersistenceEnabled = true;
+        }
         databaseReference = FirebaseDatabase.getInstance(Constants.FIREBASE_DB_VERSION_URL).getReference(getRootNode());
         databaseReference.keepSynced(true);
     }
