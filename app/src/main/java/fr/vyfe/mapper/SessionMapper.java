@@ -29,6 +29,8 @@ public class SessionMapper extends FirebaseMapper<SessionEntity, SessionModel> {
         session.setId(key);
         ArrayList<TagModel> tagModels = new TagMapper().mapList(sessionEntity.getTags());
         session.setTags( tagModels);
+        session.setLiveRecording(sessionEntity.getLiveRecording());
+        session.setTagsRecording(sessionEntity.getTagsRecording());
 
         return session;
     }
@@ -45,6 +47,8 @@ public class SessionMapper extends FirebaseMapper<SessionEntity, SessionModel> {
         sessionEntity.setPathApp(sessionModel.getDeviceVideoLink());
         sessionEntity.setTags((new TagMapper()).unMapList(sessionModel.getTags()));
         sessionEntity.setVideoLink(sessionModel.getServerVideoLink());
+        sessionEntity.setLiveRecording(sessionModel.isLiveRecording());
+        sessionEntity.setTagsRecording(sessionModel.isTagsRecording());
         return sessionEntity;
     }
 

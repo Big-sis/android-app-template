@@ -17,10 +17,27 @@ public class SessionEntity {
     private String thumbnailUrl;
     private String description;
     private HashMap<String, TagEntity> tags;
+    private Boolean tagsRecording;
+    private Boolean liveRecording;
 
 
     public SessionEntity(){}
 
+    public Boolean getTagsRecording() {
+        return tagsRecording;
+    }
+
+    public void setTagsRecording(Boolean tagsRecording) {
+        this.tagsRecording = tagsRecording;
+    }
+
+    public Boolean getLiveRecording() {
+        return liveRecording;
+    }
+
+    public void setLiveRecording(Boolean liveRecording) {
+        this.liveRecording = liveRecording;
+    }
 
     public String getAuthor() {
         return author;

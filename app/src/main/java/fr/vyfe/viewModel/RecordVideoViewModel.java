@@ -3,8 +3,6 @@ package fr.vyfe.viewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 
-import com.google.android.gms.tasks.Task;
-
 import java.util.List;
 
 import fr.vyfe.Constants;
@@ -30,6 +28,8 @@ public class RecordVideoViewModel extends VyfeViewModel {
     private MutableLiveData<Long> videoTime;
     private MutableLiveData<List<TagModel>> tags;
     private String userId;
+    private MutableLiveData<Boolean> isTagsRecording;
+    private MutableLiveData<Boolean> isLiveRecording;
 
     public RecordVideoViewModel(String userId, String companyId, String sessionId) {
         sessionRepository = new SessionRepository(companyId);
@@ -39,6 +39,8 @@ public class RecordVideoViewModel extends VyfeViewModel {
         videoTime = new MutableLiveData<>();
         this.sessionId = sessionId;
         this.userId = userId;
+        isTagsRecording = new MutableLiveData<>();
+        isLiveRecording = new MutableLiveData<>();
     }
 
     public void init() {
@@ -46,7 +48,12 @@ public class RecordVideoViewModel extends VyfeViewModel {
     }
 
     public boolean isRecording() {
+        isLiveRecording.setValue(true);
         return stepRecord.getValue().equals(STEP_RECODRING);
+    }
+
+    public void isTagsActive(){
+        isTagsRecording.setValue(true);
     }
 
     public MutableLiveData<String> getStep() {
@@ -56,10 +63,14 @@ public class RecordVideoViewModel extends VyfeViewModel {
     public void startRecord() {
         if(!stepRecord.getValue().equals(STEP_RECODRING))
         stepRecord.setValue(STEP_RECODRING);
+       if(isTagsRecording.getValue())isLiveRecording.setValue(true);
     }
 
     public void stop() {
         stepRecord.setValue(STEP_STOP);
+        isTagsRecording.setValue(false);
+        isLiveRecording.setValue(false);
+
     }
 
     public void error() {
@@ -116,6 +127,12 @@ public class RecordVideoViewModel extends VyfeViewModel {
             loadTags();
         }
         return tags;
+    }
+
+    public void addActiveTags(){
+        SessionModel sessionModel = session.getValue();
+        sessionModel.setTagsRecording(true);
+        sessionRepository.push(sessionModel);
     }
 
     private void loadTags() {

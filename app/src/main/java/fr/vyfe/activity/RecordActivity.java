@@ -10,6 +10,10 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,9 +25,13 @@ import android.widget.ScrollView;
 import com.google.common.hash.Hashing;
 
 import java.nio.charset.Charset;
+import java.util.List;
+import java.util.Vector;
 
 import fr.vyfe.Constants;
 import fr.vyfe.R;
+import fr.vyfe.adapter.RecordAdapter;
+import fr.vyfe.fragment.LiveSessionFragment;
 import fr.vyfe.fragment.RecordPlayerFragment;
 import fr.vyfe.fragment.TagSetRecordFragment;
 import fr.vyfe.fragment.TimelineRecordFragment;
@@ -42,7 +50,7 @@ public class RecordActivity extends VyfeActivity {
     private ConstraintLayout contrainOkRecord;
     private ConstraintLayout constraintErrorSpace;
     public static final String[] PERMISSIONS = {Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
-
+    private PagerAdapter mPagerAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,8 +58,12 @@ public class RecordActivity extends VyfeActivity {
 
         //TODO: cmt utiliser mm fragment que timelineRealTime
         replaceFragment(R.id.scroll_timeline, TimelineRecordFragment.newInstance());
-        replaceFragment(R.id.scroll_tagset, TagSetRecordFragment.newInstance());
         replaceFragment(R.id.constraint_video_record, RecordPlayerFragment.newInstance());
+
+        ViewPager viewPager = (ViewPager) findViewById(R.id.recording_view_pager);
+        setViewPager(viewPager);
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.mytabs);
+        tabLayout.setupWithViewPager(viewPager);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -165,4 +177,11 @@ public class RecordActivity extends VyfeActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+    private void setViewPager(ViewPager viewPager) {
+        RecordAdapter adapter =  new RecordAdapter(super.getSupportFragmentManager());
+        adapter.addFragment(new TagSetRecordFragment(), "Grille");
+        adapter.addFragment(new LiveSessionFragment(),"Live");
+        viewPager.setAdapter(adapter);
+    }
+
 }

@@ -26,6 +26,8 @@ public class SessionModel implements Parcelable, VyfeModel,Comparable<SessionMod
     private String idAndroid;
     private String deviceVideoLink;
     private String thumbnail;
+    private boolean tagsRecording;
+    private boolean liveRecording;
 
     public SessionModel(String name, String author, String videoLink, Date date, String idSession, String idTagSet) {
         this();
@@ -66,6 +68,7 @@ public class SessionModel implements Parcelable, VyfeModel,Comparable<SessionMod
         idAndroid = in.readString();
         deviceVideoLink = in.readString();
         thumbnail = in.readString();
+
     }
 
     public static final Creator<SessionModel> CREATOR = new Creator<SessionModel>() {
@@ -79,6 +82,22 @@ public class SessionModel implements Parcelable, VyfeModel,Comparable<SessionMod
             return new SessionModel[size];
         }
     };
+
+    public boolean isTagsRecording() {
+        return tagsRecording;
+    }
+
+    public void setTagsRecording(boolean tagsRecording) {
+        this.tagsRecording = tagsRecording;
+    }
+
+    public boolean isLiveRecording() {
+        return liveRecording;
+    }
+
+    public void setLiveRecording(boolean liveRecording) {
+        this.liveRecording = liveRecording;
+    }
 
     public String getName() {
         return name;
