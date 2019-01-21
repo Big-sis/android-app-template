@@ -34,8 +34,9 @@ import fr.vyfe.model.UserModel;
  */
 
 public class ConnexionActivity extends AppCompatActivity {
-
-    private int mPasswordHidden = 129;
+    public static final int PASSWORD_HIDDEN = 1;
+    public static final int PASSWORD_VISIBLE = 2;
+    int mPasswordVisibility = PASSWORD_HIDDEN;
 
     // The Idling Resource which will be null in production.
     @Nullable
@@ -58,10 +59,12 @@ public class ConnexionActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if (inputPass.getInputType() == mPasswordHidden) {
+                if (mPasswordVisibility == PASSWORD_HIDDEN) {
                     inputPass.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                    mPasswordVisibility = PASSWORD_VISIBLE;
                 } else {
-                    inputPass.setInputType(InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    inputPass.setInputType(InputType.TYPE_CLASS_TEXT |InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    mPasswordVisibility = PASSWORD_HIDDEN;
                 }
             }
         });
