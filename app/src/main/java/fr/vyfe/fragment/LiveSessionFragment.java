@@ -42,9 +42,11 @@ public class LiveSessionFragment extends Fragment {
         liveRecordingSwitch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    viewModel.isTagsActive();
-                    viewModel.addActiveTags();
 
+                if (liveRecordingSwitch.isChecked())
+                    viewModel.isTagsActive();
+                else viewModel.isTagsInactive();
+                viewModel.addActiveTags();
             }
         });
     }

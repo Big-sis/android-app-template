@@ -21,7 +21,7 @@ public class RecordVideoViewModel extends VyfeViewModel {
     public static final String STEP_ERROR = "error";
     public static final String STEP_SAVE = "save";
     public static final String STEP_CLOSE = "close";
-    public static final String STEP_DELETE ="delete";
+    public static final String STEP_DELETE = "delete";
 
     private TagRepository tagRepository;
     private MutableLiveData<String> stepRecord;
@@ -48,12 +48,15 @@ public class RecordVideoViewModel extends VyfeViewModel {
     }
 
     public boolean isRecording() {
-        isLiveRecording.setValue(true);
         return stepRecord.getValue().equals(STEP_RECODRING);
     }
 
-    public void isTagsActive(){
+    public void isTagsActive() {
         isTagsRecording.setValue(true);
+    }
+
+    public void isTagsInactive() {
+        isTagsRecording.setValue(false);
     }
 
     public MutableLiveData<String> getStep() {
@@ -61,15 +64,20 @@ public class RecordVideoViewModel extends VyfeViewModel {
     }
 
     public void startRecord() {
-        if(!stepRecord.getValue().equals(STEP_RECODRING))
-        stepRecord.setValue(STEP_RECODRING);
-       if(isTagsRecording.getValue())isLiveRecording.setValue(true);
+        if (!stepRecord.getValue().equals(STEP_RECODRING))
+            stepRecord.setValue(STEP_RECODRING);
+        if (isTagsRecording.getValue() != null && isTagsRecording.getValue().booleanValue()) {
+            isLiveRecording.setValue(true);
+        }
+        addActiveLive();
     }
 
     public void stop() {
         stepRecord.setValue(STEP_STOP);
         isTagsRecording.setValue(false);
         isLiveRecording.setValue(false);
+        addActiveTags();
+        addActiveLive();
 
     }
 
@@ -84,6 +92,7 @@ public class RecordVideoViewModel extends VyfeViewModel {
     public void close() {
         stepRecord.setValue(STEP_CLOSE);
     }
+
     public void delete() {
         stepRecord.setValue(STEP_DELETE);
         sessionRepository.remove(session.getValue().getId());
@@ -129,10 +138,18 @@ public class RecordVideoViewModel extends VyfeViewModel {
         return tags;
     }
 
-    public void addActiveTags(){
+    public void addActiveTags() {
         SessionModel sessionModel = session.getValue();
-        sessionModel.setTagsRecording(true);
-        sessionRepository.push(sessionModel);
+        sessionModel.setTagsRecording(isTagsRecording.getValue());
+        sessionRepository.put(sessionModel);
+    }
+
+    public void addActiveLive() {
+        if (isLiveRecording.getValue() != null) {
+            SessionModel sessionModel = session.getValue();
+            sessionModel.setLiveRecording(isLiveRecording.getValue());
+            sessionRepository.put(sessionModel);
+        }
     }
 
     private void loadTags() {
