@@ -28,7 +28,7 @@ public class RecordVideoViewModel extends VyfeViewModel {
     private MutableLiveData<Long> videoTime;
     private MutableLiveData<List<TagModel>> tags;
     private String userId;
-    private MutableLiveData<Boolean> isTagsRecording;
+    private MutableLiveData<Boolean> areTagsActive;
     private MutableLiveData<Boolean> isLiveRecording;
 
     public RecordVideoViewModel(String userId, String companyId, String sessionId) {
@@ -39,16 +39,16 @@ public class RecordVideoViewModel extends VyfeViewModel {
         videoTime = new MutableLiveData<>();
         this.sessionId = sessionId;
         this.userId = userId;
-        isTagsRecording = new MutableLiveData<>();
+        areTagsActive = new MutableLiveData<>();
         isLiveRecording = new MutableLiveData<>();
     }
 
-    public MutableLiveData<Boolean> getIsTagsRecording() {
-        return isTagsRecording;
+    public MutableLiveData<Boolean> getAreTagsActive() {
+        return areTagsActive;
     }
 
-    public void setIsTagsRecording(MutableLiveData<Boolean> isTagsRecording) {
-        this.isTagsRecording = isTagsRecording;
+    public void setAreTagsActive(MutableLiveData<Boolean> areTagsActive) {
+        this.areTagsActive = areTagsActive;
     }
 
     public void init() {
@@ -60,11 +60,11 @@ public class RecordVideoViewModel extends VyfeViewModel {
     }
 
     public void isTagsActive() {
-        isTagsRecording.setValue(true);
+        areTagsActive.setValue(true);
     }
 
     public void isTagsInactive() {
-        isTagsRecording.setValue(false);
+        areTagsActive.setValue(false);
     }
 
     public MutableLiveData<String> getStep() {
@@ -74,7 +74,7 @@ public class RecordVideoViewModel extends VyfeViewModel {
     public void startRecord() {
         if (!stepRecord.getValue().equals(STEP_RECODRING))
             stepRecord.setValue(STEP_RECODRING);
-        if (isTagsRecording.getValue() != null && isTagsRecording.getValue().booleanValue()) {
+        if (areTagsActive.getValue() != null && areTagsActive.getValue().booleanValue()) {
             isLiveRecording.setValue(true);
         }
         addActiveLive();
@@ -82,7 +82,7 @@ public class RecordVideoViewModel extends VyfeViewModel {
 
     public void stop() {
         stepRecord.setValue(STEP_STOP);
-        isTagsRecording.setValue(false);
+        areTagsActive.setValue(false);
         isLiveRecording.setValue(false);
         addActiveTags();
         addActiveLive();
@@ -148,7 +148,7 @@ public class RecordVideoViewModel extends VyfeViewModel {
 
     public void addActiveTags() {
         SessionModel sessionModel = session.getValue();
-        sessionModel.setTagsRecording(isTagsRecording.getValue());
+        sessionModel.setTagsRecording(areTagsActive.getValue());
         sessionRepository.put(sessionModel);
     }
 

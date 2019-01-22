@@ -10,18 +10,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Switch;
-import android.widget.Toast;
 
 import fr.vyfe.R;
 import fr.vyfe.viewModel.RecordVideoViewModel;
 
-public class LiveSessionFragment extends Fragment {
+public class SessionLiveFragment extends Fragment {
     private RecordVideoViewModel viewModel;
     private Switch liveRecordingSwitch;
-    public static final String STEP_RECODRING = "recording";
 
-    public static LiveSessionFragment newInstance() {
-        return new LiveSessionFragment();
+    public static SessionLiveFragment newInstance() {
+        return new SessionLiveFragment();
     }
 
     @Override
@@ -57,7 +55,7 @@ public class LiveSessionFragment extends Fragment {
         viewModel.getStep().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String step) {
-                if(step.equals(STEP_RECODRING)){
+                if(step.equals(viewModel.STEP_RECODRING)){
                     liveRecordingSwitch.setEnabled(false);
                 }
             }

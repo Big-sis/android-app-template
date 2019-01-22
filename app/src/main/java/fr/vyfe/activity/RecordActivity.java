@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.TabLayout;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
@@ -19,8 +18,8 @@ import android.widget.Button;
 
 import fr.vyfe.Constants;
 import fr.vyfe.R;
-import fr.vyfe.adapter.RecordAdapter;
-import fr.vyfe.fragment.LiveSessionFragment;
+import fr.vyfe.adapter.WindowsAdapter;
+import fr.vyfe.fragment.SessionLiveFragment;
 import fr.vyfe.fragment.RecordPlayerFragment;
 import fr.vyfe.fragment.TagSetRecordFragment;
 import fr.vyfe.fragment.TimelineRecordFragment;
@@ -34,9 +33,7 @@ import fr.vyfe.viewModel.RecordVideoViewModelFactory;
 
 public class RecordActivity extends VyfeActivity {
 
-    public static final String[] PERMISSIONS = {Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
-    public static final String STEP_ERROR = "error";
-    public static final String STEP_SAVE = "save";
+    private static final String[] PERMISSIONS = {Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private RecordVideoViewModel viewModel;
     private ConstraintLayout contrainOkRecord;
     private ConstraintLayout constraintErrorSpace;
@@ -108,16 +105,16 @@ public class RecordActivity extends VyfeActivity {
         viewModel.getStep().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String step) {
-                if (step.equals(STEP_SAVE)) {
+                if (step.equals(viewModel.STEP_SAVE)) {
                     contrainOkRecord.setVisibility(View.VISIBLE);
                 }
-                if (step.equals(STEP_ERROR)) {
+                if (step.equals(viewModel.STEP_ERROR)) {
                     constraintErrorSpace.setVisibility(View.VISIBLE);
                 }
             }
         });
 
-        viewModel.getIsTagsRecording().observe(this, new Observer<Boolean>() {
+        viewModel.getAreTagsActive().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(@Nullable Boolean isActiveTags) {
                 if (isActiveTags) tabLayout.getTabAt(1).setIcon(R.drawable.users_group);
@@ -178,9 +175,9 @@ public class RecordActivity extends VyfeActivity {
     }
 
     private void setViewPager(ViewPager viewPager) {
-        RecordAdapter adapter = new RecordAdapter(super.getSupportFragmentManager());
+        WindowsAdapter adapter = new WindowsAdapter(super.getSupportFragmentManager());
         adapter.addFragment(new TagSetRecordFragment(), getString(R.string.Grid));
-        adapter.addFragment(new LiveSessionFragment(), getString(R.string.live));
+        adapter.addFragment(new SessionLiveFragment(), getString(R.string.live));
         viewPager.setAdapter(adapter);
     }
 
