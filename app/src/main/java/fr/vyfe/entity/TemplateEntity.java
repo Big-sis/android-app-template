@@ -6,6 +6,7 @@ public class TemplateEntity {
     private int leftOffset;
     private int rightOffset;
     private int position;
+    private boolean draft;
 
     public int getPosition() {
         return position;
@@ -45,5 +46,12 @@ public class TemplateEntity {
 
     public void setRightOffset(int rightOffset) {
         this.rightOffset = rightOffset;
+    }
+    public boolean isDraft() {
+        return draft;
+    }
+
+    public void setDraft(boolean draft) {
+        this.draft = draft;
     }
 }
