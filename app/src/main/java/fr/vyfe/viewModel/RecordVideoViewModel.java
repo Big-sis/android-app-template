@@ -72,8 +72,10 @@ public class RecordVideoViewModel extends VyfeViewModel {
     }
 
     public void startRecord() {
-        if (!stepRecord.getValue().equals(STEP_RECODRING))
+        if (!stepRecord.getValue().equals(STEP_RECODRING)) {
             stepRecord.setValue(STEP_RECODRING);
+            sessionRepository.setTimestamp(session.getValue());
+        }
         if (areTagsActive.getValue() != null && areTagsActive.getValue().booleanValue()) {
             isLiveRecording.setValue(true);
         }
@@ -131,6 +133,7 @@ public class RecordVideoViewModel extends VyfeViewModel {
             newTag.setSessionId(getSessionId());
             newTag.setStart((int) Math.max(0, getVideoTime().getValue() / Constants.UNIT_TO_MILLI_FACTOR - template.getLeftOffset()));
             newTag.setEnd((int) (getVideoTime().getValue() / Constants.UNIT_TO_MILLI_FACTOR + template.getRightOffset()));
+            newTag.setColor(template.getColor());
             tagRepository.push(newTag);
             template.incrCount();
             template.setTouch(true);
@@ -148,15 +151,16 @@ public class RecordVideoViewModel extends VyfeViewModel {
 
     public void addActiveTags() {
         SessionModel sessionModel = session.getValue();
-        sessionModel.setTagsRecording(areTagsActive.getValue());
-        sessionRepository.put(sessionModel);
+        sessionModel.setCooperative(areTagsActive.getValue());
+        sessionRepository.update(sessionModel);
+
     }
 
     public void addActiveLive() {
         if (isLiveRecording.getValue() != null) {
             SessionModel sessionModel = session.getValue();
-            sessionModel.setLiveRecording(isLiveRecording.getValue());
-            sessionRepository.put(sessionModel);
+            sessionModel.setRecording(isLiveRecording.getValue());
+            sessionRepository.update(sessionModel);
         }
     }
 

@@ -11,8 +11,7 @@ import android.support.annotation.NonNull;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-
-import fr.vyfe.Constants;
+import java.util.Map;
 
 public class SessionModel implements Parcelable, VyfeModel,Comparable<SessionModel> {
     private String name;
@@ -26,8 +25,9 @@ public class SessionModel implements Parcelable, VyfeModel,Comparable<SessionMod
     private String idAndroid;
     private String deviceVideoLink;
     private String thumbnail;
-    private boolean tagsRecording;
-    private boolean liveRecording;
+    private boolean cooperative;
+    private boolean recording;
+
 
     public SessionModel(String name, String author, String videoLink, Date date, String idSession, String idTagSet) {
         this();
@@ -83,20 +83,20 @@ public class SessionModel implements Parcelable, VyfeModel,Comparable<SessionMod
         }
     };
 
-    public boolean isTagsRecording() {
-        return tagsRecording;
+    public boolean isCooperative() {
+        return cooperative;
     }
 
-    public void setTagsRecording(boolean tagsRecording) {
-        this.tagsRecording = tagsRecording;
+    public void setCooperative(boolean cooperative) {
+        this.cooperative = cooperative;
     }
 
-    public boolean isLiveRecording() {
-        return liveRecording;
+    public boolean isRecording() {
+        return recording;
     }
 
-    public void setLiveRecording(boolean liveRecording) {
-        this.liveRecording = liveRecording;
+    public void setRecording(boolean recording) {
+        this.recording = recording;
     }
 
     public String getName() {

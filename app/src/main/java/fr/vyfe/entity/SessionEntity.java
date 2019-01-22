@@ -3,6 +3,7 @@ package fr.vyfe.entity;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.HashMap;
+import java.util.Map;
 
 @IgnoreExtraProperties
 public class SessionEntity {
@@ -17,27 +18,22 @@ public class SessionEntity {
     private String thumbnailUrl;
     private String description;
     private HashMap<String, TagEntity> tags;
-    private Boolean tagsRecording;
-    private Boolean liveRecording;
-
+    private Boolean cooperative;
+    private Boolean recording;
 
     public SessionEntity(){}
 
-    public Boolean getTagsRecording() {
-        return tagsRecording;
-    }
 
-    public void setTagsRecording(Boolean tagsRecording) {
-        this.tagsRecording = tagsRecording;
-    }
+    public Map<String,Object> toHashmap(){
+        Map<String, Object> sessionMap = new HashMap<>();
+        sessionMap.put("cooperative", cooperative);
+        sessionMap.put("recording", recording);
+        sessionMap.put("videoLink",videoLink);
+        return sessionMap;
 
-    public Boolean getLiveRecording() {
-        return liveRecording;
     }
+    //Generated code
 
-    public void setLiveRecording(Boolean liveRecording) {
-        this.liveRecording = liveRecording;
-    }
 
     public String getAuthor() {
         return author;
@@ -117,5 +113,21 @@ public class SessionEntity {
 
     public void setTags(HashMap<String, TagEntity> tags) {
         this.tags = tags;
+    }
+
+    public Boolean getCooperative() {
+        return cooperative;
+    }
+
+    public void setCooperative(Boolean cooperative) {
+        this.cooperative = cooperative;
+    }
+
+    public Boolean getRecording() {
+        return recording;
+    }
+
+    public void setRecording(Boolean recording) {
+        this.recording = recording;
     }
 }
