@@ -4,7 +4,7 @@ public class TemplateEntity {
     private String color;
     private String name;
     private int leftOffset;
-    private int rigthOffset;
+    private int rightOffset;
     private int position;
 
     public int getPosition() {
@@ -39,11 +39,11 @@ public class TemplateEntity {
         this.leftOffset = leftOffset;
     }
 
-    public int getRigthOffset() {
-        return rigthOffset;
+    public int getRightOffset() {
+        return rightOffset;
     }
 
-    public void setRigthOffset(int rigthOffset) {
-        this.rigthOffset = rigthOffset;
+    public void setRightOffset(int rightOffset) {
+        this.rightOffset = rightOffset;
     }
 }

@@ -130,7 +130,7 @@ public class RecordVideoViewModel extends VyfeViewModel {
             newTag.setTaggerId(userId);
             newTag.setSessionId(getSessionId());
             newTag.setStart((int) Math.max(0, getVideoTime().getValue() / Constants.UNIT_TO_MILLI_FACTOR - template.getLeftOffset()));
-            newTag.setEnd((int) (getVideoTime().getValue() / Constants.UNIT_TO_MILLI_FACTOR + template.getRigthOffset()));
+            newTag.setEnd((int) (getVideoTime().getValue() / Constants.UNIT_TO_MILLI_FACTOR + template.getRightOffset()));
             tagRepository.push(newTag);
             template.incrCount();
             template.setTouch(true);

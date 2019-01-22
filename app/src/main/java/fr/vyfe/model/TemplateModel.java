@@ -12,14 +12,14 @@ public class TemplateModel implements Parcelable, VyfeModel, Comparable<Template
     private ColorModel color;
     private String name;
     private int leftOffset;
-    private int rigthOffset;
+    private int rightOffset;
     private int count = 0;
     private int position;
     private boolean touch = false;
 
     public TemplateModel() {
         leftOffset = Constants.STANDARD_LEFT_OFFSET;
-        rigthOffset = Constants.STANDARD_RIGHT_OFFSET;
+        rightOffset = Constants.STANDARD_RIGHT_OFFSET;
     }
 
     protected TemplateModel(Parcel in) {
@@ -27,7 +27,7 @@ public class TemplateModel implements Parcelable, VyfeModel, Comparable<Template
         color = in.readParcelable(ColorModel.class.getClassLoader());
         name = in.readString();
         leftOffset = in.readInt();
-        rigthOffset = in.readInt();
+        rightOffset = in.readInt();
         position= in.readInt();
     }
 
@@ -67,12 +67,12 @@ public class TemplateModel implements Parcelable, VyfeModel, Comparable<Template
         this.leftOffset = leftOffset;
     }
 
-    public int getRigthOffset() {
-        return rigthOffset;
+    public int getRightOffset() {
+        return rightOffset;
     }
 
-    public void setRigthOffset(int rigthOffset) {
-        this.rigthOffset = rigthOffset;
+    public void setRightOffset(int rightOffset) {
+        this.rightOffset = rightOffset;
     }
 
     public ColorModel getColor() {
@@ -121,7 +121,7 @@ public class TemplateModel implements Parcelable, VyfeModel, Comparable<Template
         dest.writeParcelable(color, 0);
         dest.writeString(name);
         dest.writeInt(leftOffset);
-        dest.writeInt(rigthOffset);
+        dest.writeInt(rightOffset);
         dest.writeInt(position);
     }
 
