@@ -43,6 +43,14 @@ public class RecordVideoViewModel extends VyfeViewModel {
         isLiveRecording = new MutableLiveData<>();
     }
 
+    public MutableLiveData<Boolean> getIsTagsRecording() {
+        return isTagsRecording;
+    }
+
+    public void setIsTagsRecording(MutableLiveData<Boolean> isTagsRecording) {
+        this.isTagsRecording = isTagsRecording;
+    }
+
     public void init() {
         stepRecord.setValue("init");
     }

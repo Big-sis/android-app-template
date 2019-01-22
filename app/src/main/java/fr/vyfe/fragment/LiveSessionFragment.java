@@ -1,5 +1,6 @@
 package fr.vyfe.fragment;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -9,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import fr.vyfe.R;
 import fr.vyfe.viewModel.RecordVideoViewModel;
@@ -16,6 +18,7 @@ import fr.vyfe.viewModel.RecordVideoViewModel;
 public class LiveSessionFragment extends Fragment {
     private RecordVideoViewModel viewModel;
     private Switch liveRecordingSwitch;
+    public static final String STEP_RECODRING = "recording";
 
     public static LiveSessionFragment newInstance() {
         return new LiveSessionFragment();
@@ -39,6 +42,7 @@ public class LiveSessionFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         liveRecordingSwitch = view.findViewById(R.id.switch_live_conexion);
+
         liveRecordingSwitch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -49,6 +53,17 @@ public class LiveSessionFragment extends Fragment {
                 viewModel.addActiveTags();
             }
         });
+
+        viewModel.getStep().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String step) {
+                if(step.equals(STEP_RECODRING)){
+                    liveRecordingSwitch.setEnabled(false);
+                }
+            }
+        });
+
+
     }
 
 
