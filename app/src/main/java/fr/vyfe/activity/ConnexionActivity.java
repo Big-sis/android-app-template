@@ -34,9 +34,9 @@ import fr.vyfe.model.UserModel;
  */
 
 public class ConnexionActivity extends AppCompatActivity {
-    public static final int PASSWORD_HIDDEN = 1;
-    public static final int PASSWORD_VISIBLE = 2;
-    private boolean mPasswordVisibility = false;
+    private static final int PASSWORD_HIDDEN = 1;
+    private static final int PASSWORD_VISIBLE = 2;
+    private int mPasswordVisibility = PASSWORD_HIDDEN;
 
     // The Idling Resource which will be null in production.
     @Nullable

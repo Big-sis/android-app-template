@@ -33,7 +33,7 @@ import fr.vyfe.viewModel.RecordVideoViewModelFactory;
 
 public class RecordActivity extends VyfeActivity {
 
-    private static final String[] PERMISSIONS = {Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    public static final String[] PERMISSIONS = {Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private RecordVideoViewModel viewModel;
     private ConstraintLayout contrainOkRecord;
     private ConstraintLayout constraintErrorSpace;
