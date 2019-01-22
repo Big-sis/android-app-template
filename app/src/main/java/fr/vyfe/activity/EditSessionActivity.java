@@ -113,8 +113,7 @@ public class EditSessionActivity extends VyfeActivity {
         btnConfirmDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                if (btnConfirmDelete.getText().equals(R.string.delete)) {
+                if (btnConfirmDelete.getText().toString().equals(getString(R.string.delete))) {
                     viewModel.deleteSession().continueWith(new Continuation<Void, Void>() {
                         @Override
                         public Void then(@NonNull Task<Void> task) throws Exception {
