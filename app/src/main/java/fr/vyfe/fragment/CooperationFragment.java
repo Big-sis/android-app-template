@@ -14,12 +14,12 @@ import android.widget.Switch;
 import fr.vyfe.R;
 import fr.vyfe.viewModel.RecordVideoViewModel;
 
-public class SessionLiveFragment extends Fragment {
+public class CooperationFragment extends Fragment {
     private RecordVideoViewModel viewModel;
     private Switch liveRecordingSwitch;
 
-    public static SessionLiveFragment newInstance() {
-        return new SessionLiveFragment();
+    public static CooperationFragment newInstance() {
+        return new CooperationFragment();
     }
 
     @Override
@@ -31,7 +31,7 @@ public class SessionLiveFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_live_session, container, false);
+        View view = inflater.inflate(R.layout.fragment_cooperation, container, false);
 
 
         return view;
@@ -55,7 +55,7 @@ public class SessionLiveFragment extends Fragment {
         viewModel.getStep().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String step) {
-                if(step.equals(viewModel.STEP_RECODRING)){
+                if(step.equals(RecordVideoViewModel.STEP_RECODRING)){
                     liveRecordingSwitch.setEnabled(false);
                 }
             }
