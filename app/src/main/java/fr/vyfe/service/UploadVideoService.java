@@ -102,7 +102,7 @@ public class UploadVideoService extends Service {
             @Override
             public void onResponse(NetworkResponse response) {
                 if (response.statusCode == 200) {
-                    repository.put(session);
+                    repository.update(session);
                 }
                 Toast.makeText(context, R.string.upload_video + "( "+session.getName()+" )", Toast.LENGTH_LONG).show();
 

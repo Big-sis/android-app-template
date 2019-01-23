@@ -6,6 +6,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,7 +19,9 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -43,6 +46,7 @@ public class CreateTemplatesFragment extends Fragment implements AdapterView.OnI
     private static Spinner colorSpinnerView;
     private static CreateGridViewModel viewModel;
     private static CreateTemplatesFragment.OnButtonClickedListener mCallback;
+    private static LinearLayout llImport;
 
     public static CreateTemplatesFragment newInstance() {
         return new CreateTemplatesFragment();
@@ -75,6 +79,7 @@ public class CreateTemplatesFragment extends Fragment implements AdapterView.OnI
         final EditText tagNameView = view.findViewById(R.id.tag_name_edit);
         final RecyclerView recyclerTagList = view.findViewById(R.id.recycler_view);
         ivColor = view.findViewById(R.id.iv_color);
+        llImport = view.findViewById(R.id.linearLayout);
 
         colorSpinnerView = view.findViewById(R.id.colorSpinner);
         colorSpinnerView.setOnItemSelectedListener(this);

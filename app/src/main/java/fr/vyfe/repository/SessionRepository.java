@@ -3,13 +3,18 @@ package fr.vyfe.repository;
 
 import android.os.Environment;
 
+import com.google.android.gms.tasks.Task;
 import com.google.common.hash.Hashing;
+import com.google.firebase.database.ServerValue;
 
 import java.io.File;
 import java.nio.charset.Charset;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import fr.vyfe.Constants;
+import fr.vyfe.entity.SessionEntity;
 import fr.vyfe.mapper.SessionMapper;
 import fr.vyfe.model.SessionModel;
 
@@ -52,5 +57,15 @@ public class SessionRepository extends FirebaseDatabaseRepository<SessionModel> 
         File file = new File(DeviceVideoLink);
 
         return file.getAbsolutePath();
+    }
+
+    public Task<Void> update(SessionModel model) {
+        return databaseReference.child(model.getId()).updateChildren(((SessionEntity) mapper.unMap(model)).toHashmap());
+    }
+
+    public void setTimestamp(SessionModel model) {
+        Map<String, Object> time = new HashMap<>();
+        time.put("timestamp", ServerValue.TIMESTAMP);
+        databaseReference.child(model.getId()).updateChildren(time);
     }
 }

@@ -13,4 +13,5 @@ public interface IMapper<From, To> {
     From unMap(To to);
 
     HashMap<String, From> unMapList(List<To> to);
+
 }

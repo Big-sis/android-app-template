@@ -3,9 +3,9 @@ package fr.vyfe.fragment;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,14 +16,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import fr.vyfe.Constants;
 import fr.vyfe.R;
-import fr.vyfe.activity.CreateSessionActivity;
 import fr.vyfe.adapter.TemplateRecyclerAdapter;
 import fr.vyfe.model.TemplateModel;
 import fr.vyfe.viewModel.CreateGridViewModel;
@@ -35,6 +34,7 @@ public class CreateGridFragment extends Fragment implements View.OnClickListener
     private RecyclerView recyclerTemplateList;
     private Button saveGridBtn;
     private TextView tvAddTag;
+    private LinearLayout llimport;
 
     public static CreateGridFragment newInstance() {
         return new CreateGridFragment();
@@ -66,6 +66,8 @@ public class CreateGridFragment extends Fragment implements View.OnClickListener
         result.findViewById(R.id.fab_add_moment2).setOnClickListener(this);
         result.findViewById(R.id.tv_add_tag2).setOnClickListener(this);
 
+
+        llimport = result.findViewById(R.id.linear_layout_add);
         return result;
     }
 
@@ -88,11 +90,24 @@ public class CreateGridFragment extends Fragment implements View.OnClickListener
                     tvAddTag.setText(R.string.edit_tags);
                     recyclerTemplateList.setVisibility(View.VISIBLE);
                     saveGridBtn.setVisibility(View.VISIBLE);
-                }
-                else {
+                } else {
                     tvAddTag.setText(R.string.create_tags);
                     recyclerTemplateList.setVisibility(View.GONE);
                     saveGridBtn.setVisibility(View.GONE);
+                }
+                if (templates.size() > 10) {
+                    final Snackbar snackbar = Snackbar.make(getView(), R.string.info_max_tags, Snackbar.LENGTH_INDEFINITE).setDuration(9000).setAction("Ok", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+
+                        }
+                    });
+                    View snackBarView = snackbar.getView();
+                    TextView textView = snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                    textView.setMinLines(2);
+                    textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                    snackbar.setDuration(7000);
+                    snackbar.show();
                 }
             }
         });
@@ -122,8 +137,7 @@ public class CreateGridFragment extends Fragment implements View.OnClickListener
                     viewModel.save();
                     Toast.makeText(getActivity(), R.string.save_grid_info, Toast.LENGTH_LONG).show();
                     getActivity().finish();
-                }
-                else
+                } else
                     Toast.makeText(getActivity(), R.string.grid_name_empty_warning, Toast.LENGTH_LONG).show();
             }
         });
@@ -134,11 +148,11 @@ public class CreateGridFragment extends Fragment implements View.OnClickListener
         mCallback.onCreateGridFragmentButtonClicked(view);
     }
 
-    private void createCallbackToParentActivity(){
+    private void createCallbackToParentActivity() {
         try {
             mCallback = (OnButtonClickedListener) getActivity();
         } catch (ClassCastException e) {
-            throw new ClassCastException(e.toString()+ " must implement OnButtonClickedListener");
+            throw new ClassCastException(e.toString() + " must implement OnButtonClickedListener");
         }
     }
 

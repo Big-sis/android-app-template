@@ -7,27 +7,22 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
-import android.widget.ScrollView;
-
-import com.google.common.hash.Hashing;
-
-import java.nio.charset.Charset;
 
 import fr.vyfe.Constants;
 import fr.vyfe.R;
+import fr.vyfe.adapter.WindowsAdapter;
+import fr.vyfe.fragment.CooperationFragment;
 import fr.vyfe.fragment.RecordPlayerFragment;
 import fr.vyfe.fragment.TagSetRecordFragment;
 import fr.vyfe.fragment.TimelineRecordFragment;
-import fr.vyfe.model.SessionModel;
 import fr.vyfe.viewModel.RecordVideoViewModel;
 import fr.vyfe.viewModel.RecordVideoViewModelFactory;
 
@@ -38,10 +33,10 @@ import fr.vyfe.viewModel.RecordVideoViewModelFactory;
 
 public class RecordActivity extends VyfeActivity {
 
+    public static final String[] PERMISSIONS = {Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private RecordVideoViewModel viewModel;
     private ConstraintLayout contrainOkRecord;
     private ConstraintLayout constraintErrorSpace;
-    public static final String[] PERMISSIONS = {Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,8 +45,13 @@ public class RecordActivity extends VyfeActivity {
 
         //TODO: cmt utiliser mm fragment que timelineRealTime
         replaceFragment(R.id.scroll_timeline, TimelineRecordFragment.newInstance());
-        replaceFragment(R.id.scroll_tagset, TagSetRecordFragment.newInstance());
         replaceFragment(R.id.constraint_video_record, RecordPlayerFragment.newInstance());
+
+        ViewPager viewPager = (ViewPager) findViewById(R.id.recording_view_pager);
+        setViewPager(viewPager);
+        final TabLayout tabLayout = (TabLayout) findViewById(R.id.mytabs);
+        tabLayout.setupWithViewPager(viewPager);
+
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -96,7 +96,7 @@ public class RecordActivity extends VyfeActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(RecordActivity.this, CreateSessionActivity.class);
                 intent.putExtra(Constants.SESSIONTITLE_EXTRA, viewModel.getSession().getValue().getName());
-                intent.putExtra(Constants.TAGSETID_EXTRA,viewModel.getSession().getValue().getTagSetId());
+                intent.putExtra(Constants.TAGSETID_EXTRA, viewModel.getSession().getValue().getTagSetId());
                 startActivity(intent);
 
             }
@@ -105,16 +105,23 @@ public class RecordActivity extends VyfeActivity {
         viewModel.getStep().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String step) {
-                if (step.equals("save")) {
+                if (step.equals(RecordVideoViewModel.STEP_SAVE)) {
                     contrainOkRecord.setVisibility(View.VISIBLE);
                 }
-                if (step.equals("error")) {
+                if (step.equals(RecordVideoViewModel.STEP_ERROR)) {
                     constraintErrorSpace.setVisibility(View.VISIBLE);
                 }
             }
         });
-    }
 
+        viewModel.getAreTagsActive().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean isActiveTags) {
+                if (isActiveTags) tabLayout.getTabAt(1).setIcon(R.drawable.users_group);
+                else tabLayout.getTabAt(1).setIcon(null);
+            }
+        });
+    }
 
     @Override
     public void onBackPressed() {
@@ -152,7 +159,8 @@ public class RecordActivity extends VyfeActivity {
 
         } else {
             viewModel.delete();
-            startActivity(intent);}
+            startActivity(intent);
+        }
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -165,4 +173,12 @@ public class RecordActivity extends VyfeActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+    private void setViewPager(ViewPager viewPager) {
+        WindowsAdapter adapter = new WindowsAdapter(super.getSupportFragmentManager());
+        adapter.addFragment(new TagSetRecordFragment(), getString(R.string.Grid));
+        adapter.addFragment(new CooperationFragment(), getString(R.string.live));
+        viewPager.setAdapter(adapter);
+    }
+
 }

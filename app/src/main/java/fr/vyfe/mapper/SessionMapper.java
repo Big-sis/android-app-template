@@ -3,10 +3,10 @@ package fr.vyfe.mapper;
 
 import android.support.annotation.NonNull;
 
+import com.google.firebase.database.ServerValue;
+
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
 
 import fr.vyfe.entity.SessionEntity;
 import fr.vyfe.model.SessionModel;
@@ -29,6 +29,8 @@ public class SessionMapper extends FirebaseMapper<SessionEntity, SessionModel> {
         session.setId(key);
         ArrayList<TagModel> tagModels = new TagMapper().mapList(sessionEntity.getTags());
         session.setTags( tagModels);
+        if(sessionEntity.getRecording()!=null)session.setRecording(sessionEntity.getRecording());
+        if(sessionEntity.getCooperative()!=null)session.setCooperative(sessionEntity.getCooperative());
 
         return session;
     }
@@ -45,6 +47,8 @@ public class SessionMapper extends FirebaseMapper<SessionEntity, SessionModel> {
         sessionEntity.setPathApp(sessionModel.getDeviceVideoLink());
         sessionEntity.setTags((new TagMapper()).unMapList(sessionModel.getTags()));
         sessionEntity.setVideoLink(sessionModel.getServerVideoLink());
+        sessionEntity.setRecording(sessionModel.isRecording());
+        sessionEntity.setCooperative(sessionModel.isCooperative());
         return sessionEntity;
     }
 

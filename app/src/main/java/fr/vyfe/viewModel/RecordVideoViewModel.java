@@ -3,8 +3,6 @@ package fr.vyfe.viewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 
-import com.google.android.gms.tasks.Task;
-
 import java.util.List;
 
 import fr.vyfe.Constants;
@@ -23,13 +21,15 @@ public class RecordVideoViewModel extends VyfeViewModel {
     public static final String STEP_ERROR = "error";
     public static final String STEP_SAVE = "save";
     public static final String STEP_CLOSE = "close";
-    public static final String STEP_DELETE ="delete";
+    public static final String STEP_DELETE = "delete";
 
     private TagRepository tagRepository;
     private MutableLiveData<String> stepRecord;
     private MutableLiveData<Long> videoTime;
     private MutableLiveData<List<TagModel>> tags;
     private String userId;
+    private MutableLiveData<Boolean> areTagsActive;
+    private MutableLiveData<Boolean> isLiveRecording;
 
     public RecordVideoViewModel(String userId, String companyId, String sessionId) {
         sessionRepository = new SessionRepository(companyId);
@@ -39,6 +39,16 @@ public class RecordVideoViewModel extends VyfeViewModel {
         videoTime = new MutableLiveData<>();
         this.sessionId = sessionId;
         this.userId = userId;
+        areTagsActive = new MutableLiveData<>();
+        isLiveRecording = new MutableLiveData<>();
+    }
+
+    public MutableLiveData<Boolean> getAreTagsActive() {
+        return areTagsActive;
+    }
+
+    public void setAreTagsActive(MutableLiveData<Boolean> areTagsActive) {
+        this.areTagsActive = areTagsActive;
     }
 
     public void init() {
@@ -49,17 +59,36 @@ public class RecordVideoViewModel extends VyfeViewModel {
         return stepRecord.getValue().equals(STEP_RECODRING);
     }
 
+    public void isTagsActive() {
+        areTagsActive.setValue(true);
+    }
+
+    public void isTagsInactive() {
+        areTagsActive.setValue(false);
+    }
+
     public MutableLiveData<String> getStep() {
         return stepRecord;
     }
 
     public void startRecord() {
-        if(!stepRecord.getValue().equals(STEP_RECODRING))
-        stepRecord.setValue(STEP_RECODRING);
+        if (!stepRecord.getValue().equals(STEP_RECODRING)) {
+            stepRecord.setValue(STEP_RECODRING);
+            sessionRepository.setTimestamp(session.getValue());
+        }
+        if (areTagsActive.getValue() != null && areTagsActive.getValue().booleanValue()) {
+            isLiveRecording.setValue(true);
+        }
+        addActiveLive();
     }
 
     public void stop() {
         stepRecord.setValue(STEP_STOP);
+        areTagsActive.setValue(false);
+        isLiveRecording.setValue(false);
+        addActiveTags();
+        addActiveLive();
+
     }
 
     public void error() {
@@ -73,6 +102,7 @@ public class RecordVideoViewModel extends VyfeViewModel {
     public void close() {
         stepRecord.setValue(STEP_CLOSE);
     }
+
     public void delete() {
         stepRecord.setValue(STEP_DELETE);
         sessionRepository.remove(session.getValue().getId());
@@ -102,7 +132,8 @@ public class RecordVideoViewModel extends VyfeViewModel {
             newTag.setTaggerId(userId);
             newTag.setSessionId(getSessionId());
             newTag.setStart((int) Math.max(0, getVideoTime().getValue() / Constants.UNIT_TO_MILLI_FACTOR - template.getLeftOffset()));
-            newTag.setEnd((int) (getVideoTime().getValue() / Constants.UNIT_TO_MILLI_FACTOR + template.getRigthOffset()));
+            newTag.setEnd((int) (getVideoTime().getValue() / Constants.UNIT_TO_MILLI_FACTOR + template.getRightOffset()));
+            newTag.setColor(template.getColor());
             tagRepository.push(newTag);
             template.incrCount();
             template.setTouch(true);
@@ -116,6 +147,21 @@ public class RecordVideoViewModel extends VyfeViewModel {
             loadTags();
         }
         return tags;
+    }
+
+    public void addActiveTags() {
+        SessionModel sessionModel = session.getValue();
+        sessionModel.setCooperative(areTagsActive.getValue());
+        sessionRepository.update(sessionModel);
+
+    }
+
+    public void addActiveLive() {
+        if (isLiveRecording.getValue() != null) {
+            SessionModel sessionModel = session.getValue();
+            sessionModel.setRecording(isLiveRecording.getValue());
+            sessionRepository.update(sessionModel);
+        }
     }
 
     private void loadTags() {

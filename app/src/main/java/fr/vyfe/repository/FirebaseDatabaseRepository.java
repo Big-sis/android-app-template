@@ -54,6 +54,7 @@ public abstract class FirebaseDatabaseRepository<Model> {
         }
         databaseReference = FirebaseDatabase.getInstance(Constants.FIREBASE_DB_VERSION_URL).getReference(getRootNode());
         databaseReference.keepSynced(true);
+
     }
 
 
@@ -132,4 +133,6 @@ public abstract class FirebaseDatabaseRepository<Model> {
     public Task<Void> put(SessionModel sessionModel) {
         return databaseReference.child(sessionModel.getId()).setValue(mapper.unMap(sessionModel));
     }
+
+
 }
