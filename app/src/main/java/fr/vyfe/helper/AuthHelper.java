@@ -115,6 +115,8 @@ public class AuthHelper {
 
     }
 
+
+
     private Task<HashMap<String, Object>> fetchCompanyAndUser(String userId) {
         return FirebaseFunctions.getInstance()
                 .getHttpsCallable("getCompanyAndUser?userId=" + userId)

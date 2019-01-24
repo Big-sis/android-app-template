@@ -27,6 +27,7 @@ public class SessionModel implements Parcelable, VyfeModel,Comparable<SessionMod
     private String thumbnail;
     private boolean cooperative;
     private boolean recording;
+    private ArrayList<String> observers;
 
 
     public SessionModel(String name, String author, String videoLink, Date date, String idSession, String idTagSet) {
@@ -188,6 +189,14 @@ public class SessionModel implements Parcelable, VyfeModel,Comparable<SessionMod
 
     public void setDeviceVideoLink(String deviceVideoLink) {
         this.deviceVideoLink = deviceVideoLink;
+    }
+
+    public ArrayList<String> getObservers() {
+        return observers;
+    }
+
+    public void setObservers(ArrayList<String> observers) {
+        this.observers = observers;
     }
 
     // TODO : Display Vimeo thumbnail once available

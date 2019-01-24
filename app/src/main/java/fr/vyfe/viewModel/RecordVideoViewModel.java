@@ -3,6 +3,8 @@ package fr.vyfe.viewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 
 import fr.vyfe.Constants;
@@ -10,6 +12,7 @@ import fr.vyfe.model.SessionModel;
 import fr.vyfe.model.TagModel;
 import fr.vyfe.model.TemplateModel;
 import fr.vyfe.repository.BaseListValueEventListener;
+import fr.vyfe.repository.BaseSingleValueEventListener;
 import fr.vyfe.repository.SessionRepository;
 import fr.vyfe.repository.TagRepository;
 import fr.vyfe.repository.TagSetRepository;
@@ -27,6 +30,7 @@ public class RecordVideoViewModel extends VyfeViewModel {
     private MutableLiveData<String> stepRecord;
     private MutableLiveData<Long> videoTime;
     private MutableLiveData<List<TagModel>> tags;
+    private MutableLiveData<ArrayList<String>> observers;
     private String userId;
     private MutableLiveData<Boolean> areTagsActive;
     private MutableLiveData<Boolean> isLiveRecording;
@@ -42,6 +46,7 @@ public class RecordVideoViewModel extends VyfeViewModel {
         areTagsActive = new MutableLiveData<>();
         isLiveRecording = new MutableLiveData<>();
     }
+
 
     public MutableLiveData<Boolean> getAreTagsActive() {
         return areTagsActive;
@@ -120,9 +125,10 @@ public class RecordVideoViewModel extends VyfeViewModel {
     }
 
     public MutableLiveData<SessionModel> getSession() {
-        if (session == null)
+
             loadSession(this.sessionId);
         return session;
+
     }
 
     public boolean addTag(int position) {
@@ -177,4 +183,5 @@ public class RecordVideoViewModel extends VyfeViewModel {
             }
         });
     }
+
 }
