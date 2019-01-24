@@ -34,6 +34,7 @@ public final class Constants {
     public static final String BDDV2_VIMEOTOKEN = "vimeoAccessToken";
     public static final String BDDV2_SESSIONS_VIMEOLINK = "videoLink";
     public static final String VIMEO_API_VIDEOS_ENDPOINT = "https://api.vimeo.com/me/videos";
+  //  public static final String VIMEO_API_VIDEOS_ENDPOINT = "https://api.vimeo.com/me/projects/615382/videos";
     public static final String VIMEO_TOKEN_EXTRA = "vimeo_token";
     public static final String COMPANYID_EXTRA = "company_id";
 

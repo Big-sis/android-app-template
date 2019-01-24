@@ -46,6 +46,8 @@ public class LinkDeviceTranslateVideoHelper {
         while ((len = inputStream.read(buffer)) != -1) {
             byteBuffer.write(buffer, 0, len);
         }
+        int k = byteBuffer.size();
+
         return byteBuffer.toByteArray();
     }
 
