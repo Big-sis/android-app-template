@@ -19,6 +19,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.functions.FirebaseFunctions;
 import com.google.firebase.functions.HttpsCallableResult;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import fr.vyfe.R;
@@ -81,6 +82,7 @@ public class CooperationFragment extends Fragment {
             }
         });
 
+/**
         viewModel.getSession().observe(this, new Observer<SessionModel>() {
             @Override
             public void onChanged(@Nullable SessionModel sessionModel) {
@@ -89,7 +91,7 @@ public class CooperationFragment extends Fragment {
                 mRecyclerViewObservers.setAdapter(mObserverAdapter);
                 mObserverAdapter.notifyDataSetChanged();
             }
-        });
+        });**/
 
     }
 

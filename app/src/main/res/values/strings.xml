@@ -155,4 +155,5 @@
     <string name="Grid">Grille</string>
     <string name="live">Live</string>
     <string name="participants">Participants :</string>
+    <string name="observer">Observateur :</string>
 </resources>

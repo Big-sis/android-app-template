@@ -30,7 +30,7 @@ public class RecordVideoViewModel extends VyfeViewModel {
     private MutableLiveData<String> stepRecord;
     private MutableLiveData<Long> videoTime;
     private MutableLiveData<List<TagModel>> tags;
-    private MutableLiveData<ArrayList<String>> observers;
+
     private String userId;
     private MutableLiveData<Boolean> areTagsActive;
     private MutableLiveData<Boolean> isLiveRecording;
@@ -124,12 +124,6 @@ public class RecordVideoViewModel extends VyfeViewModel {
         this.videoTime.setValue(time);
     }
 
-    public MutableLiveData<SessionModel> getSession() {
-
-            loadSession(this.sessionId);
-        return session;
-
-    }
 
     public boolean addTag(int position) {
         if (tagSet.getValue() != null && getVideoTime().getValue() != null) {
@@ -154,6 +148,7 @@ public class RecordVideoViewModel extends VyfeViewModel {
         }
         return tags;
     }
+
 
     public void addActiveTags() {
         SessionModel sessionModel = session.getValue();
@@ -183,5 +178,7 @@ public class RecordVideoViewModel extends VyfeViewModel {
             }
         });
     }
+
+
 
 }
