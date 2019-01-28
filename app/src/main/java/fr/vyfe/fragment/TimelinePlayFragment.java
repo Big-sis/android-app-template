@@ -195,19 +195,20 @@ public class TimelinePlayFragment extends Fragment {
 
     public LinearLayout createTimelineRow(String nameTagguer, LinearLayout containerLayout, TagSetModel tagSetModel) {
         final TextView TvNameTagguer = new TextView(getContext());
-        //TODO : convert idTagguer in FirstName and Lastname
-         /**AuthHelper.getInstance(getContext()).getUser(nameTagguer).addOnCompleteListener(new OnCompleteListener<HashMap<String, Object>>() {
+         AuthHelper.getInstance(getContext()).getUser(nameTagguer).addOnCompleteListener(new OnCompleteListener<HashMap<String, Object>>() {
            @Override
            public void onComplete(@NonNull Task<HashMap<String, Object>> task) {
                if (task.isSuccessful()) {
                    HashMap<String, Object> result = task.getResult();
                    UserModel currentUser = (new UserMapper()).map(result);
+                   TvNameTagguer.setText(getString(R.string.observer) + currentUser.getFirstname()+" "+currentUser.getLastName());
                } else {
                    Exception e = task.getException();
                    if (e instanceof FirebaseFunctionsException) {
                        FirebaseFunctionsException ffe = (FirebaseFunctionsException) e;
                        FirebaseFunctionsException.Code code = ffe.getCode();
                        Object details = ffe.getDetails();
+                       TvNameTagguer.setText(getString(R.string.observer) +getString(R.string.unknow));
                    }
 
                }
@@ -215,12 +216,12 @@ public class TimelinePlayFragment extends Fragment {
        }).addOnFailureListener(new OnFailureListener() {
              @Override
              public void onFailure(@NonNull Exception e) {
-                 Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+                 Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
+                 TvNameTagguer.setText(getString(R.string.observer) +getString(R.string.unknow));
              }
-         });**/
+         });
 
 
-        TvNameTagguer.setText(getString(R.string.observer) + nameTagguer);
         TvNameTagguer.setTextColor(Color.WHITE);
         TvNameTagguer.setMinimumHeight(convertToDp(15));
         RelativeLayout.LayoutParams layoutParamsTvTeacher = new RelativeLayout.LayoutParams(

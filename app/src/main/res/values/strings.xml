@@ -154,6 +154,7 @@
     <string name="start_live">Lancement d\'une session coopérative</string>
     <string name="Grid">Grille</string>
     <string name="live">Live</string>
-    <string name="participants">Participants :</string>
-    <string name="observer">Observateur :</string>
+    <string name="participants">Participants : </string>
+    <string name="observer">Observateur : </string>
+    <string name="unknow">Inconnu</string>
 </resources>
