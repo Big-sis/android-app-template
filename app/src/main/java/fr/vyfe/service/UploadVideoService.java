@@ -17,14 +17,13 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -39,120 +38,50 @@ import fr.vyfe.repository.VolleyMultipartRequest;
 
 public class UploadVideoService extends Service {
 
+    String name;
+    byte[] byteVideo = null;
     private NotificationManager manager;
     private SessionModel session;
     private SessionRepository repository;
-    String name;
-    byte[] byteVideo =null;
 
     public UploadVideoService() {
     }
-
-    //Test
-    public void getTusLink(final Context context, final String VimeoToken, final long size, final UploadVideoService.UrlResponse listener) {
-        //1er requete en POST , recuperation upload_link
-
+    //first POST requete => upload_link and link
+    public void getTusLink(final Context context, final String VimeoToken, final String size, final UploadVideoService.UrlResponse listener) {
 
         RequestQueue queue = Volley.newRequestQueue(context);
-        JsonObjectRequest sr = new JsonObjectRequest(Request.Method.POST, Constants.VIMEO_API_VIDEOS_ENDPOINT, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    JSONObject groups = response.getJSONObject("upload");
-                    String Vimeolink= (String) response.get("link");
-                    String uploadLink = (String) groups.get("upload_link");
-                    Log.d("Vimeolink", "getParams: "+ Vimeolink);
-                    Log.d("uploadLink", "getParams: "+ uploadLink);
-                    Log.d("Response", groups.toString());
-
-                    //ici on peut aussi recucuperer le lien ou l'utilisateur pourras visialiser la vidéo, elle est dans upoad ->link
-                    //deuxieme requete pour joindre la video
-                    //uploadVideo(uploadLink, context);
-                    session.setServerVideoLink(Vimeolink);
-                    listener.onSuccess(uploadLink);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    listener.onError(e.getMessage());
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("firstRequete", "onError: " + error);
-                listener.onError(error.getMessage());
-                // Toast.makeText(SelectedVideoActivity.this, "erreur :" + error.toString(), Toast.LENGTH_SHORT).DisconnectionAlert();
-            }
-        }) {
+        StringRequest sr = new StringRequest(
+                Request.Method.POST,
+                Constants.VIMEO_API_VIDEOS_ENDPOINT,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            JSONObject groups = jsonObject.getJSONObject("upload");
+                            String Vimeolink = (String) jsonObject.get("link");
+                            String uploadLink = (String) groups.get("upload_link");
+                            session.setServerVideoLink(Vimeolink);
+                            listener.onSuccess(uploadLink);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            listener.onError(e.getMessage());
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        listener.onError(error.getMessage());
+                    }
+                }) {
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("upload.approach", "tus");
-                params.put("upload.size",String.valueOf(size));
-                Log.d("SIZE", "getParams: "+ String.valueOf(size));
-                return params;
-
-            }
-
-
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("Authorization", VimeoToken);
-                params.put("Content-Type", "application/json");
-                params.put("Accept", "application/vnd.vimeo.*+json;version=3.4");
-                params.put("upload.approach", "tus");
-                params.put("upload.size",String.valueOf(size));
+                params.put("upload.size", size);
                 return params;
             }
-
-        };
-        queue.add(sr);
-
-    }
-
-
-    //Ancien code
-
-    public void getVimeoLink(final Context context, final String VimeoToken, final UploadVideoService.UrlResponse listener) {
-        //1er requete en POST , recuperation upload_link
-        RequestQueue queue = Volley.newRequestQueue(context);
-        JsonObjectRequest sr = new JsonObjectRequest(Request.Method.POST, Constants.VIMEO_API_VIDEOS_ENDPOINT, null, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                try {
-                    JSONObject groups = response.getJSONObject("upload");
-                    String Vimeolink= (String) response.get("link");
-                    String uploadLink = (String) groups.get("upload_link");
-
-                    //ici on peut aussi recucuperer le lien ou l'utilisateur pourras visialiser la vidéo, elle est dans upoad ->link
-                    //deuxieme requete pour joindre la video
-                    //uploadVideo(uploadLink, context);
-                    session.setServerVideoLink(Vimeolink);
-                    listener.onSuccess(uploadLink);
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    listener.onError(e.getMessage());
-                }
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("Volley", "onError: " + error);
-                listener.onError(error.getMessage());
-                // Toast.makeText(SelectedVideoActivity.this, "erreur :" + error.toString(), Toast.LENGTH_SHORT).DisconnectionAlert();
-            }
-        }) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("upload.approach", "post");
-                params.put("upload.redirect_url", "https://google.com");
-                return params;
-            }
-
-
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
@@ -161,12 +90,14 @@ public class UploadVideoService extends Service {
                 params.put("Accept", "application/vnd.vimeo.*+json;version=3.4");
                 return params;
             }
+
         };
         queue.add(sr);
 
     }
 
-    public void uploadVideo(String url, final Context context, final byte[] inputData, final UploadVideoService.UploadResponse listener) {
+    //Second PATCH requete => upload movie
+    public void uploadVideo(final String url, final Context context, final byte[] inputData, final long lengthByte, final String uploadOffset, final UploadVideoService.UploadResponse listener) {
         RequestQueue queue2 = Volley.newRequestQueue(context);
         VolleyMultipartRequest sr2 = new VolleyMultipartRequest(Request.Method.PATCH, url, new Response.Listener<NetworkResponse>() {
             @Override
@@ -174,16 +105,31 @@ public class UploadVideoService extends Service {
                 if (response.statusCode == 200) {
                     repository.update(session);
                 }
-                // Toast.makeText(ApiActivity.this, " response: " + response.data, Toast.LENGTH_LONG).DisconnectionAlert();
-                Toast.makeText(context, R.string.upload_video + "( "+session.getName()+" )", Toast.LENGTH_LONG).show();
+                JSONObject jsonObject = new JSONObject(response.headers);
 
-                listener.onSuccess();
-                Log.d("2emesucces", "onResponse: " + response.toString());
+                try {
+                    String newUploadOffset = jsonObject.getString("Upload-Offset");
+
+                    // Si jamais tt nest pas telechargé relance une requete
+                    if (Long.valueOf(newUploadOffset) < lengthByte) {
+
+                        // creation du nouveau inputData (sans la partie deja telechargée)
+                        byte [] restUploadMovie =  LinkDeviceTranslateVideoHelper.getVideo(name, getApplication(),Integer.parseInt(newUploadOffset));
+
+                       // Envoit de la requete
+                        uploadVideo(url, context, restUploadMovie, lengthByte, newUploadOffset, listener);
+
+                    } else {
+                        Toast.makeText(context, "Fichier téléchargé ", Toast.LENGTH_SHORT).show();
+                        listener.onSuccess();
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.d("2emeerror", "onError: " + error);
                 listener.onError(error.getMessage());
                 Toast.makeText(context, context.getString(R.string.error) + error.toString(), Toast.LENGTH_LONG).show();
             }
@@ -192,24 +138,21 @@ public class UploadVideoService extends Service {
             protected Map<String, DataPart> getByteData() {
                 Map<String, DataPart> params = new HashMap<>();
                 params.put("file_data", new DataPart("movie.mp4", inputData, "video/mp4"));
-
                 return params;
             }
+
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("Tus-Resumable", "1.0.0");
-                params.put("Upload-Offset", "0");
+                params.put("Upload-Offset", uploadOffset);
                 params.put("Content-Type", "application/offset+octet-stream");
                 params.put("Accept", "application/vnd.vimeo.*+json;version=3.4");
                 return params;
             }
-
-
         };
         queue2.add(sr2);
     }
-
 
 
     @Override
@@ -220,14 +163,17 @@ public class UploadVideoService extends Service {
         String vimeoToken = (String) intent.getExtras().get(Constants.VIMEO_TOKEN_EXTRA);
         repository = new SessionRepository(intent.getStringExtra(Constants.COMPANYID_EXTRA));
         manager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
-        byteVideo = LinkDeviceTranslateVideoHelper.getVideo(name, getApplication());
+        byteVideo = LinkDeviceTranslateVideoHelper.getVideo(name, getApplication(),0);
         File file = new File(name);
-        final long length = file.length();
+        int size = byteVideo.length;
+        final long octectsSize = file.length();
+        final String uploadOffset = "0";
 
-        getTusLink(getApplicationContext(), vimeoToken, length,new UrlResponse() {
+
+        getTusLink(getApplicationContext(), vimeoToken, String.valueOf(octectsSize), new UrlResponse() {
             @Override
             public void onSuccess(String url) {
-                uploadVideo(url, getApplicationContext(), byteVideo, new UploadResponse() {
+                uploadVideo(url, getApplicationContext(), byteVideo, octectsSize, uploadOffset, new UploadResponse() {
                     @Override
                     public void onSuccess() {
                         NotificationCompat.Builder builder =
@@ -249,7 +195,7 @@ public class UploadVideoService extends Service {
                     @Override
                     public void onError(String error) {
                         Toast.makeText(getApplicationContext(), "Une erreur est survenue : " + error, Toast.LENGTH_LONG).show();
-                        Log.d("TAGG", "onError: "+ error);
+                        Log.d("TAGG", "onError: " + error);
                         stopSelf();
                     }
                 });
@@ -260,44 +206,6 @@ public class UploadVideoService extends Service {
 
             }
         });
-/**
-        getVimeoLink(getApplicationContext(),vimeoToken, new UrlResponse() {
-            @Override
-            public void onSuccess(String url) {
-
-                uploadVideo(url, getApplicationContext(), byteVideo, new UploadResponse() {
-                    @Override
-                    public void onSuccess() {
-                        NotificationCompat.Builder builder =
-                                new NotificationCompat.Builder(getApplicationContext())
-                                        .setSmallIcon(R.drawable.animation_roue)
-                                        .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_SOUND)
-                                        .setContentTitle("Téléchargement")
-                                        .setContentText("Votre vidéo a été mise en ligne");
-
-                        Intent notificationIntent = new Intent(getApplicationContext(), MainActivity.class);
-                        PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(), 0, notificationIntent,
-                                PendingIntent.FLAG_UPDATE_CURRENT);
-                        builder.setContentIntent(contentIntent);
-                        manager.notify(0, builder.build());
-
-                        stopSelf();
-                    }
-
-                    @Override
-                    public void onError(String error) {
-                        Toast.makeText(getApplicationContext(), "Une erreur est survenue : " + error, Toast.LENGTH_LONG).show();
-                        stopSelf();
-                    }
-                });
-            }
-
-            @Override
-            public void onError(String error) {
-                Toast.makeText(getApplicationContext(), "Une erreur est survenue: " + error, Toast.LENGTH_LONG).show();
-                stopSelf();
-            }
-        });**/
         return Service.START_STICKY;
     }
 
@@ -316,7 +224,6 @@ public class UploadVideoService extends Service {
         Log.d("TAG", "Service onBind");
         return null;
     }
-
 
 
     @Override
