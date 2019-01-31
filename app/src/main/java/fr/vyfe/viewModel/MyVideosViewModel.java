@@ -27,14 +27,15 @@ public class MyVideosViewModel extends VyfeViewModel {
     private MutableLiveData<Boolean> permissions;
     private static String mAuth;
 
-    public MyVideosViewModel(String companyId, String androidId, String mAuth) {
+    public MyVideosViewModel(String companyId, String mAuth) {
+        this.mAuth = mAuth;
         repository = new SessionRepository(companyId);
-        repository.setOrderByChildKey("idAndroid");
-        repository.setEqualToKey(androidId);
+        repository.setOrderByChildKey("author");
+        repository.setEqualToKey(mAuth);
         filter = "";
         permissions = new MutableLiveData<>();
         permissions.setValue(false);
-        this.mAuth = mAuth;
+
     }
 
     public void permissionsAccepted() {
@@ -64,7 +65,6 @@ public class MyVideosViewModel extends VyfeViewModel {
             @Override
             public void onSuccess(List<SessionModel> result) {
 
-
                 File externalStorage = getExternalStoragePublicDirectory(DIRECTORY_MOVIES + "/" + Constants.VIDEO_DIRECTORY_NAME);
                 final String racineExternalStorage = String.valueOf(externalStorage.getAbsoluteFile());
                 final String[] filesExternalStorage = externalStorage.list();
@@ -76,17 +76,15 @@ public class MyVideosViewModel extends VyfeViewModel {
                         for (SessionModel session : result) {
                             if (session.getName() != null && session.getName().contains(filter) && session.getDeviceVideoLink().equals(nameCache))
                                 filtered.add(session);
+                            //TODO : verifier si marche
+                            if(session.getName() != null && session.getName().contains(filter) && session.getDeviceVideoLink()==null && session.getServerVideoLink()!=null){
+                                filtered.add(session);
+                            }
                         }
                     }
                 }
-                // For moment,to save time,"Index Your Data" is the "future"
-                for(int i =0; i< filtered.size();i++){
-                    if(!filtered.get(i).getAuthor().equals(mAuth)){
-                        filtered.remove(i);
-                }
 
-                }
-                //TODO: respository is filtered by idAndroid
+                //TODO: respository is filtered by Author
                 // for moment, to save time, second filter is here
                 Collections.sort(filtered, new Comparator<SessionModel>() {
                     @Override

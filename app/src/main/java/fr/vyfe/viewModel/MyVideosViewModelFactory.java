@@ -7,12 +7,10 @@ import android.support.annotation.NonNull;
 public class MyVideosViewModelFactory implements ViewModelProvider.Factory {
 
     private final String userId;
-    private final String androidId;
     private final String mAuth;
 
-    public MyVideosViewModelFactory(String userId, String androidId, String mAuth) {
+    public MyVideosViewModelFactory(String userId, String mAuth) {
         this.userId = userId;
-        this.androidId = androidId;
         this.mAuth =mAuth;
     }
 
@@ -20,7 +18,7 @@ public class MyVideosViewModelFactory implements ViewModelProvider.Factory {
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.isAssignableFrom(MyVideosViewModel.class))
-            return (T) new MyVideosViewModel(userId, androidId,mAuth);
+            return (T) new MyVideosViewModel(userId, mAuth);
         throw new IllegalArgumentException("Unkowm ViewModel class");
     }
 }

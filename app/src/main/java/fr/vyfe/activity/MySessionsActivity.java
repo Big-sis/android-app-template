@@ -42,7 +42,7 @@ public class MySessionsActivity extends VyfeActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_video);
 
-        viewModel = ViewModelProviders.of(this, new MyVideosViewModelFactory(mAuth.getCurrentUser().getCompany(), AndroidHelper.getAndroidId(this), mAuth.getCurrentUser().getId())).get(MyVideosViewModel.class);
+        viewModel = ViewModelProviders.of(this, new MyVideosViewModelFactory(mAuth.getCurrentUser().getCompany(), mAuth.getCurrentUser().getId())).get(MyVideosViewModel.class);
 
         gridView = findViewById(R.id.grid_videos);
         SearchView searchView = findViewById(R.id.search_video);

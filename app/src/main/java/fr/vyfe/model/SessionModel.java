@@ -11,9 +11,19 @@ import android.support.annotation.NonNull;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Map;
 
-public class SessionModel implements Parcelable, VyfeModel,Comparable<SessionModel> {
+public class SessionModel implements Parcelable, VyfeModel, Comparable<SessionModel> {
+    public static final Creator<SessionModel> CREATOR = new Creator<SessionModel>() {
+        @Override
+        public SessionModel createFromParcel(Parcel in) {
+            return new SessionModel(in);
+        }
+
+        @Override
+        public SessionModel[] newArray(int size) {
+            return new SessionModel[size];
+        }
+    };
     private String name;
     private String author;
     private String serverVideoLink;
@@ -28,7 +38,6 @@ public class SessionModel implements Parcelable, VyfeModel,Comparable<SessionMod
     private boolean cooperative;
     private boolean recording;
 
-
     public SessionModel(String name, String author, String videoLink, Date date, String idSession, String idTagSet) {
         this();
         this.name = name;
@@ -39,22 +48,22 @@ public class SessionModel implements Parcelable, VyfeModel,Comparable<SessionMod
         this.idTagSet = idTagSet;
     }
 
-    public SessionModel(String name, ArrayList<TagModel> tags,String idTagSet ){
+    public SessionModel(String name, ArrayList<TagModel> tags, String idTagSet) {
         this();
         this.name = name;
         this.Tags = tags;
         this.idTagSet = idTagSet;
     }
 
-    public SessionModel(){
+    public SessionModel() {
         this.date = new Date();
     }
+
 
     public SessionModel(String name, String author, String videoLink, Date date, String idSession, String idTagSet, String idAndroid) {
         this(name, author, videoLink, date, idSession, idTagSet);
         this.idAndroid = idAndroid;
     }
-
 
     public SessionModel(Parcel in) {
         name = in.readString();
@@ -70,18 +79,6 @@ public class SessionModel implements Parcelable, VyfeModel,Comparable<SessionMod
         thumbnail = in.readString();
 
     }
-
-    public static final Creator<SessionModel> CREATOR = new Creator<SessionModel>() {
-        @Override
-        public SessionModel createFromParcel(Parcel in) {
-            return new SessionModel(in);
-        }
-
-        @Override
-        public SessionModel[] newArray(int size) {
-            return new SessionModel[size];
-        }
-    };
 
     public boolean isCooperative() {
         return cooperative;
@@ -138,6 +135,7 @@ public class SessionModel implements Parcelable, VyfeModel,Comparable<SessionMod
     public void setDescription(String description) {
         this.description = description;
     }
+
     public String getTagSetId() {
         return idTagSet;
     }
@@ -154,16 +152,20 @@ public class SessionModel implements Parcelable, VyfeModel,Comparable<SessionMod
         this.idAndroid = idAndroid;
     }
 
-    public int getDuration(){
+    public int getDuration() {
         MediaMetadataRetriever retriever = new MediaMetadataRetriever();
         //use one of overloaded setDataSource() functions to set your data source
-        retriever.setDataSource(this.deviceVideoLink);
+        //TODO : verifier code
+        if (this.deviceVideoLink == null && serverVideoLink != null) {
+            retriever.setDataSource(this.serverVideoLink);
+        } else retriever.setDataSource(this.deviceVideoLink);
+
         String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
         int timeInMillisec = Integer.parseInt(time);
 
         retriever.release();
 
-        return timeInMillisec ;
+        return timeInMillisec;
     }
 
     public String getServerVideoLink() {
@@ -227,6 +229,6 @@ public class SessionModel implements Parcelable, VyfeModel,Comparable<SessionMod
 
     @Override
     public int compareTo(@NonNull SessionModel o) {
-        return ((int)(this.date.getTime() - o.getDate().getTime()));
+        return ((int) (this.date.getTime() - o.getDate().getTime()));
     }
 }
