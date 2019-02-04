@@ -26,6 +26,8 @@ public class PlayVideoViewModel extends VyfeViewModel {
     private MutableLiveData<Integer> timelineContainerHeight;
 
     private MutableLiveData<Boolean> fullTimeline;
+    private MutableLiveData<String> linkPlayer;
+
 
     public PlayVideoViewModel(String companyId, String userId, String sessionId) {
         sessionRepository = new SessionRepository(companyId);
@@ -43,7 +45,11 @@ public class PlayVideoViewModel extends VyfeViewModel {
         timelineContainerHeight = new MutableLiveData<>();
         fullTimeline = new MutableLiveData<>();
         fullTimeline.setValue(false);
+        linkPlayer = new MutableLiveData<>();
+        linkPlayer.setValue(null);
     }
+
+
 
     public MutableLiveData<Integer> getTimelinesize() {
         return timelinesize;
@@ -59,6 +65,14 @@ public class PlayVideoViewModel extends VyfeViewModel {
 
     public void setTimelineContainerHeight(Integer integer){
         this.timelineContainerHeight.setValue(integer);
+    }
+
+    public void setLinkPlayer(String linkPlayer){
+        this.linkPlayer.setValue(linkPlayer);
+    }
+
+    public MutableLiveData<String> getLinkPlayer() {
+        return linkPlayer;
     }
 
     public MutableLiveData<Integer> getVideoContainerHeight() {

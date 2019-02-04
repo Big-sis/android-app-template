@@ -20,6 +20,7 @@ public class SessionEntity {
     private HashMap<String, TagEntity> tags;
     private Boolean cooperative;
     private Boolean recording;
+    private int duration;
 
     public SessionEntity(){}
 
@@ -29,11 +30,20 @@ public class SessionEntity {
         sessionMap.put("cooperative", cooperative);
         sessionMap.put("recording", recording);
         sessionMap.put("videoLink",videoLink);
+        sessionMap.put("duration",duration);
         return sessionMap;
 
     }
     //Generated code
 
+
+    public int getDuration() {
+        return duration;
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
 
     public String getAuthor() {
         return author;

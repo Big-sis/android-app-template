@@ -115,12 +115,14 @@ public class UploadVideoService extends Service {
 
                 try {
                     String newUploadOffset = jsonObject.getString("Upload-Offset");
+                    byte [] restUploadMovie =  LinkDeviceTranslateVideoHelper.convertVideotobytes(name, getApplication(),Integer.parseInt(newUploadOffset));
+                    uploadVideo(url, context, restUploadMovie, lengthByte, newUploadOffset, listener);
 
                     // Si jamais tt nest pas telechargé relance une requete
-                    if (Long.valueOf(newUploadOffset) < lengthByte) {
+                   /** if (Long.valueOf(newUploadOffset) < lengthByte) {
 
                         // creation du nouveau inputData (sans la partie deja telechargée)
-                        byte [] restUploadMovie =  LinkDeviceTranslateVideoHelper.getVideo(name, getApplication(),Integer.parseInt(newUploadOffset));
+                        byte [] restUploadMovie =  LinkDeviceTranslateVideoHelper.convertVideotobytes(name, getApplication(),Integer.parseInt(newUploadOffset));
 
                        // Envoit de la requete
                         uploadVideo(url, context, restUploadMovie, lengthByte, newUploadOffset, listener);
@@ -128,7 +130,8 @@ public class UploadVideoService extends Service {
                     } else {
                         Toast.makeText(context, "Fichier téléchargé ", Toast.LENGTH_SHORT).show();
                         listener.onSuccess();
-                    }
+                    }**/
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -169,14 +172,14 @@ public class UploadVideoService extends Service {
         String vimeoToken = (String) intent.getExtras().get(Constants.VIMEO_TOKEN_EXTRA);
         repository = new SessionRepository(intent.getStringExtra(Constants.COMPANYID_EXTRA));
         manager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
-        byteVideo = LinkDeviceTranslateVideoHelper.getVideo(name, getApplication(),0);
+        byteVideo = LinkDeviceTranslateVideoHelper.convertVideotobytes(name, getApplication(),0);
         File file = new File(name);
         int size = byteVideo.length;
         final long octectsSize = file.length();
         final String uploadOffset = "0";
 
 
-        getTusLink(getApplicationContext(), vimeoToken, String.valueOf(octectsSize), new UrlResponse() {
+        getTusLink(getApplicationContext(), vimeoToken, String.valueOf(octectsSize*8), new UrlResponse() {
             @Override
             public void onSuccess(String url) {
                 uploadVideo(url, getApplicationContext(), byteVideo, octectsSize, uploadOffset, new UploadResponse() {

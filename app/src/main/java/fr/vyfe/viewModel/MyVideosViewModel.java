@@ -74,13 +74,19 @@ public class MyVideosViewModel extends VyfeViewModel {
                     for (String nameFileExternalStorage : filesExternalStorage) {
                         String nameCache = racineExternalStorage + "/" + nameFileExternalStorage;
                         for (SessionModel session : result) {
-                            if (session.getName() != null && session.getName().contains(filter) && session.getDeviceVideoLink().equals(nameCache))
+                            if (session.getName() != null &&
+                                    session.getName().contains(filter) &&
+                                    session.getDeviceVideoLink()!=null&&
+                                    session.getDeviceVideoLink().equals(nameCache))
                                 filtered.add(session);
-                            //TODO : verifier si marche
-                            if(session.getName() != null && session.getName().contains(filter) && session.getDeviceVideoLink()==null && session.getServerVideoLink()!=null){
-                                filtered.add(session);
-                            }
                         }
+                    }
+
+                    for (SessionModel session : result) {
+                        if (session.getName() != null && session.getName().contains(filter) &&
+                                session.getDeviceVideoLink()==null&&
+                                session.getServerVideoLink()!=null)
+                                    filtered.add(session);
                     }
                 }
 

@@ -31,6 +31,7 @@ public class SessionMapper extends FirebaseMapper<SessionEntity, SessionModel> {
         session.setTags( tagModels);
         if(sessionEntity.getRecording()!=null)session.setRecording(sessionEntity.getRecording());
         if(sessionEntity.getCooperative()!=null)session.setCooperative(sessionEntity.getCooperative());
+        if(sessionEntity.getDuration()!=-1)session.setDuration(sessionEntity.getDuration());
 
         return session;
     }
@@ -49,6 +50,7 @@ public class SessionMapper extends FirebaseMapper<SessionEntity, SessionModel> {
         sessionEntity.setVideoLink(sessionModel.getServerVideoLink());
         sessionEntity.setRecording(sessionModel.isRecording());
         sessionEntity.setCooperative(sessionModel.isCooperative());
+       if(sessionModel.getDuration()!=-1)sessionEntity.setDuration(sessionModel.getDuration());
         return sessionEntity;
     }
 

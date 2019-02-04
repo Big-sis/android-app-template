@@ -21,8 +21,8 @@ import com.vimeo.networking.VimeoClient;
 import com.vimeo.networking.callbacks.ModelCallback;
 import com.vimeo.networking.model.Video;
 import com.vimeo.networking.model.VideoFile;
+import com.vimeo.networking.model.VideoList;
 import com.vimeo.networking.model.error.VimeoError;
-import com.vimeo.networking.model.playback.Play;
 
 import java.util.ArrayList;
 
@@ -85,14 +85,24 @@ public class VideoPlayerFragment extends Fragment {
         viewModel.getSession().observe(getActivity(), new Observer<SessionModel>() {
             @Override
             public void onChanged(@Nullable SessionModel session) {
-                mVideoSelectedView.setVideoPath(session.getDeviceVideoLink());
-                //TODO : verifier code
-                //Verifier connexion internet
-                if (InternetConnexionHelper.haveInternetConnection(getActivity()))
-                    if (session.getDeviceVideoLink() == null && session.getServerVideoLink() != null) {
-                        mVideoSelectedView.setVideoURI(Uri.parse(uploadVimeoMovieLink(session.getDeviceVideoLink(), "clientId", "clientServer", "scope", "testAccountStore")));
-                    }
+                if(session.getDeviceVideoLink()==null){
+                    if (InternetConnexionHelper.haveInternetConnection(getActivity()))
+
+                    uploadVimeoMovieLink(session.getServerVideoLink());
                     else Toast.makeText(getContext(), "Vous devez posseder une connexion Internet pour lire cette vidéo", Toast.LENGTH_SHORT).show();
+                }
+                else{//TODO mettre duree viewModel.setDurationMovie(viewModel.getSession().getValue().getDuration());
+                    mVideoSelectedView.setVideoPath(session.getDeviceVideoLink());}
+
+            }
+        });
+
+        viewModel.getLinkPlayer().observe(this, new Observer<String>() {
+            @Override
+            public void onChanged(@Nullable String s) {
+                if (s!=null){
+                    mVideoSelectedView.setVideoURI(Uri.parse(s));
+                }
             }
         });
 
@@ -148,44 +158,40 @@ public class VideoPlayerFragment extends Fragment {
         });
     }
 
-    public String uploadVimeoMovieLink(String linkVimeo, String clientId, String clientServer, String scope, String testAccountStore) {
-        //init Client Vimeo
-        Configuration.Builder configBuilder =
-                new Configuration.Builder(clientId, clientServer, scope, testAccountStore)
-                        .setCacheDirectory(getActivity().getCacheDir());
-        VimeoClient.initialize(configBuilder.build());
-
-        //Upload link for ViewerVideo
-        String uri = linkVimeo;// the video uri; if you have a Video, this is video.uri
+    public String uploadVimeoMovieLink(final String linkVimeo) {
         final String[] linkPlayer = new String[1];
-        VimeoClient.getInstance().fetchNetworkContent(uri, new ModelCallback<Video>(Video.class) {
+        //init Client Vimeo
+        String accessToken = getContext().getString(R.string.accesToken);
+        VimeoClient.initialize(new Configuration.Builder(accessToken).build());
+
+        VimeoClient.getInstance().fetchNetworkContent("/me/videos", new ModelCallback<VideoList>(VideoList.class) {
             @Override
-            public void success(Video video) {
-                // use the video
+            public void success(VideoList videoList) {
+                // It's good practice to always make sure that the values the API sends us aren't null
+                if (videoList != null && videoList.data != null) {
+                    //Search linkMovie
+                    for (Video video : videoList.data) {
+                        if (video.link.equals(linkVimeo)){
+                            int duration =video.duration;
+                            ArrayList<VideoFile> videoFiles = video.files;
+                            if (videoFiles != null && !videoFiles.isEmpty()) {
+                                VideoFile videoFile = videoFiles.get(0);
+                                viewModel.setLinkPlayer(videoFile.getLink());
+                               long s =  videoFile.getSize();
 
-                Play play = video.getPlay();
-                if (play != null) {
-                    VideoFile dashFile = play.getDashVideoFile();
-                    String dashLike = dashFile.getLink();
-                    // load link
-
-                    VideoFile hlsFile = play.getHlsVideoFile();
-                    String hlsLink = hlsFile.getLink();
-                    // load link
-
-                    ArrayList<VideoFile> progressiveFiles = play.getProgressiveVideoFiles();
-                    // pick a progressive file to play
-
-                    linkPlayer[0] = dashLike;
-
+                            }
+                        }
+                    }
                 }
             }
 
             @Override
             public void failure(VimeoError error) {
-                linkPlayer[0] = error.getMessage();
+                String errorMessage = error.getDeveloperMessage();
+                viewModel.setLinkPlayer(null);
             }
         });
+
         return linkPlayer[0];
     }
 }

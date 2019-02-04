@@ -98,7 +98,6 @@ public class CreateSessionViewModel extends VyfeViewModel {
             }
         });
 
-        //test
 
 
     }

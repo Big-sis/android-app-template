@@ -37,6 +37,7 @@ public class SessionModel implements Parcelable, VyfeModel, Comparable<SessionMo
     private String thumbnail;
     private boolean cooperative;
     private boolean recording;
+    private int duration;
 
     public SessionModel(String name, String author, String videoLink, Date date, String idSession, String idTagSet) {
         this();
@@ -77,7 +78,16 @@ public class SessionModel implements Parcelable, VyfeModel, Comparable<SessionMo
         idAndroid = in.readString();
         deviceVideoLink = in.readString();
         thumbnail = in.readString();
+        duration = in.readInt();
 
+    }
+
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
+
+    public int getDuration() {
+        return duration;
     }
 
     public boolean isCooperative() {
@@ -151,13 +161,13 @@ public class SessionModel implements Parcelable, VyfeModel, Comparable<SessionMo
     public void setIdAndroid(String idAndroid) {
         this.idAndroid = idAndroid;
     }
-
+/**
     public int getDuration() {
         MediaMetadataRetriever retriever = new MediaMetadataRetriever();
         //use one of overloaded setDataSource() functions to set your data source
         //TODO : verifier code
         if (this.deviceVideoLink == null && serverVideoLink != null) {
-            retriever.setDataSource(this.serverVideoLink);
+            return -1;
         } else retriever.setDataSource(this.deviceVideoLink);
 
         String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
@@ -166,7 +176,7 @@ public class SessionModel implements Parcelable, VyfeModel, Comparable<SessionMo
         retriever.release();
 
         return timeInMillisec;
-    }
+    }**/
 
     public String getServerVideoLink() {
         return serverVideoLink;
@@ -220,6 +230,7 @@ public class SessionModel implements Parcelable, VyfeModel, Comparable<SessionMo
         dest.writeString(idAndroid);
         dest.writeString(deviceVideoLink);
         dest.writeString(thumbnail);
+        dest.writeInt(duration);
     }
 
     public String getFormatDate() {
