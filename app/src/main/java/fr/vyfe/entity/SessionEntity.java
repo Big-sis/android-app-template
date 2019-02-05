@@ -3,6 +3,7 @@ package fr.vyfe.entity;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @IgnoreExtraProperties
@@ -20,6 +21,7 @@ public class SessionEntity {
     private HashMap<String, TagEntity> tags;
     private Boolean cooperative;
     private Boolean recording;
+    private HashMap<String,Boolean> observers;
 
     public SessionEntity(){}
 
@@ -34,6 +36,14 @@ public class SessionEntity {
     }
     //Generated code
 
+
+    public HashMap<String, Boolean> getObservers() {
+        return observers;
+    }
+
+    public void setObservers(HashMap<String, Boolean> observers) {
+        this.observers = observers;
+    }
 
     public String getAuthor() {
         return author;
