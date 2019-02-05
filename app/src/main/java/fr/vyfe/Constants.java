@@ -11,6 +11,7 @@ public final class Constants {
     public static final String SESSIONMODEL_EXTRA = "SessionModel";
     public static final String SESSIONMODELID_EXTRA = "SessionModelId";
     public static final String VIDEO_DIRECTORY_NAME = "Vyfe";
+    public static final String VIME_DIRECTION_ME_VIDEO="/me/videos";
 
     public static final String BDDV2_LICENSES_KEY = "Licenses";
     public static final String BDDV2_LICENSES_START_KEY = "start";
@@ -29,6 +30,7 @@ public final class Constants {
     public static final String BDDV2_USERS_ROLE_VIEWER_KEY = "viewer";
     public static final String BDDV2_USERS_AUTHORIZESESSIONS_KEY = "authorizeSessions";
     public static final String BDDV2_USERS_TAGSETS_KEY = "tagSets";
+    public static final String BDDV2_USERS_TAGSETS_ARCHIVED = "archived";
     public static final String BDDV2_USERS_TAGS_KEY = "tags";
     public static final String BDDV2_SESSIONS_KEY = "sessions";
     public static final String BDDV2_VIMEOTOKEN = "vimeoAccessToken";

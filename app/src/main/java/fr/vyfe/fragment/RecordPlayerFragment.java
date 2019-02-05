@@ -21,6 +21,7 @@ import android.hardware.camera2.CameraManager;
 import android.hardware.camera2.CameraMetadata;
 import android.hardware.camera2.CaptureRequest;
 import android.hardware.camera2.params.StreamConfigurationMap;
+import android.media.MediaMetadataRetriever;
 import android.media.MediaRecorder;
 import android.os.Bundle;
 import android.os.Environment;
@@ -312,7 +313,12 @@ public class RecordPlayerFragment extends Fragment implements View.OnClickListen
                 } else {
                     viewModel.stop();
                     stopRecordingVideo();
+
+
+                    int durationMovie = getDurationDevice(viewModel.getSession().getValue().getDeviceVideoLink());
+                    viewModel.addDurationMovie(durationMovie);
                     viewModel.save();
+
                 }
                 break;
             }
@@ -569,7 +575,6 @@ public class RecordPlayerFragment extends Fragment implements View.OnClickListen
                     getActivity().runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            //TODO: erreur
                             viewModel.startRecord();
                             mMediaRecorder.start();
                         }
@@ -654,5 +659,17 @@ public class RecordPlayerFragment extends Fragment implements View.OnClickListen
                     })
                     .create();
         }
+    }
+
+    private int getDurationDevice(String deviceLink){
+        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+        retriever.setDataSource(deviceLink);
+
+        String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
+        int timeInMillisec = Integer.parseInt(time);
+
+        retriever.release();
+
+        return timeInMillisec;
     }
 }

@@ -15,6 +15,7 @@
         app:layout_constraintEnd_toStartOf="@+id/button_play"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <ImageView
         android:id="@+id/button_play"
         android:layout_width="50dp"

@@ -17,10 +17,8 @@ public class LinkDeviceTranslateVideoHelper {
 
 
 
-    public static byte[] getVideo(String fromFile, Context context, int offset) {
+    public static byte[] convertVideotobytes(String fromFile, Context context, int offset) {
         File file = new File(fromFile);
-        final long length = file.length();
-        HashMap<String,byte[]> hashMap = null;
 
         //transformation du lien de stockage en vidéo
         try {
@@ -29,10 +27,8 @@ public class LinkDeviceTranslateVideoHelper {
            return inputData;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            Log.d("t", "onClick: "+e.getMessage());
         } catch (IOException e) {
             e.printStackTrace();
-            Log.d("tt", "onClick: "+e.getMessage());
         }
         return null;
     }

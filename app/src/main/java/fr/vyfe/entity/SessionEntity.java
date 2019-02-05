@@ -3,6 +3,7 @@ package fr.vyfe.entity;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @IgnoreExtraProperties
@@ -20,6 +21,8 @@ public class SessionEntity {
     private HashMap<String, TagEntity> tags;
     private Boolean cooperative;
     private Boolean recording;
+    private int duration;
+    private HashMap<String,Boolean> observers;
 
     public SessionEntity(){}
 
@@ -29,105 +32,123 @@ public class SessionEntity {
         sessionMap.put("cooperative", cooperative);
         sessionMap.put("recording", recording);
         sessionMap.put("videoLink",videoLink);
+        sessionMap.put("duration",duration);
         return sessionMap;
 
     }
     //Generated code
 
 
-    public String getAuthor() {
-        return author;
+
+    public int getDuration() {
+        return duration;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
-    }
+    public void setDuration(int duration) {
+        this.duration = duration;}
 
-    public long getDate() {
-        return date;
-    }
+        public HashMap<String, Boolean> getObservers () {
+            return observers;
+        }
 
-    public void setDate(long date) {
-        this.date = date;
-    }
+        public void setObservers (HashMap < String, Boolean > observers){
+            this.observers = observers;
 
-    public String getIdAndroid() {
-        return idAndroid;
-    }
+        }
 
-    public void setIdAndroid(String idAndroid) {
-        this.idAndroid = idAndroid;
-    }
+        public String getAuthor () {
+            return author;
+        }
 
-    public String getTagSetId() {
-        return tagSetId;
-    }
+        public void setAuthor (String author){
+            this.author = author;
+        }
 
-    public void setTagSetId(String tagSetId) {
-        this.tagSetId = tagSetId;
-    }
+        public long getDate () {
+            return date;
+        }
 
-    public String getName() {
-        return name;
-    }
+        public void setDate ( long date){
+            this.date = date;
+        }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+        public String getIdAndroid () {
+            return idAndroid;
+        }
 
-    public String getPathApp() {
-        return pathApp;
-    }
+        public void setIdAndroid (String idAndroid){
+            this.idAndroid = idAndroid;
+        }
 
-    public void setPathApp(String pathApp) {
-        this.pathApp = pathApp;
-    }
+        public String getTagSetId () {
+            return tagSetId;
+        }
 
-    public String getVideoLink() {
-        return videoLink;
-    }
+        public void setTagSetId (String tagSetId){
+            this.tagSetId = tagSetId;
+        }
 
-    public void setVideoLink(String videoLink) {
-        this.videoLink = videoLink;
-    }
+        public String getName () {
+            return name;
+        }
 
-    public String getThumbnailUrl() {
-        return thumbnailUrl;
-    }
+        public void setName (String name){
+            this.name = name;
+        }
 
-    public void setThumbnailUrl(String thumbnailUrl) {
-        this.thumbnailUrl = thumbnailUrl;
-    }
+        public String getPathApp () {
+            return pathApp;
+        }
 
-    public String getDescription() {
-        return description;
-    }
+        public void setPathApp (String pathApp){
+            this.pathApp = pathApp;
+        }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+        public String getVideoLink () {
+            return videoLink;
+        }
 
-    public HashMap<String, TagEntity> getTags() {
-        return tags;
-    }
+        public void setVideoLink (String videoLink){
+            this.videoLink = videoLink;
+        }
 
-    public void setTags(HashMap<String, TagEntity> tags) {
-        this.tags = tags;
-    }
+        public String getThumbnailUrl () {
+            return thumbnailUrl;
+        }
 
-    public Boolean getCooperative() {
-        return cooperative;
-    }
+        public void setThumbnailUrl (String thumbnailUrl){
+            this.thumbnailUrl = thumbnailUrl;
+        }
 
-    public void setCooperative(Boolean cooperative) {
-        this.cooperative = cooperative;
-    }
+        public String getDescription () {
+            return description;
+        }
 
-    public Boolean getRecording() {
-        return recording;
-    }
+        public void setDescription (String description){
+            this.description = description;
+        }
 
-    public void setRecording(Boolean recording) {
-        this.recording = recording;
+        public HashMap<String, TagEntity> getTags () {
+            return tags;
+        }
+
+        public void setTags (HashMap < String, TagEntity > tags){
+            this.tags = tags;
+        }
+
+        public Boolean getCooperative () {
+            return cooperative;
+        }
+
+        public void setCooperative (Boolean cooperative){
+            this.cooperative = cooperative;
+        }
+
+        public Boolean getRecording () {
+            return recording;
+        }
+
+        public void setRecording (Boolean recording){
+            this.recording = recording;
+        }
     }
-}

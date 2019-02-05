@@ -3,6 +3,7 @@ package fr.vyfe.viewModel;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -28,10 +29,9 @@ public abstract class VyfeViewModel extends ViewModel {
         return sessionId;
     }
 
-    protected void loadSession(String id) {
+    protected void loadSession(final String id) {
         if (session == null)
             session = new MutableLiveData<>();
-
 
         sessionRepository.addChildListener(id, true, new BaseSingleValueEventListener.CallbackInterface<SessionModel>() {
             @Override
@@ -93,4 +93,5 @@ public abstract class VyfeViewModel extends ViewModel {
         if (sessionRepository != null) sessionRepository.removeListeners();
         if (tagSetRepository != null) tagSetRepository.removeListeners();
     }
+
 }

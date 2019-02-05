@@ -11,9 +11,19 @@ import android.support.annotation.NonNull;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Map;
 
-public class SessionModel implements Parcelable, VyfeModel,Comparable<SessionModel> {
+public class SessionModel implements Parcelable, VyfeModel, Comparable<SessionModel> {
+    public static final Creator<SessionModel> CREATOR = new Creator<SessionModel>() {
+        @Override
+        public SessionModel createFromParcel(Parcel in) {
+            return new SessionModel(in);
+        }
+
+        @Override
+        public SessionModel[] newArray(int size) {
+            return new SessionModel[size];
+        }
+    };
     private String name;
     private String author;
     private String serverVideoLink;
@@ -27,7 +37,8 @@ public class SessionModel implements Parcelable, VyfeModel,Comparable<SessionMod
     private String thumbnail;
     private boolean cooperative;
     private boolean recording;
-
+    private int duration;
+    private ArrayList<String> observers;
 
     public SessionModel(String name, String author, String videoLink, Date date, String idSession, String idTagSet) {
         this();
@@ -39,22 +50,22 @@ public class SessionModel implements Parcelable, VyfeModel,Comparable<SessionMod
         this.idTagSet = idTagSet;
     }
 
-    public SessionModel(String name, ArrayList<TagModel> tags,String idTagSet ){
+    public SessionModel(String name, ArrayList<TagModel> tags, String idTagSet) {
         this();
         this.name = name;
         this.Tags = tags;
         this.idTagSet = idTagSet;
     }
 
-    public SessionModel(){
+    public SessionModel() {
         this.date = new Date();
     }
+
 
     public SessionModel(String name, String author, String videoLink, Date date, String idSession, String idTagSet, String idAndroid) {
         this(name, author, videoLink, date, idSession, idTagSet);
         this.idAndroid = idAndroid;
     }
-
 
     public SessionModel(Parcel in) {
         name = in.readString();
@@ -68,20 +79,17 @@ public class SessionModel implements Parcelable, VyfeModel,Comparable<SessionMod
         idAndroid = in.readString();
         deviceVideoLink = in.readString();
         thumbnail = in.readString();
+        duration = in.readInt();
 
     }
 
-    public static final Creator<SessionModel> CREATOR = new Creator<SessionModel>() {
-        @Override
-        public SessionModel createFromParcel(Parcel in) {
-            return new SessionModel(in);
-        }
+    public void setDuration(int duration) {
+        this.duration = duration;
+    }
 
-        @Override
-        public SessionModel[] newArray(int size) {
-            return new SessionModel[size];
-        }
-    };
+    public int getDuration() {
+        return duration;
+    }
 
     public boolean isCooperative() {
         return cooperative;
@@ -138,6 +146,7 @@ public class SessionModel implements Parcelable, VyfeModel,Comparable<SessionMod
     public void setDescription(String description) {
         this.description = description;
     }
+
     public String getTagSetId() {
         return idTagSet;
     }
@@ -153,18 +162,22 @@ public class SessionModel implements Parcelable, VyfeModel,Comparable<SessionMod
     public void setIdAndroid(String idAndroid) {
         this.idAndroid = idAndroid;
     }
-
-    public int getDuration(){
+/**
+    public int getDuration() {
         MediaMetadataRetriever retriever = new MediaMetadataRetriever();
         //use one of overloaded setDataSource() functions to set your data source
-        retriever.setDataSource(this.deviceVideoLink);
+        //TODO : verifier code
+        if (this.deviceVideoLink == null && serverVideoLink != null) {
+            return -1;
+        } else retriever.setDataSource(this.deviceVideoLink);
+
         String time = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
         int timeInMillisec = Integer.parseInt(time);
 
         retriever.release();
 
-        return timeInMillisec ;
-    }
+        return timeInMillisec;
+    }**/
 
     public String getServerVideoLink() {
         return serverVideoLink;
@@ -188,6 +201,14 @@ public class SessionModel implements Parcelable, VyfeModel,Comparable<SessionMod
 
     public void setDeviceVideoLink(String deviceVideoLink) {
         this.deviceVideoLink = deviceVideoLink;
+    }
+
+    public ArrayList<String> getObservers() {
+        return observers;
+    }
+
+    public void setObservers(ArrayList<String> observers) {
+        this.observers = observers;
     }
 
     // TODO : Display Vimeo thumbnail once available
@@ -218,6 +239,7 @@ public class SessionModel implements Parcelable, VyfeModel,Comparable<SessionMod
         dest.writeString(idAndroid);
         dest.writeString(deviceVideoLink);
         dest.writeString(thumbnail);
+        dest.writeInt(duration);
     }
 
     public String getFormatDate() {
@@ -227,6 +249,6 @@ public class SessionModel implements Parcelable, VyfeModel,Comparable<SessionMod
 
     @Override
     public int compareTo(@NonNull SessionModel o) {
-        return ((int)(this.date.getTime() - o.getDate().getTime()));
+        return ((int) (this.date.getTime() - o.getDate().getTime()));
     }
 }

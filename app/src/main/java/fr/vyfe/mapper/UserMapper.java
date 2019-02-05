@@ -53,13 +53,21 @@ public class UserMapper extends FirebaseMapper<UserEntity, UserModel> {
             e.printStackTrace();
         }
         ArrayList<String> roles = new ArrayList<>();
+        if(((HashMap<String, Boolean>) userMap.get("roles")).get("admin")!=null)
         if (((HashMap<String, Boolean>) userMap.get("roles")).get("admin"))
             roles.add("admin");
-        if (((HashMap<String, Boolean>) userMap.get("roles")).get("teacher"))
-            roles.add("teacher");
-        if (((HashMap<String, Boolean>) userMap.get("roles")).get("viewer"))
-            roles.add("reviewer");
-        user.setRoles(roles.toArray(new String[roles.size()]));
+
+        if (((HashMap<String, Boolean>) userMap.get("roles")).get("teacher")!=null){
+            if (((HashMap<String, Boolean>) userMap.get("roles")).get("teacher"))
+                roles.add("teacher");
+        }
+
+        if(((HashMap<String, Boolean>) userMap.get("roles")).get("viewer")!=null){
+            if (((HashMap<String, Boolean>) userMap.get("roles")).get("viewer"))
+                roles.add("reviewer");
+            user.setRoles(roles.toArray(new String[roles.size()]));
+        }
+
 
         return user;
     }

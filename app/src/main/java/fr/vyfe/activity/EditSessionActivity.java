@@ -21,6 +21,9 @@ import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.FirebaseDatabase;
 
+
+import java.io.File;
+
 import fr.vyfe.Constants;
 import fr.vyfe.R;
 import fr.vyfe.model.SessionModel;
@@ -38,7 +41,7 @@ public class EditSessionActivity extends VyfeActivity {
         setContentView(R.layout.activity_info_video);
 
         Button btnCancel = findViewById(R.id.btn_cancel);
-        final Button btnConfirmDelete = findViewById(R.id.btn_confirm_delete);
+
         Button btnDelete = findViewById(R.id.btn_delete);
         final Button btnEdit = findViewById(R.id.bt_edit);
         final ConstraintLayout confirmDelete = findViewById(R.id.confirm_delete);
@@ -46,6 +49,9 @@ public class EditSessionActivity extends VyfeActivity {
         final EditText etSessionTitle = findViewById(R.id.et_video_title);
         final TextView tvSave = findViewById(R.id.tv_video_save);
         final ImageView imageViewDelete = findViewById(R.id.iv_delete);
+
+        final Button btnAppDelete = findViewById(R.id.btn_app_delete);
+        final Button btnAllDelete = findViewById(R.id.btn_all_delete);
         Toolbar toolbar = findViewById(R.id.toolbar);
         mDatabase = FirebaseDatabase.getInstance();
 
@@ -57,6 +63,11 @@ public class EditSessionActivity extends VyfeActivity {
         viewModel.getSession().observe(this, new Observer<SessionModel>() {
             @Override
             public void onChanged(@Nullable SessionModel sessionModel) {
+                //TODO voir condition si cest pas le mm device
+
+               if(sessionModel.getDeviceVideoLink()!=null)btnAppDelete.setVisibility(View.VISIBLE);
+               else  btnAppDelete.setVisibility(View.INVISIBLE);
+
                 if (sessionModel != null) {
                     etDescription.setText(sessionModel.getDescription());
                     etSessionTitle.setText(sessionModel.getName());
@@ -102,6 +113,8 @@ public class EditSessionActivity extends VyfeActivity {
             }
         });
 
+
+
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,10 +123,21 @@ public class EditSessionActivity extends VyfeActivity {
             }
         });
 
-        btnConfirmDelete.setOnClickListener(new View.OnClickListener() {
+        btnAppDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (btnConfirmDelete.getText().toString().equals(getString(R.string.delete))) {
+                //TODO: supprimer juste le lien pathApp Firebase
+                File file =  new File(viewModel.getSession().getValue().getDeviceVideoLink());
+                file.delete();
+            }
+        });
+
+
+        btnAllDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (btnAppDelete.getText().toString().equals("Supprimer")) {
+                    //TODO supprimer du serveur la video
                     viewModel.deleteSession().continueWith(new Continuation<Void, Void>() {
                         @Override
                         public Void then(@NonNull Task<Void> task) throws Exception {
@@ -149,7 +173,7 @@ public class EditSessionActivity extends VyfeActivity {
             @Override
             public void onClick(View v) {
                 confirmDelete.setVisibility(View.GONE);
-                btnConfirmDelete.setText(R.string.delete);
+                btnAppDelete.setText(getString(R.string.delete_app));
                 tvSave.setText(R.string.confirm_delete_video);
             }
         });
@@ -157,10 +181,11 @@ public class EditSessionActivity extends VyfeActivity {
         btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                btnConfirmDelete.setText(R.string.change_movie);
+                btnAppDelete.setText(R.string.change_movie);
                 tvSave.setText(R.string.confirm_change_movie);
                 confirmDelete.setVisibility(View.VISIBLE);
                 imageViewDelete.setVisibility(View.GONE);
+                btnAllDelete.setVisibility(View.GONE);
             }
         });
     }

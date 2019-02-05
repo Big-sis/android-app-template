@@ -5,7 +5,6 @@ import java.util.HashMap;
 
 public class UserEntity {
     private ProfilEntity profile;
-    private AccountInformationsEntity accountInformations;
     private boolean confirmed;
     private String role[];
     private ArrayList<String> autorizeSessions;
@@ -37,15 +36,6 @@ public class UserEntity {
     public void setProfile(ProfilEntity profile) {
         this.profile = profile;
     }
-
-    public AccountInformationsEntity getAccountInformations() {
-        return accountInformations;
-    }
-
-    public void setAccountInformations(AccountInformationsEntity accountInformations) {
-        this.accountInformations = accountInformations;
-    }
-
 
     public String[] getRole() {
         return role;

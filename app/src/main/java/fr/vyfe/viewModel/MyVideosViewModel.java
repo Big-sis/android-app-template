@@ -10,7 +10,6 @@ import java.util.Comparator;
 import java.util.List;
 
 import fr.vyfe.Constants;
-import fr.vyfe.helper.AuthHelper;
 import fr.vyfe.model.SessionModel;
 import fr.vyfe.repository.BaseListValueEventListener;
 import fr.vyfe.repository.SessionRepository;
@@ -21,20 +20,23 @@ import static android.os.Environment.getExternalStoragePublicDirectory;
 
 public class MyVideosViewModel extends VyfeViewModel {
 
+    private static String mAuth;
     private SessionRepository repository;
     private MutableLiveData<List<SessionModel>> sessions;
     private String filter;
     private MutableLiveData<Boolean> permissions;
-    private static String mAuth;
+    private String androidId;
 
-    public MyVideosViewModel(String companyId, String androidId, String mAuth) {
+    public MyVideosViewModel(String companyId, String mAuth, String androidId) {
+        this.mAuth = mAuth;
         repository = new SessionRepository(companyId);
-        repository.setOrderByChildKey("idAndroid");
-        repository.setEqualToKey(androidId);
+        repository.setOrderByChildKey("author");
+        repository.setEqualToKey(mAuth);
         filter = "";
         permissions = new MutableLiveData<>();
         permissions.setValue(false);
-        this.mAuth = mAuth;
+        this.androidId = androidId;
+
     }
 
     public void permissionsAccepted() {
@@ -64,7 +66,6 @@ public class MyVideosViewModel extends VyfeViewModel {
             @Override
             public void onSuccess(List<SessionModel> result) {
 
-
                 File externalStorage = getExternalStoragePublicDirectory(DIRECTORY_MOVIES + "/" + Constants.VIDEO_DIRECTORY_NAME);
                 final String racineExternalStorage = String.valueOf(externalStorage.getAbsoluteFile());
                 final String[] filesExternalStorage = externalStorage.list();
@@ -74,20 +75,43 @@ public class MyVideosViewModel extends VyfeViewModel {
                     for (String nameFileExternalStorage : filesExternalStorage) {
                         String nameCache = racineExternalStorage + "/" + nameFileExternalStorage;
                         for (SessionModel session : result) {
-                            if (session.getName() != null && session.getName().contains(filter) && session.getDeviceVideoLink().equals(nameCache))
+
+                            //Recup video sur la tablette
+                            if (session.getName() != null &&
+                                    session.getName().contains(filter) &&
+                                    session.getDeviceVideoLink() != null &&
+                                    session.getDeviceVideoLink().equals(nameCache))
                                 filtered.add(session);
+
                         }
+
                     }
-                }
-                // For moment,to save time,"Index Your Data" is the "future"
-                for(int i =0; i< filtered.size();i++){
-                    if(!filtered.get(i).getAuthor().equals(mAuth)){
-                        filtered.remove(i);
-                }
+
+
+                    for (SessionModel session : result) {
+                        //recupe les videos sur vimeo et pas sur la tablette
+                        if (session.getName() != null && session.getName().contains(filter) &&
+                                session.getDeviceVideoLink() == null &&
+                                session.getServerVideoLink() != null)
+                            filtered.add(session);
+
+                        //recupere videos sur vimeo dune autre tablette
+                        if (session.getDeviceVideoLink()!=null&&
+                                !androidId.equals(session.getIdAndroid()) &&
+                                session.getServerVideoLink() != null)
+                            filtered.add(session);
+                    }
+
 
                 }
-                //TODO: respository is filtered by idAndroid
+
+                //TODO: respository is filtered by Author
                 // for moment, to save time, second filter is here
+
+
+                //TODO: Filter data server side
+                // for now, to save time, second filter is here
+
                 Collections.sort(filtered, new Comparator<SessionModel>() {
                     @Override
                     public int compare(SessionModel o1, SessionModel o2) {

@@ -14,6 +14,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.functions.FirebaseFunctions;
 import com.google.firebase.functions.FirebaseFunctionsException;
 import com.google.firebase.functions.HttpsCallableResult;
@@ -113,6 +114,10 @@ public class AuthHelper {
                 });
 
 
+    }
+
+    public Task<HashMap<String, Object>> getUser(String id){
+        return fetchCompanyAndUser(id);
     }
 
     private Task<HashMap<String, Object>> fetchCompanyAndUser(String userId) {
