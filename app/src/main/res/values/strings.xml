@@ -156,5 +156,8 @@
     <string name="live">Live</string>
     <string name="add_connexion">Vous devez posseder une connexion Internet pour lire cette vidéo</string>
     <string name="delete_server">Supprimer la vidéo de la plateforme Web</string>
-    <string name="delete_all">Supprimer la session</string>
+    <string name="participants">Participants : </string>
+    <string name="observer">Observateur : </string>
+    <string name="unknow">Inconnu</string>
+
 </resources>

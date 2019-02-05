@@ -1,6 +1,8 @@
 package fr.vyfe.repository;
 
 
+import com.google.firebase.database.Query;
+
 import java.util.List;
 
 import fr.vyfe.Constants;
@@ -29,5 +31,13 @@ public class TagSetRepository extends FirebaseDatabaseRepository<TagSetModel> {
         for (TemplateModel templateModel : templates) {
             databaseReference.child(key).child(Constants.BDDV2_USERS_TEMPLATES_KEY).push().setValue(mapper.unMap(templateModel));
         }
+    }
+
+    public void addListListener(BaseListValueEventListener.CallbackInterface<TagSetModel> callback) {
+        listListener = new BaseListValueEventListener(mapper, callback);
+        Query query = databaseReference;
+        query = query.orderByChild(Constants.BDDV2_USERS_TAGSETS_ARCHIVED);
+        query = query.equalTo(false);
+        query.addValueEventListener(listListener);
     }
 }

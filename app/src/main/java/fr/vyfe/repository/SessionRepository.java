@@ -32,7 +32,6 @@ public class SessionRepository extends FirebaseDatabaseRepository<SessionModel> 
     }
 
     public String push(SessionModel sessionModel, String androidId) throws Exception {
-        //TODO pourquoi pas mettre date, auteur etc de fixe
         sessionModel.setIdAndroid(Hashing.sha256().hashString(androidId, Charset.defaultCharset()).toString());
         String filePath = createFile(sessionModel.getName());
         if (filePath != null) {

@@ -3,10 +3,9 @@ package fr.vyfe.mapper;
 
 import android.support.annotation.NonNull;
 
-import com.google.firebase.database.ServerValue;
-
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Objects;
 
 import fr.vyfe.entity.SessionEntity;
 import fr.vyfe.model.SessionModel;
@@ -28,10 +27,20 @@ public class SessionMapper extends FirebaseMapper<SessionEntity, SessionModel> {
         session.setDescription(sessionEntity.getDescription());
         session.setId(key);
         ArrayList<TagModel> tagModels = new TagMapper().mapList(sessionEntity.getTags());
-        session.setTags( tagModels);
-        if(sessionEntity.getRecording()!=null)session.setRecording(sessionEntity.getRecording());
-        if(sessionEntity.getCooperative()!=null)session.setCooperative(sessionEntity.getCooperative());
         if(sessionEntity.getDuration()!=-1)session.setDuration(sessionEntity.getDuration());
+        session.setTags(tagModels);
+        if (sessionEntity.getRecording() != null)
+            session.setRecording(sessionEntity.getRecording());
+        if (sessionEntity.getCooperative() != null)
+            session.setCooperative(sessionEntity.getCooperative());
+
+        ArrayList<String> observers = new ArrayList<>();
+        if (sessionEntity.getObservers() != null) {
+            for (String observer : Objects.requireNonNull(sessionEntity).getObservers().keySet()) {
+                observers.add(observer);
+            }
+        }
+        session.setObservers(observers);
 
         return session;
     }

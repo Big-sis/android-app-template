@@ -75,6 +75,7 @@ public class MyVideosViewModel extends VyfeViewModel {
                     for (String nameFileExternalStorage : filesExternalStorage) {
                         String nameCache = racineExternalStorage + "/" + nameFileExternalStorage;
                         for (SessionModel session : result) {
+
                             //Recup video sur la tablette
                             if (session.getName() != null &&
                                     session.getName().contains(filter) &&
@@ -85,6 +86,7 @@ public class MyVideosViewModel extends VyfeViewModel {
                         }
 
                     }
+
 
                     for (SessionModel session : result) {
                         //recupe les videos sur vimeo et pas sur la tablette
@@ -105,6 +107,11 @@ public class MyVideosViewModel extends VyfeViewModel {
 
                 //TODO: respository is filtered by Author
                 // for moment, to save time, second filter is here
+
+                }
+                //TODO: Filter data server side
+                // for now, to save time, second filter is here
+
                 Collections.sort(filtered, new Comparator<SessionModel>() {
                     @Override
                     public int compare(SessionModel o1, SessionModel o2) {

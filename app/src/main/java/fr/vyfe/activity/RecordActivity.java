@@ -19,7 +19,7 @@ import android.widget.Button;
 import fr.vyfe.Constants;
 import fr.vyfe.R;
 import fr.vyfe.adapter.WindowsAdapter;
-import fr.vyfe.fragment.SessionLiveFragment;
+import fr.vyfe.fragment.CooperationFragment;
 import fr.vyfe.fragment.RecordPlayerFragment;
 import fr.vyfe.fragment.TagSetRecordFragment;
 import fr.vyfe.fragment.TimelineRecordFragment;
@@ -105,10 +105,10 @@ public class RecordActivity extends VyfeActivity {
         viewModel.getStep().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String step) {
-                if (step.equals(viewModel.STEP_SAVE)) {
+                if (step.equals(RecordVideoViewModel.STEP_SAVE)) {
                     contrainOkRecord.setVisibility(View.VISIBLE);
                 }
-                if (step.equals(viewModel.STEP_ERROR)) {
+                if (step.equals(RecordVideoViewModel.STEP_ERROR)) {
                     constraintErrorSpace.setVisibility(View.VISIBLE);
                 }
             }
@@ -177,7 +177,7 @@ public class RecordActivity extends VyfeActivity {
     private void setViewPager(ViewPager viewPager) {
         WindowsAdapter adapter = new WindowsAdapter(super.getSupportFragmentManager());
         adapter.addFragment(new TagSetRecordFragment(), getString(R.string.Grid));
-        adapter.addFragment(new SessionLiveFragment(), getString(R.string.live));
+        adapter.addFragment(new CooperationFragment(), getString(R.string.live));
         viewPager.setAdapter(adapter);
     }
 

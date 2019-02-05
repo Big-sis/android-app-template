@@ -63,6 +63,7 @@ public class UploadVideoService extends Service {
     public void getTusLink(final Context context, final String VimeoToken, final String size, final String name, final UrlResponse listener) {
 
         RequestQueue queue = Volley.newRequestQueue(context);
+
         StringRequest sr = new StringRequest(
                 Request.Method.POST,
                 Constants.VIMEO_API_VIDEOS_ENDPOINT,
@@ -95,6 +96,8 @@ public class UploadVideoService extends Service {
                         listener.onError(error.getMessage());
                     }
                 }) {
+
+ 
             @Override
             protected Map<String, String> getParams() {
                 Map<String, String> params = new HashMap<String, String>();
@@ -130,12 +133,14 @@ public class UploadVideoService extends Service {
                 if (response.statusCode == 200) {
                     repository.update(session);
                 }
+
                 JSONObject jsonObject = new JSONObject(response.headers);
 
                 try {
                     String newUploadOffset = jsonObject.getString("Upload-Offset");
                     byte [] restUploadMovie =  LinkDeviceTranslateVideoHelper.convertVideotobytes(name, getApplication(),Integer.parseInt(newUploadOffset));
                     uploadVideo(url, context, restUploadMovie, lengthByte, newUploadOffset, listener);
+
 
                     // Si jamais tt nest pas telechargé relance une requete
                    /** if (Long.valueOf(newUploadOffset) < lengthByte) {
