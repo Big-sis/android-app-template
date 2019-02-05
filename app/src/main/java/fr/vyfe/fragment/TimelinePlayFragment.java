@@ -109,6 +109,7 @@ public class TimelinePlayFragment extends Fragment {
                         togetherContainer.addView(layout);
                         createTimelineRow(observer, layout, tagSetModel);
 
+
                         viewModel.getTags().observe(getActivity(), new Observer<List<TagModel>>() {
                             @Override
                             public void onChanged(@Nullable List<TagModel> tags) {

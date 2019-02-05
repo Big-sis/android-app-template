@@ -21,7 +21,6 @@ public class SessionEntity {
     private HashMap<String, TagEntity> tags;
     private Boolean cooperative;
     private Boolean recording;
-
     private int duration;
     private HashMap<String,Boolean> observers;
 
@@ -46,110 +45,110 @@ public class SessionEntity {
     }
 
     public void setDuration(int duration) {
-        this.duration = duration;
+        this.duration = duration;}
 
-    public HashMap<String, Boolean> getObservers() {
-        return observers;
+        public HashMap<String, Boolean> getObservers () {
+            return observers;
+        }
+
+        public void setObservers (HashMap < String, Boolean > observers){
+            this.observers = observers;
+
+        }
+
+        public String getAuthor () {
+            return author;
+        }
+
+        public void setAuthor (String author){
+            this.author = author;
+        }
+
+        public long getDate () {
+            return date;
+        }
+
+        public void setDate ( long date){
+            this.date = date;
+        }
+
+        public String getIdAndroid () {
+            return idAndroid;
+        }
+
+        public void setIdAndroid (String idAndroid){
+            this.idAndroid = idAndroid;
+        }
+
+        public String getTagSetId () {
+            return tagSetId;
+        }
+
+        public void setTagSetId (String tagSetId){
+            this.tagSetId = tagSetId;
+        }
+
+        public String getName () {
+            return name;
+        }
+
+        public void setName (String name){
+            this.name = name;
+        }
+
+        public String getPathApp () {
+            return pathApp;
+        }
+
+        public void setPathApp (String pathApp){
+            this.pathApp = pathApp;
+        }
+
+        public String getVideoLink () {
+            return videoLink;
+        }
+
+        public void setVideoLink (String videoLink){
+            this.videoLink = videoLink;
+        }
+
+        public String getThumbnailUrl () {
+            return thumbnailUrl;
+        }
+
+        public void setThumbnailUrl (String thumbnailUrl){
+            this.thumbnailUrl = thumbnailUrl;
+        }
+
+        public String getDescription () {
+            return description;
+        }
+
+        public void setDescription (String description){
+            this.description = description;
+        }
+
+        public HashMap<String, TagEntity> getTags () {
+            return tags;
+        }
+
+        public void setTags (HashMap < String, TagEntity > tags){
+            this.tags = tags;
+        }
+
+        public Boolean getCooperative () {
+            return cooperative;
+        }
+
+        public void setCooperative (Boolean cooperative){
+            this.cooperative = cooperative;
+        }
+
+        public Boolean getRecording () {
+            return recording;
+        }
+
+        public void setRecording (Boolean recording){
+            this.recording = recording;
+        }
     }
-
-    public void setObservers(HashMap<String, Boolean> observers) {
-        this.observers = observers;
-
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public long getDate() {
-        return date;
-    }
-
-    public void setDate(long date) {
-        this.date = date;
-    }
-
-    public String getIdAndroid() {
-        return idAndroid;
-    }
-
-    public void setIdAndroid(String idAndroid) {
-        this.idAndroid = idAndroid;
-    }
-
-    public String getTagSetId() {
-        return tagSetId;
-    }
-
-    public void setTagSetId(String tagSetId) {
-        this.tagSetId = tagSetId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPathApp() {
-        return pathApp;
-    }
-
-    public void setPathApp(String pathApp) {
-        this.pathApp = pathApp;
-    }
-
-    public String getVideoLink() {
-        return videoLink;
-    }
-
-    public void setVideoLink(String videoLink) {
-        this.videoLink = videoLink;
-    }
-
-    public String getThumbnailUrl() {
-        return thumbnailUrl;
-    }
-
-    public void setThumbnailUrl(String thumbnailUrl) {
-        this.thumbnailUrl = thumbnailUrl;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public HashMap<String, TagEntity> getTags() {
-        return tags;
-    }
-
-    public void setTags(HashMap<String, TagEntity> tags) {
-        this.tags = tags;
-    }
-
-    public Boolean getCooperative() {
-        return cooperative;
-    }
-
-    public void setCooperative(Boolean cooperative) {
-        this.cooperative = cooperative;
-    }
-
-    public Boolean getRecording() {
-        return recording;
-    }
-
-    public void setRecording(Boolean recording) {
-        this.recording = recording;
-    }
-}

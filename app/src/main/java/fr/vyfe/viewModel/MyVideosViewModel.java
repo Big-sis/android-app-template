@@ -108,7 +108,7 @@ public class MyVideosViewModel extends VyfeViewModel {
                 //TODO: respository is filtered by Author
                 // for moment, to save time, second filter is here
 
-                }
+
                 //TODO: Filter data server side
                 // for now, to save time, second filter is here
 

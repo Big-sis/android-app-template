@@ -159,5 +159,6 @@
     <string name="participants">Participants : </string>
     <string name="observer">Observateur : </string>
     <string name="unknow">Inconnu</string>
+    <string name="delete_all">Supprimer la session</string>
 
 </resources>
