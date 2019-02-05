@@ -26,6 +26,7 @@ import com.vimeo.networking.model.error.VimeoError;
 
 import java.util.ArrayList;
 
+import fr.vyfe.Constants;
 import fr.vyfe.R;
 import fr.vyfe.helper.InternetConnexionHelper;
 import fr.vyfe.model.SessionModel;
@@ -85,13 +86,13 @@ public class VideoPlayerFragment extends Fragment {
         viewModel.getSession().observe(getActivity(), new Observer<SessionModel>() {
             @Override
             public void onChanged(@Nullable SessionModel session) {
-                if(session.getDeviceVideoLink()==null){
+                if(session.getDeviceVideoLink()==null|| (session.getIdAndroid()!=viewModel.getAndroidId()&&session.getDeviceVideoLink()!=null)){
                     if (InternetConnexionHelper.haveInternetConnection(getActivity()))
 
                     uploadVimeoMovieLink(session.getServerVideoLink());
-                    else Toast.makeText(getContext(), "Vous devez posseder une connexion Internet pour lire cette vidéo", Toast.LENGTH_SHORT).show();
+                    else Toast.makeText(getContext(), R.string.add_connexion, Toast.LENGTH_SHORT).show();
                 }
-                else{//TODO mettre duree viewModel.setDurationMovie(viewModel.getSession().getValue().getDuration());
+                else{
                     mVideoSelectedView.setVideoPath(session.getDeviceVideoLink());}
 
             }
@@ -164,7 +165,7 @@ public class VideoPlayerFragment extends Fragment {
         String accessToken = getContext().getString(R.string.accesToken);
         VimeoClient.initialize(new Configuration.Builder(accessToken).build());
 
-        VimeoClient.getInstance().fetchNetworkContent("/me/videos", new ModelCallback<VideoList>(VideoList.class) {
+        VimeoClient.getInstance().fetchNetworkContent(Constants.VIME_DIRECTION_ME_VIDEO, new ModelCallback<VideoList>(VideoList.class) {
             @Override
             public void success(VideoList videoList) {
                 // It's good practice to always make sure that the values the API sends us aren't null

@@ -205,6 +205,15 @@
                     android:text="@string/delete"
                     android:textColor="@color/white" />
 
+                <Button
+                    android:id="@+id/btn_web_delete"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="36dp"
+                    android:background="@drawable/style_button"
+                    android:text="Supprimer la vidéo de la plateforme Web "
+                    android:textColor="@color/white" />
+
             </LinearLayout>
         </android.support.constraint.ConstraintLayout>
 

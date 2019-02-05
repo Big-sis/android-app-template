@@ -57,7 +57,7 @@
     <string name="show_video">Visionner</string>
     <string name="confirm_delete_video">Voulez-vous vraiment supprimer cette vidéo ?</string>
     <string name="cancel">Annuler</string>
-    <string name="delete">Supprimer la vidéo</string>
+    <string name="delete">Supprimer la vidéo de l\'application</string>
     <string name="wait_few_minutes">Cela peut prendre plusieurs minutes...</string>
     <string name="save_in_progress">Sauvegarde en cours...</string>
     <string name="bad_authentifiaction">L\'authentification a échoué. Vérifiez votre email et mot de passe</string>
@@ -154,4 +154,5 @@
     <string name="start_live">Lancement d\'une session coopérative</string>
     <string name="Grid">Grille</string>
     <string name="live">Live</string>
+    <string name="add_connexion">Vous devez posseder une connexion Internet pour lire cette vidéo</string>
 </resources>
