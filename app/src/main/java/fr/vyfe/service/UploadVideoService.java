@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
@@ -25,6 +26,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,6 +41,12 @@ import fr.vyfe.helper.LinkDeviceTranslateVideoHelper;
 import fr.vyfe.model.SessionModel;
 import fr.vyfe.repository.SessionRepository;
 import fr.vyfe.repository.VolleyMultipartRequest;
+import io.tus.android.client.TusPreferencesURLStore;
+import io.tus.java.client.TusClient;
+import io.tus.java.client.TusExecutor;
+import io.tus.java.client.TusURLMemoryStore;
+import io.tus.java.client.TusUpload;
+import io.tus.java.client.TusUploader;
 
 
 public class UploadVideoService extends Service {
@@ -48,7 +60,7 @@ public class UploadVideoService extends Service {
     public UploadVideoService() {
     }
     //first POST requete => upload_link and link
-    public void getTusLink(final Context context, final String VimeoToken, final String size, final UploadVideoService.UrlResponse listener) {
+    public void getTusLink(final Context context, final String VimeoToken, final String size, final String name, final UrlResponse listener) {
 
         RequestQueue queue = Volley.newRequestQueue(context);
         StringRequest sr = new StringRequest(
@@ -64,6 +76,13 @@ public class UploadVideoService extends Service {
                             String uploadLink = (String) groups.get("upload_link");
                             session.setServerVideoLink(Vimeolink);
                             listener.onSuccess(uploadLink);
+                            try {
+                                uploadVimeo(name,uploadLink,VimeoToken);
+                            } catch (MalformedURLException e) {
+                                e.printStackTrace();
+                            } catch (FileNotFoundException e) {
+                                e.printStackTrace();
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                             listener.onError(e.getMessage());
@@ -179,35 +198,13 @@ public class UploadVideoService extends Service {
         final String uploadOffset = "0";
 
 
-        getTusLink(getApplicationContext(), vimeoToken, String.valueOf(octectsSize*8), new UrlResponse() {
+
+
+
+           getTusLink(getApplicationContext(), vimeoToken, String.valueOf(octectsSize*8),name, new UrlResponse() {
             @Override
             public void onSuccess(String url) {
-                uploadVideo(url, getApplicationContext(), byteVideo, octectsSize, uploadOffset, new UploadResponse() {
-                    @Override
-                    public void onSuccess() {
-                        NotificationCompat.Builder builder =
-                                new NotificationCompat.Builder(getApplicationContext())
-                                        .setSmallIcon(R.drawable.animation_roue)
-                                        .setDefaults(Notification.DEFAULT_LIGHTS | Notification.DEFAULT_SOUND)
-                                        .setContentTitle("Téléchargement")
-                                        .setContentText("Votre vidéo a été mise en ligne");
 
-                        Intent notificationIntent = new Intent(getApplicationContext(), MainActivity.class);
-                        PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(), 0, notificationIntent,
-                                PendingIntent.FLAG_UPDATE_CURRENT);
-                        builder.setContentIntent(contentIntent);
-                        manager.notify(0, builder.build());
-
-                        stopSelf();
-                    }
-
-                    @Override
-                    public void onError(String error) {
-                        Toast.makeText(getApplicationContext(), "Une erreur est survenue : " + error, Toast.LENGTH_LONG).show();
-                        Log.d("TAGG", "onError: " + error);
-                        stopSelf();
-                    }
-                });
             }
 
             @Override
@@ -252,5 +249,85 @@ public class UploadVideoService extends Service {
         void onSuccess();
 
         void onError(String error);
+    }
+
+    public void uploadVimeo(String fileLink, final String vimeoLink,String VimeoToken) throws MalformedURLException, FileNotFoundException {
+        // Create a new TusClient instance
+        final TusClient client = new TusClient();
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("Authorization", VimeoToken);
+        client.setHeaders(params);
+        client.getConnectTimeout();
+
+// Configure tus HTTP endpoint. This URL will be used for creating new uploads
+// using the Creation extension
+        client.setUploadCreationURL(new URL(Constants.VIMEO_API_VIDEOS_ENDPOINT));
+
+// Enable resumable uploads by storing the upload URL in memory
+        SharedPreferences pref = getSharedPreferences("tus", 0);
+        client.enableResuming(new TusPreferencesURLStore(pref));
+
+// Open a file using which we will then create a TusUpload. If you do not have
+// a File object, you can manually construct a TusUpload using an InputStream.
+// See the documentation for more information.
+        File file = new File(fileLink);
+        final TusUpload upload = new TusUpload(file);
+
+        System.out.println("Starting upload...");
+
+// We wrap our uploading code in the TusExecutor class which will automatically catch
+// exceptions and issue retries with small delays between them and take fully
+// advantage of tus' resumability to offer more reliability.
+// This step is optional but highly recommended.
+        TusExecutor executor = new TusExecutor() {
+            @Override
+            protected void makeAttempt() throws ProtocolException, IOException, io.tus.java.client.ProtocolException {
+                // First try to resume an upload. If that's not possible we will create a new
+                // upload and get a TusUploader in return. This class is responsible for opening
+                // a connection to the remote server and doing the uploading.
+                TusUploader uploader = null;
+
+                try {
+                    client.beginOrResumeUploadFromURL(upload, new URL(vimeoLink));
+                } catch (io.tus.java.client.ProtocolException e) {
+                    e.printStackTrace();
+                }
+
+                // Alternatively, if your tus server does not support the Creation extension
+                // and you obtained an upload URL from another service, you can instruct
+                // tus-java-client to upload to a specific URL. Please note that this is usually
+                // _not_ necessary and only if the tus server does not support the Creation
+                // extension. The Vimeo API would be an example where this method is needed.
+                // TusUploader uploader = client.beginOrResumeUploadFromURL(upload, new URL("https://tus.server.net/files/my_file"));
+
+                // Upload the file in chunks of 1KB sizes.
+                uploader.setChunkSize(1024);
+
+                // Upload the file as long as data is available. Once the
+                // file has been fully uploaded the method will return -1
+                do {
+                    // Calculate the progress using the total size of the uploading file and
+                    // the current offset.
+                    long totalBytes = upload.getSize();
+                    long bytesUploaded = uploader.getOffset();
+                    double progress = (double) bytesUploaded / totalBytes * 100;
+
+                    System.out.printf("Upload at %06.2f%%.\n", progress);
+                } while(uploader.uploadChunk() > -1);
+
+                // Allow the HTTP connection to be closed and cleaned up
+                uploader.finish();
+
+                System.out.println("Upload finished.");
+                System.out.format("Upload available at: %s", uploader.getUploadURL().toString());
+            }
+        };
+        try {
+            executor.makeAttempts();
+        } catch (io.tus.java.client.ProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

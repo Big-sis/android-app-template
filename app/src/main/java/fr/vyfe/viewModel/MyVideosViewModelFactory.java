@@ -8,17 +8,19 @@ public class MyVideosViewModelFactory implements ViewModelProvider.Factory {
 
     private final String userId;
     private final String mAuth;
+    private final String idAndroid;
 
-    public MyVideosViewModelFactory(String userId, String mAuth) {
+    public MyVideosViewModelFactory(String userId, String mAuth, String idAndroid) {
         this.userId = userId;
-        this.mAuth =mAuth;
+        this.mAuth = mAuth;
+        this.idAndroid = idAndroid;
     }
 
     @NonNull
     @Override
     public <T extends ViewModel> T create(@NonNull Class<T> modelClass) {
         if (modelClass.isAssignableFrom(MyVideosViewModel.class))
-            return (T) new MyVideosViewModel(userId, mAuth);
+            return (T) new MyVideosViewModel(userId, mAuth, idAndroid);
         throw new IllegalArgumentException("Unkowm ViewModel class");
     }
 }

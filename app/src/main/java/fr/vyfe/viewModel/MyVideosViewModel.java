@@ -10,7 +10,6 @@ import java.util.Comparator;
 import java.util.List;
 
 import fr.vyfe.Constants;
-import fr.vyfe.helper.AuthHelper;
 import fr.vyfe.model.SessionModel;
 import fr.vyfe.repository.BaseListValueEventListener;
 import fr.vyfe.repository.SessionRepository;
@@ -21,13 +20,14 @@ import static android.os.Environment.getExternalStoragePublicDirectory;
 
 public class MyVideosViewModel extends VyfeViewModel {
 
+    private static String mAuth;
     private SessionRepository repository;
     private MutableLiveData<List<SessionModel>> sessions;
     private String filter;
     private MutableLiveData<Boolean> permissions;
-    private static String mAuth;
+    private String androidId;
 
-    public MyVideosViewModel(String companyId, String mAuth) {
+    public MyVideosViewModel(String companyId, String mAuth, String androidId) {
         this.mAuth = mAuth;
         repository = new SessionRepository(companyId);
         repository.setOrderByChildKey("author");
@@ -35,6 +35,7 @@ public class MyVideosViewModel extends VyfeViewModel {
         filter = "";
         permissions = new MutableLiveData<>();
         permissions.setValue(false);
+        this.androidId = androidId;
 
     }
 
@@ -74,20 +75,32 @@ public class MyVideosViewModel extends VyfeViewModel {
                     for (String nameFileExternalStorage : filesExternalStorage) {
                         String nameCache = racineExternalStorage + "/" + nameFileExternalStorage;
                         for (SessionModel session : result) {
+                            //Recup video sur la tablette
                             if (session.getName() != null &&
                                     session.getName().contains(filter) &&
-                                    session.getDeviceVideoLink()!=null&&
+                                    session.getDeviceVideoLink() != null &&
                                     session.getDeviceVideoLink().equals(nameCache))
                                 filtered.add(session);
+
                         }
+
                     }
 
                     for (SessionModel session : result) {
+                        //recupe les videos sur vimeo et pas sur la tablette
                         if (session.getName() != null && session.getName().contains(filter) &&
-                                session.getDeviceVideoLink()==null&&
-                                session.getServerVideoLink()!=null)
-                                    filtered.add(session);
+                                session.getDeviceVideoLink() == null &&
+                                session.getServerVideoLink() != null)
+                            filtered.add(session);
+
+                        //recupere videos sur vimeo dune autre tablette
+                        if (session.getDeviceVideoLink()!=null&&
+                                !androidId.equals(session.getIdAndroid()) &&
+                                session.getServerVideoLink() != null)
+                            filtered.add(session);
                     }
+
+
                 }
 
                 //TODO: respository is filtered by Author
