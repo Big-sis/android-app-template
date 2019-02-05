@@ -8,10 +8,6 @@ public class InternetConnexionHelper {
     public static boolean haveInternetConnection(Context context){
         NetworkInfo network = ((ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
 
-        if (network==null || !network.isConnected())
-        {
-            return false;
-        }
-        return true;
+        return (network!=null && network.isConnected());
     }
 }

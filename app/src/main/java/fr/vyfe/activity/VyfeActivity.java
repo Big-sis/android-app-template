@@ -15,6 +15,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.FirebaseAuth;
+
 import fr.vyfe.R;
 import fr.vyfe.helper.AuthHelper;
 
@@ -72,6 +75,7 @@ public abstract class VyfeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         self = this;
+        FirebaseApp.initializeApp(self);
         mAuth = AuthHelper.getInstance(this);
         if (mAuth.getLicenseRemainingDays() == 0) {
             if (mAuth.getCurrentUser() != null)

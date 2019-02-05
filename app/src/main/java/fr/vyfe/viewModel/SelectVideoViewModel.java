@@ -3,7 +3,10 @@ package fr.vyfe.viewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 
+import com.google.android.gms.tasks.Task;
+
 import fr.vyfe.Constants;
+import fr.vyfe.model.SessionModel;
 import fr.vyfe.repository.BaseSingleValueEventListener;
 import fr.vyfe.repository.SessionRepository;
 import fr.vyfe.repository.TagSetRepository;
@@ -50,5 +53,33 @@ public class SelectVideoViewModel extends VyfeViewModel {
                 company.setValue(null);
             }
         });
+    }
+
+    @Override
+    protected void loadSession(final String id) {
+        if (session == null)
+            session = new MutableLiveData<>();
+
+
+        sessionRepository.addChildListener(id, false, new BaseSingleValueEventListener.CallbackInterface<SessionModel>() {
+            @Override
+            public void onSuccess(SessionModel result) {
+
+                session.postValue(result);
+                if (tagSetRepository != null)
+                    SelectVideoViewModel.super.loadSession(id);
+            }
+
+            @Override
+            public void onError(Exception e) {
+                session.setValue(null);
+            }
+        });
+    }
+
+    public Task<Void> setServerVideoLink(String url) {
+        SessionModel sessionModel = session.getValue();
+        sessionModel.setServerVideoLink(url);
+        return sessionRepository.update(sessionModel);
     }
 }
