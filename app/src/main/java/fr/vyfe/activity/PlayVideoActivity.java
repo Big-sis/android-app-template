@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +17,11 @@ import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import com.google.common.hash.HashCode;
+import com.google.common.hash.Hashing;
+
+import java.nio.charset.Charset;
 
 import fr.vyfe.Constants;
 import fr.vyfe.R;
@@ -50,7 +56,9 @@ public class PlayVideoActivity extends VyfeActivity implements LifecycleOwner {
         super.onCreate(savedInstanceState);
 
         String sessionId = getIntent().getStringExtra(Constants.SESSIONMODELID_EXTRA);
-        viewModel = ViewModelProviders.of(this, new PlayVideoViewModelFactory(mAuth.getCurrentUser().getCompany(), mAuth.getCurrentUser().getId(), sessionId)).get(PlayVideoViewModel.class);
+        String androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        final HashCode hashCode = Hashing.sha256().hashString(androidId, Charset.defaultCharset());
+        viewModel = ViewModelProviders.of(this, new PlayVideoViewModelFactory(mAuth.getCurrentUser().getCompany(), mAuth.getCurrentUser().getId(), sessionId,hashCode.toString())).get(PlayVideoViewModel.class);
         viewModel.init();
 
         setContentView(R.layout.activity_play_video);

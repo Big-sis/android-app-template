@@ -17,36 +17,38 @@ public class LinkDeviceTranslateVideoHelper {
 
 
 
-    public static byte[] getVideo(String fromFile, Context context) {
+    public static byte[] convertVideotobytes(String fromFile, Context context, int offset) {
         File file = new File(fromFile);
-        final long length = file.length();
-        HashMap<String,byte[]> hashMap = null;
 
         //transformation du lien de stockage en vidéo
         try {
             iStream = context.getContentResolver().openInputStream(Uri.fromFile(file));
-            inputData = getBytes(iStream);
+            inputData = getBytes(iStream,offset);
            return inputData;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
-            Log.d("t", "onClick: "+e.getMessage());
         } catch (IOException e) {
             e.printStackTrace();
-            Log.d("tt", "onClick: "+e.getMessage());
         }
         return null;
     }
 
-    public static byte[] getBytes(InputStream inputStream) throws IOException {
+    public static byte[] getBytes(InputStream inputStream, int offset) throws IOException {
         ByteArrayOutputStream byteBuffer = new ByteArrayOutputStream();
         int bufferSize = 1024;
         byte[] buffer = new byte[bufferSize];
 
         int len = 0;
         while ((len = inputStream.read(buffer)) != -1) {
-            byteBuffer.write(buffer, 0, len);
+            byteBuffer.write(buffer, offset, len);
         }
+
+
+
+
         return byteBuffer.toByteArray();
     }
+
+
 
 }

@@ -11,6 +11,7 @@ public final class Constants {
     public static final String SESSIONMODEL_EXTRA = "SessionModel";
     public static final String SESSIONMODELID_EXTRA = "SessionModelId";
     public static final String VIDEO_DIRECTORY_NAME = "Vyfe";
+    public static final String VIME_DIRECTION_ME_VIDEO="/me/videos";
 
     public static final String BDDV2_LICENSES_KEY = "Licenses";
     public static final String BDDV2_LICENSES_START_KEY = "start";
@@ -35,6 +36,7 @@ public final class Constants {
     public static final String BDDV2_VIMEOTOKEN = "vimeoAccessToken";
     public static final String BDDV2_SESSIONS_VIMEOLINK = "videoLink";
     public static final String VIMEO_API_VIDEOS_ENDPOINT = "https://api.vimeo.com/me/videos";
+  //  public static final String VIMEO_API_VIDEOS_ENDPOINT = "https://api.vimeo.com/me/projects/615382/videos";
     public static final String VIMEO_TOKEN_EXTRA = "vimeo_token";
     public static final String COMPANYID_EXTRA = "company_id";
 

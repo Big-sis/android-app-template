@@ -5,6 +5,7 @@ import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
@@ -14,6 +15,10 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.ImageView;
 
+import com.google.common.hash.HashCode;
+import com.google.common.hash.Hashing;
+
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,7 +47,9 @@ public class MySessionsActivity extends VyfeActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_video);
 
-        viewModel = ViewModelProviders.of(this, new MyVideosViewModelFactory(mAuth.getCurrentUser().getCompany(), AndroidHelper.getAndroidId(this), mAuth.getCurrentUser().getId())).get(MyVideosViewModel.class);
+        String androidId = Settings.Secure.getString(getContentResolver(), Settings.Secure.ANDROID_ID);
+        final HashCode hashCode = Hashing.sha256().hashString(androidId, Charset.defaultCharset());
+        viewModel = ViewModelProviders.of(this, new MyVideosViewModelFactory(mAuth.getCurrentUser().getCompany(), mAuth.getCurrentUser().getId(),hashCode.toString())).get(MyVideosViewModel.class);
 
         gridView = findViewById(R.id.grid_videos);
         SearchView searchView = findViewById(R.id.search_video);

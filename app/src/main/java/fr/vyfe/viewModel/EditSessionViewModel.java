@@ -1,6 +1,8 @@
 package fr.vyfe.viewModel;
 
 
+import android.arch.lifecycle.MutableLiveData;
+
 import com.google.android.gms.tasks.Task;
 
 import fr.vyfe.model.SessionModel;
@@ -13,6 +15,7 @@ public class EditSessionViewModel extends VyfeViewModel {
 
     public EditSessionViewModel(String companyId) {
         sessionRepository = new SessionRepository(companyId);
+
     }
 
     public void init(String sessionId) {

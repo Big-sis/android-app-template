@@ -93,7 +93,6 @@ public class RecordVideoViewModel extends VyfeViewModel {
         isLiveRecording.setValue(false);
         addActiveTags();
         addActiveLive();
-
     }
 
     public void error() {
@@ -163,6 +162,12 @@ public class RecordVideoViewModel extends VyfeViewModel {
             sessionModel.setRecording(isLiveRecording.getValue());
             sessionRepository.update(sessionModel);
         }
+    }
+
+    public void addDurationMovie(int duration){
+        SessionModel sessionModel = session.getValue();
+        sessionModel.setDuration(duration);
+        sessionRepository.update(sessionModel);
     }
 
     private void loadTags() {
