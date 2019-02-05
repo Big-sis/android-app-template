@@ -113,7 +113,7 @@
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="20dp"
                     android:background="@drawable/style_button_white"
-                    android:text="@string/delete"
+                    android:text="Supprimer"
                     android:textSize="18sp"
                     app:fontFamily="@font/roboto_bold"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -197,21 +197,22 @@
                     app:layout_constraintStart_toStartOf="parent" />
 
                 <Button
-                    android:id="@+id/btn_confirm_delete"
+                    android:id="@+id/btn_app_delete"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_marginLeft="36dp"
                     android:background="@drawable/style_button"
-                    android:text="@string/delete"
+                    android:text="@string/delete_app"
                     android:textColor="@color/white" />
 
+
                 <Button
-                    android:id="@+id/btn_web_delete"
+                    android:id="@+id/btn_all_delete"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_marginLeft="36dp"
                     android:background="@drawable/style_button"
-                    android:text="Supprimer la vidéo de la plateforme Web "
+                    android:text="@string/delete_all"
                     android:textColor="@color/white" />
 
             </LinearLayout>

@@ -86,23 +86,24 @@ public class VideoPlayerFragment extends Fragment {
         viewModel.getSession().observe(getActivity(), new Observer<SessionModel>() {
             @Override
             public void onChanged(@Nullable SessionModel session) {
-                if(session.getDeviceVideoLink()==null|| (session.getIdAndroid()!=viewModel.getAndroidId()&&session.getDeviceVideoLink()!=null)){
+                if ((session.getDeviceVideoLink() == null) || (!session.getIdAndroid().equals(viewModel.getAndroidId()) && session.getDeviceVideoLink() != null)) {
                     if (InternetConnexionHelper.haveInternetConnection(getActivity()))
 
-                    uploadVimeoMovieLink(session.getServerVideoLink());
-                    else Toast.makeText(getContext(), R.string.add_connexion, Toast.LENGTH_SHORT).show();
+                        uploadVimeoMovieLink(session.getServerVideoLink());
+                    else
+                        Toast.makeText(getContext(), R.string.add_connexion, Toast.LENGTH_SHORT).show();
+                } else {
+                    mVideoSelectedView.setVideoPath(session.getDeviceVideoLink());
                 }
-                else{
-                    mVideoSelectedView.setVideoPath(session.getDeviceVideoLink());}
 
             }
         });
 
         viewModel.getLinkPlayer().observe(this, new Observer<String>() {
             @Override
-            public void onChanged(@Nullable String s) {
-                if (s!=null){
-                    mVideoSelectedView.setVideoURI(Uri.parse(s));
+            public void onChanged(@Nullable String link) {
+                if (link != null) {
+                    mVideoSelectedView.setVideoURI(Uri.parse(link));
                 }
             }
         });
@@ -172,13 +173,13 @@ public class VideoPlayerFragment extends Fragment {
                 if (videoList != null && videoList.data != null) {
                     //Search linkMovie
                     for (Video video : videoList.data) {
-                        if (video.link.equals(linkVimeo)){
-                            int duration =video.duration;
+                        if (video.link.equals(linkVimeo)) {
+                            int duration = video.duration;
                             ArrayList<VideoFile> videoFiles = video.files;
                             if (videoFiles != null && !videoFiles.isEmpty()) {
                                 VideoFile videoFile = videoFiles.get(0);
                                 viewModel.setLinkPlayer(videoFile.getLink());
-                               long s =  videoFile.getSize();
+                                long s = videoFile.getSize();
 
                             }
                         }
