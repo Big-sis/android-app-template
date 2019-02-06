@@ -5,8 +5,11 @@ import android.arch.lifecycle.MutableLiveData;
 
 import java.util.List;
 
+import fr.vyfe.model.CompanyModel;
 import fr.vyfe.model.TagModel;
 import fr.vyfe.repository.BaseListValueEventListener;
+import fr.vyfe.repository.BaseSingleValueEventListener;
+import fr.vyfe.repository.CompanyRepository;
 import fr.vyfe.repository.SessionRepository;
 import fr.vyfe.repository.TagRepository;
 import fr.vyfe.repository.TagSetRepository;
@@ -29,6 +32,9 @@ public class PlayVideoViewModel extends VyfeViewModel {
     private MutableLiveData<String> linkPlayer;
     private String androidId;
 
+    private CompanyRepository companyRepository;
+    private MutableLiveData<CompanyModel> company;
+
 
     public PlayVideoViewModel(String companyId, String userId, String sessionId, String androidId) {
         sessionRepository = new SessionRepository(companyId);
@@ -50,6 +56,7 @@ public class PlayVideoViewModel extends VyfeViewModel {
         linkPlayer.setValue(null);
 
         this.androidId = androidId;
+        companyRepository = new CompanyRepository(companyId);
     }
 
 
@@ -90,6 +97,7 @@ public class PlayVideoViewModel extends VyfeViewModel {
     }
 
     public void init() {
+        loadCompany();
         isPlaying.setValue(false);
         this.videoPosition.setValue(0);
     }
@@ -155,6 +163,31 @@ public class PlayVideoViewModel extends VyfeViewModel {
             @Override
             public void onError(Exception e) {
                 tags.setValue(null);
+            }
+        });
+    }
+
+    public LiveData<CompanyModel> getCompany() {
+        if (company == null) {
+            company = new MutableLiveData<>();
+            loadCompany();
+        }
+        return company;
+    }
+
+    public void loadCompany() {
+        if (company == null) {
+            company = new MutableLiveData<>();
+        }
+        companyRepository.addChildListener("", true, new BaseSingleValueEventListener.CallbackInterface<CompanyModel>() {
+            @Override
+            public void onSuccess(CompanyModel result) {
+                company.setValue(result);
+            }
+
+            @Override
+            public void onError(Exception e) {
+                company.setValue(null);
             }
         });
     }

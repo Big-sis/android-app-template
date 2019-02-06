@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import fr.vyfe.Constants;
 import fr.vyfe.R;
 import fr.vyfe.helper.InternetConnexionHelper;
+import fr.vyfe.model.CompanyModel;
 import fr.vyfe.model.SessionModel;
 import fr.vyfe.viewModel.PlayVideoViewModel;
 
@@ -39,6 +40,7 @@ public class VideoPlayerFragment extends Fragment {
     private VideoView mVideoSelectedView;
     private Handler mHandler;
     private ImageView mPlayPause;
+    private String mAccessToken;
 
     public static VideoPlayerFragment newInstance() {
         return new VideoPlayerFragment();
@@ -82,6 +84,13 @@ public class VideoPlayerFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
+
+        viewModel.getCompany().observe(this, new Observer<CompanyModel>() {
+            @Override
+            public void onChanged(@Nullable CompanyModel companyModel) {
+                mAccessToken = companyModel.getVimeoAccessToken();
+            }
+        });
 
         viewModel.getSession().observe(getActivity(), new Observer<SessionModel>() {
             @Override
@@ -163,8 +172,8 @@ public class VideoPlayerFragment extends Fragment {
     public String uploadVimeoMovieLink(final String linkVimeo) {
         final String[] linkPlayer = new String[1];
         //init Client Vimeo
-        String accessToken = getContext().getString(R.string.accesToken);
-        VimeoClient.initialize(new Configuration.Builder(accessToken).build());
+
+        VimeoClient.initialize(new Configuration.Builder(mAccessToken).build());
 
         VimeoClient.getInstance().fetchNetworkContent(Constants.VIME_DIRECTION_ME_VIDEO, new ModelCallback<VideoList>(VideoList.class) {
             @Override

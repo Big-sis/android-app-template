@@ -1,11 +1,14 @@
 package fr.vyfe.viewModel;
 
 
+import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 
 import com.google.android.gms.tasks.Task;
 
+import fr.vyfe.model.CompanyModel;
 import fr.vyfe.model.SessionModel;
+import fr.vyfe.repository.BaseSingleValueEventListener;
 import fr.vyfe.repository.SessionRepository;
 
 public class EditSessionViewModel extends VyfeViewModel {
@@ -47,4 +50,5 @@ public class EditSessionViewModel extends VyfeViewModel {
         sessionModel.setDescription(this.newDescription);
         return sessionRepository.put(sessionModel);
     }
+
 }

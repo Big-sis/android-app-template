@@ -108,7 +108,7 @@ public class TimelinePlayFragment extends Fragment {
                         layout.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                         togetherContainer.addView(layout);
                         createTimelineRow(observer, layout, tagSetModel);
-
+                    }
 
                         viewModel.getTags().observe(getActivity(), new Observer<List<TagModel>>() {
                             @Override
@@ -156,7 +156,7 @@ public class TimelinePlayFragment extends Fragment {
                             }
 
                         });
-                    }
+
                 }
             }
         });
@@ -202,14 +202,19 @@ public class TimelinePlayFragment extends Fragment {
                if (task.isSuccessful()) {
                    HashMap<String, Object> result = task.getResult();
                    UserModel currentUser = (new UserMapper()).map(result);
-                   TvNameTagguer.setText(getString(R.string.observer) + currentUser.getFirstname()+" "+currentUser.getLastName());
+                   String firstNameTagger = currentUser.getFirstname();
+                   String lastnameTagger = currentUser.getLastName();
+                   if(firstNameTagger==null)firstNameTagger="";
+                   if(lastnameTagger==null)lastnameTagger="";
+                   if(firstNameTagger==null&lastnameTagger==null)firstNameTagger=getString(R.string.name_unknow);
+                   TvNameTagguer.setText(getString(R.string.observer) + firstNameTagger+" "+lastnameTagger);
                } else {
                    Exception e = task.getException();
                    if (e instanceof FirebaseFunctionsException) {
                        FirebaseFunctionsException ffe = (FirebaseFunctionsException) e;
                        FirebaseFunctionsException.Code code = ffe.getCode();
                        Object details = ffe.getDetails();
-                       TvNameTagguer.setText(getString(R.string.observer) +getString(R.string.unknow));
+                       TvNameTagguer.setText(getString(R.string.observer) + getString(R.string.unknow));
                    }
 
                }
