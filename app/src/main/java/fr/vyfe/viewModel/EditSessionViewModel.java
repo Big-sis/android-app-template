@@ -1,14 +1,9 @@
 package fr.vyfe.viewModel;
 
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
-
 import com.google.android.gms.tasks.Task;
 
-import fr.vyfe.model.CompanyModel;
 import fr.vyfe.model.SessionModel;
-import fr.vyfe.repository.BaseSingleValueEventListener;
 import fr.vyfe.repository.SessionRepository;
 
 public class EditSessionViewModel extends VyfeViewModel {
@@ -44,11 +39,17 @@ public class EditSessionViewModel extends VyfeViewModel {
 
     public Task<Void> editSession() {
         SessionModel sessionModel = session.getValue();
-        if(newName==null)newName=getSession().getValue().getName();
-        if(newDescription==null)newDescription=getSession().getValue().getDescription();
+        if (newName == null) newName = getSession().getValue().getName();
+        if (newDescription == null) newDescription = getSession().getValue().getDescription();
         sessionModel.setName(this.newName);
         sessionModel.setDescription(this.newDescription);
-        return sessionRepository.put(sessionModel);
+        return sessionRepository.update(sessionModel);
+    }
+
+    public Task<Void> deleteLinkAppSession() {
+        SessionModel sessionModel = session.getValue();
+        sessionModel.setDeviceVideoLink(null);
+        return sessionRepository.update(sessionModel);
     }
 
 }

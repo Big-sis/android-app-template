@@ -3,7 +3,6 @@ package fr.vyfe.entity;
 import com.google.firebase.database.IgnoreExtraProperties;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @IgnoreExtraProperties
@@ -33,6 +32,8 @@ public class SessionEntity {
         sessionMap.put("recording", recording);
         sessionMap.put("videoLink",videoLink);
         sessionMap.put("duration",duration);
+        sessionMap.put("description",description);
+        sessionMap.put("pathApp",pathApp);
         return sessionMap;
 
     }

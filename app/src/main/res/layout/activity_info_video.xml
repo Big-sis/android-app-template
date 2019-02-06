@@ -88,7 +88,7 @@
                 android:orientation="vertical">
 
                 <Button
-                    android:id="@+id/bt_edit"
+                    android:id="@+id/btn_edit"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:alpha="0.4"
@@ -113,14 +113,106 @@
                     android:textSize="18sp"
                     app:fontFamily="@font/roboto_bold"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/bt_edit" />
+                    app:layout_constraintTop_toBottomOf="@+id/btn_edit" />
 
 
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
+
+    <!--edit-->
     <android.support.constraint.ConstraintLayout
-        android:id="@+id/confirm_delete"
+        android:id="@+id/confirm_action_edit"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:alpha="0.86"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@color/colorDarkBlueGrey" />
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_edit"
+                android:layout_width="90dp"
+                android:layout_height="84dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:srcCompat="@drawable/edit"
+                tools:ignore="MissingConstraints" />
+
+            <TextView
+                android:id="@+id/tv_mess_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/confirm_change_movie"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                app:fontFamily="@font/roboto_bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/iv_edit" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_mess_save">
+
+                <Button
+                    android:id="@+id/btn_cancel_edit"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:background="@null"
+                    android:text="@string/cancel"
+                    android:textColor="@color/white"
+                    app:layout_constraintStart_toStartOf="parent" />
+                <Button
+                    android:id="@+id/btn_edit_confirm"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="36dp"
+                    android:background="@drawable/style_button"
+                    android:text="@string/change_movie"
+                    android:textColor="@color/white" />
+
+
+            </LinearLayout>
+        </android.support.constraint.ConstraintLayout>
+
+    </android.support.constraint.ConstraintLayout>
+
+
+    <!--delete-->
+    <android.support.constraint.ConstraintLayout
+        android:id="@+id/confirm_action_delete"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:visibility="gone">
@@ -152,7 +244,8 @@
                 android:layout_marginStart="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:srcCompat="@drawable/icons8_effacer_96" />
+                app:srcCompat="@drawable/icons8_effacer_96"
+                tools:ignore="MissingConstraints" />
 
             <TextView
                 android:id="@+id/tv_video_save"
@@ -184,7 +277,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_video_save">
 
                 <Button
-                    android:id="@+id/btn_cancel"
+                    android:id="@+id/btn_cancel_delete"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:background="@null"
@@ -199,7 +292,8 @@
                     android:layout_marginLeft="36dp"
                     android:background="@drawable/style_button"
                     android:text="@string/delete_app"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:visibility="gone"/>
 
 
                 <Button
