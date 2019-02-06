@@ -34,11 +34,11 @@ public class SessionEntity {
         sessionMap.put("duration",duration);
         sessionMap.put("description",description);
         sessionMap.put("pathApp",pathApp);
+        sessionMap.put("observers",observers);
         return sessionMap;
 
     }
     //Generated code
-
 
 
     public int getDuration() {

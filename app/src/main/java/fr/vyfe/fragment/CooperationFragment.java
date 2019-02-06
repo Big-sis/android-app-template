@@ -14,10 +14,9 @@ import android.view.ViewGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.functions.FirebaseFunctions;
-import com.google.firebase.functions.HttpsCallableResult;
+import com.google.firebase.functions.FirebaseFunctionsException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -25,7 +24,8 @@ import java.util.HashMap;
 import fr.vyfe.R;
 import fr.vyfe.adapter.ObserverRecyclerAdapter;
 import fr.vyfe.helper.AuthHelper;
-import fr.vyfe.model.SessionModel;
+import fr.vyfe.mapper.UserMapper;
+import fr.vyfe.model.UserModel;
 import fr.vyfe.viewModel.RecordVideoViewModel;
 
 public class CooperationFragment extends Fragment {
@@ -76,24 +76,74 @@ public class CooperationFragment extends Fragment {
         viewModel.getStep().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String step) {
-                if(step.equals(RecordVideoViewModel.STEP_RECODRING)){
+                if (step.equals(RecordVideoViewModel.STEP_RECODRING)) {
                     liveRecordingSwitch.setEnabled(false);
                 }
             }
         });
 
-/**
-        viewModel.getSession().observe(this, new Observer<SessionModel>() {
+        viewModel.getObserversSession().observe(this, new Observer<ArrayList<String>>() {
             @Override
-            public void onChanged(@Nullable SessionModel sessionModel) {
-                tvNumber.setText(getString(R.string.participants)+String.valueOf(sessionModel.getObservers().size()));
-                mObserverAdapter = new ObserverRecyclerAdapter(sessionModel.getObservers());
-                mRecyclerViewObservers.setAdapter(mObserverAdapter);
-                mObserverAdapter.notifyDataSetChanged();
-            }
-        });**/
+            public void onChanged(@Nullable final ArrayList<String> idsObservers) {
+                tvNumber.setText(getString(R.string.participants) + String.valueOf(idsObservers.size()));
+                getNamesObservers(idsObservers, new IdentityResponse() {
+                    @Override
+                    public void onSucess(ArrayList<String> namesObservers) {
+                        mObserverAdapter = new ObserverRecyclerAdapter(namesObservers);
+                        mRecyclerViewObservers.setAdapter(mObserverAdapter);
+                    }
+                });
 
+                if (idsObservers.size() == 0) {
+                    mObserverAdapter = new ObserverRecyclerAdapter(new ArrayList<String>());
+                    mRecyclerViewObservers.setAdapter(mObserverAdapter);
+                }
+
+
+            }
+        });
     }
 
+    public void getNamesObservers(final ArrayList<String> idsObservers, final CooperationFragment.IdentityResponse listener) {
 
+        final ArrayList namesObservers = new ArrayList();
+        for (String id : idsObservers) {
+            final String[] nameObserver = {""};
+            AuthHelper.getInstance(getContext()).getUser(id).addOnCompleteListener(new OnCompleteListener<HashMap<String, Object>>() {
+                @Override
+                public void onComplete(@NonNull Task<HashMap<String, Object>> task) {
+                    if (task.isSuccessful()) {
+                        HashMap<String, Object> result = task.getResult();
+                        UserModel currentUser = (new UserMapper()).map(result);
+                        String firstNameTagger = currentUser.getFirstname();
+                        String lastnameTagger = currentUser.getLastName();
+                        if (firstNameTagger == null) firstNameTagger = "";
+                        if (lastnameTagger == null) lastnameTagger = "";
+                        if (firstNameTagger == null & lastnameTagger == null)
+                            firstNameTagger = getString(R.string.name_unknow);
+                        nameObserver[0] = firstNameTagger + " " + lastnameTagger;
+
+                    } else {
+                        Exception e = task.getException();
+                        if (e instanceof FirebaseFunctionsException) {
+                            FirebaseFunctionsException ffe = (FirebaseFunctionsException) e;
+                            FirebaseFunctionsException.Code code = ffe.getCode();
+                            Object details = ffe.getDetails();
+                            nameObserver[0] = getString(R.string.unknow);
+                        }
+                    }
+                    namesObservers.add(nameObserver[0]);
+                    listener.onSucess(namesObservers);
+                    if (namesObservers.size() == idsObservers.size())
+                        listener.onSucess(namesObservers);
+                }
+            });
+
+            if (namesObservers.size() == idsObservers.size()) listener.onSucess(namesObservers);
+        }
+    }
+
+    interface IdentityResponse {
+        void onSucess(ArrayList<String> namesObservers);
+    }
 }

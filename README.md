@@ -7,3 +7,11 @@
     curl -X PATCH -H "Tus-Resumable: 1.0.0" -H "Upload-Offset: 0" -H "Content-Type: application/offset+octet-stream" -H "Accept: application/vnd.vimeo.*+json;version=3.4" --data "@<absolutePath>" "<uploadUrl>" -i
     
     curl -H "Tus-Resumable: 1.0.0" -H "Accept: application/vnd.vimeo.*+json;version=3.4" "<uploadUrl>" -I
+
+###Upload VIMEO
+    https://github.com/tus/tus-java-client
+
+    https://github.com/tus/tus-android-client
+
+###Player Vimeo
+    https://github.com/vimeo/vimeo-networking-java#how-do-i-play-a-video

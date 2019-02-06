@@ -35,6 +35,8 @@ public class RecordVideoViewModel extends VyfeViewModel {
     private MutableLiveData<Boolean> areTagsActive;
     private MutableLiveData<Boolean> isLiveRecording;
 
+    private MutableLiveData<ArrayList<String>> observers;
+
     public RecordVideoViewModel(String userId, String companyId, String sessionId) {
         sessionRepository = new SessionRepository(companyId);
         tagSetRepository = new TagSetRepository(userId, companyId);
@@ -160,6 +162,7 @@ public class RecordVideoViewModel extends VyfeViewModel {
         if (isLiveRecording.getValue() != null) {
             SessionModel sessionModel = session.getValue();
             sessionModel.setRecording(isLiveRecording.getValue());
+            if(!isLiveRecording.getValue())sessionModel.setObservers(null);
             sessionRepository.update(sessionModel);
         }
     }
@@ -184,6 +187,25 @@ public class RecordVideoViewModel extends VyfeViewModel {
         });
     }
 
+    public MutableLiveData<ArrayList<String>> getObserversSession(){
+
+        if (observers == null)
+            observers = new MutableLiveData<>();
+        sessionRepository.addChildListener(sessionId, false, new BaseSingleValueEventListener.CallbackInterface<SessionModel>() {
+                @Override
+                public void onSuccess(SessionModel result) {
+                    observers.setValue(result.getObservers());
+                    session.postValue(result);
+
+                }
+
+                @Override
+                public void onError(Exception e) {
+                    observers.setValue(null);
+                }
+            });
+        return observers;
+    }
 
 
 }
