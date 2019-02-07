@@ -162,8 +162,7 @@ public class RecordVideoViewModel extends VyfeViewModel {
         if (isLiveRecording.getValue() != null) {
             SessionModel sessionModel = session.getValue();
             sessionModel.setRecording(isLiveRecording.getValue());
-            if(!isLiveRecording.getValue())sessionModel.setObservers(null);
-            sessionRepository.update(sessionModel);
+           sessionRepository.update(sessionModel);
         }
     }
 

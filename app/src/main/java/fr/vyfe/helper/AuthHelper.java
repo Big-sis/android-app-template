@@ -122,7 +122,7 @@ public class AuthHelper {
 
     private Task<HashMap<String, Object>> fetchCompanyAndUser(String userId) {
         return FirebaseFunctions.getInstance()
-                .getHttpsCallable("getCompanyAndUser?userId=" + userId)
+                .getHttpsCallable("getCompanyAndUser_"+Constants.FIREBASE_DB_FUNCTIONSPRODUCTION+"?userId=" + userId)
                 .call()
                 .continueWith(new Continuation<HttpsCallableResult, HashMap<String, Object>>() {
                     @Override
