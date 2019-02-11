@@ -75,45 +75,48 @@ public class EditSessionActivity extends VyfeActivity {
                 if (sessionModel != null) {
                     etDescription.setText(sessionModel.getDescription());
                     etSessionTitle.setText(sessionModel.getName());
+
+
+                    etDescription.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                        }
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                            btnEdit.setClickable(true);
+                            btnEdit.setEnabled(true);
+                            btnEdit.setAlpha(1);
+                            viewModel.setNewDescription(s.toString());
+                        }
+                    });
+
+                    etSessionTitle.addTextChangedListener(new TextWatcher() {
+                        @Override
+                        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                        }
+
+                        @Override
+                        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                        }
+
+                        @Override
+                        public void afterTextChanged(Editable s) {
+                            btnEdit.setAlpha(1);
+                            viewModel.setNewName(s.toString());
+                        }
+                    });
                 }
 
-                etDescription.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable s) {
-                        btnEdit.setClickable(true);
-                        btnEdit.setEnabled(true);
-                        btnEdit.setAlpha(1);
-                        viewModel.setNewDescription(s.toString());
-                    }
-                });
-
-                etSessionTitle.addTextChangedListener(new TextWatcher() {
-                    @Override
-                    public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                    }
-
-                    @Override
-                    public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-                    }
-
-                    @Override
-                    public void afterTextChanged(Editable s) {
-                        btnEdit.setAlpha(1);
-                        viewModel.setNewName(s.toString());
-                    }
-                });
             }
         });
 
@@ -147,7 +150,7 @@ public class EditSessionActivity extends VyfeActivity {
                 if(viewModel.getSession().getValue().getServerVideoLink()==null){
                     final AlertDialog.Builder popup = new AlertDialog.Builder(EditSessionActivity.this);
                         popup.setTitle(R.string.alert);
-                        popup.setMessage("Vous n'avez pas téléchargé votre vidéo sur la plateforme, si vous la supprimer, elle ne sera plus disponible");
+                        popup.setMessage(R.string.info_delete);
                         popup.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -183,7 +186,8 @@ public class EditSessionActivity extends VyfeActivity {
             @Override
             public void onClick(View v) {
                 //TODO supprimer du serveur la video
-                setDeleteFile(viewModel.getSession().getValue().getDeviceVideoLink());
+                File file = new File(viewModel.getSession().getValue().getDeviceVideoLink());
+                file.delete();
                 viewModel.deleteSession().continueWith(new Continuation<Void, Void>() {
                     @Override
                     public Void then(@NonNull Task<Void> task) throws Exception {

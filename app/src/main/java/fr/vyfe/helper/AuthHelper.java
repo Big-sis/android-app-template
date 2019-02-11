@@ -120,9 +120,12 @@ public class AuthHelper {
         return fetchCompanyAndUser(id);
     }
 
+
+    //TODO GERER ENVIRONNEMENT ex: ".getHttpsCallable("getCompanyAndUser_"+Constants.FIREBASE_DB_FUNCTIONSPRODUCTION+"?userId=" + userId)"
+    //sinon "getCompanyAndUser?userId=" + userId
     private Task<HashMap<String, Object>> fetchCompanyAndUser(String userId) {
         return FirebaseFunctions.getInstance()
-                .getHttpsCallable("getCompanyAndUser_"+Constants.FIREBASE_DB_FUNCTIONSPRODUCTION+"?userId=" + userId)
+                .getHttpsCallable("getCompanyAndUser?userId=" + userId)
                 .call()
                 .continueWith(new Continuation<HttpsCallableResult, HashMap<String, Object>>() {
                     @Override

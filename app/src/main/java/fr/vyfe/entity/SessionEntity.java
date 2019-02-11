@@ -41,6 +41,7 @@ public class SessionEntity {
     //Generated code
 
 
+
     public int getDuration() {
         return duration;
     }

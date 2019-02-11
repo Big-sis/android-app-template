@@ -9,7 +9,7 @@ public class TagSetMapper extends FirebaseMapper<TagSetEntity, TagSetModel> {
     @Override
     public TagSetModel map(TagSetEntity tagSetEntity, String key) {
         TagSetModel tagSet = new TagSetModel();
-        tagSet.setName(tagSetEntity.getName());
+        if(tagSetEntity.getName()!=null)tagSet.setName(tagSetEntity.getName());
         tagSet.setTagTemplates((new TemplateMapper()).mapList(tagSetEntity.getTemplates()));
         tagSet.setId(key);
         return tagSet;

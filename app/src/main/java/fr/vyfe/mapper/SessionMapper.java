@@ -16,15 +16,22 @@ public class SessionMapper extends FirebaseMapper<SessionEntity, SessionModel> {
     @Override
     public SessionModel map(@NonNull SessionEntity sessionEntity, String key) {
         SessionModel session = new SessionModel();
-            session.setAuthor(sessionEntity.getAuthor());
-            session.setDate(new Date(sessionEntity.getDate()));
-            session.setIdAndroid(sessionEntity.getIdAndroid());
-            session.setIdTagSet(sessionEntity.getTagSetId());
-            session.setName(sessionEntity.getName());
-            session.setDeviceVideoLink(sessionEntity.getPathApp());
-            session.setServerVideoLink(sessionEntity.getVideoLink());
-            session.setThumbnail(sessionEntity.getThumbnailUrl());
-            session.setDescription(sessionEntity.getDescription());
+
+            if (sessionEntity.getAuthor() != null) session.setAuthor(sessionEntity.getAuthor());
+            if (sessionEntity.getDate() != 0) session.setDate(new Date(sessionEntity.getDate()));
+            if (sessionEntity.getIdAndroid() != null)
+                session.setIdAndroid(sessionEntity.getIdAndroid());
+            if (sessionEntity.getTagSetId() != null)
+                session.setIdTagSet(sessionEntity.getTagSetId());
+            if (sessionEntity.getName() != null) session.setName(sessionEntity.getName());
+            if (sessionEntity.getPathApp() != null)
+                session.setDeviceVideoLink(sessionEntity.getPathApp());
+            if (sessionEntity.getVideoLink() != null)
+                session.setServerVideoLink(sessionEntity.getVideoLink());
+            if (sessionEntity.getThumbnailUrl() != null)
+                session.setThumbnail(sessionEntity.getThumbnailUrl());
+            if (sessionEntity.getDescription() != null)
+                session.setDescription(sessionEntity.getDescription());
             session.setId(key);
             ArrayList<TagModel> tagModels = new TagMapper().mapList(sessionEntity.getTags());
             if (sessionEntity.getDuration() != -1) session.setDuration(sessionEntity.getDuration());
@@ -59,7 +66,7 @@ public class SessionMapper extends FirebaseMapper<SessionEntity, SessionModel> {
         sessionEntity.setVideoLink(sessionModel.getServerVideoLink());
         sessionEntity.setRecording(sessionModel.isRecording());
         sessionEntity.setCooperative(sessionModel.isCooperative());
-       if(sessionModel.getDuration()!=-1)sessionEntity.setDuration(sessionModel.getDuration());
+        if (sessionModel.getDuration() != -1) sessionEntity.setDuration(sessionModel.getDuration());
         return sessionEntity;
     }
 
