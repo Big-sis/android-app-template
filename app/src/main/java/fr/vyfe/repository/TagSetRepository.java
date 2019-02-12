@@ -20,7 +20,7 @@ public class TagSetRepository extends FirebaseDatabaseRepository<TagSetModel> {
 
     @Override
     protected String getRootNode() {
-        return getCompany() + "/" + Constants.BDDV2_USERS_KEY + "/" + this.getUser() + "/" + Constants.BDDV2_USERS_TAGSETS_KEY + "/";
+        return getCompany() + "/" + Constants.BDDV2_USERS_TAGSSETS_KEY+ "/";
     }
 
     // This methods has to work with BDD V2 strange architecture

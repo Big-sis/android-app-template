@@ -69,7 +69,7 @@ public class CooperationFragment extends Fragment {
                 if (liveRecordingSwitch.isChecked())
                     viewModel.isTagsActive();
                 else viewModel.isTagsInactive();
-                viewModel.addActiveTags();
+                viewModel.activeCooperation();
             }
         });
 
@@ -99,7 +99,7 @@ public class CooperationFragment extends Fragment {
                     mRecyclerViewObservers.setAdapter(mObserverAdapter);
                 }
 
-
+               else  viewModel.getSession().getValue().setObservers(idsObservers);
             }
         });
     }

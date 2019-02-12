@@ -96,7 +96,7 @@ public class RecordActivity extends VyfeActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(RecordActivity.this, CreateSessionActivity.class);
                 intent.putExtra(Constants.SESSIONTITLE_EXTRA, viewModel.getSession().getValue().getName());
-                intent.putExtra(Constants.TAGSETID_EXTRA, viewModel.getSession().getValue().getTagSetId());
+               //TODO new archi intent.putExtra(Constants.TAGSETID_EXTRA, viewModel.getSession().getValue().getTagSetId());
                 startActivity(intent);
 
             }

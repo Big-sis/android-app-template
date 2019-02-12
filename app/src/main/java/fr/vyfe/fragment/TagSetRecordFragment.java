@@ -14,12 +14,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.Collections;
+import java.util.Comparator;
+
 import fr.vyfe.Constants;
 import fr.vyfe.R;
 import fr.vyfe.RecyclerTouchListener;
 import fr.vyfe.adapter.TemplateRecyclerAdapter;
 import fr.vyfe.model.SessionModel;
 import fr.vyfe.model.TagSetModel;
+import fr.vyfe.model.TemplateModel;
 import fr.vyfe.viewModel.RecordVideoViewModel;
 
 public class TagSetRecordFragment extends Fragment {
@@ -62,7 +66,7 @@ public class TagSetRecordFragment extends Fragment {
                         public void onClick(final View view, int position) {
 
                             viewModel.addTag(position);
-                            mTagAdpater.notifyDataSetChanged();
+                          // mTagAdpater.notifyDataSetChanged();
                         }
 
                         @Override
@@ -77,20 +81,21 @@ public class TagSetRecordFragment extends Fragment {
             }
         });
 
-        viewModel.getTagSet().observe(getActivity(), new Observer<TagSetModel>() {
-            @Override
-            public void onChanged(@Nullable final TagSetModel tagSet) {
-                viewModel.getSession().observe(getActivity(), new Observer<SessionModel>() {
-                    @Override
-                    public void onChanged(@Nullable SessionModel sessionModel) {
-                        if (tagSet != null) {
-                            mTagAdpater = new TemplateRecyclerAdapter(tagSet.getTemplates(), "record");
-                            mRecyclerView.setAdapter(mTagAdpater);
-                            mTagAdpater.notifyDataSetChanged();
-                        }
-                    }
-                });
 
+        viewModel.getSession().observe(getActivity(), new Observer<SessionModel>() {
+            @Override
+            public void onChanged(@Nullable SessionModel sessionModel) {
+                if (sessionModel.getTagsSet().getTemplates() != null) {
+                    Collections.sort(sessionModel.getTagsSet().getTemplates(), new Comparator<TemplateModel>() {
+                        @Override
+                        public int compare(TemplateModel o1, TemplateModel o2) {
+                            return o1.getPosition() - o2.getPosition();
+                        }
+                    });
+                    mTagAdpater = new TemplateRecyclerAdapter(sessionModel, "record");
+                    mRecyclerView.setAdapter(mTagAdpater);
+                    mTagAdpater.notifyDataSetChanged();
+                }
             }
         });
 

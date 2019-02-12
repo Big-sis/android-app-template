@@ -94,6 +94,11 @@ public class PlayVideoActivity extends VyfeActivity implements LifecycleOwner {
                 mSeekBarTimer.setMax(session.getDuration());
                 tvEndVideo.setText(TimeHelper.formatMillisecTime(session.getDuration()));
 
+                //Create Grid
+                if(session.getTags()!=null) {
+                    mAdapterTags = new TemplateRecyclerAdapter( session, "count");
+                    mRecyclerView.setAdapter(mAdapterTags);
+                }
 
             }
         });

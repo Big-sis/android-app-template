@@ -7,19 +7,19 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Pair;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
 import java.util.ArrayList;
-import java.util.List;
+
 import fr.vyfe.R;
+import fr.vyfe.model.SessionModel;
 import fr.vyfe.model.TagModel;
 import fr.vyfe.model.TagSetModel;
 import fr.vyfe.model.TemplateModel;
@@ -30,7 +30,6 @@ public class TimelineRecordFragment extends Fragment {
     private RecordVideoViewModel viewModel;
     private LinearLayout containerLayout;
     private ArrayList<TextView> tvRowNameArray = new ArrayList<>();
-
     public static TimelineRecordFragment newInstance() {
         return new TimelineRecordFragment();
     }
@@ -52,9 +51,10 @@ public class TimelineRecordFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
 
-        viewModel.getTagSet().observe(getActivity(), new Observer<TagSetModel>() {
+        viewModel.getTagsSetSession().observe(getActivity(), new Observer<TagSetModel>() {
             @Override
             public void onChanged(@Nullable TagSetModel tagSetModel) {
+                //Create timeline
                 if (tagSetModel.getTemplates() != null) {
                     int titleLength = getResources().getInteger(R.integer.title_length_timeline);
                     for (TemplateModel template : tagSetModel.getTemplates()) {
@@ -79,11 +79,12 @@ public class TimelineRecordFragment extends Fragment {
             }
         });
 
-        viewModel.getTags().observe(getActivity(), new Observer<List<TagModel>>() {
+        viewModel.getSession().observe(getActivity(), new Observer<SessionModel>() {
             @Override
-            public void onChanged(@Nullable List<TagModel> tags) {
+            public void onChanged(@Nullable SessionModel sessionModel) {
 
-                for (TagModel tag: tags) {
+                //Create tags
+                for (TagModel tag : sessionModel.getTags()) {
 
                     int titleLength = getResources().getInteger(R.integer.title_length_timeline);
                     ImageView iv = new ImageView(getContext());
@@ -106,6 +107,7 @@ public class TimelineRecordFragment extends Fragment {
                 }
             }
         });
+
     }
 
     private int convertToDp(int size) {

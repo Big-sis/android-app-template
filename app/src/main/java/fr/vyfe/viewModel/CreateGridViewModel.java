@@ -17,11 +17,16 @@ public class CreateGridViewModel extends VyfeViewModel {
 
     private MutableLiveData<String> tagSetName;
     private MutableLiveData<ArrayList<TemplateModel>> templates;
+    private String userId;
+    private MutableLiveData<TagSetModel> mTagsSetModel;
 
     CreateGridViewModel(String userId, String companyId) {
         tagSetRepository = new TagSetRepository(userId, companyId);
         tagSetName = new MutableLiveData<>();
         templates = new MutableLiveData<>();
+
+        mTagsSetModel = new MutableLiveData<>();
+        this.userId = userId;
     }
 
     public void init() {
@@ -38,6 +43,14 @@ public class CreateGridViewModel extends VyfeViewModel {
 
     public LiveData<ArrayList<TemplateModel>> getTemplates() {
         return templates;
+    }
+
+    public MutableLiveData<TagSetModel> getmTagsSetModel() {
+        return mTagsSetModel;
+    }
+
+    public void setmTagsSetModel(MutableLiveData<TagSetModel> mTagsSetModel) {
+        this.mTagsSetModel = mTagsSetModel;
     }
 
     @Override
@@ -80,6 +93,7 @@ public class CreateGridViewModel extends VyfeViewModel {
     public TagSetModel save() {
         TagSetModel tagSetModel = new TagSetModel();
         tagSetModel.setName(this.tagSetName.getValue());
+        tagSetModel.setOwner(this.userId);
         String tagSetKey = tagSetRepository.push(tagSetModel);
         tagSetRepository.createTemplates(tagSetKey, this.templates.getValue());
         tagSetModel.setTagTemplates(this.templates.getValue());

@@ -56,7 +56,7 @@
         android:id="@+id/video_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/date"
+        android:text="@string/timestamp"
         android:textColor="@color/white"
         app:fontFamily="@font/roboto" />
 

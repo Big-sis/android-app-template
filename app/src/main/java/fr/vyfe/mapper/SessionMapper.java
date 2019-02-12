@@ -5,11 +5,14 @@ import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Objects;
 
 import fr.vyfe.entity.SessionEntity;
 import fr.vyfe.model.SessionModel;
 import fr.vyfe.model.TagModel;
+import fr.vyfe.model.TagSetModel;
+import fr.vyfe.model.TemplateModel;
 
 public class SessionMapper extends FirebaseMapper<SessionEntity, SessionModel> {
 
@@ -18,11 +21,9 @@ public class SessionMapper extends FirebaseMapper<SessionEntity, SessionModel> {
         SessionModel session = new SessionModel();
 
             if (sessionEntity.getAuthor() != null) session.setAuthor(sessionEntity.getAuthor());
-            if (sessionEntity.getDate() != 0) session.setDate(new Date(sessionEntity.getDate()));
+            if (sessionEntity.getTimestamp() != 0) session.setDate(new Date(sessionEntity.getTimestamp()));
             if (sessionEntity.getIdAndroid() != null)
                 session.setIdAndroid(sessionEntity.getIdAndroid());
-            if (sessionEntity.getTagSetId() != null)
-                session.setIdTagSet(sessionEntity.getTagSetId());
             if (sessionEntity.getName() != null) session.setName(sessionEntity.getName());
             if (sessionEntity.getPathApp() != null)
                 session.setDeviceVideoLink(sessionEntity.getPathApp());
@@ -33,6 +34,12 @@ public class SessionMapper extends FirebaseMapper<SessionEntity, SessionModel> {
             if (sessionEntity.getDescription() != null)
                 session.setDescription(sessionEntity.getDescription());
             session.setId(key);
+            TagSetModel tagSet = new TagSetModel();
+            tagSet.setName(sessionEntity.getTagsSet().toString());
+            ArrayList<TemplateModel>  templates = new TemplateMapper().mapList(sessionEntity.getTagsSet().getTemplates());
+            tagSet.setTagTemplates(templates);
+
+            session.setTagsSet(tagSet);
             ArrayList<TagModel> tagModels = new TagMapper().mapList(sessionEntity.getTags());
             if (sessionEntity.getDuration() != -1) session.setDuration(sessionEntity.getDuration());
             session.setTags(tagModels);
@@ -56,17 +63,22 @@ public class SessionMapper extends FirebaseMapper<SessionEntity, SessionModel> {
     public SessionEntity unMap(SessionModel sessionModel) {
         SessionEntity sessionEntity = new SessionEntity();
         sessionEntity.setAuthor(sessionModel.getAuthor());
-        sessionEntity.setDate(sessionModel.getDate().getTime());
+        sessionEntity.setTimestamp(sessionModel.getDate().getTime());
         sessionEntity.setDescription(sessionModel.getDescription());
         sessionEntity.setIdAndroid(sessionModel.getIdAndroid());
-        sessionEntity.setTagSetId(sessionModel.getTagSetId());
         sessionEntity.setName(sessionModel.getName());
         sessionEntity.setPathApp(sessionModel.getDeviceVideoLink());
         sessionEntity.setTags((new TagMapper()).unMapList(sessionModel.getTags()));
+        sessionEntity.setTagsSet((new TagSetMapper()).unMap(sessionModel.getTagsSet()));
         sessionEntity.setVideoLink(sessionModel.getServerVideoLink());
         sessionEntity.setRecording(sessionModel.isRecording());
         sessionEntity.setCooperative(sessionModel.isCooperative());
         if (sessionModel.getDuration() != -1) sessionEntity.setDuration(sessionModel.getDuration());
+        HashMap<String,Boolean> observers = new HashMap<>();
+        if(sessionModel.getObservers()!=null)for (String observer:sessionModel.getObservers()){
+            observers.put(observer,true);
+        }else sessionEntity.setObservers(null);
+        sessionEntity.setObservers(observers);
         return sessionEntity;
     }
 

@@ -94,12 +94,14 @@ public class TimelinePlayFragment extends Fragment {
         });
 
 
-        viewModel.getTagSet().observe(getActivity(), new Observer<TagSetModel>() {
+        viewModel.getSession().observe(getActivity(), new Observer<SessionModel>() {
             @Override
-            public void onChanged(@Nullable TagSetModel tagSetModel) {
-                if (tagSetModel.getTemplates() != null) {
+            public void onChanged(@Nullable SessionModel sessionModel) {
+
+                //Create Container Timeline
+                if (sessionModel.getTagsSet().getTemplates() != null) {
                     //Creation teacher timeline
-                    createTimelineRow(viewModel.getSession().getValue().getAuthor(), teacherContainer, tagSetModel);
+                    createTimelineRow(viewModel.getSession().getValue().getAuthor(), teacherContainer, sessionModel.getTagsSet());
                     //Creation Observers Timeline
                     for (String observer : viewModel.getSession().getValue().getObservers()) {
                         LinearLayout layout = new LinearLayout(getContext());
@@ -107,60 +109,56 @@ public class TimelinePlayFragment extends Fragment {
                         layout.setOrientation(LinearLayout.VERTICAL);
                         layout.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                         togetherContainer.addView(layout);
-                        createTimelineRow(observer, layout, tagSetModel);
+                        createTimelineRow(observer, layout, sessionModel.getTagsSet());
+                    }
+                }
+
+                //Create Tags Timeline
+               ArrayList<TagModel> tags = sessionModel.getTags();
+                if(tags!=null){
+                    for (TagModel tag : tags) {
+                        // Create Teacher Tags
+                        if (tag.getTaggerId().equals(viewModel.getSession().getValue().getAuthor())) {
+                            ImageView ivTag = createIvTag(tag);
+                            RelativeLayout timelineRow = teacherContainer.findViewWithTag(tag.getTemplateId());
+                            timelineRow.addView(ivTag);
+
+                        }
+                        // Create Observers Tags
+                        else {
+                            ImageView ivTag = createIvTag(tag);
+                            LinearLayout userContainer = togetherContainer.findViewWithTag(tag.getTaggerId());
+                            if (userContainer != null) {
+                                RelativeLayout timelineRow = userContainer.findViewWithTag(tag.getTemplateId());
+                                timelineRow.addView(ivTag);
+                            }
+                        }
                     }
 
-                        viewModel.getTags().observe(getActivity(), new Observer<List<TagModel>>() {
-                            @Override
-                            public void onChanged(@Nullable List<TagModel> tags) {
+                    for (TextView textView : tvRowNameArray) {
+                        textView.bringToFront();
+                    }
 
-                                for (TagModel tag : tags) {
-                                    // Create Teacher Tags
-                                    if (tag.getTaggerId().equals(viewModel.getSession().getValue().getAuthor())) {
-                                        ImageView ivTag = createIvTag(tag);
-                                        RelativeLayout timelineRow = teacherContainer.findViewWithTag(tag.getTemplateId());
-                                        timelineRow.addView(ivTag);
-
-                                    }
-                                    // Create Observers Tags
-                                    else {
-                                        ImageView ivTag = createIvTag(tag);
-                                        LinearLayout userContainer = togetherContainer.findViewWithTag(tag.getTaggerId());
-                                        if (userContainer != null) {
-                                            RelativeLayout timelineRow = userContainer.findViewWithTag(tag.getTemplateId());
-                                            timelineRow.addView(ivTag);
-                                        }
-                                    }
-                                }
-
-                                for (TextView textView : tvRowNameArray) {
-                                    textView.bringToFront();
-                                }
-
-                                //Thumb adapter à la Timeline
-                                ViewTreeObserver vto = mSeekBar.getViewTreeObserver();
-                                vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-                                    public boolean onPreDraw() {
-                                        Drawable thumb = getResources().getDrawable(R.drawable.thumb_blue);
-                                        int h = togetherContainer.getMeasuredHeight();
-                                        Bitmap bmpOrg = ((BitmapDrawable) thumb).getBitmap();
-                                        Drawable newThumb = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bmpOrg, WIDTH_THUMB, h, true));
-                                        newThumb.setBounds(0, 0, newThumb.getIntrinsicWidth(), newThumb.getIntrinsicHeight());
-                                        mSeekBar.setThumb(newThumb);
-                                        mSeekBar.getViewTreeObserver().removeOnPreDrawListener(this);
-                                        mSeekBar.setMax(viewModel.getSession().getValue().getDuration());
-                                        viewModel.setTimelinesize(togetherContainer.getMeasuredHeight());
-                                        return true;
-                                    }
-                                });
-                            }
-
-                        });
-
+                    //Thumb adapter à la Timeline
+                    ViewTreeObserver vto = mSeekBar.getViewTreeObserver();
+                    vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                        public boolean onPreDraw() {
+                            Drawable thumb = getResources().getDrawable(R.drawable.thumb_blue);
+                            int h = togetherContainer.getMeasuredHeight();
+                            Bitmap bmpOrg = ((BitmapDrawable) thumb).getBitmap();
+                            Drawable newThumb = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bmpOrg, WIDTH_THUMB, h, true));
+                            newThumb.setBounds(0, 0, newThumb.getIntrinsicWidth(), newThumb.getIntrinsicHeight());
+                            mSeekBar.setThumb(newThumb);
+                            mSeekBar.getViewTreeObserver().removeOnPreDrawListener(this);
+                            mSeekBar.setMax(viewModel.getSession().getValue().getDuration());
+                            viewModel.setTimelinesize(togetherContainer.getMeasuredHeight());
+                            return true;
+                        }
+                    });
                 }
             }
         });
-
+       
 
         viewModel.getSession().observe(getActivity(), new Observer<SessionModel>() {
             @Override

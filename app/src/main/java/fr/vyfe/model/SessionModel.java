@@ -13,23 +13,12 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class SessionModel implements Parcelable, VyfeModel, Comparable<SessionModel> {
-    public static final Creator<SessionModel> CREATOR = new Creator<SessionModel>() {
-        @Override
-        public SessionModel createFromParcel(Parcel in) {
-            return new SessionModel(in);
-        }
 
-        @Override
-        public SessionModel[] newArray(int size) {
-            return new SessionModel[size];
-        }
-    };
     private String name;
     private String author;
     private String serverVideoLink;
     private Date date;
     private String id;
-    private String idTagSet;
     private ArrayList<TagModel> Tags;
     private String description;
     private String idAndroid;
@@ -39,6 +28,7 @@ public class SessionModel implements Parcelable, VyfeModel, Comparable<SessionMo
     private boolean recording;
     private int duration;
     private ArrayList<String> observers;
+    private TagSetModel tagsSet;
 
     public SessionModel(String name, String author, String videoLink, Date date, String idSession, String idTagSet) {
         this();
@@ -47,14 +37,12 @@ public class SessionModel implements Parcelable, VyfeModel, Comparable<SessionMo
         this.serverVideoLink = videoLink;
         this.date = date;
         this.id = idSession;
-        this.idTagSet = idTagSet;
     }
 
     public SessionModel(String name, ArrayList<TagModel> tags, String idTagSet) {
         this();
         this.name = name;
         this.Tags = tags;
-        this.idTagSet = idTagSet;
     }
 
     public SessionModel() {
@@ -73,7 +61,6 @@ public class SessionModel implements Parcelable, VyfeModel, Comparable<SessionMo
         serverVideoLink = in.readString();
         date = new Date(in.readLong());
         id = in.readString();
-        idTagSet = in.readString();
         Tags = in.createTypedArrayList(TagModel.CREATOR);
         description = in.readString();
         idAndroid = in.readString();
@@ -147,13 +134,6 @@ public class SessionModel implements Parcelable, VyfeModel, Comparable<SessionMo
         this.description = description;
     }
 
-    public String getTagSetId() {
-        return idTagSet;
-    }
-
-    public void setIdTagSet(String idTagSet) {
-        this.idTagSet = idTagSet;
-    }
 
     public String getIdAndroid() {
         return idAndroid;
@@ -162,7 +142,16 @@ public class SessionModel implements Parcelable, VyfeModel, Comparable<SessionMo
     public void setIdAndroid(String idAndroid) {
         this.idAndroid = idAndroid;
     }
-/**
+
+    public TagSetModel getTagsSet() {
+        return tagsSet;
+    }
+
+    public void setTagsSet(TagSetModel tagsSet) {
+        this.tagsSet = tagsSet;
+    }
+
+    /**
     public int getDuration() {
         MediaMetadataRetriever retriever = new MediaMetadataRetriever();
         //use one of overloaded setDataSource() functions to set your data source
@@ -233,7 +222,6 @@ public class SessionModel implements Parcelable, VyfeModel, Comparable<SessionMo
         dest.writeString(serverVideoLink);
         dest.writeLong(date.getTime());
         dest.writeString(id);
-        dest.writeString(idTagSet);
         dest.writeTypedList(Tags);
         dest.writeString(description);
         dest.writeString(idAndroid);
@@ -251,4 +239,16 @@ public class SessionModel implements Parcelable, VyfeModel, Comparable<SessionMo
     public int compareTo(@NonNull SessionModel o) {
         return ((int) (this.date.getTime() - o.getDate().getTime()));
     }
+
+    public static final Creator<SessionModel> CREATOR = new Creator<SessionModel>() {
+        @Override
+        public SessionModel createFromParcel(Parcel in) {
+            return new SessionModel(in);
+        }
+
+        @Override
+        public SessionModel[] newArray(int size) {
+            return new SessionModel[size];
+        }
+    };
 }

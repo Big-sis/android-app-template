@@ -44,6 +44,12 @@ public class TagsSetPlayFragment extends Fragment {
         RecyclerView.LayoutManager layoutManagerTags = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(layoutManagerTags);
 
+        mViewModel.getSession().observe(getActivity(), new Observer<SessionModel>() {
+            @Override
+            public void onChanged(@Nullable SessionModel sessionModel) {
+
+            }
+        });
         mViewModel.getTagSet().observe(getActivity(), new Observer<TagSetModel>() {
             @Override
             public void onChanged(@Nullable TagSetModel tagSet) {

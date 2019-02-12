@@ -17,6 +17,7 @@ import fr.vyfe.R;
 import fr.vyfe.helper.ColorHelper;
 import fr.vyfe.model.SessionModel;
 import fr.vyfe.model.TagModel;
+import fr.vyfe.model.TagSetModel;
 import fr.vyfe.model.TemplateModel;
 
 public class TemplateRecyclerAdapter extends RecyclerView.Adapter<TemplateRecyclerAdapter.ViewHolder> {
@@ -24,6 +25,7 @@ public class TemplateRecyclerAdapter extends RecyclerView.Adapter<TemplateRecycl
     private List<TemplateModel> mTemplates;
     private String mFrom;
     private SessionModel mSession;
+    private TagSetModel mTagSet;
 
 
     public TemplateRecyclerAdapter(List<TemplateModel> observations, String from) {
@@ -34,6 +36,17 @@ public class TemplateRecyclerAdapter extends RecyclerView.Adapter<TemplateRecycl
     public TemplateRecyclerAdapter(List<TemplateModel> observations, SessionModel mSession, String from) {
         mTemplates = observations;
         this.mSession = mSession;
+        mFrom = from;
+    }
+
+    public TemplateRecyclerAdapter(SessionModel mSession, String from) {
+        this.mSession = mSession;
+        mFrom = from;
+    }
+
+
+    public TemplateRecyclerAdapter(TagSetModel tagSetModel, String from) {
+        this.mTagSet = tagSetModel;
         mFrom = from;
     }
 
@@ -49,34 +62,44 @@ public class TemplateRecyclerAdapter extends RecyclerView.Adapter<TemplateRecycl
     @Override
     public void onBindViewHolder(final TemplateRecyclerAdapter.ViewHolder holder, int position) {
 
-        List<TemplateModel> templateList = mTemplates;
-        TemplateModel template = templateList.get(position);
+        ArrayList<TemplateModel> tagsTagsSets = new ArrayList<>();
+        TemplateModel template = new TemplateModel();
 
-        if (null != mSession && null != mSession.getTags()) {
-            ArrayList<TagModel> tags = mSession.getTags();
-            for (int i = 0; i < tags.size(); i++) {
-                if (template.getId().equals(tags.get(i).getTemplateId())) {
+
+        if(mFrom.equals("create")){
+            holder.ivMenu.setVisibility(View.VISIBLE);
+            if(mTemplates!=null){
+                tagsTagsSets = (ArrayList)mTemplates;
+                template = tagsTagsSets.get(position);
+            }
+
+        }
+        else if (mFrom.equals("start")) {
+            //View
+            holder.tvNum.setVisibility(View.INVISIBLE);
+            if (mTagSet != null) {
+                tagsTagsSets = mTagSet.getTemplates();
+                template = tagsTagsSets.get(position);
+            }
+        } else {
+            //View
+            holder.tvNum.setVisibility(View.VISIBLE);
+
+            //TagsSetSession : les tags de la grille
+            tagsTagsSets = mSession.getTagsSet().getTemplates();
+            template = tagsTagsSets.get(position);
+            //TagsSession timeline
+            ArrayList<TagModel> tagsTimeline = mSession.getTags();
+
+            for (TagModel tag : tagsTimeline) {
+                if (template.getId().equals(tag.getTemplateId())) {
                     template.incrCount();
                 }
-
             }
-        }
-
-        holder.tvName.setText(template.getName());
-        holder.ivColor.setBackgroundResource(ColorHelper.getInstance().findColorById(template.getColor().getId()).getImage());
-        //TODO: Creer classe fille
-        if (mFrom.equals("start")) {
-            holder.tvNum.setVisibility(View.GONE);
-        } else if (mFrom.equals("create")) {
-            holder.tvNum.setVisibility(View.GONE);
-            holder.ivMenu.setVisibility(View.VISIBLE);
-        } else if (mFrom.equals("record")) {
-            holder.tvNum.setVisibility(View.VISIBLE);
-            holder.tvNum.setText(String.valueOf(template.getCount()));
 
             if (template.isTouch()) {
                 holder.viewForeground.setBackgroundResource(R.drawable.color_gradient_yellow);
-                templateList.get(position).setTouch(false);
+                template.setTouch(false);
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
@@ -84,18 +107,25 @@ public class TemplateRecyclerAdapter extends RecyclerView.Adapter<TemplateRecycl
                     }
                 }, Constants.SPLASH_TIME_OUT);
             }
-        } else if (mFrom.equals("timelines")) {
-            holder.tvNum.setVisibility(View.GONE);
-        } else if (mFrom.equals("count")) {
-            holder.tvNum.setVisibility(View.VISIBLE);
-            holder.tvNum.setVisibility(View.VISIBLE);
-            holder.tvNum.setText(String.valueOf(template.getCount()));
+
         }
+
+        //View
+        holder.tvName.setText(template.getName());
+        holder.ivColor.setBackgroundResource(ColorHelper.getInstance().findColorById(template.getColor().getId()).getImage());
+        holder.tvNum.setText(String.valueOf(template.getCount()));
+
+
     }
 
     @Override
     public int getItemCount() {
-        return mTemplates.size();
+        if (mTagSet == null && mSession != null && mSession.getTagsSet().getTemplates() != null)
+            return mSession.getTagsSet().getTemplates().size();
+        if(mTagSet ==null && mSession==null)return 0;
+        return mTagSet.getTemplates().size();
+
+
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

@@ -104,9 +104,12 @@ public class CreateSessionViewModel extends VyfeViewModel {
         SessionModel session = new SessionModel();
         session.setName(this.sessionName.getValue());
         session.setAuthor(this.userId);
-        if (this.selectedTagSet.getValue() != null) {
-            session.setIdTagSet(this.selectedTagSet.getValue().getId());
-        }
+        TagSetModel tagsSets = selectedTagSet.getValue();
+        tagsSets.setId(null);
+        tagsSets.setOwner(null);
+        //TODO : delete boolean session
+        tagsSets.setShared(Boolean.parseBoolean(null));
+        session.setTagsSet(selectedTagSet.getValue());
         return sessionRepository.push(session, this.androidId);
     }
 

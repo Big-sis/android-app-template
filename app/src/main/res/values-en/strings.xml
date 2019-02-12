@@ -66,7 +66,7 @@
     <string name="mail_send">Email sent</string>
     <string name="mail_unkown">Email unknown</string>
     <string name="send">Send</string>
-    <string name="date">Date</string>
+    <string name="timestamp">Date</string>
     <string name="contact">Contact us: www.vyfe.fr</string>
     <string name="create_account">Create an account</string>
     <string name="havent_grid">You have no analysis window yet</string>

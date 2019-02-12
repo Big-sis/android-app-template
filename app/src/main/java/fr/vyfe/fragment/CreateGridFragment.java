@@ -79,7 +79,7 @@ public class CreateGridFragment extends Fragment implements View.OnClickListener
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(),
                 LinearLayoutManager.VERTICAL, false);
         recyclerTemplateList.setLayoutManager(layoutManager);
-        final TemplateRecyclerAdapter adapter = new TemplateRecyclerAdapter(viewModel.getTemplates().getValue(), "start");
+        final TemplateRecyclerAdapter adapter = new TemplateRecyclerAdapter(viewModel.getmTagsSetModel().getValue(), "start");
         recyclerTemplateList.setAdapter(adapter);
 
         viewModel.getTemplates().observe(getActivity(), new Observer<ArrayList<TemplateModel>>() {

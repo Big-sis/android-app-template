@@ -1,25 +1,31 @@
 package fr.vyfe.entity;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class UserEntity {
-    private ProfilEntity profile;
+    private String firstName;
+    private String lastName;
     private boolean confirmed;
-    private String role[];
-    private ArrayList<String> autorizeSessions;
-    private HashMap<String,TagSetEntity> tagSets;
+    private HashMap<String,Boolean> sessions;
 
 
+  //Generate code
 
-    public HashMap<String, TagSetEntity> getTagSets() {
-        return tagSets;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setTagSets(HashMap<String, TagSetEntity> tagSets) {
-        this.tagSets = tagSets;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
     public boolean isConfirmed() {
         return confirmed;
@@ -29,29 +35,11 @@ public class UserEntity {
         this.confirmed = confirmed;
     }
 
-    public ProfilEntity getProfile() {
-        return profile;
+    public HashMap<String, Boolean> getSessions() {
+        return sessions;
     }
 
-    public void setProfile(ProfilEntity profile) {
-        this.profile = profile;
+    public void setSessions(HashMap<String, Boolean> sessions) {
+        this.sessions = sessions;
     }
-
-    public String[] getRole() {
-        return role;
-    }
-
-    public void setRole(String[] role) {
-        this.role = role;
-    }
-
-    public ArrayList<String> getAutorizeSessions() {
-        return autorizeSessions;
-    }
-
-    public void setAutorizeSessions(ArrayList<String> autorizeSessions) {
-        this.autorizeSessions = autorizeSessions;
-    }
-
-
 }

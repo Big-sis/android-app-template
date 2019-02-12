@@ -113,6 +113,19 @@ public class SelectVideoActivity extends VyfeActivity {
             @Override
             public void onChanged(@Nullable final SessionModel session) {
                 if (session != null) {
+
+                    //Create grid
+                    TagSetModel tagSetModel = session.getTagsSet();
+                    if (tagSetModel != null) {
+                        TemplateRecyclerAdapter adapterTags = new TemplateRecyclerAdapter(viewModel.getSession().getValue(), "count");
+                        recyclerTags.setAdapter(adapterTags);
+                    }
+
+                    assert tagSetModel != null;
+                    gridTextView.setText(tagSetModel.getName());
+
+
+                    //View Upload
                     if (session.getServerVideoLink() != null) {
                         uploadButton.setTextColor(Color.GRAY);
                         uploadButton.setClickable(false);
@@ -161,11 +174,12 @@ public class SelectVideoActivity extends VyfeActivity {
             }
         });
 
+
         viewModel.getTagSet().observe(this, new Observer<TagSetModel>() {
             @Override
             public void onChanged(@Nullable TagSetModel tagSetModel) {
                 if (tagSetModel != null) {
-                    TemplateRecyclerAdapter adapterTags = new TemplateRecyclerAdapter(tagSetModel.getTemplates(),viewModel.getSession().getValue(), "count");
+                    TemplateRecyclerAdapter adapterTags = new TemplateRecyclerAdapter(viewModel.getSession().getValue(), "count");
                     recyclerTags.setAdapter(adapterTags);
                 }
 

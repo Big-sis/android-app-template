@@ -15,3 +15,6 @@
 
 ###Player Vimeo
     https://github.com/vimeo/vimeo-networking-java#how-do-i-play-a-video
+
+###ViewModel
+    https://medium.com/globallogic-latinoamerica-mobile/viewmodel-firebase-database-3cc708044b5d

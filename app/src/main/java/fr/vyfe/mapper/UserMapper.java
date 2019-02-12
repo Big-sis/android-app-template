@@ -42,12 +42,9 @@ public class UserMapper extends FirebaseMapper<UserEntity, UserModel> {
         user.setId((String) userMap.get("id"));
         user.setCompany((String) userMap.get("company"));
         if (userMap.containsKey("profile")) {
-            if (((HashMap<String, String>) userMap.get("profile")).get("firstName") != null)
-                user.setFirstname(((HashMap<String, String>) userMap.get("profile")).get("firstName"));
-            if (((HashMap<String, String>) userMap.get("profile")).get("lastName") != null)
-                user.setLastName(((HashMap<String, String>) userMap.get("profile")).get("lastName"));
-            if (((HashMap<String, String>) userMap.get("profile")).get("promo") != null)
-                user.setPromo(((HashMap<String, String>) userMap.get("profile")).get("promo"));
+            user.setFirstname(((HashMap<String, String>) userMap.get("profile")).get("firstName"));
+            user.setLastName(((HashMap<String, String>) userMap.get("profile")).get("lastName"));
+           if(((HashMap<String, String>) userMap.get("profile")).get("promo")!=null) user.setPromo(((HashMap<String, String>) userMap.get("profile")).get("promo"));
         }
         try {
             if (userMap.get("license") != null)
@@ -56,16 +53,16 @@ public class UserMapper extends FirebaseMapper<UserEntity, UserModel> {
             e.printStackTrace();
         }
         ArrayList<String> roles = new ArrayList<>();
-        if (((HashMap<String, Boolean>) userMap.get("roles")).get("admin") != null)
-            if (((HashMap<String, Boolean>) userMap.get("roles")).get("admin"))
-                roles.add("admin");
+        if(((HashMap<String, Boolean>) userMap.get("roles")).get("admin")!=null)
+        if (((HashMap<String, Boolean>) userMap.get("roles")).get("admin"))
+            roles.add("admin");
 
-        if (((HashMap<String, Boolean>) userMap.get("roles")).get("teacher") != null) {
+        if (((HashMap<String, Boolean>) userMap.get("roles")).get("teacher")!=null){
             if (((HashMap<String, Boolean>) userMap.get("roles")).get("teacher"))
                 roles.add("teacher");
         }
 
-        if (((HashMap<String, Boolean>) userMap.get("roles")).get("viewer") != null) {
+        if(((HashMap<String, Boolean>) userMap.get("roles")).get("viewer")!=null){
             if (((HashMap<String, Boolean>) userMap.get("roles")).get("viewer"))
                 roles.add("reviewer");
             user.setRoles(roles.toArray(new String[roles.size()]));

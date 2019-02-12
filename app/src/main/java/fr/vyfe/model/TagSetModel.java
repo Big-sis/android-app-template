@@ -11,6 +11,8 @@ public class TagSetModel implements Parcelable, VyfeModel {
     private String id;
     private String name;
     private ArrayList<TemplateModel> tagTemplates;
+    private String owner;
+    private boolean shared;
 
     public TagSetModel() {}
 
@@ -18,6 +20,8 @@ public class TagSetModel implements Parcelable, VyfeModel {
         id = in.readString();
         name = in.readString();
         tagTemplates = in.createTypedArrayList(TemplateModel.CREATOR);
+        owner = in.readString();
+        shared  = (in.readInt() == 0) ? false : true;
     }
 
     public static final Creator<TagSetModel> CREATOR = new Creator<TagSetModel>() {
@@ -56,6 +60,22 @@ public class TagSetModel implements Parcelable, VyfeModel {
         this.tagTemplates = tagTemplates;
     }
 
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
+    public boolean isShared() {
+        return shared;
+    }
+
+    public void setShared(boolean shared) {
+        this.shared = shared;
+    }
+
     public void addTag(TemplateModel tag){
         this.tagTemplates.add(tag);
     }
@@ -70,6 +90,8 @@ public class TagSetModel implements Parcelable, VyfeModel {
         dest.writeString(id);
         dest.writeString(name);
         dest.writeTypedList(tagTemplates);
+        dest.writeString(owner);
+        dest.writeInt(shared ? 1 : 0);
     }
 
     public static final DiffUtil.ItemCallback<TagSetModel> DIFF_CALLBACK =

@@ -5,16 +5,10 @@ import java.util.HashMap;
 public class TagSetEntity {
     private String name;
     private boolean archived;
-
-    public boolean isArchived() {
-        return archived;
-    }
-
-    public void setArchived(boolean archived) {
-        this.archived = archived;
-    }
-
+    private String owner;
+    private boolean shared;
     private HashMap<String, TemplateEntity> Templates;
+
 
 
     public HashMap<String, TemplateEntity> getTemplates() {
@@ -25,11 +19,38 @@ public class TagSetEntity {
         this.Templates = templates;
     }
 
+    //Generate code
+
+
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public boolean isArchived() {
+        return archived;
+    }
+
+    public void setArchived(boolean archived) {
+        this.archived = archived;
+    }
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
+    public boolean isShared() {
+        return shared;
+    }
+
+    public void setShared(boolean shared) {
+        this.shared = shared;
     }
 }
