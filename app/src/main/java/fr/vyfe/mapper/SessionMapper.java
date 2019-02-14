@@ -34,15 +34,18 @@ public class SessionMapper extends FirebaseMapper<SessionEntity, SessionModel> {
             if (sessionEntity.getDescription() != null)
                 session.setDescription(sessionEntity.getDescription());
             session.setId(key);
+
+            //TagsSet
             TagSetModel tagSet = new TagSetModel();
-            tagSet.setName(sessionEntity.getTagsSet().toString());
             ArrayList<TemplateModel>  templates = new TemplateMapper().mapList(sessionEntity.getTagsSet().getTemplates());
             tagSet.setTagTemplates(templates);
-
+            tagSet.setName(sessionEntity.getTagsSet().getName());
             session.setTagsSet(tagSet);
+
+            //Tags
             ArrayList<TagModel> tagModels = new TagMapper().mapList(sessionEntity.getTags());
-            if (sessionEntity.getDuration() != -1) session.setDuration(sessionEntity.getDuration());
             session.setTags(tagModels);
+            if (sessionEntity.getDuration() != -1) session.setDuration(sessionEntity.getDuration());
             if (sessionEntity.getRecording() != null)
                 session.setRecording(sessionEntity.getRecording());
             if (sessionEntity.getCooperative() != null)

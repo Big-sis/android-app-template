@@ -22,34 +22,20 @@ import fr.vyfe.model.TemplateModel;
 
 public class TemplateRecyclerAdapter extends RecyclerView.Adapter<TemplateRecyclerAdapter.ViewHolder> {
 
-    private List<TemplateModel> mTemplates;
     private String mFrom;
     private SessionModel mSession;
     private TagSetModel mTagSet;
 
-
-    public TemplateRecyclerAdapter(List<TemplateModel> observations, String from) {
-        mTemplates = observations;
-        mFrom = from;
-    }
-
-    public TemplateRecyclerAdapter(List<TemplateModel> observations, SessionModel mSession, String from) {
-        mTemplates = observations;
-        this.mSession = mSession;
-        mFrom = from;
-    }
 
     public TemplateRecyclerAdapter(SessionModel mSession, String from) {
         this.mSession = mSession;
         mFrom = from;
     }
 
-
     public TemplateRecyclerAdapter(TagSetModel tagSetModel, String from) {
         this.mTagSet = tagSetModel;
         mFrom = from;
     }
-
 
     @Override
     public TemplateRecyclerAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -66,25 +52,21 @@ public class TemplateRecyclerAdapter extends RecyclerView.Adapter<TemplateRecycl
         TemplateModel template = new TemplateModel();
 
 
-        if(mFrom.equals("create")){
+        if (mFrom.equals("create")) {
             holder.ivMenu.setVisibility(View.VISIBLE);
-            if(mTemplates!=null){
-                tagsTagsSets = (ArrayList)mTemplates;
+            holder.tvNum.setVisibility(View.GONE);
+            if (mTagSet != null) {
+                tagsTagsSets = mTagSet.getTemplates();
                 template = tagsTagsSets.get(position);
             }
-
-        }
-        else if (mFrom.equals("start")) {
-            //View
+        } else if (mFrom.equals("start")) {
             holder.tvNum.setVisibility(View.INVISIBLE);
             if (mTagSet != null) {
                 tagsTagsSets = mTagSet.getTemplates();
                 template = tagsTagsSets.get(position);
             }
         } else {
-            //View
             holder.tvNum.setVisibility(View.VISIBLE);
-
             //TagsSetSession : les tags de la grille
             tagsTagsSets = mSession.getTagsSet().getTemplates();
             template = tagsTagsSets.get(position);
@@ -109,23 +91,19 @@ public class TemplateRecyclerAdapter extends RecyclerView.Adapter<TemplateRecycl
             }
 
         }
-
         //View
         holder.tvName.setText(template.getName());
         holder.ivColor.setBackgroundResource(ColorHelper.getInstance().findColorById(template.getColor().getId()).getImage());
         holder.tvNum.setText(String.valueOf(template.getCount()));
-
-
     }
 
     @Override
     public int getItemCount() {
         if (mTagSet == null && mSession != null && mSession.getTagsSet().getTemplates() != null)
             return mSession.getTagsSet().getTemplates().size();
-        if(mTagSet ==null && mSession==null)return 0;
+        if (mTagSet == null && mSession == null) return 0;
+        if (mTagSet.getTemplates() == null) return 0;
         return mTagSet.getTemplates().size();
-
-
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {

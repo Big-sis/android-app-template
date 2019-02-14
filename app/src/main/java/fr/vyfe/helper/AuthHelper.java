@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
+import java.util.Map;
 
 import fr.vyfe.Constants;
 import fr.vyfe.mapper.UserMapper;
@@ -69,6 +70,7 @@ public class AuthHelper {
         currentUser = null;
         if (clearSharedPrefs())
             FirebaseAuth.getInstance().signOut();
+        String f= "hgefugfer";
     }
 
     public Task<Task<HashMap<String, Object>>> signInWithEmailAndPassword(String mail, String pass, final AuthListener authListener) {
@@ -115,6 +117,8 @@ public class AuthHelper {
 
 
     }
+
+
 
     public Task<HashMap<String, Object>> getUser(String id){
         return fetchCompanyAndUser(id);

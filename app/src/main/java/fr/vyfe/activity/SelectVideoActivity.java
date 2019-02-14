@@ -175,7 +175,7 @@ public class SelectVideoActivity extends VyfeActivity {
         });
 
 
-        viewModel.getTagSet().observe(this, new Observer<TagSetModel>() {
+        viewModel.getTagsSetSession().observe(this, new Observer<TagSetModel>() {
             @Override
             public void onChanged(@Nullable TagSetModel tagSetModel) {
                 if (tagSetModel != null) {
