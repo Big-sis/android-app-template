@@ -48,9 +48,6 @@ public class MainActivity extends VyfeActivity {
         LinearLayout btnVideos = findViewById(R.id.btn_videos);
         LinearLayout btnCreateGrid = findViewById(R.id.btn_create_grid);
 
-        Map<String, Object> claims = new HashMap<>();
-        claims.put("admin", true);
-        FirebaseAuth.getInstance().setCustomUserClaims(uid, claims);
 
         btnStartSession.setOnClickListener(new View.OnClickListener() {
             @Override

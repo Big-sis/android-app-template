@@ -70,7 +70,6 @@ public class AuthHelper {
         currentUser = null;
         if (clearSharedPrefs())
             FirebaseAuth.getInstance().signOut();
-        String f= "hgefugfer";
     }
 
     public Task<Task<HashMap<String, Object>>> signInWithEmailAndPassword(String mail, String pass, final AuthListener authListener) {
