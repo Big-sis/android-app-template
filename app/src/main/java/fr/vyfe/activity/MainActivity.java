@@ -44,7 +44,6 @@ public class MainActivity extends VyfeActivity {
         setSupportActionBar(toolbar);
 
         LinearLayout btnStartSession = findViewById(R.id.btn_start_session);
-        LinearLayout btnMultiSession = findViewById(R.id.btn_multi_session);
         LinearLayout btnVideos = findViewById(R.id.btn_videos);
         LinearLayout btnCreateGrid = findViewById(R.id.btn_create_grid);
 
@@ -57,7 +56,7 @@ public class MainActivity extends VyfeActivity {
             }
         });
 
-        btnMultiSession.setOnClickListener(new View.OnClickListener() {
+        /**       btnMultiSession.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
@@ -97,7 +96,7 @@ public class MainActivity extends VyfeActivity {
                     }
                 }
             }
-        });
+        });**/
 
         btnVideos.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -180,8 +179,6 @@ public class MainActivity extends VyfeActivity {
 
             @Override
             public void onError() {
-                final ImageView progressRoue = findViewById(R.id.logo_multi_session);
-
 
                 final AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
                 builder.setMessage("Pour lancer une session multiple \nVous devez brancher le boitier de connexion Vyfe\n\n Brancher le boitier?")
@@ -189,8 +186,6 @@ public class MainActivity extends VyfeActivity {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 Toast.makeText(MainActivity.this, "La connexion prend environ 1 min ...", Toast.LENGTH_LONG).show();
-                                progressRoue.setMaxWidth(convertToDp(100));
-                                progressRoue.setMaxHeight(convertToDp(100));
                                 //TODO : convert to smaller file
                                 //Glide.with(MainActivity.this).load(R.drawable.roue2).into(progressRoue);
 

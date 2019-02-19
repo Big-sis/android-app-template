@@ -73,8 +73,8 @@ public class EditSessionActivity extends VyfeActivity {
             @Override
             public void onChanged(@Nullable SessionModel sessionModel) {
                 if (sessionModel != null) {
-                    etDescription.setText(sessionModel.getDescription());
-                    etSessionTitle.setText(sessionModel.getName());
+                    if(sessionModel.getDescription()!=null)etDescription.setText(sessionModel.getDescription());
+                    if(sessionModel.getName()!=null)etSessionTitle.setText(sessionModel.getName());
 
 
                     etDescription.addTextChangedListener(new TextWatcher() {
@@ -186,8 +186,12 @@ public class EditSessionActivity extends VyfeActivity {
             @Override
             public void onClick(View v) {
                 //TODO supprimer du serveur la video
-                File file = new File(viewModel.getSession().getValue().getDeviceVideoLink());
-                file.delete();
+                if(viewModel.getSession().getValue().getDeviceVideoLink()!=null){
+                    File file = new File(viewModel.getSession().getValue().getDeviceVideoLink());
+                    if(file!=null)file.delete();
+                }
+
+                viewModel.stopListener();
                 viewModel.deleteSession().continueWith(new Continuation<Void, Void>() {
                     @Override
                     public Void then(@NonNull Task<Void> task) throws Exception {
@@ -239,7 +243,7 @@ public class EditSessionActivity extends VyfeActivity {
 
     public void setDeleteFile(String linkFile) {
         File file = new File(linkFile);
-        file.delete();
+        if(file!=null)file.delete();
         viewModel.deleteLinkAppSession().continueWith(new Continuation<Void, Object>() {
             @Override
             public Object then(@NonNull Task<Void> task) throws Exception {

@@ -18,6 +18,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.functions.FirebaseFunctions;
 import com.google.firebase.functions.FirebaseFunctionsException;
 import com.google.firebase.functions.HttpsCallableResult;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -53,6 +54,7 @@ public class AuthHelper {
         mySharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
         if (FirebaseAuth.getInstance().getCurrentUser() == null)
             signOut();
+
         if (currentUser == null && mySharedPreferences.contains(SHARED_PREF_USER_ID))
             this.currentUser = retrieveCurrentUser();
     }
@@ -71,6 +73,11 @@ public class AuthHelper {
         if (clearSharedPrefs())
             FirebaseAuth.getInstance().signOut();
     }
+
+
+
+
+
 
     public Task<Task<HashMap<String, Object>>> signInWithEmailAndPassword(String mail, String pass, final AuthListener authListener) {
         return FirebaseAuth.getInstance().signInWithEmailAndPassword(mail, pass)

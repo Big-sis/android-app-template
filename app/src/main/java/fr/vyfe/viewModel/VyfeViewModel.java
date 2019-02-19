@@ -37,7 +37,7 @@ public abstract class VyfeViewModel extends ViewModel {
             @Override
             public void onSuccess(SessionModel result) {
                 //TODO il ne tris pas ?
-                Collections.sort(result.getTagsSet().getTemplates(), new Comparator<TemplateModel>() {
+               if(result!=null&&result.getTagsSet()!=null&&result.getTagsSet().getTemplates()!=null) Collections.sort(result.getTagsSet().getTemplates(), new Comparator<TemplateModel>() {
                     @Override
                     public int compare(TemplateModel o1, TemplateModel o2) {
                         return o1.getPosition() - o2.getPosition();

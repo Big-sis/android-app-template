@@ -19,46 +19,46 @@ public class SessionMapper extends FirebaseMapper<SessionEntity, SessionModel> {
     @Override
     public SessionModel map(@NonNull SessionEntity sessionEntity, String key) {
         SessionModel session = new SessionModel();
+if(sessionEntity!=null) {
+    if (sessionEntity.getAuthor() != null) session.setAuthor(sessionEntity.getAuthor());
+    if (sessionEntity.getTimestamp() != 0) session.setDate(new Date(sessionEntity.getTimestamp()));
+    if (sessionEntity.getIdAndroid() != null)
+        session.setIdAndroid(sessionEntity.getIdAndroid());
+    if (sessionEntity.getName() != null) session.setName(sessionEntity.getName());
+    if (sessionEntity.getPathApp() != null)
+        session.setDeviceVideoLink(sessionEntity.getPathApp());
+    if (sessionEntity.getVideoLink() != null)
+        session.setServerVideoLink(sessionEntity.getVideoLink());
+    if (sessionEntity.getThumbnailUrl() != null)
+        session.setThumbnail(sessionEntity.getThumbnailUrl());
+    if (sessionEntity.getDescription() != null)
+        session.setDescription(sessionEntity.getDescription());
+    session.setId(key);
 
-            if (sessionEntity.getAuthor() != null) session.setAuthor(sessionEntity.getAuthor());
-            if (sessionEntity.getTimestamp() != 0) session.setDate(new Date(sessionEntity.getTimestamp()));
-            if (sessionEntity.getIdAndroid() != null)
-                session.setIdAndroid(sessionEntity.getIdAndroid());
-            if (sessionEntity.getName() != null) session.setName(sessionEntity.getName());
-            if (sessionEntity.getPathApp() != null)
-                session.setDeviceVideoLink(sessionEntity.getPathApp());
-            if (sessionEntity.getVideoLink() != null)
-                session.setServerVideoLink(sessionEntity.getVideoLink());
-            if (sessionEntity.getThumbnailUrl() != null)
-                session.setThumbnail(sessionEntity.getThumbnailUrl());
-            if (sessionEntity.getDescription() != null)
-                session.setDescription(sessionEntity.getDescription());
-            session.setId(key);
+    //TagsSet
+    TagSetModel tagSet = new TagSetModel();
+    ArrayList<TemplateModel> templates = new TemplateMapper().mapList(sessionEntity.getTagsSet().getTemplates());
+    tagSet.setTagTemplates(templates);
+    tagSet.setName(sessionEntity.getTagsSet().getName());
+    session.setTagsSet(tagSet);
 
-            //TagsSet
-            TagSetModel tagSet = new TagSetModel();
-            ArrayList<TemplateModel>  templates = new TemplateMapper().mapList(sessionEntity.getTagsSet().getTemplates());
-            tagSet.setTagTemplates(templates);
-            tagSet.setName(sessionEntity.getTagsSet().getName());
-            session.setTagsSet(tagSet);
+    //Tags
+    ArrayList<TagModel> tagModels = new TagMapper().mapList(sessionEntity.getTags());
+    session.setTags(tagModels);
+    if (sessionEntity.getDuration() != -1) session.setDuration(sessionEntity.getDuration());
+    if (sessionEntity.getRecording() != null)
+        session.setRecording(sessionEntity.getRecording());
+    if (sessionEntity.getCooperative() != null)
+        session.setCooperative(sessionEntity.getCooperative());
 
-            //Tags
-            ArrayList<TagModel> tagModels = new TagMapper().mapList(sessionEntity.getTags());
-            session.setTags(tagModels);
-            if (sessionEntity.getDuration() != -1) session.setDuration(sessionEntity.getDuration());
-            if (sessionEntity.getRecording() != null)
-                session.setRecording(sessionEntity.getRecording());
-            if (sessionEntity.getCooperative() != null)
-                session.setCooperative(sessionEntity.getCooperative());
-
-            ArrayList<String> observers = new ArrayList<>();
-            if (sessionEntity.getObservers() != null) {
-                for (String observer : Objects.requireNonNull(sessionEntity).getObservers().keySet()) {
-                    observers.add(observer);
-                }
-            }
-            session.setObservers(observers);
-
+    ArrayList<String> observers = new ArrayList<>();
+    if (sessionEntity.getObservers() != null) {
+        for (String observer : Objects.requireNonNull(sessionEntity).getObservers().keySet()) {
+            observers.add(observer);
+        }
+    }
+    session.setObservers(observers);
+}
         return session;
     }
 

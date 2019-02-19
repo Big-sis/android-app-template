@@ -21,7 +21,6 @@ public class EditSessionViewModel extends VyfeViewModel {
     }
 
     public Task<Void> deleteSession() {
-        onCleared();
         return sessionRepository.remove(session.getValue().getId());
     }
 
@@ -48,4 +47,12 @@ public class EditSessionViewModel extends VyfeViewModel {
         return sessionRepository.update(sessionModel);
     }
 
+    @Override
+    protected void onCleared() {
+        sessionRepository.removeListeners();
+    }
+
+    public void stopListener() {
+        sessionRepository.removeListeners();
+    }
 }

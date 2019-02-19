@@ -19,6 +19,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseUser;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
@@ -94,9 +98,11 @@ public class ConnexionActivity extends AppCompatActivity {
 
                 } else {
 
+
                     auth.signInWithEmailAndPassword(mail, pass, new AuthHelper.AuthListener() {
                         @Override
                         public void onSuccessLoggedIn(UserModel user) {
+
                             Intent intent = new Intent(ConnexionActivity.this, MainActivity.class);
                             startActivity(intent);
                             finish();
