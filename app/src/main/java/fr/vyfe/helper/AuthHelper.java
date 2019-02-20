@@ -8,19 +8,14 @@ import android.support.annotation.NonNull;
 import android.text.format.DateFormat;
 
 import com.google.android.gms.tasks.Continuation;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.functions.FirebaseFunctions;
-import com.google.firebase.functions.FirebaseFunctionsException;
 import com.google.firebase.functions.HttpsCallableResult;
-import com.google.firebase.iid.FirebaseInstanceId;
-
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -31,6 +26,8 @@ import java.util.Map;
 import fr.vyfe.Constants;
 import fr.vyfe.mapper.UserMapper;
 import fr.vyfe.model.UserModel;
+import fr.vyfe.repository.BaseSingleValueEventListener;
+import fr.vyfe.repository.UserRepository;
 
 /**
  * Handles authentication, login, logout, current user with offline mode and license check
@@ -49,6 +46,7 @@ public class AuthHelper {
     private static AuthHelper instance;
     private static SharedPreferences mySharedPreferences;
     private UserModel currentUser;
+    private UserRepository userRepository;
 
     private AuthHelper(Context context) {
         mySharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -72,47 +70,33 @@ public class AuthHelper {
         currentUser = null;
         if (clearSharedPrefs())
             FirebaseAuth.getInstance().signOut();
+
+
     }
 
 
-
-
-
-
-    public Task<Task<HashMap<String, Object>>> signInWithEmailAndPassword(String mail, String pass, final AuthListener authListener) {
+    public Task<UserModel> signInWithEmailAndPassword(String mail, String pass, final AuthListener authListener, final getProfileListener profileListener) {
         return FirebaseAuth.getInstance().signInWithEmailAndPassword(mail, pass)
                 .continueWith(new Continuation<AuthResult, UserModel>() {
                     @Override
                     public UserModel then(@NonNull Task<AuthResult> task) throws Exception {
                         AuthResult result = task.getResult();
                         FirebaseUser user = result.getUser();
-                        UserModel userModel = new UserModel(user.getUid());
-                        return userModel;
-                    }
-                })
-                .continueWith(new Continuation<UserModel, Task<HashMap<String, Object>>>() {
-                    @Override
-                    public Task<HashMap<String, Object>> then(@NonNull Task<UserModel> userTask) throws Exception {
-                        return fetchCompanyAndUser(userTask.getResult().getId())
-                                .addOnCompleteListener(new OnCompleteListener<HashMap<String, Object>>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<HashMap<String, Object>> fireTask) {
-                                        if (fireTask.isSuccessful()) {
-                                            HashMap<String, Object> result = fireTask.getResult();
-                                            currentUser = (new UserMapper()).map(result);
-                                            saveCurrentUser();
-                                            authListener.onSuccessLoggedIn(currentUser);
-                                        } else {
-                                            Exception e = fireTask.getException();
-                                            if (e instanceof FirebaseFunctionsException) {
-                                                FirebaseFunctionsException ffe = (FirebaseFunctionsException) e;
-                                                FirebaseFunctionsException.Code code = ffe.getCode();
-                                                Object details = ffe.getDetails();
-                                            }
 
-                                        }
-                                    }
-                                });
+                        //TEST
+                        FirebaseUser currentUserInstance = FirebaseAuth.getInstance().getCurrentUser();
+
+                        Task<GetTokenResult> resultCustom = currentUserInstance.getIdToken(false);
+                        GetTokenResult tokenResultCustom = resultCustom.getResult();
+                        Map<String, Object> customs = tokenResultCustom.getClaims();
+
+                        //autre test
+
+                        currentUser = (new UserMapper()).map(customs);
+                        loadUser(currentUser.getCompany(),currentUser.getId(), profileListener );
+
+
+                        return currentUser;
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -122,11 +106,11 @@ public class AuthHelper {
                 });
 
 
+
     }
 
 
-
-    public Task<HashMap<String, Object>> getUser(String id){
+    public Task<HashMap<String, Object>> getUser(String id) {
         return fetchCompanyAndUser(id);
     }
 
@@ -193,11 +177,11 @@ public class AuthHelper {
         user.setFirstname(mySharedPreferences.getString(SHARED_PREF_USER_FIRSTNAME, ""));
         user.setLastName(mySharedPreferences.getString(SHARED_PREF_USER_LASTNAME, ""));
         user.setPromo(mySharedPreferences.getString(SHARED_PREF_USER_PROMO, ""));
-        try {
+       /** try {
             user.setLicenceEnd((new SimpleDateFormat("dd-MM-yy")).parse(mySharedPreferences.getString(SHARED_PREF_USER_LICENSE_END, "")));
         } catch (ParseException e) {
             e.printStackTrace();
-        }
+        }*/
         user.setRoles(mySharedPreferences.getString(SHARED_PREF_USER_ROLES, "").split(","));
         return user;
     }
@@ -220,5 +204,33 @@ public class AuthHelper {
         void onSuccessLoggedIn(UserModel user);
 
         void onLogginFailed(Exception e);
+    }
+
+    public interface getProfileListener {
+        void onSuccessProfile(UserModel user);
+
+        void onProfileFailed(Exception e);
+    }
+
+    private void loadUser(String company, String IdUser, final getProfileListener profileListener) {
+
+        UserRepository userRepository = new UserRepository(company, IdUser);
+        userRepository.addChildListener(IdUser,new BaseSingleValueEventListener.CallbackInterface<UserModel>() {
+            @Override
+            public void onSuccess(UserModel result) {
+
+                currentUser.setLastName(result.getLastName());
+                currentUser.setFirstname(result.getFirstname());
+                saveCurrentUser();
+                profileListener.onSuccessProfile(currentUser);
+
+            }
+
+            @Override
+            public void onError(Exception e) {
+                profileListener.onProfileFailed(e);
+            }
+        });
+
     }
 }

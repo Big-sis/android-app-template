@@ -23,6 +23,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.HashMap;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
@@ -102,12 +104,8 @@ public class ConnexionActivity extends AppCompatActivity {
                     auth.signInWithEmailAndPassword(mail, pass, new AuthHelper.AuthListener() {
                         @Override
                         public void onSuccessLoggedIn(UserModel user) {
-
-                            Intent intent = new Intent(ConnexionActivity.this, MainActivity.class);
-                            startActivity(intent);
-                            finish();
+                               HashMap<String, Boolean> g =  user.getRolesC();
                         }
-
 
                         @Override
                         public void onLogginFailed(Exception e) {
@@ -125,6 +123,19 @@ public class ConnexionActivity extends AppCompatActivity {
                             textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
                             snackbar.setDuration(7000);
                             snackbar.show();
+
+                        }
+                    }, new AuthHelper.getProfileListener() {
+                        @Override
+                        public void onSuccessProfile(UserModel user) {
+                            Intent intent = new Intent(ConnexionActivity.this, MainActivity.class);
+                            startActivity(intent);
+                            finish();
+                        }
+
+                        @Override
+                        public void onProfileFailed(Exception e) {
+
                         }
                     });
                 }
