@@ -19,16 +19,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseUser;
-
 import java.util.HashMap;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.test.espresso.IdlingResource;
+import fr.vyfe.Constants;
 import fr.vyfe.R;
 import fr.vyfe.helper.AuthHelper;
 import fr.vyfe.idlingResource.SimpleIdlingResource;
@@ -104,7 +101,7 @@ public class ConnexionActivity extends AppCompatActivity {
                     auth.signInWithEmailAndPassword(mail, pass, new AuthHelper.AuthListener() {
                         @Override
                         public void onSuccessLoggedIn(UserModel user) {
-                               HashMap<String, Boolean> g =  user.getRolesC();
+
                         }
 
                         @Override
@@ -128,9 +125,25 @@ public class ConnexionActivity extends AppCompatActivity {
                     }, new AuthHelper.getProfileListener() {
                         @Override
                         public void onSuccessProfile(UserModel user) {
-                            Intent intent = new Intent(ConnexionActivity.this, MainActivity.class);
-                            startActivity(intent);
-                            finish();
+                            HashMap<String, Boolean> rolesUser =  user.getRolesC();
+                            if(rolesUser.get(Constants.BDDV2_CUSTOM_USERS_ROLE_ADMIN)){
+                                Intent intent = new Intent(ConnexionActivity.this, MainActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }else{
+                                final Snackbar snackbar = Snackbar.make(ConnexionActivity.this.findViewById(R.id.linear_layout_add), R.string.havent_roles_teacher, Snackbar.LENGTH_INDEFINITE).setDuration(9000).setAction(R.string.ok, new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+
+                                    }
+                                });
+                                View snackBarView = snackbar.getView();
+                                TextView textView = snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                                textView.setMaxLines(3);
+                                textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                                snackbar.setDuration(8000);
+                                snackbar.show();
+                               }
                         }
 
                         @Override

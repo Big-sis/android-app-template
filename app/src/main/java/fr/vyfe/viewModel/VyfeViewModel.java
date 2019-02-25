@@ -76,7 +76,7 @@ public abstract class VyfeViewModel extends ViewModel {
 
             @Override
             public void onError(Exception e) {
-                session.setValue(null);
+                tagSet.setValue(null);
             }
         });
     }
@@ -106,8 +106,11 @@ public abstract class VyfeViewModel extends ViewModel {
     }
 
     public MutableLiveData<SessionModel> getSession() {
-        if (session == null)
+        if (session == null){
+            session = new MutableLiveData<>();
             loadSession(this.sessionId);
+        }
+
         return session;
     }
 
@@ -116,6 +119,7 @@ public abstract class VyfeViewModel extends ViewModel {
             tagSet = new MutableLiveData<>();
         }
         loadSession(this.sessionId);
+
         return tagSet;
     }
 

@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import fr.vyfe.Constants;
 import fr.vyfe.entity.UserEntity;
 import fr.vyfe.model.UserModel;
 
@@ -15,8 +16,11 @@ public class UserMapper extends FirebaseMapper<UserEntity, UserModel> {
     @Override
     public UserModel map(UserEntity userEntity, String key) {
         UserModel userModel = new UserModel();
-        if (userEntity.getFirstName() != null) userModel.setFirstname(userEntity.getFirstName());
-        if (userEntity.getLastName() != null) userModel.setLastName(userEntity.getLastName());
+        if (userEntity != null) {
+            if (userEntity.getFirstName() != null)
+                userModel.setFirstname(userEntity.getFirstName());
+            if (userEntity.getLastName() != null) userModel.setLastName(userEntity.getLastName());
+        }
         return userModel;
 
     }
@@ -42,7 +46,7 @@ public class UserMapper extends FirebaseMapper<UserEntity, UserModel> {
      * @return
      */
 
-    public UserModel map(HashMap<String, Object> userMap) {
+   /** public UserModel map(HashMap<String, Object> userMap) {
         UserModel user = new UserModel();
         user.setId((String) userMap.get("id"));
         user.setCompany((String) userMap.get("company"));
@@ -57,7 +61,7 @@ public class UserMapper extends FirebaseMapper<UserEntity, UserModel> {
          user.setLicenceEnd((new SimpleDateFormat("dd-MM-yy")).parse((String) userMap.get("license")));
          } catch (ParseException e) {
          e.printStackTrace();
-         }**/
+         }
         ArrayList<String> roles = new ArrayList<>();
         if (((HashMap<String, Boolean>) userMap.get("roles")).get("admin") != null)
             if (((HashMap<String, Boolean>) userMap.get("roles")).get("admin"))
@@ -75,29 +79,31 @@ public class UserMapper extends FirebaseMapper<UserEntity, UserModel> {
         }
 
 
-        return user;
-    }
+        return null;
+    }**/
 
-    public UserModel map(Map<String, Object> customs) {
+    public UserModel map(HashMap<String, Object> customs) {
         UserModel user = new UserModel();
         HashMap<String, Boolean> hashMapRoles = new HashMap<>();
         for (String keyCustom : customs.keySet()) {
             if (keyCustom.equals("user_id")) {
                 user.setId(customs.get(keyCustom).toString());
             }
-            if (keyCustom.equals("teacher") || keyCustom.equals("observer") || keyCustom.equals("admin") || keyCustom.equals("student")) {
+            if (keyCustom.equals(Constants.BDDV2_CUSTOM_USERS_ROLE_TEACHER) || keyCustom.equals(Constants.BDDV2_CUSTOM_USERS_ROLE_OBSERVER) || keyCustom.equals(Constants.BDDV2_CUSTOM_USERS_ROLE_ADMIN) || keyCustom.equals(Constants.BDDV2_CUSTOM_USERS_ROLE_STUDENT)) {
                 hashMapRoles.put(keyCustom, new Boolean(customs.get(keyCustom).toString()));
             }
 
-            if (keyCustom.equals("vimeoToken")) {
+            if (keyCustom.equals(Constants.BDDV2_CUSTOM_USERS_VIMEOACCESSTOKEN)) {
                 user.setVimeoAccessToken(customs.get(keyCustom).toString());
             }
-            if (keyCustom.equals("company")) {
+            if (keyCustom.equals(Constants.BDDV2_CUSTOM_USERS_COMPANY)) {
                 user.setCompany(customs.get(keyCustom).toString());
             }
 
-            if (keyCustom.equals("licenseEnd")) {
-                user.setLicenceEnd(new Timestamp(Long.parseLong(customs.get(keyCustom).toString())));
+            if (keyCustom.equals(Constants.BDDV2_CUSTOM_USERS_LICENSEEND)) {
+                //TODO : recup Custom
+                user.setLicenceEnd(new Timestamp(new Double(1.5989112E12).longValue()));
+                // user.setLicenceEnd(new Timestamp(Long.parseLong(customs.get(keyCustom).toString())));
             }
         }
 

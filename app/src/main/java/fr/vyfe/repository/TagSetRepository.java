@@ -33,11 +33,5 @@ public class TagSetRepository extends FirebaseDatabaseRepository<TagSetModel> {
         }
     }
 
-    public void addListListener(BaseListValueEventListener.CallbackInterface<TagSetModel> callback) {
-        listListener = new BaseListValueEventListener(mapper, callback);
-        Query query = databaseReference;
-        query = query.orderByChild(Constants.BDDV2_USERS_TAGSETS_ARCHIVED);
-        query = query.equalTo(false);
-        query.addValueEventListener(listListener);
-    }
+
 }

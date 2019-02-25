@@ -25,6 +25,7 @@ import fr.vyfe.R;
 import fr.vyfe.adapter.ObserverRecyclerAdapter;
 import fr.vyfe.helper.AuthHelper;
 import fr.vyfe.mapper.UserMapper;
+import fr.vyfe.model.ObserverModel;
 import fr.vyfe.model.UserModel;
 import fr.vyfe.viewModel.RecordVideoViewModel;
 
@@ -68,7 +69,12 @@ public class CooperationFragment extends Fragment {
 
                 if (liveRecordingSwitch.isChecked())
                     viewModel.isTagsActive();
-                else viewModel.isTagsInactive();
+                else {
+                    viewModel.isTagsInactive();
+                    if(viewModel.getSession().getValue().getDuration()<=0){
+                        viewModel.deleteObservers();
+                    }
+                }
                 viewModel.activeCooperation();
             }
         });
@@ -82,24 +88,25 @@ public class CooperationFragment extends Fragment {
             }
         });
 
-        viewModel.getObserversSession().observe(this, new Observer<ArrayList<String>>() {
+        viewModel.getObserversSession().observe(this, new Observer<ArrayList<ObserverModel>>() {
             @Override
-            public void onChanged(@Nullable final ArrayList<String> idsObservers) {
-                tvNumber.setText(getString(R.string.participants) + String.valueOf(idsObservers.size()));
-                getNamesObservers(idsObservers, new IdentityResponse() {
-                    @Override
-                    public void onSucess(ArrayList<String> namesObservers) {
-                        mObserverAdapter = new ObserverRecyclerAdapter(namesObservers);
-                        mRecyclerViewObservers.setAdapter(mObserverAdapter);
+            public void onChanged(@Nullable final ArrayList<ObserverModel> idsObservers) {
+                ArrayList<String > ids = new ArrayList<String>();
+                if(idsObservers!=null) {
+                    for (ObserverModel id : idsObservers) {
+                        ids.add(id.getNameObserver());
                     }
-                });
+                    mObserverAdapter = new ObserverRecyclerAdapter(ids);
+                    mRecyclerViewObservers.setAdapter(mObserverAdapter);
+                    tvNumber.setText(getString(R.string.participants) + String.valueOf(idsObservers.size()));
+                    viewModel.getSession().getValue().setObservers(idsObservers);
 
-                if (idsObservers.size() == 0) {
+                }else {
                     mObserverAdapter = new ObserverRecyclerAdapter(new ArrayList<String>());
                     mRecyclerViewObservers.setAdapter(mObserverAdapter);
+                    tvNumber.setText(getString(R.string.participants) + String.valueOf(0));
                 }
 
-               else  viewModel.getSession().getValue().setObservers(idsObservers);
             }
         });
     }
@@ -115,8 +122,8 @@ public class CooperationFragment extends Fragment {
                     if (task.isSuccessful()) {
                         HashMap<String, Object> result = task.getResult();
                         UserModel currentUser = (new UserMapper()).map(result);
-                        String firstNameTagger = currentUser.getFirstname();
-                        String lastnameTagger = currentUser.getLastName();
+                        String firstNameTagger = (String)result.get("firstName");
+                        String lastnameTagger = (String)result.get("lastName");
                         if (firstNameTagger == null) firstNameTagger = "";
                         if (lastnameTagger == null) lastnameTagger = "";
                         if (firstNameTagger == null & lastnameTagger == null)

@@ -4,7 +4,6 @@ import java.util.HashMap;
 
 public class TagSetEntity {
     private String name;
-    private boolean archived;
     private String owner;
     private boolean shared;
     private HashMap<String, TemplateEntity> Templates;
@@ -28,14 +27,6 @@ public class TagSetEntity {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public boolean isArchived() {
-        return archived;
-    }
-
-    public void setArchived(boolean archived) {
-        this.archived = archived;
     }
 
     public String getOwner() {

@@ -82,6 +82,7 @@ public class TagSetRecordFragment extends Fragment {
         });
 
 
+
         viewModel.getSession().observe(getActivity(), new Observer<SessionModel>() {
             @Override
             public void onChanged(@Nullable SessionModel sessionModel) {

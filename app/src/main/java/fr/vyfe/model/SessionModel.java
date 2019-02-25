@@ -1,7 +1,6 @@
 package fr.vyfe.model;
 
 import android.graphics.Bitmap;
-import android.media.MediaMetadataRetriever;
 import android.media.ThumbnailUtils;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -11,6 +10,9 @@ import android.support.annotation.NonNull;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+
+import fr.vyfe.entity.ObserverEntity;
 
 public class SessionModel implements Parcelable, VyfeModel, Comparable<SessionModel> {
 
@@ -27,7 +29,7 @@ public class SessionModel implements Parcelable, VyfeModel, Comparable<SessionMo
     private boolean cooperative;
     private boolean recording;
     private int duration;
-    private ArrayList<String> observers;
+    private ArrayList<ObserverModel> observers;
     private TagSetModel tagsSet;
 
     public SessionModel(String name, String author, String videoLink, Date date, String idSession, String idTagSet) {
@@ -192,11 +194,11 @@ public class SessionModel implements Parcelable, VyfeModel, Comparable<SessionMo
         this.deviceVideoLink = deviceVideoLink;
     }
 
-    public ArrayList<String> getObservers() {
+    public ArrayList<ObserverModel> getObservers() {
         return observers;
     }
 
-    public void setObservers(ArrayList<String> observers) {
+    public void setObservers(ArrayList<ObserverModel> observers) {
         this.observers = observers;
     }
 

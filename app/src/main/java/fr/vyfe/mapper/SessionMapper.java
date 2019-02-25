@@ -3,12 +3,15 @@ package fr.vyfe.mapper;
 
 import android.support.annotation.NonNull;
 
+import com.vimeo.networking.model.User;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Objects;
 
 import fr.vyfe.entity.SessionEntity;
+import fr.vyfe.model.ObserverModel;
 import fr.vyfe.model.SessionModel;
 import fr.vyfe.model.TagModel;
 import fr.vyfe.model.TagSetModel;
@@ -37,10 +40,12 @@ if(sessionEntity!=null) {
 
     //TagsSet
     TagSetModel tagSet = new TagSetModel();
-    ArrayList<TemplateModel> templates = new TemplateMapper().mapList(sessionEntity.getTagsSet().getTemplates());
+    if(sessionEntity.getTagsSet()!=null&&sessionEntity.getTagsSet().getTemplates()!=null){
+        ArrayList<TemplateModel> templates = new TemplateMapper().mapList(sessionEntity.getTagsSet().getTemplates());
     tagSet.setTagTemplates(templates);
-    tagSet.setName(sessionEntity.getTagsSet().getName());
-    session.setTagsSet(tagSet);
+        tagSet.setName(sessionEntity.getTagsSet().getName());
+        session.setTagsSet(tagSet);}
+
 
     //Tags
     ArrayList<TagModel> tagModels = new TagMapper().mapList(sessionEntity.getTags());
@@ -51,13 +56,15 @@ if(sessionEntity!=null) {
     if (sessionEntity.getCooperative() != null)
         session.setCooperative(sessionEntity.getCooperative());
 
-    ArrayList<String> observers = new ArrayList<>();
+    //Observers
+    if(sessionEntity.getObservers()!=null)
+    session.setObservers(new ObserverMapper().mapList(sessionEntity.getObservers()));
+
+    /**
     if (sessionEntity.getObservers() != null) {
-        for (String observer : Objects.requireNonNull(sessionEntity).getObservers().keySet()) {
-            observers.add(observer);
-        }
+        session.setObservers(sessionEntity.getObservers());
     }
-    session.setObservers(observers);
+    session.setObservers(observers);**/
 }
         return session;
     }
@@ -77,11 +84,11 @@ if(sessionEntity!=null) {
         sessionEntity.setRecording(sessionModel.isRecording());
         sessionEntity.setCooperative(sessionModel.isCooperative());
         if (sessionModel.getDuration() != -1) sessionEntity.setDuration(sessionModel.getDuration());
-        HashMap<String,Boolean> observers = new HashMap<>();
-        if(sessionModel.getObservers()!=null)for (String observer:sessionModel.getObservers()){
-            observers.put(observer,true);
-        }else sessionEntity.setObservers(null);
-        sessionEntity.setObservers(observers);
+
+        if(sessionModel.getObservers()!=null)
+            sessionEntity.setObservers(new ObserverMapper().unMapList(sessionModel.getObservers()));
+        else sessionEntity.setObservers(null);
+
         return sessionEntity;
     }
 

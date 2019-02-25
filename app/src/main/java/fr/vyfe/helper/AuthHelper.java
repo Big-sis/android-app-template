@@ -16,6 +16,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
 import com.google.firebase.functions.FirebaseFunctions;
 import com.google.firebase.functions.HttpsCallableResult;
+
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -88,13 +90,13 @@ public class AuthHelper {
 
                         Task<GetTokenResult> resultCustom = currentUserInstance.getIdToken(false);
                         GetTokenResult tokenResultCustom = resultCustom.getResult();
-                        Map<String, Object> customs = tokenResultCustom.getClaims();
+                        HashMap<String, Object> customs = new HashMap<>(tokenResultCustom.getClaims());
 
                         //autre test
 
                         currentUser = (new UserMapper()).map(customs);
                         loadUser(currentUser.getCompany(),currentUser.getId(), profileListener );
-
+                        saveCurrentUser();
 
                         return currentUser;
                     }
@@ -136,15 +138,17 @@ public class AuthHelper {
         Date newDate = new Date(date.getTime());
         final SimpleDateFormat format = new SimpleDateFormat("dd-MM-yy", Locale.FRENCH);
         String todayDate = format.format(newDate);
+        java.sql.Timestamp timeStampDate = new
+                Timestamp(date.getTime());
 
         if (currentUser.getLicenseEnd() != null) {
             long remainingDays = 0;
             Date dateToday = null;
-            Date dateEndLicence = null;
+
             try {
                 dateToday = format.parse(todayDate);
-                dateEndLicence = currentUser.getLicenseEnd();
-                long difference = dateEndLicence.getTime() - dateToday.getTime();
+                java.sql.Timestamp  dateEndLicence = currentUser.getLicenseEnd();
+                long difference = dateEndLicence.getTime() - timeStampDate.getTime();
                 remainingDays = difference / Constants.DAY_TO_MILLISECOND_FACTOR;
 
             } catch (Exception e) {

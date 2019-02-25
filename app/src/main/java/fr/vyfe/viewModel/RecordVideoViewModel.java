@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.vyfe.Constants;
+import fr.vyfe.model.ObserverModel;
 import fr.vyfe.model.SessionModel;
 import fr.vyfe.model.TagModel;
 import fr.vyfe.model.TemplateModel;
@@ -34,7 +35,7 @@ public class RecordVideoViewModel extends VyfeViewModel {
     private MutableLiveData<Boolean> areTagsActive;
     private MutableLiveData<Boolean> isLiveRecording;
 
-    private MutableLiveData<ArrayList<String>> observers;
+    private MutableLiveData<ArrayList<ObserverModel>> observers;
 
     public RecordVideoViewModel(String userId, String companyId, String sessionId) {
         sessionRepository = new SessionRepository(companyId);
@@ -173,6 +174,9 @@ public class RecordVideoViewModel extends VyfeViewModel {
         sessionModel.setDuration(duration);
         sessionRepository.update(sessionModel);
     }
+    public void deleteObservers() {
+        sessionRepository.deleteObservers(session.getValue());
+    }
 
     private void loadTags() {
         tagRepository.addListListener(new BaseListValueEventListener.CallbackInterface<TagModel>() {
@@ -188,10 +192,10 @@ public class RecordVideoViewModel extends VyfeViewModel {
         });
     }
 
-    public MutableLiveData<ArrayList<String>> getObserversSession() {
+    public MutableLiveData<ArrayList<ObserverModel>> getObserversSession() {
 
         if (observers == null)
-            observers = new MutableLiveData<>();
+            observers = new MutableLiveData();
         sessionRepository.addChildListener(sessionId, false, new BaseSingleValueEventListener.CallbackInterface<SessionModel>() {
             @Override
             public void onSuccess(SessionModel result) {

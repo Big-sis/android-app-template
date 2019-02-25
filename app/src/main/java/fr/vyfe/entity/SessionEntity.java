@@ -20,16 +20,14 @@ public class SessionEntity {
     private Boolean recording;
     private long timestamp;
     private int duration;
-    private HashMap<String, Boolean> observers;
+    private HashMap<String, ObserverEntity> observers;
     private HashMap<String, TagEntity> tags;
 
 
     private String tagSetId;
 
-
     public SessionEntity() {
     }
-
 
     public Map<String, Object> toHashmap() {
         Map<String, Object> sessionMap = new HashMap<>();
@@ -39,12 +37,12 @@ public class SessionEntity {
         sessionMap.put("duration", duration);
         sessionMap.put("description", description);
         sessionMap.put("pathApp", pathApp);
-        sessionMap.put("observers", observers);
         return sessionMap;
 
     }
-    //Generated code
 
+
+    //Generated code
 
     public int getDuration() {
         return duration;
@@ -54,11 +52,11 @@ public class SessionEntity {
         this.duration = duration;
     }
 
-    public HashMap<String, Boolean> getObservers() {
+    public HashMap<String, ObserverEntity> getObservers() {
         return observers;
     }
 
-    public void setObservers(HashMap<String, Boolean> observers) {
+    public void setObservers(HashMap<String, ObserverEntity> observers) {
         this.observers = observers;
 
     }

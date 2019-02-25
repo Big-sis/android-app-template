@@ -359,4 +359,9 @@ public class SelectVideoActivity extends VyfeActivity {
 
         void onError(Exception error);
     }
+
+    @Override
+    public void onBackPressed() {
+        this.startActivity(new Intent(this,MainActivity.class));
+    }
 }

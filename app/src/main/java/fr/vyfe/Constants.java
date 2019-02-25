@@ -43,6 +43,15 @@ public final class Constants {
     public static final String VIMEO_TOKEN_EXTRA = "vimeo_token";
     public static final String COMPANYID_EXTRA = "company_id";
 
+    //CUSTUM
+    public static final String BDDV2_CUSTOM_USERS_ROLE_ADMIN = "admin";
+    public static final String BDDV2_CUSTOM_USERS_ROLE_TEACHER = "teacher";
+    public static final String BDDV2_CUSTOM_USERS_ROLE_STUDENT = "student";
+    public static final String BDDV2_CUSTOM_USERS_ROLE_OBSERVER = "observer";
+    public static final String BDDV2_CUSTOM_USERS_COMPANY = "company";
+    public static final String BDDV2_CUSTOM_USERS_VIMEOACCESSTOKEN = "vimeAccessToken";
+    public static final String BDDV2_CUSTOM_USERS_LICENSEEND = "licenseEnd";
+
     public static final String SESSIONTITLE_EXTRA = "sessionTitle";
     public static final String TAGSETID_EXTRA = "tagSetID";
 }
