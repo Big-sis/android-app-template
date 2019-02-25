@@ -110,47 +110,4 @@ public class CooperationFragment extends Fragment {
             }
         });
     }
-
-    public void getNamesObservers(final ArrayList<String> idsObservers, final CooperationFragment.IdentityResponse listener) {
-
-        final ArrayList namesObservers = new ArrayList();
-        for (String id : idsObservers) {
-            final String[] nameObserver = {""};
-            AuthHelper.getInstance(getContext()).getUser(id).addOnCompleteListener(new OnCompleteListener<HashMap<String, Object>>() {
-                @Override
-                public void onComplete(@NonNull Task<HashMap<String, Object>> task) {
-                    if (task.isSuccessful()) {
-                        HashMap<String, Object> result = task.getResult();
-                        UserModel currentUser = (new UserMapper()).map(result);
-                        String firstNameTagger = (String)result.get("firstName");
-                        String lastnameTagger = (String)result.get("lastName");
-                        if (firstNameTagger == null) firstNameTagger = "";
-                        if (lastnameTagger == null) lastnameTagger = "";
-                        if (firstNameTagger == null & lastnameTagger == null)
-                            firstNameTagger = getString(R.string.name_unknow);
-                        nameObserver[0] = firstNameTagger + " " + lastnameTagger;
-
-                    } else {
-                        Exception e = task.getException();
-                        if (e instanceof FirebaseFunctionsException) {
-                            FirebaseFunctionsException ffe = (FirebaseFunctionsException) e;
-                            FirebaseFunctionsException.Code code = ffe.getCode();
-                            Object details = ffe.getDetails();
-                            nameObserver[0] = getString(R.string.unknow);
-                        }
-                    }
-                    namesObservers.add(nameObserver[0]);
-                    listener.onSucess(namesObservers);
-                    if (namesObservers.size() == idsObservers.size())
-                        listener.onSucess(namesObservers);
-                }
-            });
-
-            if (namesObservers.size() == idsObservers.size()) listener.onSucess(namesObservers);
-        }
-    }
-
-    interface IdentityResponse {
-        void onSucess(ArrayList<String> namesObservers);
-    }
 }

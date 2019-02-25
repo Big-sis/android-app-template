@@ -1,7 +1,5 @@
 package fr.vyfe.mapper;
 
-
-import java.util.HashMap;
 import fr.vyfe.entity.ObserverEntity;
 import fr.vyfe.model.ObserverModel;
 

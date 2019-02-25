@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
-import android.text.format.DateFormat;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -19,13 +18,10 @@ import com.google.firebase.functions.HttpsCallableResult;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
-import java.util.Map;
 
-import fr.vyfe.Constants;
 import fr.vyfe.mapper.UserMapper;
 import fr.vyfe.model.UserModel;
 import fr.vyfe.repository.BaseSingleValueEventListener;
@@ -38,12 +34,14 @@ public class AuthHelper {
 
     private static final String SHARED_PREF_USER_ID = "userId";
     private static final String SHARED_PREF_USER_COMPANY = "userCompany";
-    private static final String SHARED_PREF_USER_EMAIL = "userEmail";
     private static final String SHARED_PREF_USER_FIRSTNAME = "userFirstname";
     private static final String SHARED_PREF_USER_LASTNAME = "userLastname";
     private static final String SHARED_PREF_USER_PROMO = "userPromo";
     private static final String SHARED_PREF_USER_LICENSE_END = "userLicenseEnd";
-    private static final String SHARED_PREF_USER_ROLES = "userRoles";
+    private static final String SHARED_PREF_USER_ROLES_ADMIN = "admin";
+    private static final String SHARED_PREF_USER_ROLES_TEACHER = "teacher";
+    private static final String SHARED_PREF_USER_ROLES_STUDENT = "student";
+    private static final String SHARED_PREF_USER_ROLES_OBSERVER = "observer";
 
     private static AuthHelper instance;
     private static SharedPreferences mySharedPreferences;
@@ -77,7 +75,7 @@ public class AuthHelper {
     }
 
 
-    public Task<UserModel> signInWithEmailAndPassword(String mail, String pass, final AuthListener authListener, final getProfileListener profileListener) {
+    public Task<UserModel> signInWithEmailAndPassword(String mail, String pass, final AuthListener authListener, final AuthProfileListener authProfileListener) {
         return FirebaseAuth.getInstance().signInWithEmailAndPassword(mail, pass)
                 .continueWith(new Continuation<AuthResult, UserModel>() {
                     @Override
@@ -85,18 +83,14 @@ public class AuthHelper {
                         AuthResult result = task.getResult();
                         FirebaseUser user = result.getUser();
 
-                        //TEST
-                        FirebaseUser currentUserInstance = FirebaseAuth.getInstance().getCurrentUser();
 
-                        Task<GetTokenResult> resultCustom = currentUserInstance.getIdToken(false);
+                        Task<GetTokenResult> resultCustom = user.getIdToken(false);
                         GetTokenResult tokenResultCustom = resultCustom.getResult();
                         HashMap<String, Object> customs = new HashMap<>(tokenResultCustom.getClaims());
 
-                        //autre test
-
                         currentUser = (new UserMapper()).map(customs);
-                        loadUser(currentUser.getCompany(),currentUser.getId(), profileListener );
-                        saveCurrentUser();
+                        loadUser(currentUser.getCompany(),currentUser.getId(), authProfileListener );
+
 
                         return currentUser;
                     }
@@ -107,13 +101,6 @@ public class AuthHelper {
                     }
                 });
 
-
-
-    }
-
-
-    public Task<HashMap<String, Object>> getUser(String id) {
-        return fetchCompanyAndUser(id);
     }
 
 
@@ -143,13 +130,9 @@ public class AuthHelper {
 
         if (currentUser.getLicenseEnd() != null) {
             long remainingDays = 0;
-            Date dateToday = null;
-
             try {
-                dateToday = format.parse(todayDate);
                 java.sql.Timestamp  dateEndLicence = currentUser.getLicenseEnd();
-                long difference = dateEndLicence.getTime() - timeStampDate.getTime();
-                remainingDays = difference / Constants.DAY_TO_MILLISECOND_FACTOR;
+                 remainingDays = dateEndLicence.getTime() - timeStampDate.getTime();
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -169,8 +152,11 @@ public class AuthHelper {
         editor.putString(SHARED_PREF_USER_LASTNAME, currentUser.getLastName());
         editor.putString(SHARED_PREF_USER_PROMO, currentUser.getPromo());
         if (currentUser.getLicenseEnd() != null)
-            editor.putString(SHARED_PREF_USER_LICENSE_END, DateFormat.format("dd-MM-yy", currentUser.getLicenseEnd()).toString());
-        editor.putString(SHARED_PREF_USER_ROLES, Arrays.toString(currentUser.getRoles()));
+            editor.putString(SHARED_PREF_USER_LICENSE_END, String.valueOf(currentUser.getLicenseEnd()));
+
+        for (String role : currentUser.getRoles().keySet()) {
+            editor.putString(role, String.valueOf(currentUser.getRoles().get(role)));
+        }
         editor.apply();
     }
 
@@ -181,12 +167,17 @@ public class AuthHelper {
         user.setFirstname(mySharedPreferences.getString(SHARED_PREF_USER_FIRSTNAME, ""));
         user.setLastName(mySharedPreferences.getString(SHARED_PREF_USER_LASTNAME, ""));
         user.setPromo(mySharedPreferences.getString(SHARED_PREF_USER_PROMO, ""));
-       /** try {
-            user.setLicenceEnd((new SimpleDateFormat("dd-MM-yy")).parse(mySharedPreferences.getString(SHARED_PREF_USER_LICENSE_END, "")));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }*/
-        user.setRoles(mySharedPreferences.getString(SHARED_PREF_USER_ROLES, "").split(","));
+        try{
+            user.setLicenceEnd(Timestamp.valueOf(mySharedPreferences.getString(SHARED_PREF_USER_LICENSE_END, "")));
+        }
+            catch (Exception e){}
+
+        HashMap<String, Boolean> roles = new HashMap<>();
+        roles.put(SHARED_PREF_USER_ROLES_ADMIN, Boolean.valueOf(mySharedPreferences.getString(SHARED_PREF_USER_ROLES_ADMIN, "")));
+        roles.put(SHARED_PREF_USER_ROLES_TEACHER, Boolean.valueOf(mySharedPreferences.getString(SHARED_PREF_USER_ROLES_TEACHER, "")));
+        roles.put(SHARED_PREF_USER_ROLES_STUDENT, Boolean.valueOf(mySharedPreferences.getString(SHARED_PREF_USER_ROLES_STUDENT, "")));
+        roles.put(SHARED_PREF_USER_ROLES_OBSERVER, Boolean.valueOf(mySharedPreferences.getString(SHARED_PREF_USER_ROLES_OBSERVER, "")));
+        user.setRoles(roles);
         return user;
     }
 
@@ -195,28 +186,29 @@ public class AuthHelper {
         SharedPreferences.Editor editor = mySharedPreferences.edit();
         editor.remove(SHARED_PREF_USER_ID);
         editor.remove(SHARED_PREF_USER_COMPANY);
-        editor.remove(SHARED_PREF_USER_EMAIL);
         editor.remove(SHARED_PREF_USER_FIRSTNAME);
         editor.remove(SHARED_PREF_USER_LASTNAME);
         editor.remove(SHARED_PREF_USER_PROMO);
         editor.remove(SHARED_PREF_USER_LICENSE_END);
-        editor.remove(SHARED_PREF_USER_ROLES);
+        editor.remove(SHARED_PREF_USER_ROLES_ADMIN);
+        editor.remove(SHARED_PREF_USER_ROLES_TEACHER);
+        editor.remove(SHARED_PREF_USER_ROLES_STUDENT);
+        editor.remove(SHARED_PREF_USER_ROLES_OBSERVER);
         return editor.commit();
     }
 
     public interface AuthListener {
-        void onSuccessLoggedIn(UserModel user);
 
         void onLogginFailed(Exception e);
     }
 
-    public interface getProfileListener {
+    public interface AuthProfileListener {
         void onSuccessProfile(UserModel user);
 
         void onProfileFailed(Exception e);
     }
 
-    private void loadUser(String company, String IdUser, final getProfileListener profileListener) {
+    private void loadUser(String company, String IdUser, final AuthProfileListener authProfileListener) {
 
         UserRepository userRepository = new UserRepository(company, IdUser);
         userRepository.addChildListener(IdUser,new BaseSingleValueEventListener.CallbackInterface<UserModel>() {
@@ -226,13 +218,12 @@ public class AuthHelper {
                 currentUser.setLastName(result.getLastName());
                 currentUser.setFirstname(result.getFirstname());
                 saveCurrentUser();
-                profileListener.onSuccessProfile(currentUser);
-
+                authProfileListener.onSuccessProfile(currentUser);
             }
 
             @Override
             public void onError(Exception e) {
-                profileListener.onProfileFailed(e);
+                authProfileListener.onProfileFailed(e);
             }
         });
 

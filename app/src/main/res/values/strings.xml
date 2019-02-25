@@ -163,5 +163,6 @@
     <string name="name_unknow">Non connu</string>
     <string name="info_delete">Vous n\'avez pas téléchargé votre vidéo sur la plateforme, si vous la supprimer, elle ne sera plus disponible</string>
     <string name="havent_roles_teacher">Les droits liés à votre profil sont insuffisants, veuillez contacter votre administrateur</string>
+    <string name="try_again">Réessayer</string>
 
 </resources>

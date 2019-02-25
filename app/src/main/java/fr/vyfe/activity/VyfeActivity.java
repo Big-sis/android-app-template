@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -13,10 +14,14 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.FirebaseAuth;
+
+import java.util.HashMap;
 
 import fr.vyfe.R;
 import fr.vyfe.helper.AuthHelper;
@@ -77,6 +82,14 @@ public abstract class VyfeActivity extends AppCompatActivity {
         self = this;
         FirebaseApp.initializeApp(self);
         mAuth = AuthHelper.getInstance(this);
+
+        if (null == mAuth.getCurrentUser()) {
+            Toast.makeText(this, R.string.ask_connection, Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(this, ConnexionActivity.class);
+            this.startActivity(intent);
+            finish();
+        }
+
         if (mAuth.getLicenseRemainingDays() == 0) {
             if (mAuth.getCurrentUser() != null)
                 Toast.makeText(this, R.string.license, Toast.LENGTH_LONG).show();
@@ -86,15 +99,15 @@ public abstract class VyfeActivity extends AppCompatActivity {
             finish();
         }
 
-
-        if (null == mAuth.getCurrentUser()) {
-            Toast.makeText(this, R.string.ask_connection, Toast.LENGTH_LONG).show();
-            Intent intent = new Intent(this, ConnexionActivity.class);
-            this.startActivity(intent);
-            finish();
+        if (null!=mAuth.getCurrentUser().getRoles()) {
+            if (null==mAuth.getCurrentUser().getRoles().get("teacher")||!mAuth.getCurrentUser().getRoles().get("teacher")) {
+                Toast.makeText(this, R.string.havent_roles_teacher, Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(this, ConnexionActivity.class);
+                this.startActivity(intent);
+                mAuth.signOut();
+                finish();
+            }
         }
-
-
     }
 
     public boolean checkPersmissions(final String[] permissions) {

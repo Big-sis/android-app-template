@@ -10,12 +10,9 @@ public class UserModel implements VyfeModel {
     private String lastName;
     private String promo;
     private String company;
-    private String[] roles;
     private Timestamp licenceEnd;
-    private HashMap<String, Boolean> rolesC;
+    private HashMap<String, Boolean> roles;
     private String vimeoAccessToken;
-
-
 
     public UserModel(String id) {
         this.id = id;
@@ -35,12 +32,12 @@ public class UserModel implements VyfeModel {
         return licenceEnd;
     }
 
-    public HashMap<String, Boolean> getRolesC() {
-        return rolesC;
+    public HashMap<String, Boolean> getRoles() {
+        return roles;
     }
 
-    public void setRolesC(HashMap<String, Boolean> rolesC) {
-        this.rolesC = rolesC;
+    public void setRoles(HashMap<String, Boolean> roles) {
+        this.roles = roles;
     }
 
     public String getId() {
@@ -81,14 +78,6 @@ public class UserModel implements VyfeModel {
 
     public void setCompany(String company) {
         this.company = company;
-    }
-
-    public String[] getRoles() {
-        return roles;
-    }
-
-    public void setRoles(String[] roles) {
-        this.roles = roles;
     }
 
     public Timestamp getLicenseEnd() {

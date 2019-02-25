@@ -99,14 +99,10 @@ public class ConnexionActivity extends AppCompatActivity {
 
 
                     auth.signInWithEmailAndPassword(mail, pass, new AuthHelper.AuthListener() {
-                        @Override
-                        public void onSuccessLoggedIn(UserModel user) {
-
-                        }
 
                         @Override
                         public void onLogginFailed(Exception e) {
-                            final Snackbar snackbar = Snackbar.make(ConnexionActivity.this.findViewById(R.id.linear_layout_add), R.string.bad_authentifiaction, Snackbar.LENGTH_INDEFINITE).setDuration(9000).setAction("Réessayer", new View.OnClickListener() {
+                            final Snackbar snackbar = Snackbar.make(ConnexionActivity.this.findViewById(R.id.linear_layout_add), R.string.bad_authentifiaction, Snackbar.LENGTH_INDEFINITE).setDuration(9000).setAction(R.string.try_again, new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     inputMail.setText("");
@@ -122,10 +118,10 @@ public class ConnexionActivity extends AppCompatActivity {
                             snackbar.show();
 
                         }
-                    }, new AuthHelper.getProfileListener() {
+                    }, new AuthHelper.AuthProfileListener() {
                         @Override
                         public void onSuccessProfile(UserModel user) {
-                            HashMap<String, Boolean> rolesUser =  user.getRolesC();
+                            HashMap<String, Boolean> rolesUser =  user.getRoles();
                             if(rolesUser.get(Constants.BDDV2_CUSTOM_USERS_ROLE_ADMIN)){
                                 Intent intent = new Intent(ConnexionActivity.this, MainActivity.class);
                                 startActivity(intent);
