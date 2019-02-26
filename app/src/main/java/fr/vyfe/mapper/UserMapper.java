@@ -64,7 +64,12 @@ public class UserMapper extends FirebaseMapper<UserEntity, UserModel> {
             }
 
             if (keyCustom.equals(Constants.BDDV2_CUSTOM_USERS_LICENSEEND)) {
-                 user.setLicenceEnd(new Timestamp(Double.valueOf(userMap.get(keyCustom).toString()).longValue()));
+
+                 try{
+                     user.setLicenceEnd(new Timestamp(Double.valueOf(userMap.get(keyCustom).toString()).longValue()));}
+                 catch (IllegalArgumentException e){
+                     user.setLicenceEnd(null);
+                 }
             }
         }
 

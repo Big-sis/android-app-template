@@ -122,23 +122,27 @@ public class ConnexionActivity extends AppCompatActivity {
                         @Override
                         public void onSuccessProfile(UserModel user) {
                             HashMap<String, Boolean> rolesUser =  user.getRoles();
-                            if(rolesUser.get(Constants.BDDV2_CUSTOM_USERS_ROLE_ADMIN)){
+                            if(rolesUser.get(Constants.BDDV2_CUSTOM_USERS_ROLE_TEACHER)||rolesUser.get(Constants.BDDV2_CUSTOM_USERS_ROLE_STUDENT)){
                                 Intent intent = new Intent(ConnexionActivity.this, MainActivity.class);
                                 startActivity(intent);
                                 finish();
                             }else{
-                                final Snackbar snackbar = Snackbar.make(ConnexionActivity.this.findViewById(R.id.linear_layout_add), R.string.havent_roles_teacher, Snackbar.LENGTH_INDEFINITE).setDuration(9000).setAction(R.string.ok, new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View v) {
+                                if(rolesUser.get(Constants.BDDV2_CUSTOM_USERS_ROLE_ADMIN)){ Toast.makeText(ConnexionActivity.this, R.string.license, Toast.LENGTH_LONG).show();}
+                                else{
+                                    final Snackbar snackbar = Snackbar.make(ConnexionActivity.this.findViewById(R.id.linear_layout_add), R.string.havent_roles_teacher, Snackbar.LENGTH_INDEFINITE).setDuration(9000).setAction(R.string.ok, new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
 
-                                    }
-                                });
-                                View snackBarView = snackbar.getView();
-                                TextView textView = snackBarView.findViewById(android.support.design.R.id.snackbar_text);
-                                textView.setMaxLines(3);
-                                textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                                snackbar.setDuration(8000);
-                                snackbar.show();
+                                        }
+                                    });
+                                    View snackBarView = snackbar.getView();
+                                    TextView textView = snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                                    textView.setMaxLines(3);
+                                    textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                                    snackbar.setDuration(8000);
+                                    snackbar.show();
+                                }
+
                                }
                         }
 

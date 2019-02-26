@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -71,7 +72,6 @@ public class AuthHelper {
         if (clearSharedPrefs())
             FirebaseAuth.getInstance().signOut();
 
-
     }
 
 
@@ -83,14 +83,12 @@ public class AuthHelper {
                         AuthResult result = task.getResult();
                         FirebaseUser user = result.getUser();
 
-
                         Task<GetTokenResult> resultCustom = user.getIdToken(false);
                         GetTokenResult tokenResultCustom = resultCustom.getResult();
                         HashMap<String, Object> customs = new HashMap<>(tokenResultCustom.getClaims());
 
                         currentUser = (new UserMapper()).map(customs);
-                        loadUser(currentUser.getCompany(),currentUser.getId(), authProfileListener );
-
+                        loadUser(currentUser.getCompany(), currentUser.getId(), authProfileListener);
 
                         return currentUser;
                     }
@@ -98,9 +96,9 @@ public class AuthHelper {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         authListener.onLogginFailed(e);
+                        Log.d("err", e.getMessage());
                     }
                 });
-
     }
 
 
@@ -131,8 +129,8 @@ public class AuthHelper {
         if (currentUser.getLicenseEnd() != null) {
             long remainingDays = 0;
             try {
-                java.sql.Timestamp  dateEndLicence = currentUser.getLicenseEnd();
-                 remainingDays = dateEndLicence.getTime() - timeStampDate.getTime();
+                java.sql.Timestamp dateEndLicence = currentUser.getLicenseEnd();
+                remainingDays = dateEndLicence.getTime() - timeStampDate.getTime();
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -167,10 +165,11 @@ public class AuthHelper {
         user.setFirstname(mySharedPreferences.getString(SHARED_PREF_USER_FIRSTNAME, ""));
         user.setLastName(mySharedPreferences.getString(SHARED_PREF_USER_LASTNAME, ""));
         user.setPromo(mySharedPreferences.getString(SHARED_PREF_USER_PROMO, ""));
-        try{
+        try {
             user.setLicenceEnd(Timestamp.valueOf(mySharedPreferences.getString(SHARED_PREF_USER_LICENSE_END, "")));
+        } catch (Exception e) {
+            user.setLicenceEnd(null);
         }
-            catch (Exception e){}
 
         HashMap<String, Boolean> roles = new HashMap<>();
         roles.put(SHARED_PREF_USER_ROLES_ADMIN, Boolean.valueOf(mySharedPreferences.getString(SHARED_PREF_USER_ROLES_ADMIN, "")));
@@ -197,21 +196,10 @@ public class AuthHelper {
         return editor.commit();
     }
 
-    public interface AuthListener {
-
-        void onLogginFailed(Exception e);
-    }
-
-    public interface AuthProfileListener {
-        void onSuccessProfile(UserModel user);
-
-        void onProfileFailed(Exception e);
-    }
-
     private void loadUser(String company, String IdUser, final AuthProfileListener authProfileListener) {
 
         UserRepository userRepository = new UserRepository(company, IdUser);
-        userRepository.addChildListener(IdUser,new BaseSingleValueEventListener.CallbackInterface<UserModel>() {
+        userRepository.addChildListener(IdUser, new BaseSingleValueEventListener.CallbackInterface<UserModel>() {
             @Override
             public void onSuccess(UserModel result) {
 
@@ -227,5 +215,16 @@ public class AuthHelper {
             }
         });
 
+    }
+
+    public interface AuthListener {
+
+        void onLogginFailed(Exception e);
+    }
+
+    public interface AuthProfileListener {
+        void onSuccessProfile(UserModel user);
+
+        void onProfileFailed(Exception e);
     }
 }
