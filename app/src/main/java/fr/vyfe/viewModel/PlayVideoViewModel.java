@@ -61,7 +61,7 @@ public class PlayVideoViewModel extends VyfeViewModel {
 
         this.androidId = androidId;
         companyRepository = new CompanyRepository(companyId);
-        userRepository = new UserRepository(companyId,userId);
+        userRepository = new UserRepository(companyId);
     }
 
 
