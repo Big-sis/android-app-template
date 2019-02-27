@@ -11,6 +11,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -71,6 +72,7 @@ public class SelectVideoActivity extends VyfeActivity {
     private UploadTask uploadTask;
     private String serverVideoLink;
     private ProgressBar progressBar;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,6 +92,10 @@ public class SelectVideoActivity extends VyfeActivity {
         uploadButton = findViewById(R.id.btn_upload);
         videoMiniatureView = findViewById(R.id.vv_preview);
         progressBar = findViewById(R.id.progress_upload);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        if (sharedPreferences.contains(Constants.BDDV2_CUSTOM_USERS_VIMEOACCESSTOKEN))
+            vimeoToken =  sharedPreferences.getString(Constants.BDDV2_CUSTOM_USERS_VIMEOACCESSTOKEN, "");
 
         mIntentFilter = new IntentFilter();
         mIntentFilter.addAction("link");
@@ -100,12 +106,6 @@ public class SelectVideoActivity extends VyfeActivity {
         viewModel = ViewModelProviders.of(this, new SelectVideoViewModelFactory(mAuth.getCurrentUser().getCompany(), mAuth.getCurrentUser().getId())).get(SelectVideoViewModel.class);
         viewModel.init(getIntent().getStringExtra(Constants.SESSIONMODELID_EXTRA));
 
-        viewModel.getCompany().observe(this, new Observer<CompanyModel>() {
-            @Override
-            public void onChanged(@Nullable CompanyModel company) {
-                vimeoToken = company.getVimeoAccessToken();
-            }
-        });
 
         viewModel.getSession().observe(this, new Observer<SessionModel>() {
             @Override
