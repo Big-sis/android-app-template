@@ -85,21 +85,23 @@ public class TimelineRecordFragment extends Fragment {
 
                 //Create tags
                 for (TagModel tag : sessionModel.getTags()) {
+                    if(tag.getEnd()>0) {
 
-                    int titleLength = getResources().getInteger(R.integer.title_length_timeline);
-                    ImageView iv = new ImageView(getContext());
-                    RelativeLayout.LayoutParams layoutParamsIv = new RelativeLayout.LayoutParams(
-                            titleLength, LinearLayout.LayoutParams.WRAP_CONTENT);
-                    layoutParamsIv.setMargins(0, convertToDp(8), 0, convertToDp(8));
-                    iv.setLayoutParams(layoutParamsIv);
-                    iv.setMinimumHeight(convertToDp(20));
-                    iv.setBackgroundResource(tag.getColor().getImage());
-                    iv.setMinimumWidth(convertToDp((Math.max(convertToDp(25), tag.getEnd() - tag.getStart()))));
+                        int titleLength = getResources().getInteger(R.integer.title_length_timeline);
+                        ImageView iv = new ImageView(getContext());
+                        RelativeLayout.LayoutParams layoutParamsIv = new RelativeLayout.LayoutParams(
+                                titleLength, LinearLayout.LayoutParams.WRAP_CONTENT);
+                        layoutParamsIv.setMargins(0, convertToDp(8), 0, convertToDp(8));
+                        iv.setLayoutParams(layoutParamsIv);
+                        iv.setMinimumHeight(convertToDp(20));
+                        iv.setBackgroundResource(tag.getColor().getImage());
+                        iv.setMinimumWidth(convertToDp((Math.max(convertToDp(25), tag.getEnd() - tag.getStart()))));
 
-                    RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-                            LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                    layoutParams.setMargins(convertToDp(tag.getStart()), convertToDp(10), 0, convertToDp(10));
-                    ((RelativeLayout) containerLayout.findViewWithTag(tag.getTemplateId())).addView(iv, layoutParams);
+                        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                        layoutParams.setMargins(convertToDp(tag.getStart()), convertToDp(10), 0, convertToDp(10));
+                        ((RelativeLayout) containerLayout.findViewWithTag(tag.getTemplateId())).addView(iv, layoutParams);
+                    }
 
                 }
                 for (TextView textView : tvRowNameArray) {
