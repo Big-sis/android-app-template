@@ -64,9 +64,7 @@ public class TagSetRecordFragment extends Fragment {
                     mRecyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(), mRecyclerView, new RecyclerTouchListener.ClickListener() {
                         @Override
                         public void onClick(final View view, int position) {
-
                             viewModel.addTag(position);
-                          // mTagAdpater.notifyDataSetChanged();
                         }
 
                         @Override

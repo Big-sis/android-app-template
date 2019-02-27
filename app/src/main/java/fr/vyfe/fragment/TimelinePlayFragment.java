@@ -25,6 +25,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import fr.vyfe.Constants;
 import fr.vyfe.R;
 import fr.vyfe.model.ObserverModel;
 import fr.vyfe.model.SessionModel;
@@ -35,15 +36,11 @@ import fr.vyfe.viewModel.PlayVideoViewModel;
 
 public class TimelinePlayFragment extends Fragment {
     private static final int WIDTH_THUMB = 15;
-    private static final String SHARED_PREF_USER_ID = "userId";
-    private static final String SHARED_PREF_USER_FIRSTNAME = "userFirstname";
-    private static final String SHARED_PREF_USER_LASTNAME = "userLastname";
     private PlayVideoViewModel viewModel;
     private SeekBar mSeekBar;
     private LinearLayout teacherContainer;
     private ArrayList<TextView> tvRowNameArray = new ArrayList<>();
     private LinearLayout togetherContainer;
-    private LinearLayout container;
     private SharedPreferences sharedPreferences;
 
     public static TimelinePlayFragment newInstance() {
@@ -97,11 +94,11 @@ public class TimelinePlayFragment extends Fragment {
                 if (sessionModel.getTagsSet().getTemplates() != null) {
 
                     //Param Author
-                    String firstNameAuthor = sharedPreferences.getString(SHARED_PREF_USER_FIRSTNAME, "");
-                    String lastNameAuthor = sharedPreferences.getString(SHARED_PREF_USER_LASTNAME, "");
-                    if (!sharedPreferences.contains(SHARED_PREF_USER_FIRSTNAME))
+                    String firstNameAuthor = sharedPreferences.getString(Constants.SHARED_PREF_USER_FIRSTNAME, "");
+                    String lastNameAuthor = sharedPreferences.getString(Constants.SHARED_PREF_USER_LASTNAME, "");
+                    if (!sharedPreferences.contains(Constants.SHARED_PREF_USER_FIRSTNAME))
                         firstNameAuthor = "";
-                    if (!sharedPreferences.contains(SHARED_PREF_USER_LASTNAME)) lastNameAuthor = "";
+                    if (!sharedPreferences.contains(Constants.SHARED_PREF_USER_LASTNAME)) lastNameAuthor = "";
                     String namesAuthor = firstNameAuthor + " " + lastNameAuthor;
                     ObserverModel observerModelAuthor = new ObserverModel();
                     observerModelAuthor.setNameObserver(namesAuthor);

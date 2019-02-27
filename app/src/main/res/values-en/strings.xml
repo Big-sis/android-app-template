@@ -106,7 +106,7 @@
     <string name="create_grid_short">Create new grid</string>
     <string name="create_title_video">Give a title to your video :</string>
     <string name="edit_grid">1- Save a new observation grid</string>
-    <string name="license">No license found</string>
+    <string name="no_license_available">No license found</string>
     <string name="problem">Authentication problem :</string>
     <string name="tagset_title_warning">Please give your session a title AND a grid</string>
     <string name="color_gradient_blue_dark">Violet</string>

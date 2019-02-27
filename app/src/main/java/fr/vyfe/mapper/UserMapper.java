@@ -49,7 +49,7 @@ public class UserMapper extends FirebaseMapper<UserEntity, UserModel> {
         UserModel user = new UserModel();
         HashMap<String, Boolean> hashMapRoles = new HashMap<>();
         for (String keyCustom : userMap.keySet()) {
-            if (keyCustom.equals("user_id")) {
+            if (keyCustom.equals(Constants.BDDV2_CUSTOM_USERS_ID)) {
                 user.setId(userMap.get(keyCustom).toString());
             }
             if (keyCustom.equals(Constants.BDDV2_CUSTOM_USERS_ROLE_TEACHER) || keyCustom.equals(Constants.BDDV2_CUSTOM_USERS_ROLE_OBSERVER) || keyCustom.equals(Constants.BDDV2_CUSTOM_USERS_ROLE_ADMIN) || keyCustom.equals(Constants.BDDV2_CUSTOM_USERS_ROLE_STUDENT)) {
@@ -63,7 +63,7 @@ public class UserMapper extends FirebaseMapper<UserEntity, UserModel> {
                 user.setCompany(userMap.get(keyCustom).toString());
             }
 
-            if (keyCustom.equals(Constants.BDDV2_CUSTOM_USERS_LICENSEEND)) {
+            if (keyCustom.equals(Constants.BDDV2_CUSTOM_USERS_LICENSE_END)) {
 
                  try{
                      user.setLicenceEnd(new Timestamp(Double.valueOf(userMap.get(keyCustom).toString()).longValue()));}

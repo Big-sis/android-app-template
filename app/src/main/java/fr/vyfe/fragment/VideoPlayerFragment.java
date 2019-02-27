@@ -2,10 +2,12 @@ package fr.vyfe.fragment;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.SharedPreferences;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -29,7 +31,6 @@ import java.util.ArrayList;
 import fr.vyfe.Constants;
 import fr.vyfe.R;
 import fr.vyfe.helper.InternetConnexionHelper;
-import fr.vyfe.model.CompanyModel;
 import fr.vyfe.model.SessionModel;
 import fr.vyfe.viewModel.PlayVideoViewModel;
 
@@ -41,6 +42,7 @@ public class VideoPlayerFragment extends Fragment {
     private Handler mHandler;
     private ImageView mPlayPause;
     private String mAccessToken;
+    private SharedPreferences sharedPreferences;
 
     public static VideoPlayerFragment newInstance() {
         return new VideoPlayerFragment();
@@ -50,6 +52,7 @@ public class VideoPlayerFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(getActivity()).get(PlayVideoViewModel.class);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
     }
 
     @Nullable
@@ -85,12 +88,7 @@ public class VideoPlayerFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable final Bundle savedInstanceState) {
 
-        viewModel.getCompany().observe(this, new Observer<CompanyModel>() {
-            @Override
-            public void onChanged(@Nullable CompanyModel companyModel) {
-                mAccessToken = companyModel.getVimeoAccessToken();
-            }
-        });
+        mAccessToken = sharedPreferences.getString(Constants.BDDV2_CUSTOM_USERS_VIMEOACCESSTOKEN, "");
 
         viewModel.getSession().observe(getActivity(), new Observer<SessionModel>() {
             @Override
@@ -104,7 +102,6 @@ public class VideoPlayerFragment extends Fragment {
                 } else {
                     mVideoSelectedView.setVideoPath(session.getDeviceVideoLink());
                 }
-
             }
         });
 
@@ -161,10 +158,7 @@ public class VideoPlayerFragment extends Fragment {
                 } else {
                     viewModel.play();
                     mVideoSelectedView.start();
-
-
                 }
-
             }
         });
     }
@@ -183,13 +177,10 @@ public class VideoPlayerFragment extends Fragment {
                     //Search linkMovie
                     for (Video video : videoList.data) {
                         if (video.link.equals(linkVimeo)) {
-                            int duration = video.duration;
                             ArrayList<VideoFile> videoFiles = video.files;
                             if (videoFiles != null && !videoFiles.isEmpty()) {
                                 VideoFile videoFile = videoFiles.get(0);
                                 viewModel.setLinkPlayer(videoFile.getLink());
-                                long s = videoFile.getSize();
-
                             }
                         }
                     }

@@ -107,7 +107,7 @@
     <string name="create_grid_short">Créer une grille</string>
     <string name="create_title_video">Indiquez un titre à votre vidéo :</string>
     <string name="edit_grid">1- Enregistrer une grille d\'observation</string>
-    <string name="license">Vous ne disposez pas de licence</string>
+    <string name="no_license_available">Vous ne disposez pas de licence</string>
     <string name="problem">Problème d\'authentification :</string>
     <string name="title_tagSet">Vous devez indiquez un titre à votre session ET une grille d\'observation</string>
     <string name="end_upload">Fin du téléchargement</string>

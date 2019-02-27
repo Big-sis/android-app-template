@@ -9,8 +9,8 @@ import fr.vyfe.model.UserModel;
 
 public class UserRepository extends FirebaseDatabaseRepository<UserModel> {
 
-    public UserRepository(String company, String IdUser) {
-        super(new UserMapper(), company, IdUser);
+    public UserRepository(String company) {
+        super(new UserMapper(), company);
     }
 
     @Override

@@ -1,6 +1,5 @@
 package fr.vyfe.activity;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -44,11 +43,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import fr.vyfe.Constants;
+import fr.vyfe.R;
+import fr.vyfe.adapter.TemplateRecyclerAdapter;
 import fr.vyfe.helper.InternetConnexionHelper;
 import fr.vyfe.helper.TusAndroidUpload;
 import fr.vyfe.model.CompanyModel;
-import fr.vyfe.R;
-import fr.vyfe.adapter.TemplateRecyclerAdapter;
 import fr.vyfe.model.SessionModel;
 import fr.vyfe.model.TagSetModel;
 import fr.vyfe.viewModel.SelectVideoViewModel;
@@ -61,11 +60,10 @@ import io.tus.java.client.TusUploader;
 //TODO: Mise en place de Fragment?
 public class SelectVideoActivity extends VyfeActivity {
     private static String TAG = "SelectVideoActivity";
-
+    ImageView videoMiniatureView;
     private SelectVideoViewModel viewModel;
     private IntentFilter mIntentFilter;
     private Button uploadButton;
-    ImageView videoMiniatureView;
     private TusClient client;
     private String uploadURL;
     private TusUpload upload;
@@ -131,8 +129,7 @@ public class SelectVideoActivity extends VyfeActivity {
                         uploadButton.setClickable(false);
                         uploadButton.setText(R.string.online);
                         uploadButton.setAlpha(0.5f);
-                    }
-                    else {
+                    } else {
                         uploadButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -148,12 +145,10 @@ public class SelectVideoActivity extends VyfeActivity {
                                             }
                                         });
                                         popup.show();
-                                    }
-                                    else {
+                                    } else {
                                         startUpload(new File(session.getDeviceVideoLink()));
                                     }
-                                }
-                                else
+                                } else
                                     Toast.makeText(SelectVideoActivity.this, R.string.have_internet_connection, Toast.LENGTH_LONG).show();
                             }
                         });
@@ -174,17 +169,15 @@ public class SelectVideoActivity extends VyfeActivity {
             }
         });
 
-
-        viewModel.getTagsSetSession().observe(this, new Observer<TagSetModel>() {
+        viewModel.getSession().observe(this, new Observer<SessionModel>() {
             @Override
-            public void onChanged(@Nullable TagSetModel tagSetModel) {
-                if (tagSetModel != null) {
+            public void onChanged(@Nullable SessionModel sessionModel) {
+                if (sessionModel.getTagsSet() != null) {
                     TemplateRecyclerAdapter adapterTags = new TemplateRecyclerAdapter(viewModel.getSession().getValue(), "count");
                     recyclerTags.setAdapter(adapterTags);
-                }
 
-                assert tagSetModel != null;
-                gridTextView.setText(tagSetModel.getName());
+                    gridTextView.setText(sessionModel.getTagsSet().getName());
+                }
             }
         });
 
@@ -280,6 +273,7 @@ public class SelectVideoActivity extends VyfeActivity {
                 params.put("upload.size", String.valueOf(size));
                 return params;
             }
+
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
@@ -297,6 +291,18 @@ public class SelectVideoActivity extends VyfeActivity {
         queue.add(sr);
     }
 
+    //TODO: comportement isn't normal for backPressed
+    @Override
+    public void onBackPressed() {
+        this.startActivity(new Intent(this, MainActivity.class));
+    }
+
+    private interface UrlResponse {
+
+        void onSuccess(String url);
+
+        void onError(Exception error);
+    }
 
     private class UploadTask extends AsyncTask<String, Long, Void> {
         private TusClient client;
@@ -338,30 +344,18 @@ public class SelectVideoActivity extends VyfeActivity {
                 // Upload file in 1MiB chunks
                 uploader.setChunkSize(1024 * 1024);
 
-                while(!isCancelled() && uploader.uploadChunk() > 0) {
+                while (!isCancelled() && uploader.uploadChunk() > 0) {
                     uploadedBytes = uploader.getOffset();
                     publishProgress(uploadedBytes, totalBytes);
                 }
 
                 uploader.finish();
 
-            } catch(Exception e) {
+            } catch (Exception e) {
                 cancel(true);
             }
 
             return null;
         }
-    }
-
-    private interface UrlResponse {
-
-        void onSuccess(String url);
-
-        void onError(Exception error);
-    }
-
-    @Override
-    public void onBackPressed() {
-        this.startActivity(new Intent(this,MainActivity.class));
     }
 }

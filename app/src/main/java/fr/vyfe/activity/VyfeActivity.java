@@ -86,7 +86,7 @@ public abstract class VyfeActivity extends AppCompatActivity {
 
         if (mAuth.getLicenseRemainingDays() == 0) {
             if (mAuth.getCurrentUser() != null)
-                Toast.makeText(this, R.string.license, Toast.LENGTH_LONG).show();
+                Toast.makeText(this, R.string.no_license_available, Toast.LENGTH_LONG).show();
             Intent intent = new Intent(this, ConnexionActivity.class);
             this.startActivity(intent);
             mAuth.signOut();
@@ -94,19 +94,15 @@ public abstract class VyfeActivity extends AppCompatActivity {
         }
 
         if (mAuth.getCurrentUser() != null) {
-            if (null != mAuth.getCurrentUser().getRoles()) {
-                if (mAuth.getCurrentUser().getRoles().get("teacher") || mAuth.getCurrentUser().getRoles().get("student")) {
-                } else {
-                    if(mAuth.getCurrentUser().getRoles().get("admin")){
-                        Toast.makeText(this, R.string.license, Toast.LENGTH_LONG).show();
-                    }
-                    else
-                    Toast.makeText(this, R.string.havent_roles_teacher, Toast.LENGTH_LONG).show();
+            if (null != mAuth.getCurrentUser().getRoles()&&!mAuth.getCurrentUser().getRoles().get("teacher") && !mAuth.getCurrentUser().getRoles().get("student")) {
+                    if (mAuth.getCurrentUser().getRoles().get("admin")) {
+                        Toast.makeText(this, R.string.no_license_available, Toast.LENGTH_LONG).show();
+                    } else
+                        Toast.makeText(this, R.string.havent_roles_teacher, Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(this, ConnexionActivity.class);
                     this.startActivity(intent);
                     mAuth.signOut();
                     finish();
-                }
             }
         }
     }

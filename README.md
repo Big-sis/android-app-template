@@ -8,13 +8,14 @@
     
     curl -H "Tus-Resumable: 1.0.0" -H "Accept: application/vnd.vimeo.*+json;version=3.4" "<uploadUrl>" -I
 
-###Upload VIMEO
+###Ressources
+- Upload VIMEO
     https://github.com/tus/tus-java-client
 
     https://github.com/tus/tus-android-client
 
-###Player Vimeo
+- Player Vimeo
     https://github.com/vimeo/vimeo-networking-java#how-do-i-play-a-video
 
-###ViewModel
+- ViewModel
     https://medium.com/globallogic-latinoamerica-mobile/viewmodel-firebase-database-3cc708044b5d

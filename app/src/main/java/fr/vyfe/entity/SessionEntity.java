@@ -11,7 +11,7 @@ public class SessionEntity {
     private String author;
     private String name;
     private String description;
-    private TagSetEntity tagsSet;
+    private TagSetEntity tagSet;
     private String videoLink;
     private String pathApp;
     private String thumbnailUrl;
@@ -157,11 +157,11 @@ public class SessionEntity {
         this.recording = recording;
     }
 
-    public TagSetEntity getTagsSet() {
-        return tagsSet;
+    public TagSetEntity getTagSet() {
+        return tagSet;
     }
 
-    public void setTagsSet(TagSetEntity tagsSet) {
-        this.tagsSet = tagsSet;
+    public void setTagSet(TagSetEntity tagSet) {
+        this.tagSet = tagSet;
     }
 }

@@ -14,8 +14,6 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
-import com.google.firebase.functions.FirebaseFunctions;
-import com.google.firebase.functions.HttpsCallableResult;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -23,6 +21,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
+import fr.vyfe.Constants;
 import fr.vyfe.mapper.UserMapper;
 import fr.vyfe.model.UserModel;
 import fr.vyfe.repository.BaseSingleValueEventListener;
@@ -32,17 +31,6 @@ import fr.vyfe.repository.UserRepository;
  * Handles authentication, login, logout, current user with offline mode and license check
  */
 public class AuthHelper {
-
-    private static final String SHARED_PREF_USER_ID = "userId";
-    private static final String SHARED_PREF_USER_COMPANY = "userCompany";
-    private static final String SHARED_PREF_USER_FIRSTNAME = "userFirstname";
-    private static final String SHARED_PREF_USER_LASTNAME = "userLastname";
-    private static final String SHARED_PREF_USER_PROMO = "userPromo";
-    private static final String SHARED_PREF_USER_LICENSE_END = "userLicenseEnd";
-    private static final String SHARED_PREF_USER_ROLES_ADMIN = "admin";
-    private static final String SHARED_PREF_USER_ROLES_TEACHER = "teacher";
-    private static final String SHARED_PREF_USER_ROLES_STUDENT = "student";
-    private static final String SHARED_PREF_USER_ROLES_OBSERVER = "observer";
 
     private static AuthHelper instance;
     private static SharedPreferences mySharedPreferences;
@@ -54,7 +42,7 @@ public class AuthHelper {
         if (FirebaseAuth.getInstance().getCurrentUser() == null)
             signOut();
 
-        if (currentUser == null && mySharedPreferences.contains(SHARED_PREF_USER_ID))
+        if (currentUser == null && mySharedPreferences.contains(Constants.BDDV2_CUSTOM_USERS_ID))
             this.currentUser = retrieveCurrentUser();
     }
 
@@ -71,11 +59,9 @@ public class AuthHelper {
         currentUser = null;
         if (clearSharedPrefs())
             FirebaseAuth.getInstance().signOut();
-
     }
 
-
-    public Task<UserModel> signInWithEmailAndPassword(String mail, String pass, final AuthListener authListener, final AuthProfileListener authProfileListener) {
+    public Task<UserModel> signInWithEmailAndPassword(String mail, String pass, final AuthProfileListener authProfileListener) {
         return FirebaseAuth.getInstance().signInWithEmailAndPassword(mail, pass)
                 .continueWith(new Continuation<AuthResult, UserModel>() {
                     @Override
@@ -88,31 +74,30 @@ public class AuthHelper {
                         HashMap<String, Object> customs = new HashMap<>(tokenResultCustom.getClaims());
 
                         currentUser = (new UserMapper()).map(customs);
-                        loadUser(currentUser.getCompany(), currentUser.getId(), authProfileListener);
+                        userRepository = new UserRepository(currentUser.getCompany());
+                        userRepository.addChildListener(currentUser.getId(), new BaseSingleValueEventListener.CallbackInterface<UserModel>() {
+                            @Override
+                            public void onSuccess(UserModel result) {
+
+                                if (result.getLastName() != null) currentUser.setLastName(result.getLastName());
+                                if (result.getFirstname() != null) currentUser.setFirstname(result.getFirstname());
+                                saveCurrentUser();
+                                authProfileListener.onSuccessProfile(currentUser);
+                            }
+
+                            @Override
+                            public void onError(Exception e) {
+                                authProfileListener.onProfileFailed(e);
+                            }
+                        });
 
                         return currentUser;
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        authListener.onLogginFailed(e);
+                        authProfileListener.onLogginFailed(e);
                         Log.d("err", e.getMessage());
-                    }
-                });
-    }
-
-
-    //TODO GERER ENVIRONNEMENT ex: ".getHttpsCallable("getCompanyAndUser_"+Constants.FIREBASE_DB_FUNCTIONSPRODUCTION+"?userId=" + userId)"
-    //sinon "getCompanyAndUser?userId=" + userId
-    private Task<HashMap<String, Object>> fetchCompanyAndUser(String userId) {
-        return FirebaseFunctions.getInstance()
-                .getHttpsCallable("getCompanyAndUser?userId=" + userId)
-                .call()
-                .continueWith(new Continuation<HttpsCallableResult, HashMap<String, Object>>() {
-                    @Override
-                    public HashMap<String, Object> then(@NonNull Task<HttpsCallableResult> task) throws Exception {
-                        HttpsCallableResult result = task.getResult();
-                        return (HashMap<String, Object>) result.getData();
                     }
                 });
     }
@@ -144,13 +129,13 @@ public class AuthHelper {
 
     private void saveCurrentUser() {
         SharedPreferences.Editor editor = mySharedPreferences.edit();
-        editor.putString(SHARED_PREF_USER_ID, currentUser.getId());
-        editor.putString(SHARED_PREF_USER_COMPANY, currentUser.getCompany());
-        editor.putString(SHARED_PREF_USER_FIRSTNAME, currentUser.getFirstname());
-        editor.putString(SHARED_PREF_USER_LASTNAME, currentUser.getLastName());
-        editor.putString(SHARED_PREF_USER_PROMO, currentUser.getPromo());
+        editor.putString(Constants.BDDV2_CUSTOM_USERS_ID, currentUser.getId());
+        editor.putString(Constants.BDDV2_CUSTOM_USERS_COMPANY, currentUser.getCompany());
+        editor.putString(Constants.SHARED_PREF_USER_FIRSTNAME, currentUser.getFirstname());
+        editor.putString(Constants.SHARED_PREF_USER_LASTNAME, currentUser.getLastName());
+        editor.putString(Constants.BDDV2_CUSTOM_USERS_VIMEOACCESSTOKEN, currentUser.getVimeoAccessToken());
         if (currentUser.getLicenseEnd() != null)
-            editor.putString(SHARED_PREF_USER_LICENSE_END, String.valueOf(currentUser.getLicenseEnd()));
+            editor.putString(Constants.BDDV2_CUSTOM_USERS_LICENSE_END, String.valueOf(currentUser.getLicenseEnd()));
 
         for (String role : currentUser.getRoles().keySet()) {
             editor.putString(role, String.valueOf(currentUser.getRoles().get(role)));
@@ -160,22 +145,22 @@ public class AuthHelper {
 
     private UserModel retrieveCurrentUser() {
         UserModel user = new UserModel();
-        user.setId(mySharedPreferences.getString(SHARED_PREF_USER_ID, ""));
-        user.setCompany(mySharedPreferences.getString(SHARED_PREF_USER_COMPANY, ""));
-        user.setFirstname(mySharedPreferences.getString(SHARED_PREF_USER_FIRSTNAME, ""));
-        user.setLastName(mySharedPreferences.getString(SHARED_PREF_USER_LASTNAME, ""));
-        user.setPromo(mySharedPreferences.getString(SHARED_PREF_USER_PROMO, ""));
+        user.setId(mySharedPreferences.getString(Constants.BDDV2_CUSTOM_USERS_ID, ""));
+        user.setCompany(mySharedPreferences.getString(Constants.BDDV2_CUSTOM_USERS_COMPANY, ""));
+        user.setFirstname(mySharedPreferences.getString(Constants.SHARED_PREF_USER_FIRSTNAME, ""));
+        user.setLastName(mySharedPreferences.getString(Constants.SHARED_PREF_USER_LASTNAME, ""));
+        user.setVimeoAccessToken(mySharedPreferences.getString(Constants.BDDV2_CUSTOM_USERS_VIMEOACCESSTOKEN, ""));
         try {
-            user.setLicenceEnd(Timestamp.valueOf(mySharedPreferences.getString(SHARED_PREF_USER_LICENSE_END, "")));
+            user.setLicenceEnd(Timestamp.valueOf(mySharedPreferences.getString(Constants.BDDV2_CUSTOM_USERS_LICENSE_END, "")));
         } catch (Exception e) {
             user.setLicenceEnd(null);
         }
 
         HashMap<String, Boolean> roles = new HashMap<>();
-        roles.put(SHARED_PREF_USER_ROLES_ADMIN, Boolean.valueOf(mySharedPreferences.getString(SHARED_PREF_USER_ROLES_ADMIN, "")));
-        roles.put(SHARED_PREF_USER_ROLES_TEACHER, Boolean.valueOf(mySharedPreferences.getString(SHARED_PREF_USER_ROLES_TEACHER, "")));
-        roles.put(SHARED_PREF_USER_ROLES_STUDENT, Boolean.valueOf(mySharedPreferences.getString(SHARED_PREF_USER_ROLES_STUDENT, "")));
-        roles.put(SHARED_PREF_USER_ROLES_OBSERVER, Boolean.valueOf(mySharedPreferences.getString(SHARED_PREF_USER_ROLES_OBSERVER, "")));
+        roles.put(Constants.BDDV2_CUSTOM_USERS_ROLE_ADMIN, Boolean.valueOf(mySharedPreferences.getString(Constants.BDDV2_CUSTOM_USERS_ROLE_ADMIN, "")));
+        roles.put(Constants.BDDV2_CUSTOM_USERS_ROLE_TEACHER, Boolean.valueOf(mySharedPreferences.getString(Constants.BDDV2_CUSTOM_USERS_ROLE_TEACHER, "")));
+        roles.put(Constants.BDDV2_CUSTOM_USERS_ROLE_STUDENT, Boolean.valueOf(mySharedPreferences.getString(Constants.BDDV2_CUSTOM_USERS_ROLE_STUDENT, "")));
+        roles.put(Constants.BDDV2_CUSTOM_USERS_ROLE_OBSERVER, Boolean.valueOf(mySharedPreferences.getString(Constants.BDDV2_CUSTOM_USERS_ROLE_OBSERVER, "")));
         user.setRoles(roles);
         return user;
     }
@@ -183,48 +168,25 @@ public class AuthHelper {
     private boolean clearSharedPrefs() {
         if (mySharedPreferences == null) return false;
         SharedPreferences.Editor editor = mySharedPreferences.edit();
-        editor.remove(SHARED_PREF_USER_ID);
-        editor.remove(SHARED_PREF_USER_COMPANY);
-        editor.remove(SHARED_PREF_USER_FIRSTNAME);
-        editor.remove(SHARED_PREF_USER_LASTNAME);
-        editor.remove(SHARED_PREF_USER_PROMO);
-        editor.remove(SHARED_PREF_USER_LICENSE_END);
-        editor.remove(SHARED_PREF_USER_ROLES_ADMIN);
-        editor.remove(SHARED_PREF_USER_ROLES_TEACHER);
-        editor.remove(SHARED_PREF_USER_ROLES_STUDENT);
-        editor.remove(SHARED_PREF_USER_ROLES_OBSERVER);
+        editor.remove(Constants.BDDV2_CUSTOM_USERS_ID);
+        editor.remove(Constants.BDDV2_CUSTOM_USERS_VIMEOACCESSTOKEN);
+        editor.remove(Constants.SHARED_PREF_USER_FIRSTNAME);
+        editor.remove(Constants.SHARED_PREF_USER_LASTNAME);
+        editor.remove(Constants.BDDV2_CUSTOM_USERS_LICENSE_END);
+        editor.remove(Constants.BDDV2_CUSTOM_USERS_ROLE_ADMIN);
+        editor.remove(Constants.BDDV2_CUSTOM_USERS_ROLE_TEACHER);
+        editor.remove(Constants.BDDV2_CUSTOM_USERS_ROLE_STUDENT);
+        editor.remove(Constants.BDDV2_CUSTOM_USERS_ROLE_OBSERVER);
         return editor.commit();
     }
 
-    private void loadUser(String company, String IdUser, final AuthProfileListener authProfileListener) {
 
-        UserRepository userRepository = new UserRepository(company, IdUser);
-        userRepository.addChildListener(IdUser, new BaseSingleValueEventListener.CallbackInterface<UserModel>() {
-            @Override
-            public void onSuccess(UserModel result) {
-
-                currentUser.setLastName(result.getLastName());
-                currentUser.setFirstname(result.getFirstname());
-                saveCurrentUser();
-                authProfileListener.onSuccessProfile(currentUser);
-            }
-
-            @Override
-            public void onError(Exception e) {
-                authProfileListener.onProfileFailed(e);
-            }
-        });
-
-    }
-
-    public interface AuthListener {
-
-        void onLogginFailed(Exception e);
-    }
 
     public interface AuthProfileListener {
         void onSuccessProfile(UserModel user);
 
         void onProfileFailed(Exception e);
+
+        void onLogginFailed(Exception e);
     }
 }

@@ -49,9 +49,16 @@ public final class Constants {
     public static final String BDDV2_CUSTOM_USERS_ROLE_STUDENT = "student";
     public static final String BDDV2_CUSTOM_USERS_ROLE_OBSERVER = "observer";
     public static final String BDDV2_CUSTOM_USERS_COMPANY = "company";
-    public static final String BDDV2_CUSTOM_USERS_VIMEOACCESSTOKEN = "vimeAccessToken";
-    public static final String BDDV2_CUSTOM_USERS_LICENSEEND = "licenseEnd";
+    public static final String BDDV2_CUSTOM_USERS_VIMEOACCESSTOKEN = "vimeoAccessToken";
+    public static final String BDDV2_CUSTOM_USERS_LICENSE_END = "licenseEnd";
+    public static final String BDDV2_CUSTOM_USERS_ID = "user_id";
 
     public static final String SESSIONTITLE_EXTRA = "sessionTitle";
     public static final String TAGSETID_EXTRA = "tagSetID";
+
+    public static final String SHARED_PREF_USER_FIRSTNAME = "userFirstname";
+    public static final String SHARED_PREF_USER_LASTNAME = "userLastname";
+
+
+
 }

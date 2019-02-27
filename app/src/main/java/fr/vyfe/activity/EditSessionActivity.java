@@ -34,7 +34,6 @@ public class EditSessionActivity extends VyfeActivity {
 
     private FirebaseDatabase mDatabase;
     private EditSessionViewModel viewModel;
-    private int VISIBILITY = View.VISIBLE;
     private ConstraintLayout confirmActionDelete;
     private Button btnAppDelete;
 
@@ -217,7 +216,7 @@ public class EditSessionActivity extends VyfeActivity {
                 visibilityView.setVisibility(View.VISIBLE);
                 invisibilityView.setVisibility(View.GONE);
 
-                if (viewModel.getSession().getValue().getDeviceVideoLink() != null && confirmActionDelete.getVisibility() == VISIBILITY)
+                if (viewModel.getSession().getValue().getDeviceVideoLink() != null && confirmActionDelete.getVisibility() == View.VISIBLE)
                     btnAppDelete.setVisibility(View.VISIBLE);
             }
         });
