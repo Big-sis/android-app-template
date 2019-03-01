@@ -124,9 +124,7 @@ public class AuthHelper {
         }
 
         return 0;
-
     }
-
     private void saveCurrentUser() {
         SharedPreferences.Editor editor = mySharedPreferences.edit();
         editor.putString(Constants.BDDV2_CUSTOM_USERS_ID, currentUser.getId());
@@ -142,7 +140,6 @@ public class AuthHelper {
         }
         editor.apply();
     }
-
     private UserModel retrieveCurrentUser() {
         UserModel user = new UserModel();
         user.setId(mySharedPreferences.getString(Constants.BDDV2_CUSTOM_USERS_ID, ""));
@@ -179,9 +176,6 @@ public class AuthHelper {
         editor.remove(Constants.BDDV2_CUSTOM_USERS_ROLE_OBSERVER);
         return editor.commit();
     }
-
-
-
     public interface AuthProfileListener {
         void onSuccessProfile(UserModel user);
 

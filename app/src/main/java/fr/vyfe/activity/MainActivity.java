@@ -119,6 +119,8 @@ public class MainActivity extends VyfeActivity {
         getMenuInflater().inflate(R.menu.settings, menu);
         MenuItem itemLogout = menu.findItem(R.id.logout);
         itemLogout.setVisible(true);
+        MenuItem itemHome = menu.findItem(R.id.home);
+        itemHome.setVisible(false);
         return true;
     }
 }

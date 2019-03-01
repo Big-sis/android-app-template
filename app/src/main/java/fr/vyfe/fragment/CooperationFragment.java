@@ -1,7 +1,13 @@
 package fr.vyfe.fragment;
 
+import android.app.AlertDialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -29,6 +35,7 @@ public class CooperationFragment extends Fragment {
     private ObserverRecyclerAdapter mObserverAdapter;
     private TextView tvNumber;
     private AuthHelper mAuth;
+    private WifiManager wifiManager;
 
     public static CooperationFragment newInstance() {
         return new CooperationFragment();
@@ -38,6 +45,7 @@ public class CooperationFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(getActivity()).get(RecordVideoViewModel.class);
+
     }
 
     @Nullable
@@ -55,20 +63,39 @@ public class CooperationFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         RecyclerView.LayoutManager tagLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         mRecyclerViewObservers.setLayoutManager(tagLayoutManager);
-
+        wifiManager = (WifiManager) getActivity().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
         liveRecordingSwitch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                if (liveRecordingSwitch.isChecked())
-                    viewModel.isTagsActive();
-                else {
-                    viewModel.isTagsInactive();
-                    if (viewModel.getSession().getValue().getDuration() <= 0) {
-                        viewModel.deleteObservers();
+                if (isConnectingToInternet()) {
+                    if (liveRecordingSwitch.isChecked())
+                        viewModel.isTagsActive();
+                    else {
+                        viewModel.isTagsInactive();
+                        if (viewModel.getSession().getValue().getDuration() <= 0) {
+                            viewModel.deleteObservers();
+                        }
                     }
+                    viewModel.activeCooperation();
+                } else {
+                    liveRecordingSwitch.setChecked(false);
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setMessage(R.string.connecting_internet)
+                            .setPositiveButton(R.string.start_wifi, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    wifiManager.setWifiEnabled(true);
+                                }
+                            })
+                            .setNegativeButton(R.string.back, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            })
+                            .show();
                 }
-                viewModel.activeCooperation();
             }
         });
 
@@ -101,5 +128,14 @@ public class CooperationFragment extends Fragment {
                 tvNumber.setText(observers);
             }
         });
+    }
+
+    private boolean isConnectingToInternet() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        if (networkInfo == null) {
+            return false;
+        }
+        return true;
     }
 }
