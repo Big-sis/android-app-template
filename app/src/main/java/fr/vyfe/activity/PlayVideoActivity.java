@@ -28,9 +28,9 @@ import fr.vyfe.R;
 import fr.vyfe.adapter.TemplateRecyclerAdapter;
 import fr.vyfe.fragment.TimelinePlayFragment;
 import fr.vyfe.fragment.VideoPlayerFragment;
+import fr.vyfe.helper.InternetConnexionHelper;
 import fr.vyfe.helper.TimeHelper;
 import fr.vyfe.model.SessionModel;
-import fr.vyfe.model.TagSetModel;
 import fr.vyfe.viewModel.PlayVideoViewModel;
 import fr.vyfe.viewModel.PlayVideoViewModelFactory;
 
@@ -96,7 +96,7 @@ public class PlayVideoActivity extends VyfeActivity implements LifecycleOwner {
 
                 //Create Grid
                 if(session.getTags()!=null) {
-                    mAdapterTags = new TemplateRecyclerAdapter( session, "count");
+                    mAdapterTags = new TemplateRecyclerAdapter( session.getTagsSet().getTemplates(), "count", InternetConnexionHelper.isConnectedToInternet(getApplicationContext()));
                     mRecyclerView.setAdapter(mAdapterTags);
                 }
 

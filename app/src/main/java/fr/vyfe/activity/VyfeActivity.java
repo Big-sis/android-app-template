@@ -2,21 +2,27 @@ package fr.vyfe.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.telecom.Call;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.firebase.FirebaseApp;
 
+import fr.vyfe.Constants;
 import fr.vyfe.R;
 import fr.vyfe.helper.AuthHelper;
 
@@ -33,6 +39,7 @@ public abstract class VyfeActivity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         mAuth.signOut();
                         self.finish();
+                        finishAffinity();
                     }
                 })
                 .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
@@ -94,8 +101,8 @@ public abstract class VyfeActivity extends AppCompatActivity {
         }
 
         if (mAuth.getCurrentUser() != null) {
-            if (null != mAuth.getCurrentUser().getRoles()&&!mAuth.getCurrentUser().getRoles().get("teacher") && !mAuth.getCurrentUser().getRoles().get("student")) {
-                    if (mAuth.getCurrentUser().getRoles().get("admin")) {
+            if (null != mAuth.getCurrentUser().getRoles()&&!mAuth.getCurrentUser().getRoles().get(Constants.BDDV2_CUSTOM_USERS_ROLE_TEACHER) && !mAuth.getCurrentUser().getRoles().get(Constants.BDDV2_CUSTOM_USERS_ROLE_STUDENT)) {
+                    if (mAuth.getCurrentUser().getRoles().get(Constants.BDDV2_CUSTOM_USERS_ROLE_ADMIN)) {
                         Toast.makeText(this, R.string.no_license_available, Toast.LENGTH_LONG).show();
                     } else
                         Toast.makeText(this, R.string.havent_roles_teacher, Toast.LENGTH_LONG).show();
@@ -128,6 +135,5 @@ public abstract class VyfeActivity extends AppCompatActivity {
         } else
             return true;
     }
-
 
 }

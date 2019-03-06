@@ -4,6 +4,7 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import fr.vyfe.Constants;
@@ -136,9 +137,13 @@ public class RecordVideoViewModel extends VyfeViewModel {
             newTag.setEnd((int) (getVideoTime().getValue() / Constants.UNIT_TO_MILLI_FACTOR + template.getRightOffset()));
             newTag.setColor(template.getColor());
             tagRepository.push(newTag);
-
+            //incrTemplate(template);
             return true;
         } else return false;
+    }
+
+    private void incrTemplate(TemplateModel template) {
+       tagSetRepository.update(template,session.getValue());
     }
 
     public MutableLiveData<List<TagModel>> getTags() {
@@ -174,6 +179,7 @@ public class RecordVideoViewModel extends VyfeViewModel {
         sessionModel.setDuration(duration);
         sessionRepository.update(sessionModel);
     }
+
     public void deleteObservers() {
         sessionRepository.deleteObservers(session.getValue());
     }
@@ -201,7 +207,6 @@ public class RecordVideoViewModel extends VyfeViewModel {
             public void onSuccess(SessionModel result) {
                 observers.setValue(result.getObservers());
                 session.postValue(result);
-
             }
 
             @Override

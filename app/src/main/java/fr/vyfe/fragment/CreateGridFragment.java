@@ -24,6 +24,7 @@ import java.util.ArrayList;
 
 import fr.vyfe.R;
 import fr.vyfe.adapter.TemplateRecyclerAdapter;
+import fr.vyfe.helper.InternetConnexionHelper;
 import fr.vyfe.model.TagSetModel;
 import fr.vyfe.model.TemplateModel;
 import fr.vyfe.viewModel.CreateGridViewModel;
@@ -84,7 +85,7 @@ public class CreateGridFragment extends Fragment implements View.OnClickListener
 
         TagSetModel tagSetModel = new TagSetModel();
         tagSetModel.setTagTemplates(viewModel.getTemplates().getValue());
-        final TemplateRecyclerAdapter adapter = new TemplateRecyclerAdapter(tagSetModel, "start");
+        final TemplateRecyclerAdapter adapter = new TemplateRecyclerAdapter(tagSetModel.getTemplates(), "start", InternetConnexionHelper.isConnectedToInternet(getActivity()));
         recyclerTemplateList.setAdapter(adapter);
 
         viewModel.getTemplates().observe(getActivity(), new Observer<ArrayList<TemplateModel>>() {

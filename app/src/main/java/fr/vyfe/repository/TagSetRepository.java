@@ -1,13 +1,19 @@
 package fr.vyfe.repository;
 
 
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import fr.vyfe.Constants;
+import fr.vyfe.entity.TagSetEntity;
+import fr.vyfe.entity.TemplateEntity;
 import fr.vyfe.mapper.TagSetMapper;
 import fr.vyfe.mapper.TemplateMapper;
+import fr.vyfe.model.SessionModel;
 import fr.vyfe.model.TagSetModel;
 import fr.vyfe.model.TemplateModel;
 
@@ -33,5 +39,14 @@ public class TagSetRepository extends FirebaseDatabaseRepository<TagSetModel> {
         }
     }
 
+    public void deleteTagSets (String idTagSet){
+        databaseReference.child(idTagSet).removeValue();
+    }
+
+
+    public Task<Void> update(TemplateModel model, SessionModel sessionModel) {
+        model.setId(null);
+        return FirebaseDatabase.getInstance(Constants.FIREBASE_DB_VERSION_URL).getReference(getCompany()+"/sessions").child(sessionModel.getId()).child("tagSet").child("templates").child(model.getId()).updateChildren(((TemplateEntity) mapper.unMap(model)).toHashmap());
+    }
 
 }

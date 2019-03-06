@@ -115,7 +115,7 @@ public class SelectVideoActivity extends VyfeActivity {
                     //Create grid
                     TagSetModel tagSetModel = session.getTagsSet();
                     if (tagSetModel != null) {
-                        TemplateRecyclerAdapter adapterTags = new TemplateRecyclerAdapter(session, "count");
+                        TemplateRecyclerAdapter adapterTags = new TemplateRecyclerAdapter(session.getTagsSet().getTemplates(), "count",InternetConnexionHelper.isConnectedToInternet(getApplicationContext()));
                         recyclerTags.setAdapter(adapterTags);
                     }
 
@@ -165,12 +165,17 @@ public class SelectVideoActivity extends VyfeActivity {
                     //AFfichage miniature
                     videoMiniatureView.setImageBitmap(session.getThumbnail());
 
-                    if (session.getTagsSet() != null) {
-                        TemplateRecyclerAdapter adapterTags = new TemplateRecyclerAdapter(viewModel.getSession().getValue(), "count");
-                        recyclerTags.setAdapter(adapterTags);
+                }
+            }
+        });
 
-                        gridTextView.setText(session.getTagsSet().getName());
-                    }
+        viewModel.getSession().observe(this, new Observer<SessionModel>() {
+            @Override
+            public void onChanged(@Nullable SessionModel sessionModel) {
+                if (sessionModel.getTagsSet() != null) {
+                    TemplateRecyclerAdapter adapterTags = new TemplateRecyclerAdapter(sessionModel.getTagsSet().getTemplates(), "count",InternetConnexionHelper.isConnectedToInternet(getApplicationContext()));
+                    recyclerTags.setAdapter(adapterTags);
+                    gridTextView.setText(session.getTagsSet().getName());
                 }
             }
         });
@@ -285,7 +290,8 @@ public class SelectVideoActivity extends VyfeActivity {
         queue.add(sr);
     }
 
-    //TODO: comportement isn't normal for backPressed
+    //TODO: behaviour isn't usual
+    // Once rectif onBackPressed  in RecordActivity :  intent direction will be parentActivity
     @Override
     public void onBackPressed() {
         this.startActivity(new Intent(this, MainActivity.class));

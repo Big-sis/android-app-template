@@ -16,10 +16,9 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
 
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 import fr.vyfe.Constants;
 import fr.vyfe.mapper.UserMapper;
@@ -79,8 +78,10 @@ public class AuthHelper {
                             @Override
                             public void onSuccess(UserModel result) {
 
-                                if (result.getLastName() != null) currentUser.setLastName(result.getLastName());
-                                if (result.getFirstname() != null) currentUser.setFirstname(result.getFirstname());
+                                if (result.getLastName() != null)
+                                    currentUser.setLastName(result.getLastName());
+                                if (result.getFirstname() != null)
+                                    currentUser.setFirstname(result.getFirstname());
                                 saveCurrentUser();
                                 authProfileListener.onSuccessProfile(currentUser);
                             }
@@ -102,29 +103,25 @@ public class AuthHelper {
                 });
     }
 
-    public int getLicenseRemainingDays() {
+    public long getLicenseRemainingDays() {
         if (currentUser == null) return 0;
-        Date date = new Date();
-        Date newDate = new Date(date.getTime());
-        final SimpleDateFormat format = new SimpleDateFormat("dd-MM-yy", Locale.FRENCH);
-        String todayDate = format.format(newDate);
-        java.sql.Timestamp timeStampDate = new
-                Timestamp(date.getTime());
-
         if (currentUser.getLicenseEnd() != null) {
-            long remainingDays = 0;
+            Date date = new Date();
+            Timestamp timeStampDate = new
+                    Timestamp(date.getTime());
+            long remainingDaysTimestamp = 0;
+
             try {
-                java.sql.Timestamp dateEndLicence = currentUser.getLicenseEnd();
-                remainingDays = dateEndLicence.getTime() - timeStampDate.getTime();
+                Timestamp dateEndLicence = new Timestamp(currentUser.getLicenseEnd().getTime());
+                remainingDaysTimestamp = TimeUnit.MILLISECONDS.toDays(dateEndLicence.getTime() - timeStampDate.getTime());
 
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            return remainingDays >= 0 ? (int) remainingDays : 0;
+            return remainingDaysTimestamp >= 0 ? remainingDaysTimestamp : 0;
         }
 
         return 0;
-
     }
 
     private void saveCurrentUser() {
@@ -179,8 +176,6 @@ public class AuthHelper {
         editor.remove(Constants.BDDV2_CUSTOM_USERS_ROLE_OBSERVER);
         return editor.commit();
     }
-
-
 
     public interface AuthProfileListener {
         void onSuccessProfile(UserModel user);

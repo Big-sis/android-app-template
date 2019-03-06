@@ -61,6 +61,8 @@ public class RecordActivity extends VyfeActivity {
         viewModel = ViewModelProviders.of(this, new RecordVideoViewModelFactory(mAuth.getCurrentUser().getId(), mAuth.getCurrentUser().getCompany(), sessionId)).get(RecordVideoViewModel.class);
         viewModel.init();
 
+
+
         constraintErrorSpace = findViewById(R.id.session_error_space);
         contrainOkRecord = findViewById(R.id.session_record);
         Button btnPlay = findViewById(R.id.btn_play);
@@ -180,4 +182,5 @@ public class RecordActivity extends VyfeActivity {
         viewPager.setAdapter(adapter);
     }
 
+    //TODO : if onBackPressed and children is SelectVideoActivity don't delete Session
 }

@@ -10,4 +10,13 @@ public class InternetConnexionHelper {
 
         return (network!=null && network.isConnected());
     }
+
+    public static boolean isConnectedToInternet(Context context) {
+        ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+        if (networkInfo == null) {
+            return false;
+        }
+        return true;
+    }
 }

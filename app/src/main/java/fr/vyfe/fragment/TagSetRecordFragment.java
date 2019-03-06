@@ -4,7 +4,6 @@ package fr.vyfe.fragment;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -17,12 +16,12 @@ import android.view.ViewGroup;
 import java.util.Collections;
 import java.util.Comparator;
 
-import fr.vyfe.Constants;
 import fr.vyfe.R;
 import fr.vyfe.RecyclerTouchListener;
+import fr.vyfe.activity.VyfeActivity;
 import fr.vyfe.adapter.TemplateRecyclerAdapter;
+import fr.vyfe.helper.InternetConnexionHelper;
 import fr.vyfe.model.SessionModel;
-import fr.vyfe.model.TagSetModel;
 import fr.vyfe.model.TemplateModel;
 import fr.vyfe.viewModel.RecordVideoViewModel;
 
@@ -30,7 +29,7 @@ public class TagSetRecordFragment extends Fragment {
 
     private RecordVideoViewModel viewModel;
     private RecyclerView mRecyclerView;
-    private TemplateRecyclerAdapter mTagAdpater;
+    private TemplateRecyclerAdapter mTemplateAdapter;
 
     public static TagSetRecordFragment newInstance() {
         return new TagSetRecordFragment();
@@ -65,6 +64,7 @@ public class TagSetRecordFragment extends Fragment {
                         @Override
                         public void onClick(final View view, int position) {
                             viewModel.addTag(position);
+                            mTemplateAdapter.notifyDataSetChanged();
                         }
 
                         @Override
@@ -91,9 +91,9 @@ public class TagSetRecordFragment extends Fragment {
                             return o1.getPosition() - o2.getPosition();
                         }
                     });
-                    mTagAdpater = new TemplateRecyclerAdapter(sessionModel, "record");
-                    mRecyclerView.setAdapter(mTagAdpater);
-                    mTagAdpater.notifyDataSetChanged();
+                    mTemplateAdapter = new TemplateRecyclerAdapter(sessionModel.getTagsSet().getTemplates(), "record", InternetConnexionHelper.isConnectedToInternet(getActivity()));
+                    mRecyclerView.setAdapter(mTemplateAdapter);
+                    mTemplateAdapter.notifyDataSetChanged();
                 }
             }
         });

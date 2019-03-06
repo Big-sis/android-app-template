@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/container"
+    android:background="@drawable/color_gradient_grey"
+    android:layout_marginBottom="5dp">
+
+    <TextView
+        android:layout_gravity="center_vertical"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="10dp"
+        android:id="@+id/grid_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/name_tag_set"
+        android:textColor="@color/white"
+        android:layout_weight="0.9"/>
+
+    <CheckBox
+        android:layout_gravity="center_vertical"
+        android:id="@+id/select_grid_checkbox"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.1"/>
+
+</LinearLayout>

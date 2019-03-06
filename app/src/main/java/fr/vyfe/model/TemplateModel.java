@@ -13,7 +13,7 @@ public class TemplateModel implements Parcelable, VyfeModel, Comparable<Template
     private String name;
     private int leftOffset;
     private int rightOffset;
-    private int count = 0;
+    private Integer count;
     private int position;
     private boolean touch = false;
 
@@ -91,15 +91,16 @@ public class TemplateModel implements Parcelable, VyfeModel, Comparable<Template
         this.name = tagName;
     }
 
-    public int getCount() {
+    public Integer getCount() {
         return count;
     }
 
-    public void setCount(int count) {
+    public void setCount(Integer count) {
         this.count = count;
     }
 
     public void incrCount() {
+        if(count ==null) count =0;
         this.count++;
     }
 

@@ -4,28 +4,17 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.v7.widget.Toolbar;
-import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
-import com.google.firebase.auth.FirebaseAuth;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import fr.vyfe.R;
-import fr.vyfe.RaspberryConnexion;
 import fr.vyfe.helper.AuthHelper;
 
 public class MainActivity extends VyfeActivity {
@@ -33,6 +22,7 @@ public class MainActivity extends VyfeActivity {
     private WifiManager wifiManager;
     private String networkSSID;
     private String networkPass;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +58,7 @@ public class MainActivity extends VyfeActivity {
         btnCreateGrid.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, CreateGridActivity.class);
+                Intent intent = new Intent(MainActivity.this, TagSetsActivity.class);
                 startActivity(intent);
             }
         });
@@ -85,7 +75,7 @@ public class MainActivity extends VyfeActivity {
     }
 
     private void toastLicenseExpireWarning(AuthHelper mAuth) {
-        int remainingDays = mAuth.getLicenseRemainingDays();
+        long remainingDays = mAuth.getLicenseRemainingDays();
         if (remainingDays <= 1) {
             Toast.makeText(this, R.string.expired_day, Toast.LENGTH_LONG).show();
         } else if (remainingDays < 7) {
@@ -119,6 +109,8 @@ public class MainActivity extends VyfeActivity {
         getMenuInflater().inflate(R.menu.settings, menu);
         MenuItem itemLogout = menu.findItem(R.id.logout);
         itemLogout.setVisible(true);
+        MenuItem itemHome = menu.findItem(R.id.home);
+        itemHome.setVisible(false);
         return true;
     }
 }
