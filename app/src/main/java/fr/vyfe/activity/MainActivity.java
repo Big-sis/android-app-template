@@ -75,7 +75,7 @@ public class MainActivity extends VyfeActivity {
     }
 
     private void toastLicenseExpireWarning(AuthHelper mAuth) {
-        int remainingDays = mAuth.getLicenseRemainingDays();
+        long remainingDays = mAuth.getLicenseRemainingDays();
         if (remainingDays <= 1) {
             Toast.makeText(this, R.string.expired_day, Toast.LENGTH_LONG).show();
         } else if (remainingDays < 7) {

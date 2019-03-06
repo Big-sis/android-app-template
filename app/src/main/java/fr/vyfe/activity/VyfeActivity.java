@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.google.firebase.FirebaseApp;
 
+import fr.vyfe.Constants;
 import fr.vyfe.R;
 import fr.vyfe.helper.AuthHelper;
 
@@ -97,8 +98,8 @@ public abstract class VyfeActivity extends AppCompatActivity {
         }
 
         if (mAuth.getCurrentUser() != null) {
-            if (null != mAuth.getCurrentUser().getRoles()&&!mAuth.getCurrentUser().getRoles().get("teacher") && !mAuth.getCurrentUser().getRoles().get("student")) {
-                    if (mAuth.getCurrentUser().getRoles().get("admin")) {
+            if (null != mAuth.getCurrentUser().getRoles()&&!mAuth.getCurrentUser().getRoles().get(Constants.BDDV2_CUSTOM_USERS_ROLE_TEACHER) && !mAuth.getCurrentUser().getRoles().get(Constants.BDDV2_CUSTOM_USERS_ROLE_STUDENT)) {
+                    if (mAuth.getCurrentUser().getRoles().get(Constants.BDDV2_CUSTOM_USERS_ROLE_ADMIN)) {
                         Toast.makeText(this, R.string.no_license_available, Toast.LENGTH_LONG).show();
                     } else
                         Toast.makeText(this, R.string.havent_roles_teacher, Toast.LENGTH_LONG).show();

@@ -28,9 +28,6 @@ public class UserModel implements VyfeModel {
         this.vimeoAccessToken = vimeoAccessToken;
     }
 
-    public Date getLicenceEnd() {
-        return licenceEnd;
-    }
 
     public HashMap<String, Boolean> getRoles() {
         return roles;
