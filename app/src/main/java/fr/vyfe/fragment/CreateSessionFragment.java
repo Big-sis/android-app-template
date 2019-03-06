@@ -35,6 +35,7 @@ import fr.vyfe.activity.CreateSessionActivity;
 import fr.vyfe.activity.RecordActivity;
 import fr.vyfe.adapter.TagSetSpinnerAdapter;
 import fr.vyfe.adapter.TemplateRecyclerAdapter;
+import fr.vyfe.helper.InternetConnexionHelper;
 import fr.vyfe.helper.KeyboardHelper;
 import fr.vyfe.helper.ScrollHelper;
 import fr.vyfe.model.TagSetModel;
@@ -143,10 +144,8 @@ public class CreateSessionFragment extends Fragment {
                 RecyclerView.LayoutManager layoutManagerImport = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
                 recyclerViewImport.setLayoutManager(layoutManagerImport);
                 if (tagSetModel != null) {
-                    recyclerViewImport.setAdapter(new TemplateRecyclerAdapter(tagSetModel, "start"));
+                    recyclerViewImport.setAdapter(new TemplateRecyclerAdapter(tagSetModel.getTemplates(), "start", InternetConnexionHelper.isConnectedToInternet(getActivity())));
                     ScrollHelper.DownScroll(scrollMain);
-                } else {
-                    recyclerViewImport.setAdapter(new TemplateRecyclerAdapter(new TagSetModel(), "start"));
                 }
             }
         });

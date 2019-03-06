@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 
 import fr.vyfe.R;
 import fr.vyfe.adapter.TemplateRecyclerAdapter;
+import fr.vyfe.helper.InternetConnexionHelper;
 import fr.vyfe.model.SessionModel;
 import fr.vyfe.model.TagSetModel;
 import fr.vyfe.viewModel.PlayVideoViewModel;
@@ -54,7 +55,7 @@ public class TagsSetPlayFragment extends Fragment {
             @Override
             public void onChanged(@Nullable TagSetModel tagSet) {
                 if (tagSet != null) {
-                    mAdapterTags = new TemplateRecyclerAdapter(tagSet, "count");
+                    mAdapterTags = new TemplateRecyclerAdapter(tagSet.getTemplates(), "count", InternetConnexionHelper.isConnectedToInternet(getActivity()));
                     mRecyclerView.setAdapter(mAdapterTags);
                 }
             }

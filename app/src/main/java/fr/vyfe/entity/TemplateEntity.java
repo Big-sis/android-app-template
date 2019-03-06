@@ -1,5 +1,8 @@
 package fr.vyfe.entity;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class TemplateEntity {
     private String color;
     private String name;
@@ -7,6 +10,13 @@ public class TemplateEntity {
     private int rightOffset;
     private int position;
     private boolean draft;
+    private Integer count;
+
+    public Map<String, Object> toHashmap() {
+        Map<String, Object> map = new HashMap<>();
+        map.put("count", count);
+        return map;
+    }
 
     public int getPosition() {
         return position;
@@ -47,11 +57,20 @@ public class TemplateEntity {
     public void setRightOffset(int rightOffset) {
         this.rightOffset = rightOffset;
     }
+
     public boolean isDraft() {
         return draft;
     }
 
     public void setDraft(boolean draft) {
         this.draft = draft;
+    }
+
+    public Integer getCount() {
+        return count;
+    }
+
+    public void setCount(Integer count) {
+        this.count = count;
     }
 }

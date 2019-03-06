@@ -124,7 +124,7 @@ public abstract class FirebaseDatabaseRepository<Model> {
         return databaseReference.child(key).removeValue();
     }
 
-    public void patch(String entityKey, HashMap<String, Object> properties) {
+    public void update(String entityKey, HashMap<String, Object> properties) {
         for (Map.Entry<String, Object> property : properties.entrySet()) {
             databaseReference.child(entityKey).child(property.getKey()).setValue(property.getValue());
         }

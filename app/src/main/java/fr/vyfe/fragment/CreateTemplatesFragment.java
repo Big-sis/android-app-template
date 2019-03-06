@@ -32,6 +32,7 @@ import fr.vyfe.R;
 import fr.vyfe.adapter.ColorSpinnerAdapter;
 import fr.vyfe.adapter.TemplateRecyclerAdapter;
 import fr.vyfe.helper.ColorHelper;
+import fr.vyfe.helper.InternetConnexionHelper;
 import fr.vyfe.helper.KeyboardHelper;
 import fr.vyfe.model.ColorModel;
 import fr.vyfe.model.TagSetModel;
@@ -67,7 +68,7 @@ public class CreateTemplatesFragment extends Fragment implements AdapterView.OnI
 
         TagSetModel tagSetModel = new TagSetModel();
         tagSetModel.setTagTemplates(viewModel.getTemplates().getValue());
-        mAdapter = new TemplateRecyclerAdapter(tagSetModel, "create");
+        mAdapter = new TemplateRecyclerAdapter(tagSetModel.getTemplates(), "create", InternetConnexionHelper.isConnectedToInternet(getActivity()));
     }
 
     @Override

@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import fr.vyfe.R;
 import fr.vyfe.adapter.TemplateRecyclerAdapter;
+import fr.vyfe.helper.InternetConnexionHelper;
 import fr.vyfe.model.TagSetModel;
 import fr.vyfe.viewModel.CreateGridViewModel;
 
@@ -43,7 +44,7 @@ public class TemplatesFragment extends Fragment {
             @Override
             public void onChanged(@Nullable TagSetModel tagSetModel) {
                 if (tagSetModel != null) {
-                    mAdapterTags = new TemplateRecyclerAdapter(tagSetModel, "start");
+                    mAdapterTags = new TemplateRecyclerAdapter(tagSetModel.getTemplates(), "start", InternetConnexionHelper.isConnectedToInternet(getActivity()));
                     mRecyclerView.setAdapter(mAdapterTags);
                 }
             }
