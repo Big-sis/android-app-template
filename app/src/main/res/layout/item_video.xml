@@ -7,63 +7,64 @@
     android:gravity="center"
     android:orientation="vertical">
 
-        <RelativeLayout
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <ImageView
+            android:id="@+id/img_item_video"
+            android:layout_width="150dp"
+            android:layout_height="100dp"
+            android:alpha="0.5"
+            app:srcCompat="@android:color/darker_gray" />
+
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center">
+            android:layout_centerInParent="true"
+            app:srcCompat="@drawable/icons8_lecture_de_youtube_100" />
+    </RelativeLayout>
 
-            <ImageView
-                android:id="@+id/img_item_video"
-                android:layout_width="150dp"
-                android:layout_height="100dp"
-                android:alpha="0.5"
-                app:srcCompat="@android:color/darker_gray" />
+    <LinearLayout
+        android:id="@+id/title_video_container"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal">
 
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                app:srcCompat="@drawable/icons8_lecture_de_youtube_100" />
-        </RelativeLayout>
+        <ImageView
+            android:id="@+id/img_upload_video"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/icons8_stockage_cloud_priv__96" />
 
-        <LinearLayout
-            android:id="@+id/title_video_container"
-            android:layout_width="150dp"
+        <TextView
+            android:id="@+id/title_video"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:orientation="horizontal">
+            android:layout_marginLeft="8dp"
+            android:layout_weight="1"
+            android:text="@string/title_video"
+            android:textColor="@color/white"
+            app:fontFamily="@font/roboto" />
 
-            <ImageView
-                android:id="@+id/img_upload_video"
-                android:layout_width="20dp"
-                android:layout_height="20dp"
-                android:src="@drawable/icons8_stockage_cloud_priv__96" />
+    </LinearLayout>
 
-            <TextView
-                android:id="@+id/title_video"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_weight="1"
-                android:text="@string/title_video"
-                android:textColor="@color/white"
-                app:fontFamily="@font/roboto" />
 
-        </LinearLayout>
+    <TextView
+        android:id="@+id/video_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/timestamp"
+        android:textColor="@color/white"
+        app:fontFamily="@font/roboto" />
 
-        <LinearLayout
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/video_date"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/date"
-                android:textColor="@color/white"
-                app:fontFamily="@font/roboto"
-                />
-        </LinearLayout>
+    <TextView
+        android:id="@+id/video_duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        app:fontFamily="@font/roboto" />
 
 </LinearLayout>

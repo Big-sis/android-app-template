@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/time_lines_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <!--Timeline avec image tag-->
+    <LinearLayout
+        android:id="@+id/ll_timeline_container_author"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:id="@+id/template1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:tag="template1"
+            android:background="@drawable/color_gradient_grey_nocolor">
+            <TextView
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:minHeight="25dp"
+                android:text="template1"
+                android:layout_margin="10dp"
+                />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:tag="template2"
+            android:background="@drawable/color_gradient_grey_nocolor">
+            <TextView
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:minHeight="25dp"
+                android:text="template2"
+                android:layout_margin="10dp"
+                />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:tag="template3"
+            android:background="@drawable/color_gradient_grey_nocolor">
+            <TextView
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:minHeight="25dp"
+                android:text="template3"
+                android:layout_margin="10dp"
+                />
+        </RelativeLayout>
+    </LinearLayout>
+
+
+    <SeekBar
+        android:id="@+id/seek_bar_selected"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:clickable="false"
+        android:focusable="false"
+        android:longClickable="false"
+        android:progressDrawable="@android:color/transparent"
+        android:thumb="@drawable/thumb_blue"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</RelativeLayout>
