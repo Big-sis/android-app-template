@@ -114,7 +114,7 @@ public class CooperationFragment extends Fragment {
                 String observers;
                 if (idsObservers != null) {
                     for (ObserverModel id : idsObservers) {
-                        ids.add(id.getNameObserver());
+                        ids.add(id.getName());
                     }
                     observers = getString(R.string.participants) + String.valueOf(idsObservers.size());
                     viewModel.getSession().getValue().setObservers(idsObservers);

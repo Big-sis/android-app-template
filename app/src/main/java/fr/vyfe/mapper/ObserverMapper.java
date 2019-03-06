@@ -9,15 +9,15 @@ public class ObserverMapper extends FirebaseMapper<ObserverEntity, ObserverModel
     @Override
     public ObserverModel map(ObserverEntity observerEntity, String key) {
         ObserverModel observerModel = new ObserverModel();
-        observerModel.setIdObserver(key);
-        observerModel.setNameObserver(observerEntity.getName());
+        observerModel.setId(key);
+        observerModel.setName(observerEntity.getName());
         return observerModel;
     }
 
     @Override
     public ObserverEntity unMap(ObserverModel observerModel) {
         ObserverEntity observerEntity = new ObserverEntity();
-        observerEntity.setName(observerModel.getNameObserver());
+        observerEntity.setName(observerModel.getName());
         return observerEntity;
     }
 }

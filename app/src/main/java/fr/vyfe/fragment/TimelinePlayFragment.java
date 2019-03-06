@@ -101,8 +101,8 @@ public class TimelinePlayFragment extends Fragment {
                     if (!sharedPreferences.contains(Constants.SHARED_PREF_USER_LASTNAME)) lastNameAuthor = "";
                     String namesAuthor = firstNameAuthor + " " + lastNameAuthor;
                     ObserverModel observerModelAuthor = new ObserverModel();
-                    observerModelAuthor.setNameObserver(namesAuthor);
-                    observerModelAuthor.setIdObserver(viewModel.getSession().getValue().getAuthor());
+                    observerModelAuthor.setName(namesAuthor);
+                    observerModelAuthor.setId(viewModel.getSession().getValue().getAuthor());
 
                     //Creation teacher mainTimeline
                     createTimelineRow(observerModelAuthor, teacherContainer, sessionModel.getTagsSet());
@@ -111,7 +111,7 @@ public class TimelinePlayFragment extends Fragment {
                     ArrayList<ObserverModel> observers = viewModel.getSession().getValue().getObservers();
                     if (observers != null) for (ObserverModel observer : observers) {
                         LinearLayout layout = new LinearLayout(getContext());
-                        layout.setTag(observer.getIdObserver());
+                        layout.setTag(observer.getId());
                         layout.setOrientation(LinearLayout.VERTICAL);
                         layout.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                         togetherContainer.addView(layout);
@@ -200,7 +200,7 @@ public class TimelinePlayFragment extends Fragment {
 
     public LinearLayout createTimelineRow(ObserverModel observerModel, LinearLayout containerLayout, TagSetModel tagSetModel) {
         final TextView TvNameTagguer = new TextView(getContext());
-        TvNameTagguer.setText(observerModel.getNameObserver());
+        TvNameTagguer.setText(observerModel.getName());
         TvNameTagguer.setTextColor(Color.WHITE);
         TvNameTagguer.setMinimumHeight(convertToDp(15));
         RelativeLayout.LayoutParams layoutParamsTvTeacher = new RelativeLayout.LayoutParams(

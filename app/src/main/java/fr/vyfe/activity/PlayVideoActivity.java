@@ -96,7 +96,7 @@ public class PlayVideoActivity extends VyfeActivity implements LifecycleOwner {
 
                 //Create Grid
                 if(session.getTags()!=null) {
-                    mAdapterTags = new TemplateRecyclerAdapter( session.getTagsSet().getTemplates(), "count", InternetConnexionHelper.isConnectedToInternet(getApplicationContext()));
+                    mAdapterTags = new TemplateRecyclerAdapter( session.getTagsSet().getTemplates(), "play", InternetConnexionHelper.isConnectedToInternet(getApplicationContext()));
                     mRecyclerView.setAdapter(mAdapterTags);
                 }
 

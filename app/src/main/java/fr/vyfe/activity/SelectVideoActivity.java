@@ -171,9 +171,9 @@ public class SelectVideoActivity extends VyfeActivity {
 
         viewModel.getSession().observe(this, new Observer<SessionModel>() {
             @Override
-            public void onChanged(@Nullable SessionModel sessionModel) {
-                if (sessionModel.getTagsSet() != null) {
-                    TemplateRecyclerAdapter adapterTags = new TemplateRecyclerAdapter(sessionModel.getTagsSet().getTemplates(), "count",InternetConnexionHelper.isConnectedToInternet(getApplicationContext()));
+            public void onChanged(@Nullable SessionModel session) {
+                if (session.getTagsSet() != null) {
+                    TemplateRecyclerAdapter adapterTags = new TemplateRecyclerAdapter(session.getTagsSet().getTemplates(), "count",InternetConnexionHelper.isConnectedToInternet(getApplicationContext()));
                     recyclerTags.setAdapter(adapterTags);
                     gridTextView.setText(session.getTagsSet().getName());
                 }
