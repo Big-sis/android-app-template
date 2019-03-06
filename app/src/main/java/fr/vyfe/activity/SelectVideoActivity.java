@@ -175,8 +175,7 @@ public class SelectVideoActivity extends VyfeActivity {
                 if (sessionModel.getTagsSet() != null) {
                     TemplateRecyclerAdapter adapterTags = new TemplateRecyclerAdapter(sessionModel.getTagsSet().getTemplates(), "count",InternetConnexionHelper.isConnectedToInternet(getApplicationContext()));
                     recyclerTags.setAdapter(adapterTags);
-
-                    gridTextView.setText(sessionModel.getTagsSet().getName());
+                    gridTextView.setText(session.getTagsSet().getName());
                 }
             }
         });
