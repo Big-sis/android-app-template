@@ -45,7 +45,6 @@ public class CooperationFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(getActivity()).get(RecordVideoViewModel.class);
-
     }
 
     @Nullable

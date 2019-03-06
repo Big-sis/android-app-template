@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg"
     android:orientation="vertical">
 
     <android.support.v7.widget.RecyclerView
@@ -20,30 +19,26 @@
         android:orientation="horizontal"
         android:layout_weight="0.1">
         <Button
+            android:layout_marginStart="10dp"
             android:id="@+id/show_button"
             android:layout_width="match_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Voir"
-            android:textColor="@android:color/black"
-            android:textSize="14sp" />
+            android:text="@string/delete_select"
+            android:textColor="@color/colorWhiteTwo"
+            android:textSize="14sp"
+            android:background="@drawable/style_button"/>
+
 
         <Button
-            android:id="@+id/delete_button"
-            android:layout_width="match_parent"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:text="supprimer"
-            android:textColor="@android:color/black"
-            android:textSize="14sp" />
-
-        <Button
+            android:layout_marginStart="10dp"
             android:id="@+id/select_button"
             android:layout_width="match_parent"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="tout selectionner"
+            android:text="@string/select_all"
             android:textColor="@android:color/black"
+            android:background="@drawable/style_button_white"
             android:textSize="14sp" />
     </LinearLayout>
 

@@ -48,8 +48,8 @@
     <string name="infos_video">Informations sur la vidéo</string>
     <string name="video_name">Nom de la vidéo</string>
     <string name="record_session">Enregistrer une session</string>
-    <string name="modif_tags">Ajouter ou modifier les tagTemplates</string>
-    <string name="add_tags">Ajouter des tagTemplates</string>
+    <string name="modif_tags">Ajouter ou modifier les tags</string>
+    <string name="add_tags">Ajouter des tags</string>
     <string name="edit_tags">Modifier les tagTemplates</string>
     <string name="next">Suivant</string>
     <string name="video_save">Session enregistrée dans vos vidéos</string>
@@ -165,5 +165,14 @@
     <string name="havent_roles_teacher">Les droits liés à votre profil sont insuffisants, veuillez contacter votre administrateur</string>
     <string name="try_again">Réessayer</string>
     <string name="connecting_internet">Vous devez posseder une connexion à Internet pour activer la session collaborative</string>
+    <string name="your_tagSets">Vos grilles d\'observation</string>
+    <string name="havent_tag_sets">Vous n\'avez pas de grille d\'observation</string>
+    <string name="you_have" translatable="false">Vous avez</string>
+    <string name="tag_sets">grilles d\'observations</string>
+    <string name="name_tag_set">Name Grid</string>
+    <string name="delete_select">Supprimer la selection</string>
+    <string name="select_all">Tout selectionner</string>
+    <string name="select_nothing">Deselectionner</string>
+    <string name="add_tag_set">Ajouter une grille</string>
 
 </resources>

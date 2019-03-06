@@ -5,11 +5,14 @@ import android.arch.lifecycle.MutableLiveData;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Objects;
 
 import fr.vyfe.model.ColorModel;
 import fr.vyfe.model.TagSetModel;
 import fr.vyfe.model.TemplateModel;
+import fr.vyfe.repository.BaseListValueEventListener;
 import fr.vyfe.repository.TagSetRepository;
 
 
@@ -20,6 +23,10 @@ public class CreateGridViewModel extends VyfeViewModel {
     private String userId;
     private MutableLiveData<TagSetModel> mTagsSetModel;
 
+    private MutableLiveData<ArrayList<TagSetModel>> allTagSets;
+    private MutableLiveData<TagSetModel> selectedTagSet;
+
+
     CreateGridViewModel(String userId, String companyId) {
         tagSetRepository = new TagSetRepository(userId, companyId);
         tagSetName = new MutableLiveData<>();
@@ -27,10 +34,72 @@ public class CreateGridViewModel extends VyfeViewModel {
 
         mTagsSetModel = new MutableLiveData<>();
         this.userId = userId;
+
+        allTagSets = new MutableLiveData<>();
+        selectedTagSet = new MutableLiveData<>();
+
     }
 
     public void init() {
         if (templates.getValue() == null) templates.setValue(new ArrayList<TemplateModel>());
+    }
+
+    public LiveData<ArrayList<TagSetModel>> getAllTagSets() {
+        if (allTagSets.getValue() == null) {
+            loadTagSets();
+        }
+        return allTagSets;
+    }
+
+    public MutableLiveData<TagSetModel> getSelectedTagSet() {
+        if (selectedTagSet == null)
+            this.selectedTagSet = new MutableLiveData<>();
+        return selectedTagSet;
+    }
+
+    public void setSelectedTagSet(TagSetModel selectedTagSet) {
+
+        this.selectedTagSet.setValue(selectedTagSet);
+
+    }
+
+    private void loadTagSets() {
+        tagSetRepository.addListListener(new BaseListValueEventListener.CallbackInterface<TagSetModel>() {
+            @Override
+            public void onSuccess(List<TagSetModel> result) {
+                for (TagSetModel tagSet : result) {
+                    Collections.sort(tagSet.getTemplates(), new Comparator<TemplateModel>() {
+                        @Override
+                        public int compare(TemplateModel o1, TemplateModel o2) {
+                            return o1.getPosition() - o2.getPosition();
+                        }
+                    });
+                }
+
+                ArrayList<TagSetModel> tagSetModels = new ArrayList<>();
+                for (TagSetModel tagSet : result) {
+                    //TagsSets Author
+                    if (tagSet.getOwner().equals(userId)) {
+                        tagSetModels.add(tagSet);
+                    }
+                    //TagsSets shared
+                    if (!tagSet.getOwner().equals(userId) && tagSet.isShared()) {
+                        tagSetModels.add(tagSet);
+                    }
+                }
+                allTagSets.setValue(tagSetModels);
+            }
+
+            @Override
+            public void onError(Exception e) {
+                allTagSets.setValue(null);
+            }
+        });
+
+    }
+
+    public void deleteTagSets (String idTagSet){
+        tagSetRepository.deleteTagSets(idTagSet);
     }
 
     public LiveData<String> getTagSetName() {
@@ -52,6 +121,7 @@ public class CreateGridViewModel extends VyfeViewModel {
     public void setmTagsSetModel(MutableLiveData<TagSetModel> mTagsSetModel) {
         this.mTagsSetModel = mTagsSetModel;
     }
+
 
     @Override
     protected void onCleared() {

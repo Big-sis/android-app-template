@@ -3,6 +3,7 @@ package fr.vyfe.repository;
 
 import com.google.firebase.database.Query;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import fr.vyfe.Constants;
@@ -31,6 +32,10 @@ public class TagSetRepository extends FirebaseDatabaseRepository<TagSetModel> {
         for (TemplateModel templateModel : templates) {
             databaseReference.child(key).child(Constants.BDDV2_USERS_TEMPLATES_KEY).push().setValue(mapper.unMap(templateModel));
         }
+    }
+
+    public void deleteTagSets (String idTagSet){
+        databaseReference.child(idTagSet).removeValue();
     }
 
 

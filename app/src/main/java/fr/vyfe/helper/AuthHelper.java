@@ -36,6 +36,7 @@ public class AuthHelper {
     private static SharedPreferences mySharedPreferences;
     private UserModel currentUser;
     private UserRepository userRepository;
+    private long remainingDays = 0;
 
     private AuthHelper(Context context) {
         mySharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
@@ -112,7 +113,7 @@ public class AuthHelper {
                 Timestamp(date.getTime());
 
         if (currentUser.getLicenseEnd() != null) {
-            long remainingDays = 0;
+
             try {
                 java.sql.Timestamp dateEndLicence = currentUser.getLicenseEnd();
                 remainingDays = dateEndLicence.getTime() - timeStampDate.getTime();

@@ -201,7 +201,6 @@ public class RecordVideoViewModel extends VyfeViewModel {
             public void onSuccess(SessionModel result) {
                 observers.setValue(result.getObservers());
                 session.postValue(result);
-
             }
 
             @Override
