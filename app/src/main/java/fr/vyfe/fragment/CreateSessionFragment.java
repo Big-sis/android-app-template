@@ -143,10 +143,10 @@ public class CreateSessionFragment extends Fragment {
                 RecyclerView.LayoutManager layoutManagerImport = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
                 recyclerViewImport.setLayoutManager(layoutManagerImport);
                 if (tagSetModel != null) {
-                    recyclerViewImport.setAdapter(new TemplateRecyclerAdapter(tagSetModel.getTemplates(), "start"));
+                    recyclerViewImport.setAdapter(new TemplateRecyclerAdapter(tagSetModel, "start"));
                     ScrollHelper.DownScroll(scrollMain);
                 } else {
-                    recyclerViewImport.setAdapter(new TemplateRecyclerAdapter(new ArrayList<TemplateModel>(), "start"));
+                    recyclerViewImport.setAdapter(new TemplateRecyclerAdapter(new TagSetModel(), "start"));
                 }
             }
         });

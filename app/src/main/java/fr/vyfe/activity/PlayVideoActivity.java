@@ -94,6 +94,11 @@ public class PlayVideoActivity extends VyfeActivity implements LifecycleOwner {
                 mSeekBarTimer.setMax(session.getDuration());
                 tvEndVideo.setText(TimeHelper.formatMillisecTime(session.getDuration()));
 
+                //Create Grid
+                if(session.getTags()!=null) {
+                    mAdapterTags = new TemplateRecyclerAdapter( session, "count");
+                    mRecyclerView.setAdapter(mAdapterTags);
+                }
 
             }
         });
@@ -106,21 +111,6 @@ public class PlayVideoActivity extends VyfeActivity implements LifecycleOwner {
             }
         });
 
-        viewModel.getTagSet().observe(PlayVideoActivity.this, new Observer<TagSetModel>() {
-            @Override
-            public void onChanged(@Nullable final TagSetModel tagSet) {
-                if (tagSet != null) {
-                    viewModel.getSession().observe(PlayVideoActivity.this, new Observer<SessionModel>() {
-                        @Override
-                        public void onChanged(@Nullable SessionModel session) {
-                            mAdapterTags = new TemplateRecyclerAdapter(tagSet.getTemplates(), session, "count");
-                            mRecyclerView.setAdapter(mAdapterTags);
-                        }
-                    });
-
-                }
-            }
-        });
 
         viewModel.getTimelinesize().observe(this, new Observer<Integer>() {
             @Override

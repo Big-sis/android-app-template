@@ -20,7 +20,7 @@ public class TagSetRepository extends FirebaseDatabaseRepository<TagSetModel> {
 
     @Override
     protected String getRootNode() {
-        return getCompany() + "/" + Constants.BDDV2_USERS_KEY + "/" + this.getUser() + "/" + Constants.BDDV2_USERS_TAGSETS_KEY + "/";
+        return getCompany() + "/" + Constants.BDDV2_USERS_TAGSETS_KEY+ "/";
     }
 
     // This methods has to work with BDD V2 strange architecture
@@ -33,11 +33,5 @@ public class TagSetRepository extends FirebaseDatabaseRepository<TagSetModel> {
         }
     }
 
-    public void addListListener(BaseListValueEventListener.CallbackInterface<TagSetModel> callback) {
-        listListener = new BaseListValueEventListener(mapper, callback);
-        Query query = databaseReference;
-        query = query.orderByChild(Constants.BDDV2_USERS_TAGSETS_ARCHIVED);
-        query = query.equalTo(false);
-        query.addValueEventListener(listListener);
-    }
+
 }

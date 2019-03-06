@@ -16,7 +16,6 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.auth.FirebaseAuth;
 
 import fr.vyfe.R;
 import fr.vyfe.helper.AuthHelper;
@@ -77,15 +76,6 @@ public abstract class VyfeActivity extends AppCompatActivity {
         self = this;
         FirebaseApp.initializeApp(self);
         mAuth = AuthHelper.getInstance(this);
-        if (mAuth.getLicenseRemainingDays() == 0) {
-            if (mAuth.getCurrentUser() != null)
-                Toast.makeText(this, R.string.license, Toast.LENGTH_LONG).show();
-            Intent intent = new Intent(this, ConnexionActivity.class);
-            this.startActivity(intent);
-            mAuth.signOut();
-            finish();
-        }
-
 
         if (null == mAuth.getCurrentUser()) {
             Toast.makeText(this, R.string.ask_connection, Toast.LENGTH_LONG).show();
@@ -94,7 +84,27 @@ public abstract class VyfeActivity extends AppCompatActivity {
             finish();
         }
 
+        if (mAuth.getLicenseRemainingDays() == 0) {
+            if (mAuth.getCurrentUser() != null)
+                Toast.makeText(this, R.string.no_license_available, Toast.LENGTH_LONG).show();
+            Intent intent = new Intent(this, ConnexionActivity.class);
+            this.startActivity(intent);
+            mAuth.signOut();
+            finish();
+        }
 
+        if (mAuth.getCurrentUser() != null) {
+            if (null != mAuth.getCurrentUser().getRoles()&&!mAuth.getCurrentUser().getRoles().get("teacher") && !mAuth.getCurrentUser().getRoles().get("student")) {
+                    if (mAuth.getCurrentUser().getRoles().get("admin")) {
+                        Toast.makeText(this, R.string.no_license_available, Toast.LENGTH_LONG).show();
+                    } else
+                        Toast.makeText(this, R.string.havent_roles_teacher, Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(this, ConnexionActivity.class);
+                    this.startActivity(intent);
+                    mAuth.signOut();
+                    finish();
+            }
+        }
     }
 
     public boolean checkPersmissions(final String[] permissions) {

@@ -3,11 +3,11 @@ package fr.vyfe.viewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
 import fr.vyfe.Constants;
+import fr.vyfe.model.ObserverModel;
 import fr.vyfe.model.SessionModel;
 import fr.vyfe.model.TagModel;
 import fr.vyfe.model.TemplateModel;
@@ -34,6 +34,8 @@ public class RecordVideoViewModel extends VyfeViewModel {
     private String userId;
     private MutableLiveData<Boolean> areTagsActive;
     private MutableLiveData<Boolean> isLiveRecording;
+
+    private MutableLiveData<ArrayList<ObserverModel>> observers;
 
     public RecordVideoViewModel(String userId, String companyId, String sessionId) {
         sessionRepository = new SessionRepository(companyId);
@@ -84,15 +86,15 @@ public class RecordVideoViewModel extends VyfeViewModel {
         if (areTagsActive.getValue() != null && areTagsActive.getValue().booleanValue()) {
             isLiveRecording.setValue(true);
         }
-        addActiveLive();
+        activeLiveRecording();
     }
 
     public void stop() {
         stepRecord.setValue(STEP_STOP);
         areTagsActive.setValue(false);
         isLiveRecording.setValue(false);
-        addActiveTags();
-        addActiveLive();
+        activeLiveRecording();
+        activeCooperation();
     }
 
     public void error() {
@@ -125,8 +127,8 @@ public class RecordVideoViewModel extends VyfeViewModel {
 
 
     public boolean addTag(int position) {
-        if (tagSet.getValue() != null && getVideoTime().getValue() != null) {
-            TemplateModel template = tagSet.getValue().getTemplates().get(position);
+        if (session.getValue().getTagsSet() != null && getVideoTime().getValue() != null) {
+            TemplateModel template = session.getValue().getTagsSet().getTemplates().get(position);
             TagModel newTag = TagModel.createFromTemplate(template);
             newTag.setTaggerId(userId);
             newTag.setSessionId(getSessionId());
@@ -134,8 +136,7 @@ public class RecordVideoViewModel extends VyfeViewModel {
             newTag.setEnd((int) (getVideoTime().getValue() / Constants.UNIT_TO_MILLI_FACTOR + template.getRightOffset()));
             newTag.setColor(template.getColor());
             tagRepository.push(newTag);
-            template.incrCount();
-            template.setTouch(true);
+
             return true;
         } else return false;
     }
@@ -149,14 +150,18 @@ public class RecordVideoViewModel extends VyfeViewModel {
     }
 
 
-    public void addActiveTags() {
+    public void activeCooperation() {
         SessionModel sessionModel = session.getValue();
         sessionModel.setCooperative(areTagsActive.getValue());
+        if (!areTagsActive.getValue() && (isLiveRecording.getValue() == null) ||
+                (isLiveRecording.getValue() != null && isLiveRecording.getValue())) {
+            sessionModel.setObservers(null);
+        }
         sessionRepository.update(sessionModel);
 
     }
 
-    public void addActiveLive() {
+    public void activeLiveRecording() {
         if (isLiveRecording.getValue() != null) {
             SessionModel sessionModel = session.getValue();
             sessionModel.setRecording(isLiveRecording.getValue());
@@ -164,10 +169,13 @@ public class RecordVideoViewModel extends VyfeViewModel {
         }
     }
 
-    public void addDurationMovie(int duration){
+    public void addDurationMovie(int duration) {
         SessionModel sessionModel = session.getValue();
         sessionModel.setDuration(duration);
         sessionRepository.update(sessionModel);
+    }
+    public void deleteObservers() {
+        sessionRepository.deleteObservers(session.getValue());
     }
 
     private void loadTags() {
@@ -184,6 +192,25 @@ public class RecordVideoViewModel extends VyfeViewModel {
         });
     }
 
+    public MutableLiveData<ArrayList<ObserverModel>> getObserversSession() {
+
+        if (observers == null)
+            observers = new MutableLiveData();
+        sessionRepository.addChildListener(sessionId, false, new BaseSingleValueEventListener.CallbackInterface<SessionModel>() {
+            @Override
+            public void onSuccess(SessionModel result) {
+                observers.setValue(result.getObservers());
+                session.postValue(result);
+
+            }
+
+            @Override
+            public void onError(Exception e) {
+                observers.setValue(null);
+            }
+        });
+        return observers;
+    }
 
 
 }

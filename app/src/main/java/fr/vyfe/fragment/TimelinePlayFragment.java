@@ -2,11 +2,13 @@ package fr.vyfe.fragment;
 
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -20,37 +22,26 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.functions.FirebaseFunctionsException;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 
+import fr.vyfe.Constants;
 import fr.vyfe.R;
-import fr.vyfe.helper.AuthHelper;
-import fr.vyfe.mapper.UserMapper;
+import fr.vyfe.model.ObserverModel;
 import fr.vyfe.model.SessionModel;
 import fr.vyfe.model.TagModel;
 import fr.vyfe.model.TagSetModel;
 import fr.vyfe.model.TemplateModel;
-import fr.vyfe.model.UserModel;
 import fr.vyfe.viewModel.PlayVideoViewModel;
 
 public class TimelinePlayFragment extends Fragment {
     private static final int WIDTH_THUMB = 15;
-
     private PlayVideoViewModel viewModel;
     private SeekBar mSeekBar;
     private LinearLayout teacherContainer;
     private ArrayList<TextView> tvRowNameArray = new ArrayList<>();
     private LinearLayout togetherContainer;
-    private LinearLayout container;
-
+    private SharedPreferences sharedPreferences;
 
     public static TimelinePlayFragment newInstance() {
         return new TimelinePlayFragment();
@@ -60,6 +51,7 @@ public class TimelinePlayFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(getActivity()).get(PlayVideoViewModel.class);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getContext());
     }
 
     @Nullable
@@ -94,67 +86,79 @@ public class TimelinePlayFragment extends Fragment {
         });
 
 
-        viewModel.getTagSet().observe(getActivity(), new Observer<TagSetModel>() {
+        viewModel.getSession().observe(getActivity(), new Observer<SessionModel>() {
             @Override
-            public void onChanged(@Nullable TagSetModel tagSetModel) {
-                if (tagSetModel.getTemplates() != null) {
-                    //Creation teacher timeline
-                    createTimelineRow(viewModel.getSession().getValue().getAuthor(), teacherContainer, tagSetModel);
-                    //Creation Observers Timeline
-                    for (String observer : viewModel.getSession().getValue().getObservers()) {
+            public void onChanged(@Nullable SessionModel sessionModel) {
+
+                //Create MainContainer Timeline
+                if (sessionModel.getTagsSet().getTemplates() != null) {
+
+                    //Param Author
+                    String firstNameAuthor = sharedPreferences.getString(Constants.SHARED_PREF_USER_FIRSTNAME, "");
+                    String lastNameAuthor = sharedPreferences.getString(Constants.SHARED_PREF_USER_LASTNAME, "");
+                    if (!sharedPreferences.contains(Constants.SHARED_PREF_USER_FIRSTNAME))
+                        firstNameAuthor = "";
+                    if (!sharedPreferences.contains(Constants.SHARED_PREF_USER_LASTNAME)) lastNameAuthor = "";
+                    String namesAuthor = firstNameAuthor + " " + lastNameAuthor;
+                    ObserverModel observerModelAuthor = new ObserverModel();
+                    observerModelAuthor.setNameObserver(namesAuthor);
+                    observerModelAuthor.setIdObserver(viewModel.getSession().getValue().getAuthor());
+
+                    //Creation teacher mainTimeline
+                    createTimelineRow(observerModelAuthor, teacherContainer, sessionModel.getTagsSet());
+
+                    //Creation Observers mainTimeline
+                    ArrayList<ObserverModel> observers = viewModel.getSession().getValue().getObservers();
+                    if (observers != null) for (ObserverModel observer : observers) {
                         LinearLayout layout = new LinearLayout(getContext());
-                        layout.setTag(observer);
+                        layout.setTag(observer.getIdObserver());
                         layout.setOrientation(LinearLayout.VERTICAL);
                         layout.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                         togetherContainer.addView(layout);
-                        createTimelineRow(observer, layout, tagSetModel);
+                        createTimelineRow(observer, layout, sessionModel.getTagsSet());
+                    }
 
+                    //Create Tags Timeline
+                    ArrayList<TagModel> tags = sessionModel.getTags();
+                    if (tags != null) {
+                        for (TagModel tag : tags) {
+                            // Create Teacher Tags
+                            if (tag.getTaggerId().equals(viewModel.getSession().getValue().getAuthor())) {
+                                ImageView ivTag = createIvTag(tag);
+                                RelativeLayout timelineRow = teacherContainer.findViewWithTag(tag.getTemplateId());
+                                timelineRow.addView(ivTag);
 
-                        viewModel.getTags().observe(getActivity(), new Observer<List<TagModel>>() {
-                            @Override
-                            public void onChanged(@Nullable List<TagModel> tags) {
-
-                                for (TagModel tag : tags) {
-                                    // Create Teacher Tags
-                                    if (tag.getTaggerId().equals(viewModel.getSession().getValue().getAuthor())) {
-                                        ImageView ivTag = createIvTag(tag);
-                                        RelativeLayout timelineRow = teacherContainer.findViewWithTag(tag.getTemplateId());
-                                        timelineRow.addView(ivTag);
-
-                                    }
-                                    // Create Observers Tags
-                                    else {
-                                        ImageView ivTag = createIvTag(tag);
-                                        LinearLayout userContainer = togetherContainer.findViewWithTag(tag.getTaggerId());
-                                        if (userContainer != null) {
-                                            RelativeLayout timelineRow = userContainer.findViewWithTag(tag.getTemplateId());
-                                            timelineRow.addView(ivTag);
-                                        }
-                                    }
-                                }
-
-                                for (TextView textView : tvRowNameArray) {
-                                    textView.bringToFront();
-                                }
-
-                                //Thumb adapter à la Timeline
-                                ViewTreeObserver vto = mSeekBar.getViewTreeObserver();
-                                vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
-                                    public boolean onPreDraw() {
-                                        Drawable thumb = getResources().getDrawable(R.drawable.thumb_blue);
-                                        int h = togetherContainer.getMeasuredHeight();
-                                        Bitmap bmpOrg = ((BitmapDrawable) thumb).getBitmap();
-                                        Drawable newThumb = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bmpOrg, WIDTH_THUMB, h, true));
-                                        newThumb.setBounds(0, 0, newThumb.getIntrinsicWidth(), newThumb.getIntrinsicHeight());
-                                        mSeekBar.setThumb(newThumb);
-                                        mSeekBar.getViewTreeObserver().removeOnPreDrawListener(this);
-                                        mSeekBar.setMax(viewModel.getSession().getValue().getDuration());
-                                        viewModel.setTimelinesize(togetherContainer.getMeasuredHeight());
-                                        return true;
-                                    }
-                                });
                             }
+                            // Create Observers Tags
+                            else {
+                                ImageView ivTag = createIvTag(tag);
+                                LinearLayout userContainer = togetherContainer.findViewWithTag(tag.getTaggerId());
+                                if (userContainer != null) {
+                                    RelativeLayout timelineRow = userContainer.findViewWithTag(tag.getTemplateId());
+                                    timelineRow.addView(ivTag);
+                                }
+                            }
+                        }
 
+                        for (TextView textView : tvRowNameArray) {
+                            textView.bringToFront();
+                        }
+
+                        //Thumb adapter à la Timeline
+                        ViewTreeObserver vto = mSeekBar.getViewTreeObserver();
+                        vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+                            public boolean onPreDraw() {
+                                Drawable thumb = getResources().getDrawable(R.drawable.thumb_blue);
+                                int h = togetherContainer.getMeasuredHeight();
+                                Bitmap bmpOrg = ((BitmapDrawable) thumb).getBitmap();
+                                Drawable newThumb = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bmpOrg, WIDTH_THUMB, h, true));
+                                newThumb.setBounds(0, 0, newThumb.getIntrinsicWidth(), newThumb.getIntrinsicHeight());
+                                mSeekBar.setThumb(newThumb);
+                                mSeekBar.getViewTreeObserver().removeOnPreDrawListener(this);
+                                mSeekBar.setMax(viewModel.getSession().getValue().getDuration());
+                                viewModel.setTimelinesize(togetherContainer.getMeasuredHeight());
+                                return true;
+                            }
                         });
                     }
                 }
@@ -194,35 +198,9 @@ public class TimelinePlayFragment extends Fragment {
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, size, getActivity().getResources().getDisplayMetrics());
     }
 
-    public LinearLayout createTimelineRow(String nameTagguer, LinearLayout containerLayout, TagSetModel tagSetModel) {
+    public LinearLayout createTimelineRow(ObserverModel observerModel, LinearLayout containerLayout, TagSetModel tagSetModel) {
         final TextView TvNameTagguer = new TextView(getContext());
-         AuthHelper.getInstance(getContext()).getUser(nameTagguer).addOnCompleteListener(new OnCompleteListener<HashMap<String, Object>>() {
-           @Override
-           public void onComplete(@NonNull Task<HashMap<String, Object>> task) {
-               if (task.isSuccessful()) {
-                   HashMap<String, Object> result = task.getResult();
-                   UserModel currentUser = (new UserMapper()).map(result);
-                   TvNameTagguer.setText(getString(R.string.observer) + currentUser.getFirstname()+" "+currentUser.getLastName());
-               } else {
-                   Exception e = task.getException();
-                   if (e instanceof FirebaseFunctionsException) {
-                       FirebaseFunctionsException ffe = (FirebaseFunctionsException) e;
-                       FirebaseFunctionsException.Code code = ffe.getCode();
-                       Object details = ffe.getDetails();
-                       TvNameTagguer.setText(getString(R.string.observer) +getString(R.string.unknow));
-                   }
-
-               }
-           }
-       }).addOnFailureListener(new OnFailureListener() {
-             @Override
-             public void onFailure(@NonNull Exception e) {
-                 Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
-                 TvNameTagguer.setText(getString(R.string.observer) +getString(R.string.unknow));
-             }
-         });
-
-
+        TvNameTagguer.setText(observerModel.getNameObserver());
         TvNameTagguer.setTextColor(Color.WHITE);
         TvNameTagguer.setMinimumHeight(convertToDp(15));
         RelativeLayout.LayoutParams layoutParamsTvTeacher = new RelativeLayout.LayoutParams(

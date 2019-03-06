@@ -19,10 +19,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.HashMap;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
 import androidx.test.espresso.IdlingResource;
+import fr.vyfe.Constants;
 import fr.vyfe.R;
 import fr.vyfe.helper.AuthHelper;
 import fr.vyfe.idlingResource.SimpleIdlingResource;
@@ -63,7 +66,7 @@ public class ConnexionActivity extends AppCompatActivity {
                     inputPass.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                     mPasswordVisibility = PASSWORD_VISIBLE;
                 } else {
-                    inputPass.setInputType(InputType.TYPE_CLASS_TEXT |InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    inputPass.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                     mPasswordVisibility = PASSWORD_HIDDEN;
                 }
             }
@@ -94,18 +97,43 @@ public class ConnexionActivity extends AppCompatActivity {
 
                 } else {
 
-                    auth.signInWithEmailAndPassword(mail, pass, new AuthHelper.AuthListener() {
+
+                    auth.signInWithEmailAndPassword(mail, pass, new AuthHelper.AuthProfileListener() {
                         @Override
-                        public void onSuccessLoggedIn(UserModel user) {
-                            Intent intent = new Intent(ConnexionActivity.this, MainActivity.class);
-                            startActivity(intent);
-                            finish();
+                        public void onSuccessProfile(UserModel user) {
+                            HashMap<String, Boolean> userRoles = user.getRoles();
+                            if (userRoles.get(Constants.BDDV2_CUSTOM_USERS_ROLE_TEACHER) || userRoles.get(Constants.BDDV2_CUSTOM_USERS_ROLE_STUDENT)) {
+                                Intent intent = new Intent(ConnexionActivity.this, MainActivity.class);
+                                startActivity(intent);
+                                finish();
+                            } else {
+                                if (userRoles.get(Constants.BDDV2_CUSTOM_USERS_ROLE_ADMIN)) {
+                                    Toast.makeText(ConnexionActivity.this, R.string.no_license_available, Toast.LENGTH_LONG).show();
+                                } else {
+                                    final Snackbar snackbar = Snackbar.make(ConnexionActivity.this.findViewById(R.id.linear_layout_add), R.string.havent_roles_teacher, Snackbar.LENGTH_INDEFINITE).setDuration(9000).setAction(R.string.ok, new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+
+                                        }
+                                    });
+                                    View snackBarView = snackbar.getView();
+                                    TextView textView = snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                                    textView.setMaxLines(3);
+                                    textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                                    snackbar.setDuration(8000);
+                                    snackbar.show();
+                                }
+                            }
                         }
 
+                        @Override
+                        public void onProfileFailed(Exception e) {
+                            Toast.makeText(ConnexionActivity.this, "Erreur = " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
 
                         @Override
                         public void onLogginFailed(Exception e) {
-                            final Snackbar snackbar = Snackbar.make(ConnexionActivity.this.findViewById(R.id.linear_layout_add), R.string.bad_authentifiaction, Snackbar.LENGTH_INDEFINITE).setDuration(9000).setAction("Réessayer", new View.OnClickListener() {
+                            final Snackbar snackbar = Snackbar.make(ConnexionActivity.this.findViewById(R.id.linear_layout_add), R.string.bad_authentifiaction, Snackbar.LENGTH_INDEFINITE).setDuration(9000).setAction(R.string.try_again, new View.OnClickListener() {
                                 @Override
                                 public void onClick(View v) {
                                     inputMail.setText("");

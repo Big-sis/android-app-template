@@ -1,11 +1,11 @@
 package fr.vyfe.mapper;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+
+import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 
+import fr.vyfe.Constants;
 import fr.vyfe.entity.UserEntity;
 import fr.vyfe.model.UserModel;
 
@@ -13,7 +13,15 @@ public class UserMapper extends FirebaseMapper<UserEntity, UserModel> {
 
     @Override
     public UserModel map(UserEntity userEntity, String key) {
-        return map(userEntity, new UserModel(key));
+        UserModel userModel = new UserModel();
+        if (userEntity != null) {
+            if (userEntity.getFirstName() != null)
+                userModel.setFirstname(userEntity.getFirstName());
+            if (userEntity.getLastName() != null) userModel.setLastName(userEntity.getLastName());
+            if(userEntity.getPromo() != null)userModel.setPromo(userEntity.getPromo());
+        }
+        return userModel;
+
     }
 
     @Override
@@ -39,36 +47,33 @@ public class UserMapper extends FirebaseMapper<UserEntity, UserModel> {
 
     public UserModel map(HashMap<String, Object> userMap) {
         UserModel user = new UserModel();
-        user.setId((String) userMap.get("id"));
-        user.setCompany((String) userMap.get("company"));
-        if (userMap.containsKey("profile")) {
-            user.setFirstname(((HashMap<String, String>) userMap.get("profile")).get("firstName"));
-            user.setLastName(((HashMap<String, String>) userMap.get("profile")).get("lastName"));
-            user.setPromo(((HashMap<String, String>) userMap.get("profile")).get("promo"));
-        }
-        try {
-            if (userMap.get("license") != null)
-                user.setLicenceEnd((new SimpleDateFormat("dd-MM-yy")).parse((String) userMap.get("license")));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        ArrayList<String> roles = new ArrayList<>();
-        if(((HashMap<String, Boolean>) userMap.get("roles")).get("admin")!=null)
-        if (((HashMap<String, Boolean>) userMap.get("roles")).get("admin"))
-            roles.add("admin");
+        HashMap<String, Boolean> hashMapRoles = new HashMap<>();
+        for (String keyCustom : userMap.keySet()) {
+            if (keyCustom.equals(Constants.BDDV2_CUSTOM_USERS_ID)) {
+                user.setId(userMap.get(keyCustom).toString());
+            }
+            if (keyCustom.equals(Constants.BDDV2_CUSTOM_USERS_ROLE_TEACHER) || keyCustom.equals(Constants.BDDV2_CUSTOM_USERS_ROLE_OBSERVER) || keyCustom.equals(Constants.BDDV2_CUSTOM_USERS_ROLE_ADMIN) || keyCustom.equals(Constants.BDDV2_CUSTOM_USERS_ROLE_STUDENT)) {
+                hashMapRoles.put(keyCustom, new Boolean(userMap.get(keyCustom).toString()));
+            }
 
-        if (((HashMap<String, Boolean>) userMap.get("roles")).get("teacher")!=null){
-            if (((HashMap<String, Boolean>) userMap.get("roles")).get("teacher"))
-                roles.add("teacher");
-        }
+            if (keyCustom.equals(Constants.BDDV2_CUSTOM_USERS_VIMEOACCESSTOKEN)) {
+                user.setVimeoAccessToken(userMap.get(keyCustom).toString());
+            }
+            if (keyCustom.equals(Constants.BDDV2_CUSTOM_USERS_COMPANY)) {
+                user.setCompany(userMap.get(keyCustom).toString());
+            }
 
-        if(((HashMap<String, Boolean>) userMap.get("roles")).get("viewer")!=null){
-            if (((HashMap<String, Boolean>) userMap.get("roles")).get("viewer"))
-                roles.add("reviewer");
-            user.setRoles(roles.toArray(new String[roles.size()]));
+            if (keyCustom.equals(Constants.BDDV2_CUSTOM_USERS_LICENSE_END)) {
+
+                 try{
+                     user.setLicenceEnd(new Timestamp(Double.valueOf(userMap.get(keyCustom).toString()).longValue()));}
+                 catch (IllegalArgumentException e){
+                     user.setLicenceEnd(null);
+                 }
+            }
         }
 
-
+        user.setRoles(hashMapRoles);
         return user;
     }
 }

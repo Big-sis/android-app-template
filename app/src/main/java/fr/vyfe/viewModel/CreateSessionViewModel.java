@@ -35,7 +35,6 @@ public class CreateSessionViewModel extends VyfeViewModel {
 
     }
 
-
     public void init(String titleSession, String tagSetId) {
         this.setSessionName(incrementGridTitle(titleSession));
         this.selectedTagSetId = tagSetId;
@@ -65,9 +64,6 @@ public class CreateSessionViewModel extends VyfeViewModel {
         tagSetRepository.removeListeners();
     }
 
-
-
-
     private void loadTagSets() {
         tagSetRepository.addListListener(new BaseListValueEventListener.CallbackInterface<TagSetModel>() {
             @Override
@@ -80,14 +76,25 @@ public class CreateSessionViewModel extends VyfeViewModel {
                         }
                     });
                 }
-                if (selectedTagSetId != null) {
-                    for (TagSetModel tagSet : result) {
 
+                ArrayList<TagSetModel> tagSetModels = new ArrayList<>();
+                for (TagSetModel tagSet : result) {
+                    //TagsSets Author
+                    if (tagSet.getOwner().equals(userId)) {
+                        tagSetModels.add(tagSet);
+                    }
+                    //TagsSets shared
+                    if (!tagSet.getOwner().equals(userId) && tagSet.isShared()) {
+                        tagSetModels.add(tagSet);
+                    }
+
+                    //selected TagsSet
+                    if (selectedTagSetId != null) {
                         if (selectedTagSetId.equals(tagSet.getId()))
                             selectedTagSet.setValue(tagSet);
                     }
                 }
-                tagSets.setValue((ArrayList) result);
+                tagSets.setValue(tagSetModels);
             }
 
             @Override
@@ -96,17 +103,18 @@ public class CreateSessionViewModel extends VyfeViewModel {
             }
         });
 
-
-
     }
 
     public String pushSession() throws Exception {
         SessionModel session = new SessionModel();
         session.setName(this.sessionName.getValue());
         session.setAuthor(this.userId);
-        if (this.selectedTagSet.getValue() != null) {
-            session.setIdTagSet(this.selectedTagSet.getValue().getId());
-        }
+        TagSetModel tagsSets = selectedTagSet.getValue();
+        tagsSets.setId(null);
+        tagsSets.setOwner(null);
+        //TODO : delete boolean session
+        tagsSets.setShared(Boolean.parseBoolean(null));
+        session.setTagsSet(selectedTagSet.getValue());
         return sessionRepository.push(session, this.androidId);
     }
 

@@ -1,6 +1,8 @@
 package fr.vyfe.model;
 
+import java.sql.Timestamp;
 import java.util.Date;
+import java.util.HashMap;
 
 public class UserModel implements VyfeModel {
     private String id;
@@ -8,9 +10,9 @@ public class UserModel implements VyfeModel {
     private String lastName;
     private String promo;
     private String company;
-    private String[] roles;
-    private Date licenceEnd;
-
+    private Timestamp licenceEnd;
+    private HashMap<String, Boolean> roles;
+    private String vimeoAccessToken;
 
     public UserModel(String id) {
         this.id = id;
@@ -18,6 +20,25 @@ public class UserModel implements VyfeModel {
 
     public UserModel() {    }
 
+    public String getVimeoAccessToken() {
+        return vimeoAccessToken;
+    }
+
+    public void setVimeoAccessToken(String vimeoAccessToken) {
+        this.vimeoAccessToken = vimeoAccessToken;
+    }
+
+    public Date getLicenceEnd() {
+        return licenceEnd;
+    }
+
+    public HashMap<String, Boolean> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(HashMap<String, Boolean> roles) {
+        this.roles = roles;
+    }
 
     public String getId() {
         return id;
@@ -59,19 +80,11 @@ public class UserModel implements VyfeModel {
         this.company = company;
     }
 
-    public String[] getRoles() {
-        return roles;
-    }
-
-    public void setRoles(String[] roles) {
-        this.roles = roles;
-    }
-
-    public Date getLicenseEnd() {
+    public Timestamp getLicenseEnd() {
         return licenceEnd;
     }
 
-    public void setLicenceEnd(Date date){
+    public void setLicenceEnd(Timestamp date){
         this.licenceEnd = date;
     }
 }

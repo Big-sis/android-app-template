@@ -63,6 +63,14 @@ public class SessionRepository extends FirebaseDatabaseRepository<SessionModel> 
         return databaseReference.child(model.getId()).updateChildren(((SessionEntity) mapper.unMap(model)).toHashmap());
     }
 
+    public Task<Void> deleteObservers(SessionModel model) {
+        Map<String, Object> observers = new HashMap<>();
+        observers.put("observers", null);
+        return databaseReference.child(model.getId()).updateChildren(observers);
+    }
+
+
+
     public void setTimestamp(SessionModel model) {
         Map<String, Object> time = new HashMap<>();
         time.put("timestamp", ServerValue.TIMESTAMP);

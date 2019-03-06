@@ -1,6 +1,5 @@
 package fr.vyfe.activity;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
@@ -12,6 +11,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -44,11 +44,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import fr.vyfe.Constants;
+import fr.vyfe.R;
+import fr.vyfe.adapter.TemplateRecyclerAdapter;
 import fr.vyfe.helper.InternetConnexionHelper;
 import fr.vyfe.helper.TusAndroidUpload;
 import fr.vyfe.model.CompanyModel;
-import fr.vyfe.R;
-import fr.vyfe.adapter.TemplateRecyclerAdapter;
 import fr.vyfe.model.SessionModel;
 import fr.vyfe.model.TagSetModel;
 import fr.vyfe.viewModel.SelectVideoViewModel;
@@ -61,11 +61,10 @@ import io.tus.java.client.TusUploader;
 //TODO: Mise en place de Fragment?
 public class SelectVideoActivity extends VyfeActivity {
     private static String TAG = "SelectVideoActivity";
-
+    ImageView videoMiniatureView;
     private SelectVideoViewModel viewModel;
     private IntentFilter mIntentFilter;
     private Button uploadButton;
-    ImageView videoMiniatureView;
     private TusClient client;
     private String uploadURL;
     private TusUpload upload;
@@ -73,6 +72,7 @@ public class SelectVideoActivity extends VyfeActivity {
     private UploadTask uploadTask;
     private String serverVideoLink;
     private ProgressBar progressBar;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +92,10 @@ public class SelectVideoActivity extends VyfeActivity {
         uploadButton = findViewById(R.id.btn_upload);
         videoMiniatureView = findViewById(R.id.vv_preview);
         progressBar = findViewById(R.id.progress_upload);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        if (sharedPreferences.contains(Constants.BDDV2_CUSTOM_USERS_VIMEOACCESSTOKEN))
+            vimeoToken =  sharedPreferences.getString(Constants.BDDV2_CUSTOM_USERS_VIMEOACCESSTOKEN, "");
 
         mIntentFilter = new IntentFilter();
         mIntentFilter.addAction("link");
@@ -102,24 +106,30 @@ public class SelectVideoActivity extends VyfeActivity {
         viewModel = ViewModelProviders.of(this, new SelectVideoViewModelFactory(mAuth.getCurrentUser().getCompany(), mAuth.getCurrentUser().getId())).get(SelectVideoViewModel.class);
         viewModel.init(getIntent().getStringExtra(Constants.SESSIONMODELID_EXTRA));
 
-        viewModel.getCompany().observe(this, new Observer<CompanyModel>() {
-            @Override
-            public void onChanged(@Nullable CompanyModel company) {
-                vimeoToken = company.getVimeoAccessToken();
-            }
-        });
 
         viewModel.getSession().observe(this, new Observer<SessionModel>() {
             @Override
             public void onChanged(@Nullable final SessionModel session) {
                 if (session != null) {
+
+                    //Create grid
+                    TagSetModel tagSetModel = session.getTagsSet();
+                    if (tagSetModel != null) {
+                        TemplateRecyclerAdapter adapterTags = new TemplateRecyclerAdapter(session, "count");
+                        recyclerTags.setAdapter(adapterTags);
+                    }
+
+                    assert tagSetModel != null;
+                    gridTextView.setText(tagSetModel.getName());
+
+
+                    //View Upload
                     if (session.getServerVideoLink() != null) {
                         uploadButton.setTextColor(Color.GRAY);
                         uploadButton.setClickable(false);
                         uploadButton.setText(R.string.online);
                         uploadButton.setAlpha(0.5f);
-                    }
-                    else {
+                    } else {
                         uploadButton.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
@@ -135,12 +145,10 @@ public class SelectVideoActivity extends VyfeActivity {
                                             }
                                         });
                                         popup.show();
-                                    }
-                                    else {
+                                    } else {
                                         startUpload(new File(session.getDeviceVideoLink()));
                                     }
-                                }
-                                else
+                                } else
                                     Toast.makeText(SelectVideoActivity.this, R.string.have_internet_connection, Toast.LENGTH_LONG).show();
                             }
                         });
@@ -157,20 +165,13 @@ public class SelectVideoActivity extends VyfeActivity {
                     //AFfichage miniature
                     videoMiniatureView.setImageBitmap(session.getThumbnail());
 
-                }
-            }
-        });
+                    if (session.getTagsSet() != null) {
+                        TemplateRecyclerAdapter adapterTags = new TemplateRecyclerAdapter(viewModel.getSession().getValue(), "count");
+                        recyclerTags.setAdapter(adapterTags);
 
-        viewModel.getTagSet().observe(this, new Observer<TagSetModel>() {
-            @Override
-            public void onChanged(@Nullable TagSetModel tagSetModel) {
-                if (tagSetModel != null) {
-                    TemplateRecyclerAdapter adapterTags = new TemplateRecyclerAdapter(tagSetModel.getTemplates(),viewModel.getSession().getValue(), "count");
-                    recyclerTags.setAdapter(adapterTags);
+                        gridTextView.setText(session.getTagsSet().getName());
+                    }
                 }
-
-                assert tagSetModel != null;
-                gridTextView.setText(tagSetModel.getName());
             }
         });
 
@@ -266,6 +267,7 @@ public class SelectVideoActivity extends VyfeActivity {
                 params.put("upload.size", String.valueOf(size));
                 return params;
             }
+
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String, String> params = new HashMap<String, String>();
@@ -283,6 +285,18 @@ public class SelectVideoActivity extends VyfeActivity {
         queue.add(sr);
     }
 
+    //TODO: comportement isn't normal for backPressed
+    @Override
+    public void onBackPressed() {
+        this.startActivity(new Intent(this, MainActivity.class));
+    }
+
+    private interface UrlResponse {
+
+        void onSuccess(String url);
+
+        void onError(Exception error);
+    }
 
     private class UploadTask extends AsyncTask<String, Long, Void> {
         private TusClient client;
@@ -324,25 +338,18 @@ public class SelectVideoActivity extends VyfeActivity {
                 // Upload file in 1MiB chunks
                 uploader.setChunkSize(1024 * 1024);
 
-                while(!isCancelled() && uploader.uploadChunk() > 0) {
+                while (!isCancelled() && uploader.uploadChunk() > 0) {
                     uploadedBytes = uploader.getOffset();
                     publishProgress(uploadedBytes, totalBytes);
                 }
 
                 uploader.finish();
 
-            } catch(Exception e) {
+            } catch (Exception e) {
                 cancel(true);
             }
 
             return null;
         }
-    }
-
-    private interface UrlResponse {
-
-        void onSuccess(String url);
-
-        void onError(Exception error);
     }
 }

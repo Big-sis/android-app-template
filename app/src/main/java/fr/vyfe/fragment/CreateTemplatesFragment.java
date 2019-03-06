@@ -34,6 +34,7 @@ import fr.vyfe.adapter.TemplateRecyclerAdapter;
 import fr.vyfe.helper.ColorHelper;
 import fr.vyfe.helper.KeyboardHelper;
 import fr.vyfe.model.ColorModel;
+import fr.vyfe.model.TagSetModel;
 import fr.vyfe.model.TemplateModel;
 import fr.vyfe.viewModel.CreateGridViewModel;
 
@@ -63,7 +64,10 @@ public class CreateTemplatesFragment extends Fragment implements AdapterView.OnI
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(getActivity()).get(CreateGridViewModel.class);
         viewModel.init();
-        mAdapter = new TemplateRecyclerAdapter(viewModel.getTemplates().getValue(), "create");
+
+        TagSetModel tagSetModel = new TagSetModel();
+        tagSetModel.setTagTemplates(viewModel.getTemplates().getValue());
+        mAdapter = new TemplateRecyclerAdapter(tagSetModel, "create");
     }
 
     @Override
@@ -107,7 +111,6 @@ public class CreateTemplatesFragment extends Fragment implements AdapterView.OnI
 
                     viewModel.addTemplate(tagColor, tagName);
                     tagNameView.setText("");
-
 
 
                     //Fermer clavier après avoir rentré un tag

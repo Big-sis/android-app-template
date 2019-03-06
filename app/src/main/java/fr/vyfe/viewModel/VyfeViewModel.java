@@ -36,16 +36,47 @@ public abstract class VyfeViewModel extends ViewModel {
         sessionRepository.addChildListener(id, true, new BaseSingleValueEventListener.CallbackInterface<SessionModel>() {
             @Override
             public void onSuccess(SessionModel result) {
+                //TODO il ne tris pas ?
+               if(result!=null&&result.getTagsSet()!=null&&result.getTagsSet().getTemplates()!=null) Collections.sort(result.getTagsSet().getTemplates(), new Comparator<TemplateModel>() {
+                    @Override
+                    public int compare(TemplateModel o1, TemplateModel o2) {
+                        return o1.getPosition() - o2.getPosition();
+                    }
+                });
+
 
                 session.postValue(result);
-                if (tagSetRepository != null)
-                    loadTagSet(result.getTagSetId());
-
             }
 
             @Override
             public void onError(Exception e) {
                 session.setValue(null);
+            }
+        });
+    }
+
+    private void loadTagsSetSession(final String id){
+        if (session == null)
+            session = new MutableLiveData<>();
+
+        sessionRepository.addChildListener(id, true, new BaseSingleValueEventListener.CallbackInterface<SessionModel>() {
+            @Override
+            public void onSuccess(SessionModel result) {
+
+                Collections.sort(result.getTagsSet().getTemplates(), new Comparator<TemplateModel>() {
+                    @Override
+                    public int compare(TemplateModel o1, TemplateModel o2) {
+                        return o1.getPosition() - o2.getPosition();
+                    }
+                });
+                tagSet.setValue(result.getTagsSet());
+
+
+            }
+
+            @Override
+            public void onError(Exception e) {
+                tagSet.setValue(null);
             }
         });
     }
@@ -75,8 +106,11 @@ public abstract class VyfeViewModel extends ViewModel {
     }
 
     public MutableLiveData<SessionModel> getSession() {
-        if (session == null)
+        if (session == null){
+            session = new MutableLiveData<>();
             loadSession(this.sessionId);
+        }
+
         return session;
     }
 
@@ -85,6 +119,15 @@ public abstract class VyfeViewModel extends ViewModel {
             tagSet = new MutableLiveData<>();
         }
         loadSession(this.sessionId);
+
+        return tagSet;
+    }
+
+    public MutableLiveData<TagSetModel>getTagsSetSession(){
+        if (tagSet == null) {
+            tagSet = new MutableLiveData<>();
+        }
+        loadTagsSetSession(this.sessionId);
         return tagSet;
     }
 

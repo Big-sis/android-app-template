@@ -14,18 +14,12 @@ import android.view.ViewGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.google.android.gms.tasks.Continuation;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.functions.FirebaseFunctions;
-import com.google.firebase.functions.HttpsCallableResult;
-
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import fr.vyfe.R;
 import fr.vyfe.adapter.ObserverRecyclerAdapter;
 import fr.vyfe.helper.AuthHelper;
-import fr.vyfe.model.SessionModel;
+import fr.vyfe.model.ObserverModel;
 import fr.vyfe.viewModel.RecordVideoViewModel;
 
 public class CooperationFragment extends Fragment {
@@ -68,32 +62,44 @@ public class CooperationFragment extends Fragment {
 
                 if (liveRecordingSwitch.isChecked())
                     viewModel.isTagsActive();
-                else viewModel.isTagsInactive();
-                viewModel.addActiveTags();
+                else {
+                    viewModel.isTagsInactive();
+                    if (viewModel.getSession().getValue().getDuration() <= 0) {
+                        viewModel.deleteObservers();
+                    }
+                }
+                viewModel.activeCooperation();
             }
         });
 
         viewModel.getStep().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String step) {
-                if(step.equals(RecordVideoViewModel.STEP_RECODRING)){
+                if (step.equals(RecordVideoViewModel.STEP_RECODRING)) {
                     liveRecordingSwitch.setEnabled(false);
                 }
             }
         });
 
-/**
-        viewModel.getSession().observe(this, new Observer<SessionModel>() {
+        viewModel.getObserversSession().observe(this, new Observer<ArrayList<ObserverModel>>() {
             @Override
-            public void onChanged(@Nullable SessionModel sessionModel) {
-                tvNumber.setText(getString(R.string.participants)+String.valueOf(sessionModel.getObservers().size()));
-                mObserverAdapter = new ObserverRecyclerAdapter(sessionModel.getObservers());
+            public void onChanged(@Nullable final ArrayList<ObserverModel> idsObservers) {
+                ArrayList<String> ids = new ArrayList<String>();
+                String observers;
+                if (idsObservers != null) {
+                    for (ObserverModel id : idsObservers) {
+                        ids.add(id.getNameObserver());
+                    }
+                    observers = getString(R.string.participants) + String.valueOf(idsObservers.size());
+                    viewModel.getSession().getValue().setObservers(idsObservers);
+
+                } else {
+                    observers = getString(R.string.participants) + String.valueOf(0);
+                }
+                mObserverAdapter = new ObserverRecyclerAdapter(ids);
                 mRecyclerViewObservers.setAdapter(mObserverAdapter);
-                mObserverAdapter.notifyDataSetChanged();
+                tvNumber.setText(observers);
             }
-        });**/
-
+        });
     }
-
-
 }
