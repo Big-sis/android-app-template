@@ -115,7 +115,7 @@ public class SelectVideoActivity extends VyfeActivity {
                     //Create grid
                     TagSetModel tagSetModel = session.getTagsSet();
                     if (tagSetModel != null) {
-                        TemplateRecyclerAdapter adapterTags = new TemplateRecyclerAdapter(viewModel.getSession().getValue(), "count");
+                        TemplateRecyclerAdapter adapterTags = new TemplateRecyclerAdapter(session, "count");
                         recyclerTags.setAdapter(adapterTags);
                     }
 
@@ -165,18 +165,12 @@ public class SelectVideoActivity extends VyfeActivity {
                     //AFfichage miniature
                     videoMiniatureView.setImageBitmap(session.getThumbnail());
 
-                }
-            }
-        });
+                    if (session.getTagsSet() != null) {
+                        TemplateRecyclerAdapter adapterTags = new TemplateRecyclerAdapter(viewModel.getSession().getValue(), "count");
+                        recyclerTags.setAdapter(adapterTags);
 
-        viewModel.getSession().observe(this, new Observer<SessionModel>() {
-            @Override
-            public void onChanged(@Nullable SessionModel sessionModel) {
-                if (sessionModel.getTagsSet() != null) {
-                    TemplateRecyclerAdapter adapterTags = new TemplateRecyclerAdapter(viewModel.getSession().getValue(), "count");
-                    recyclerTags.setAdapter(adapterTags);
-
-                    gridTextView.setText(sessionModel.getTagsSet().getName());
+                        gridTextView.setText(session.getTagsSet().getName());
+                    }
                 }
             }
         });

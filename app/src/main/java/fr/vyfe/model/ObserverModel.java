@@ -3,24 +3,8 @@ package fr.vyfe.model;
 
 
 public class ObserverModel implements VyfeModel {
-    private String idObserver;
-    private String nameObserver;
+    private String name;
 
-    public String getIdObserver() {
-        return idObserver;
-    }
-
-    public void setIdObserver(String idObserver) {
-        this.idObserver = idObserver;
-    }
-
-    public String getNameObserver() {
-        return nameObserver;
-    }
-
-    public void setNameObserver(String nameObserver) {
-        this.nameObserver = nameObserver;
-    }
 
     @Override
     public String getId() {
@@ -30,5 +14,13 @@ public class ObserverModel implements VyfeModel {
     @Override
     public void setId(String id) {
 
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
