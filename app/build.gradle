@@ -13,10 +13,10 @@ android {
     defaultConfig {
         resConfigs "en", "fr"
         applicationId "fr.vyfe"
-        minSdkVersion 21
+        minSdkVersion 19
         targetSdkVersion 28
-        versionCode 4
-        versionName "1.4"
+        versionCode 8
+        versionName "1.1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

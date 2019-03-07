@@ -9,9 +9,9 @@
     <string name="upload">Uploader</string>
     <string name="information">Informations sur la vidéo</string>
     <string name="title_video">Titre de la vidéo</string>
-    <string name="start_session">2- Lancer une session</string>
+    <string name="start_session">Lancer une session</string>
     <string name="start_multi_session">Lancer une session collaborative</string>
-    <string name="my_videos">3- Consulter vos vidéos</string>
+    <string name="my_videos">Consulter vos vidéos</string>
     <string name="search">Rechercher</string>
     <string name="hello_user">Bonjour</string>
     <string name="connected">Connexion</string>
@@ -106,7 +106,7 @@
     <string name="create_grid">Créer une nouvelle grille d\'observation</string>
     <string name="create_grid_short">Créer une grille</string>
     <string name="create_title_video">Indiquez un titre à votre vidéo :</string>
-    <string name="edit_grid">1- Enregistrer une grille d\'observation</string>
+    <string name="edit_grid">Vos grilles d\'observations</string>
     <string name="no_license_available">Vous ne disposez pas de licence</string>
     <string name="problem">Problème d\'authentification :</string>
     <string name="title_tagSet">Vous devez indiquez un titre à votre session ET une grille d\'observation</string>
@@ -119,7 +119,7 @@
     <string name="online">Vidéo en ligne</string>
     <string name="upload_vimeo">Vidéo téléchargée</string>
     <string name="tagset_title_warning">Vous devez indiquez un titre à votre session ET une grille d\'observation</string>
-    <string name="create_tagset_title">1- Créer votre grille d\'observation</string>
+    <string name="create_tagset_title"> Vos grilles d\'observations</string>
     <string name="color_gradient_blue_dark">Violet</string>
     <string name="color_gradient_blue_light">Bleu clair</string>
     <string name="color_gradient_faded_orange">Orange</string>
@@ -174,5 +174,7 @@
     <string name="select_all">Tout selectionner</string>
     <string name="select_nothing">Deselectionner</string>
     <string name="add_tag_set">Ajouter une grille</string>
+    <string name="tag_set_selected">Grille sélectionnée :</string>
+    <string name="tag_set">grille d\'observation</string>
 
 </resources>
