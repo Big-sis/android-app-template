@@ -4,15 +4,16 @@ package fr.vyfe.model;
 
 public class ObserverModel implements VyfeModel {
     private String name;
-
+    private String id;
 
     @Override
     public String getId() {
-        return null;
+        return id;
     }
 
     @Override
     public void setId(String id) {
+        this.id= id;
 
     }
 
