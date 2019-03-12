@@ -64,7 +64,7 @@
                         android:padding="10dp"
                         android:paddingRight="20dp"
                         android:text="@string/grid_title"
-                        android:textColor="@color/white"
+                        android:textColor="@color/colorWhiteTwo"
                         android:textSize="20sp"
                         app:fontFamily="@font/roboto" />
 
@@ -77,8 +77,8 @@
                         android:ems="10"
                         android:hint="@string/grid_title"
                         android:inputType="textPersonName"
-                        android:textColor="@color/white"
-                        android:textColorHint="@color/white"
+                        android:textColor="@color/colorWhiteTwo"
+                        android:textColorHint="@color/colorWhiteTwo"
                         android:textSize="20sp"
                         app:fontFamily="@font/roboto" />
                 </LinearLayout>
@@ -140,7 +140,7 @@
                     android:padding="5dp"
                     android:paddingTop="15dp"
                     android:text="@string/save_grid"
-                    android:textColor="@color/white"
+                    android:textColor="@color/colorWhiteTwo"
                     android:textSize="16sp"/>
             </LinearLayout>
         </LinearLayout>

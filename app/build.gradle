@@ -3,19 +3,16 @@ apply plugin: 'com.android.application'
 android {
     signingConfigs {
         config {
-            keyAlias 'vyfe'
-            keyPassword '5W*fA=%#s@d6ZKxs'
-            storeFile file('keystore.jks')
-            storePassword 'tZ_r5Bj6vvpp_EfM'
+
         }
     }
-    compileSdkVersion 28
+    compileSdkVersion 26
     defaultConfig {
         resConfigs "en", "fr"
         applicationId "fr.vyfe"
-        minSdkVersion 19
-        targetSdkVersion 28
-        versionCode 8
+        minSdkVersion 21
+        targetSdkVersion 26
+        versionCode 13
         versionName "1.1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -53,42 +50,31 @@ configurations {
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support.constraint:constraint-layout:1.1.3'
-    implementation 'com.android.support:design:28.0.0'
-    implementation 'petrov.kristiyan:colorpicker-library:1.1.8'
+    implementation 'com.android.support:design:26.1.0'
     implementation 'com.android.volley:volley:1.1.0'
-    implementation 'com.google.firebase:firebase-core:16.0.5'
-    implementation 'com.google.firebase:firebase-database:16.0.5'
-    implementation 'com.google.firebase:firebase-auth:16.0.5'
-    implementation 'com.android.support:support-v4:28.0.0'
-    testImplementation 'junit:junit:4.12'
-    testImplementation 'org.mockito:mockito-core:2.0.5-beta'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
-    api 'com.google.guava:guava:26.0-android'
+    implementation 'com.google.firebase:firebase-core:16.0.7'
+    implementation 'com.google.firebase:firebase-database:16.1.0'
+    implementation 'com.google.firebase:firebase-auth:16.1.0'
+    implementation 'com.google.firebase:firebase-functions:16.2.0'
     implementation 'android.arch.lifecycle:extensions:1.1.1'
-    annotationProcessor 'android.arch.lifecycle:compiler:1.1.1'
-    implementation 'com.google.firebase:firebase-functions:16.1.3'
-    implementation "com.android.support:support-v13:28.0.0"
-    androidTestImplementation "androidx.test.ext:junit:1.0.0"
-    androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
-    androidTestImplementation 'org.hamcrest:hamcrest-integration:1.3'
-    androidTestImplementation 'androidx.test:core:1.0.0'
-    androidTestImplementation 'androidx.test:rules:1.1.0'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'androidx.test:runner:1.1.0'
-    androidTestImplementation 'androidx.test.espresso:espresso-intents:3.1.0'
-    implementation 'androidx.annotation:annotation:1.0.0'
-    implementation 'androidx.test.espresso:espresso-idling-resource:3.1.0'
-    implementation 'org.jetbrains:annotations-java5:15.0'
-
-
-    //Player Vimeo
     implementation "com.vimeo.networking:vimeo-networking:1.1.3"
-    //Upload Vimeo
     implementation 'io.tus.java.client:tus-java-client:0.4.1'
     implementation 'io.tus.android.client:tus-android-client:0.1.8'
 
-    //Custom claims
-    implementation 'com.google.firebase:firebase-auth:16.1.0'
+    annotationProcessor 'android.arch.lifecycle:compiler:1.1.1'
+
+    api 'com.google.guava:guava:26.0-android'
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.mockito:mockito-core:2.0.5-beta'
+
+    implementation 'androidx.test.espresso:espresso-core:3.1.1'
+    androidTestImplementation "androidx.test.ext:junit:1.1.0"
+    androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
+    androidTestImplementation 'org.hamcrest:hamcrest-integration:1.3'
+    androidTestImplementation 'androidx.test:core:1.1.0'
+    androidTestImplementation 'androidx.test:rules:1.1.1'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'androidx.test:runner:1.1.1'
 }
 
 

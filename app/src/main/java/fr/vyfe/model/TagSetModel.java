@@ -93,22 +93,4 @@ public class TagSetModel implements Parcelable, VyfeModel {
         dest.writeString(owner);
         dest.writeInt(shared ? 1 : 0);
     }
-
-    public static final DiffUtil.ItemCallback<TagSetModel> DIFF_CALLBACK =
-            new DiffUtil.ItemCallback<TagSetModel>() {
-                @Override
-                public boolean areItemsTheSame(
-                        @NonNull TagSetModel oldTagSet, @NonNull TagSetModel newTagSet) {
-                    // User properties may have changed if reloaded from the DB, but ID is fixed
-                    return oldTagSet.getId() == newTagSet.getId();
-                }
-
-                @Override
-                public boolean areContentsTheSame(
-                        @NonNull TagSetModel oldTagSet, @NonNull TagSetModel newTagSet) {
-                    // NOTE: if you use equals, your object must properly override Object#equals()
-                    // Incorrectly returning false here will result in too many animations.
-                    return oldTagSet.equals(newTagSet);
-                }
-            };
 }

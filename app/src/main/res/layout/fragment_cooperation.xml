@@ -14,7 +14,7 @@
         android:layout_marginTop="8dp"
         android:paddingTop="15dp"
         android:text="@string/start_live"
-        android:textColor="@color/white"
+        android:textColor="@color/colorWhiteTwo"
         android:textSize="14sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -29,7 +29,7 @@
         android:layout_marginTop="8dp"
         android:layout_weight="1"
         android:text="@string/off_on"
-        android:textColor="@color/white"
+        android:textColor="@color/colorWhiteTwo"
         android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -40,7 +40,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/participants"
-        android:textColor="@color/white"
+        android:textColor="@color/colorWhiteTwo"
         android:textSize="14sp"
         app:layout_constraintTop_toBottomOf="@+id/switch_live_conexion" />
 
