@@ -46,7 +46,7 @@
             android:layout_marginLeft="8dp"
             android:layout_weight="1"
             android:text="@string/title_video"
-            android:textColor="@color/white"
+            android:textColor="@color/colorWhiteTwo"
             app:fontFamily="@font/roboto" />
 
     </LinearLayout>
@@ -57,14 +57,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/timestamp"
-        android:textColor="@color/white"
+        android:textColor="@color/colorWhiteTwo"
         app:fontFamily="@font/roboto" />
 
     <TextView
         android:id="@+id/video_duration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/white"
+        android:textColor="@color/colorWhiteTwo"
         app:fontFamily="@font/roboto" />
 
 </LinearLayout>

@@ -18,6 +18,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -93,6 +94,8 @@ public class SelectVideoActivity extends VyfeActivity {
         videoMiniatureView = findViewById(R.id.vv_preview);
         progressBar = findViewById(R.id.progress_upload);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         if (sharedPreferences.contains(Constants.BDDV2_CUSTOM_USERS_VIMEOACCESSTOKEN))
             vimeoToken =  sharedPreferences.getString(Constants.BDDV2_CUSTOM_USERS_VIMEOACCESSTOKEN, "");

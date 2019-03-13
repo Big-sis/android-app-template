@@ -45,11 +45,7 @@ public class TemplateRecyclerAdapter extends RecyclerView.Adapter<TemplateRecycl
         switch (mFrom) {
             case "create":
                 holder.ivMenu.setVisibility(View.VISIBLE);
-                break;
             case "start":
-                holder.tvNum.setVisibility(View.GONE);
-                break;
-            case "play":
                 holder.tvNum.setVisibility(View.GONE);
                 break;
             default:

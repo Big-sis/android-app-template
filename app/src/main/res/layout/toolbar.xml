@@ -11,6 +11,6 @@
         android:background="@color/colorDarkBlueGrey25"
         android:minHeight="?attr/actionBarSize"
         app:fontFamily="@font/roboto_bold"
-        app:titleTextColor="@color/white" />
+        app:titleTextColor="@color/colorWhiteTwo" />
 
 </android.support.constraint.ConstraintLayout>

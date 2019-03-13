@@ -14,6 +14,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 
 import fr.vyfe.Constants;
@@ -33,7 +34,7 @@ import fr.vyfe.viewModel.RecordVideoViewModelFactory;
 
 public class RecordActivity extends VyfeActivity {
 
-    public static final String[] PERMISSIONS = {Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+    public static final String[] PERMISSIONS = {Manifest.permission.RECORD_AUDIO, Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.WAKE_LOCK};
     private RecordVideoViewModel viewModel;
     private ConstraintLayout contrainOkRecord;
     private ConstraintLayout constraintErrorSpace;
@@ -42,6 +43,7 @@ public class RecordActivity extends VyfeActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
+
 
         //TODO: cmt utiliser mm fragment que timelineRealTime
         replaceFragment(R.id.scroll_timeline, TimelineRecordFragment.newInstance());
@@ -61,7 +63,7 @@ public class RecordActivity extends VyfeActivity {
         viewModel = ViewModelProviders.of(this, new RecordVideoViewModelFactory(mAuth.getCurrentUser().getId(), mAuth.getCurrentUser().getCompany(), sessionId)).get(RecordVideoViewModel.class);
         viewModel.init();
 
-
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         constraintErrorSpace = findViewById(R.id.session_error_space);
         contrainOkRecord = findViewById(R.id.session_record);

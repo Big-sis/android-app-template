@@ -64,7 +64,7 @@ public class TagSetRecordFragment extends Fragment {
                         @Override
                         public void onClick(final View view, int position) {
                             viewModel.addTag(position);
-                            mTemplateAdapter.notifyDataSetChanged();
+                          //  mTemplateAdapter.notifyDataSetChanged();
                         }
 
                         @Override

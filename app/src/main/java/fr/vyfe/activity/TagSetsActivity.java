@@ -49,6 +49,7 @@ public class TagSetsActivity extends VyfeActivity {
             public void onChanged(@Nullable ArrayList<TagSetModel> tagSetModels) {
                 if (tagSetModels.size() == 0)
                     numberTagSet.setText(R.string.havent_tag_sets);
+                else if(tagSetModels.size()==1){numberTagSet.setText(getString(R.string.you_have) +" "+ String.valueOf(tagSetModels.size())+" " + getString(R.string.tag_set));}
                 else
                     numberTagSet.setText(getString(R.string.you_have) +" "+ String.valueOf(tagSetModels.size())+" " + getString(R.string.tag_sets));
             }
