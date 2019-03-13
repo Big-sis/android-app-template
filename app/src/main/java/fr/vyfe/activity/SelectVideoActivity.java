@@ -20,6 +20,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -74,6 +75,7 @@ public class SelectVideoActivity extends VyfeActivity {
     private String serverVideoLink;
     private ProgressBar progressBar;
     private SharedPreferences sharedPreferences;
+    private EditText pxUpload;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +96,7 @@ public class SelectVideoActivity extends VyfeActivity {
         videoMiniatureView = findViewById(R.id.vv_preview);
         progressBar = findViewById(R.id.progress_upload);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        pxUpload = findViewById(R.id.tv_pourcentage_upload);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -200,11 +203,13 @@ public class SelectVideoActivity extends VyfeActivity {
 
     private void setUploadProgress(int progress) {
         progressBar.setProgress(progress);
+        pxUpload.setText(String.valueOf(progress)+" %");
     }
 
     private void startUpload(File file) {
         Toast.makeText(SelectVideoActivity.this, R.string.start_upload, Toast.LENGTH_LONG).show();
         progressBar.setVisibility(View.VISIBLE);
+        pxUpload.setVisibility(View.VISIBLE);
         uploadButton.setVisibility(View.GONE);
         try {
             SharedPreferences pref = getSharedPreferences("tus", 0);
@@ -334,6 +339,7 @@ public class SelectVideoActivity extends VyfeActivity {
         protected void onPostExecute(Void param) {
             viewModel.setServerVideoLink(serverVideoLink);
             progressBar.setVisibility(View.GONE);
+            pxUpload.setVisibility(View.GONE);
             uploadButton.setVisibility(View.VISIBLE);
         }
 

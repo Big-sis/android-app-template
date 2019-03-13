@@ -41,6 +41,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="217dp"
                         android:alpha="0.5"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
                         app:srcCompat="@android:color/darker_gray" />
 
                     <ImageView
@@ -121,10 +124,8 @@
                     <Button
                         android:id="@+id/bt_play"
                         style="?android:attr/buttonBarButtonStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
                         android:layout_weight="0.3"
                         android:background="@drawable/style_button"
                         android:text="@string/play_video"
@@ -135,10 +136,9 @@
                     <Button
                         android:id="@+id/btn_edit"
                         style="?android:attr/buttonBarButtonStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
                         android:layout_weight="0.3"
                         android:background="@drawable/style_button_white"
                         android:text="@string/edit"
@@ -148,12 +148,9 @@
 
                     <Button
                         android:id="@+id/btn_upload"
-                        style="?android:attr/buttonBarButtonStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginEnd="0dp"
-                        android:layout_marginRight="00dp"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="10dp"
                         android:layout_weight="0.3"
                         android:background="@drawable/style_button_white"
                         android:text="@string/upload"
@@ -161,20 +158,34 @@
                         android:textSize="18sp"
                         android:visibility="visible"
                         app:fontFamily="@font/roboto_bold" />
-
-                    <ProgressBar
-                        android:id="@+id/progress_upload"
-                        style="@style/Widget.AppCompat.ProgressBar.Horizontal"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="0dp"
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
                         android:layout_weight="0.3"
-                        android:layout_gravity="center_vertical"
-                        android:max="100"
-                        android:progress="0"
-                        android:textColor="@color/colorBlack"
-                        android:textSize="18sp"
-                        android:visibility="gone" />
+                        android:orientation="vertical">
+                        <EditText
+                            android:id="@+id/tv_pourcentage_upload"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="10dp"
+                            android:layout_gravity="center"
+                            android:textColor="@color/colorWhiteTwo"
+                            android:visibility="gone" />
+                        <ProgressBar
+                            android:id="@+id/progress_upload"
+                            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:max="100"
+                            android:progress="0"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="18sp"
+                            android:visibility="gone" />
+
+                    </LinearLayout>
+
+
                 </LinearLayout>
             </LinearLayout>
 
