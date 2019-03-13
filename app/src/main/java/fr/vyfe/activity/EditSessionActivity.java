@@ -10,12 +10,14 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.Continuation;
@@ -36,6 +38,7 @@ public class EditSessionActivity extends VyfeActivity {
     private EditSessionViewModel viewModel;
     private ConstraintLayout confirmActionDelete;
     private Button btnAppDelete;
+    private boolean isChangeData = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +96,7 @@ public class EditSessionActivity extends VyfeActivity {
                             btnEdit.setEnabled(true);
                             btnEdit.setAlpha(1);
                             viewModel.setNewDescription(s.toString());
+                            isChangeData = true;
                         }
                     });
 
@@ -126,19 +130,7 @@ public class EditSessionActivity extends VyfeActivity {
         btnEditConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewModel.editSession().continueWith(new Continuation<Void, Void>() {
-                    @Override
-                    public Void then(@NonNull Task<Void> task) throws Exception {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(EditSessionActivity.this, R.string.save_edit, Toast.LENGTH_LONG).show();
-                            Intent intent = new Intent(EditSessionActivity.this, SelectVideoActivity.class);
-                            intent.putExtra(Constants.SESSIONMODELID_EXTRA, viewModel.getSession().getValue().getId());
-                            EditSessionActivity.this.startActivity(intent);
-                        } else
-                            Toast.makeText(EditSessionActivity.this, R.string.error, Toast.LENGTH_SHORT).show();
-                        return null;
-                    }
-                });
+              saveData();
             }
         });
 
@@ -257,5 +249,48 @@ public class EditSessionActivity extends VyfeActivity {
         });
 
         //TODO: supprimer juste le lien pathApp Firebase
+    }
+
+
+    public void saveData(){
+        viewModel.editSession().continueWith(new Continuation<Void, Void>() {
+            @Override
+            public Void then(@NonNull Task<Void> task) throws Exception {
+                if (task.isSuccessful()) {
+                    Toast.makeText(EditSessionActivity.this, R.string.save_edit, Toast.LENGTH_LONG).show();
+                    Intent intent = new Intent(EditSessionActivity.this, SelectVideoActivity.class);
+                    intent.putExtra(Constants.SESSIONMODELID_EXTRA, viewModel.getSession().getValue().getId());
+                    EditSessionActivity.this.startActivity(intent);
+                } else
+                    Toast.makeText(EditSessionActivity.this, R.string.error, Toast.LENGTH_SHORT).show();
+                return null;
+            }
+        });
+    }
+    @Override
+    public void onBackPressed() {
+        final Intent intent = new Intent(EditSessionActivity.this, SelectVideoActivity.class);
+        intent.putExtra(Constants.SESSIONMODELID_EXTRA, viewModel.getSession().getValue().getId());
+        if(isChangeData){
+            final AlertDialog.Builder builder = new AlertDialog.Builder(EditSessionActivity.this);
+            builder.setMessage(R.string.dont_save)
+                    .setPositiveButton(R.string.save, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                          saveData();
+                        }
+                    })
+                    .setNegativeButton(R.string.quiet, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                            EditSessionActivity.this.startActivity(intent);
+                        }
+                    })
+                    .show();
+
+        }else{
+            EditSessionActivity.this.startActivity(intent);
+        }
     }
 }

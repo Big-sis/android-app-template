@@ -159,10 +159,12 @@
                         android:visibility="visible"
                         app:fontFamily="@font/roboto_bold" />
                     <LinearLayout
+                        android:id="@+id/container_upload"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
                         android:layout_weight="0.3"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:visibility="gone" >
                         <EditText
                             android:id="@+id/tv_pourcentage_upload"
                             android:layout_width="wrap_content"
@@ -170,7 +172,7 @@
                             android:textSize="10dp"
                             android:layout_gravity="center"
                             android:textColor="@color/colorWhiteTwo"
-                            android:visibility="gone" />
+                            />
                         <ProgressBar
                             android:id="@+id/progress_upload"
                             style="@style/Widget.AppCompat.ProgressBar.Horizontal"
@@ -181,7 +183,7 @@
                             android:progress="0"
                             android:textColor="@color/colorBlack"
                             android:textSize="18sp"
-                            android:visibility="gone" />
+                           />
 
                     </LinearLayout>
 

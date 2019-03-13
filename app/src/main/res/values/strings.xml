@@ -144,7 +144,7 @@
     <string name="save_session_record">Video enregistré:</string>
     <string name="info_movie">Informations sur votre vidéo</string>
     <string name="ask_connection">Vous devez vous connecter</string>
-    <string name="save_edit">Modifiactions enregistrées</string>
+    <string name="save_edit">Modifications enregistrées</string>
     <string name="change_movie">Modifier la vidéo</string>
     <string name="confirm_change_movie">Voulez-vous vraiment modifier cette vidéo ?</string>
     <string name="date_session">Date :</string>
@@ -176,5 +176,8 @@
     <string name="add_tag_set">Ajouter une grille</string>
     <string name="tag_set_selected">Grille sélectionnée :</string>
     <string name="tag_set">grille d\'observation</string>
+    <string name="save">Sauver</string>
+    <string name="quiet">Quitter</string>
+    <string name="dont_save">Vous n\'avez pas enregistré vos modifications</string>
 
 </resources>
