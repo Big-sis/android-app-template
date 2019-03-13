@@ -33,7 +33,7 @@
                     android:layout_marginStart="40dp"
                     android:layout_marginTop="36dp"
                     android:text="@string/info_session"
-                    android:textColor="@color/white"
+                    android:textColor="@color/colorWhiteTwo"
                     android:textSize="24sp"
                     app:fontFamily="@font/roboto_bold"
                     app:layout_constraintStart_toStartOf="parent"
@@ -54,7 +54,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="@string/create_title_video"
-                        android:textColor="@color/white"
+                        android:textColor="@color/colorWhiteTwo"
                         android:textSize="20sp"
                         app:fontFamily="@font/roboto"
                         app:layout_constraintStart_toStartOf="parent"
@@ -70,8 +70,8 @@
                         android:ems="10"
                         android:hint="@string/title_video"
                         android:inputType="textPersonName"
-                        android:textColor="@color/white"
-                        android:textColorHint="@color/white"
+                        android:textColor="@color/colorWhiteTwo"
+                        android:textColorHint="@color/colorWhiteTwo"
                         android:textSize="20sp"
                         app:fontFamily="@font/roboto"
                         app:layout_constraintBottom_toBottomOf="@+id/tv_title_session"
@@ -96,7 +96,7 @@
                         android:layout_weight="0.3"
                         android:layout_marginTop="30dp"
                         android:text="@string/grid_import"
-                        android:textColor="@color/white"
+                        android:textColor="@color/colorWhiteTwo"
                         android:textSize="20sp"
                         app:fontFamily="@font/roboto"
                         app:layout_constraintStart_toStartOf="parent"
@@ -128,7 +128,7 @@
                         android:background="@drawable/style_button_white"
                         android:padding="5dp"
                         android:text="@string/create_grid_short"
-                        android:textColor="@color/black_de"
+                        android:textColor="@color/colorBlack"
                         android:textSize="16sp"
                         android:layout_weight="0.1"/>
                 </LinearLayout>
@@ -167,7 +167,7 @@
                         android:background="@drawable/style_button"
                         android:padding="5dp"
                         android:text="@string/go"
-                        android:textColor="@color/white"
+                        android:textColor="@color/colorWhiteTwo"
                         android:textSize="18sp"
                         app:fontFamily="@font/roboto" />
                 </LinearLayout>
@@ -228,7 +228,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:text="@string/share_url"
-                android:textColor="@color/white"
+                android:textColor="@color/colorWhiteTwo"
                 android:textSize="18sp"
                 app:fontFamily="@font/roboto_bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -244,7 +244,7 @@
                 android:gravity="center"
                 android:padding="16dp"
                 android:text="@string/url"
-                android:textColor="@color/white"
+                android:textColor="@color/colorWhiteTwo"
                 android:textSize="24sp"
                 app:fontFamily="@font/roboto_bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -270,7 +270,7 @@
                     android:layout_height="30dp"
                     android:background="@null"
                     android:text="@string/back"
-                    android:textColor="@color/white"
+                    android:textColor="@color/colorWhiteTwo"
                     app:layout_constraintStart_toStartOf="parent" />
 
                 <Button
@@ -280,7 +280,7 @@
                     android:layout_marginLeft="36dp"
                     android:background="@drawable/style_button"
                     android:text="@string/go"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/colorWhiteTwo" />
 
             </LinearLayout>
 

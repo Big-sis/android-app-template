@@ -37,7 +37,7 @@
                     android:layout_marginStart="60dp"
                     android:layout_marginTop="50dp"
                     android:text="@string/video_info"
-                    android:textColor="@color/white"
+                    android:textColor="@color/colorWhiteTwo"
                     android:textSize="24sp"
                     app:fontFamily="@font/roboto_bold"
                     app:layout_constraintStart_toStartOf="parent"
@@ -54,8 +54,8 @@
                     android:hint="@string/video_tittle"
                     android:inputType="textPersonName"
                     android:minWidth="500dp"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/white"
+                    android:textColor="@color/colorWhiteTwo"
+                    android:textColorHint="@color/colorWhiteTwo"
                     app:fontFamily="@font/roboto"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/tv_title" />
@@ -73,8 +73,8 @@
                     android:inputType="textMultiLine"
                     android:minHeight="200dp"
                     android:minWidth="500dp"
-                    android:textColor="@color/white"
-                    android:textColorHint="@color/white"
+                    android:textColor="@color/colorWhiteTwo"
+                    android:textColorHint="@color/colorWhiteTwo"
                     app:fontFamily="@font/roboto"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/et_video_title" />
@@ -95,7 +95,7 @@
                     android:layout_marginTop="100dp"
                     android:background="@drawable/edit"
                     android:enabled="false"
-                    android:textColor="@color/white"
+                    android:textColor="@color/colorWhiteTwo"
                     android:textSize="18sp"
                     app:fontFamily="@font/roboto_bold"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -167,7 +167,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/confirm_change_movie"
-                android:textColor="@color/white"
+                android:textColor="@color/colorWhiteTwo"
                 android:textSize="18sp"
                 app:fontFamily="@font/roboto_bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -192,7 +192,7 @@
                     android:layout_height="30dp"
                     android:background="@null"
                     android:text="@string/cancel"
-                    android:textColor="@color/white"
+                    android:textColor="@color/colorWhiteTwo"
                     app:layout_constraintStart_toStartOf="parent" />
                 <Button
                     android:id="@+id/btn_edit_confirm"
@@ -201,7 +201,7 @@
                     android:layout_marginLeft="36dp"
                     android:background="@drawable/style_button"
                     android:text="@string/change_movie"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/colorWhiteTwo" />
 
 
             </LinearLayout>
@@ -257,7 +257,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:text="@string/confirm_delete_video"
-                android:textColor="@color/white"
+                android:textColor="@color/colorWhiteTwo"
                 android:textSize="18sp"
                 app:fontFamily="@font/roboto_bold"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -282,7 +282,7 @@
                     android:layout_height="30dp"
                     android:background="@null"
                     android:text="@string/cancel"
-                    android:textColor="@color/white"
+                    android:textColor="@color/colorWhiteTwo"
                     app:layout_constraintStart_toStartOf="parent" />
 
                 <Button
@@ -292,7 +292,7 @@
                     android:layout_marginLeft="36dp"
                     android:background="@drawable/style_button"
                     android:text="@string/delete_app"
-                    android:textColor="@color/white"
+                    android:textColor="@color/colorWhiteTwo"
                     android:visibility="gone"/>
 
 
@@ -303,7 +303,7 @@
                     android:layout_marginLeft="36dp"
                     android:background="@drawable/style_button"
                     android:text="@string/delete_all"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/colorWhiteTwo" />
 
             </LinearLayout>
         </android.support.constraint.ConstraintLayout>

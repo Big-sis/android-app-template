@@ -42,7 +42,7 @@
             android:id="@+id/btn_record"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:backgroundTint="@color/color4" />
+            app:backgroundTint="@color/red" />
 
 
         <fr.vyfe.view.StopwatchView
@@ -53,7 +53,7 @@
             android:background="@color/colorCharcoal"
             android:gravity="center"
             android:padding="10dp"
-            android:textColor="@color/color9"
+            android:textColor="@color/red"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"/>
 

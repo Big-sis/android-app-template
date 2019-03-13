@@ -76,7 +76,7 @@
                             android:layout_marginLeft="16dp"
                             android:layout_marginStart="16dp"
                             android:text="@string/create_tagset_title"
-                            android:textColor="@color/white"
+                            android:textColor="@color/colorWhiteTwo"
                             android:textSize="20sp"
                             app:fontFamily="@font/roboto_bold"/>
                     </LinearLayout>
@@ -104,7 +104,7 @@
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="16dp"
                             android:text="@string/start_session"
-                            android:textColor="@color/white"
+                            android:textColor="@color/colorWhiteTwo"
                             android:textSize="20sp"
                             app:fontFamily="@font/roboto_bold" />
                     </LinearLayout>
@@ -145,7 +145,7 @@
                             android:layout_gravity="center_vertical"
                             android:layout_marginLeft="16dp"
                             android:text="@string/my_videos"
-                            android:textColor="@color/white"
+                            android:textColor="@color/colorWhiteTwo"
                             android:textSize="20sp"
                             app:fontFamily="@font/roboto_bold" />
                     </LinearLayout>
