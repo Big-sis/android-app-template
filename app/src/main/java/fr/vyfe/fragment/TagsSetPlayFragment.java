@@ -55,7 +55,7 @@ public class TagsSetPlayFragment extends Fragment {
             @Override
             public void onChanged(@Nullable TagSetModel tagSet) {
                 if (tagSet != null) {
-                    mAdapterTags = new TemplateRecyclerAdapter(tagSet.getTemplates(), "count", InternetConnexionHelper.isConnectedToInternet(getActivity()));
+                    mAdapterTags = new TemplateRecyclerAdapter(tagSet.getTemplates(), "count");
                     mRecyclerView.setAdapter(mAdapterTags);
                 }
             }

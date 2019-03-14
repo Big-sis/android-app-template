@@ -9,7 +9,6 @@ public class TagSetEntity {
     private HashMap<String, TemplateEntity> Templates;
 
 
-
     public HashMap<String, TemplateEntity> getTemplates() {
         return Templates;
     }

@@ -124,7 +124,7 @@ public class SelectVideoActivity extends VyfeActivity {
                     //Create grid
                     TagSetModel tagSetModel = session.getTagsSet();
                     if (tagSetModel != null) {
-                        TemplateRecyclerAdapter adapterTags = new TemplateRecyclerAdapter(session.getTagsSet().getTemplates(), "count",InternetConnexionHelper.isConnectedToInternet(getApplicationContext()));
+                        TemplateRecyclerAdapter adapterTags = new TemplateRecyclerAdapter(session.getTagsSet().getTemplates(), "play");
                         recyclerTags.setAdapter(adapterTags);
                     }
 
@@ -178,16 +178,6 @@ public class SelectVideoActivity extends VyfeActivity {
             }
         });
 
-        viewModel.getSession().observe(this, new Observer<SessionModel>() {
-            @Override
-            public void onChanged(@Nullable SessionModel session) {
-                if (session.getTagsSet() != null) {
-                    TemplateRecyclerAdapter adapterTags = new TemplateRecyclerAdapter(session.getTagsSet().getTemplates(), "count",InternetConnexionHelper.isConnectedToInternet(getApplicationContext()));
-                    recyclerTags.setAdapter(adapterTags);
-                    gridTextView.setText(session.getTagsSet().getName());
-                }
-            }
-        });
 
         clickButton(playBtn, new Intent(this, PlayVideoActivity.class));
         clickButton(videoMiniatureView, new Intent(this, PlayVideoActivity.class));

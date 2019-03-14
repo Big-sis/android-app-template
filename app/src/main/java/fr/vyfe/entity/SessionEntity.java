@@ -37,6 +37,7 @@ public class SessionEntity {
         sessionMap.put("duration", duration);
         sessionMap.put("description", description);
         sessionMap.put("pathApp", pathApp);
+        sessionMap.put("tagSet", tagSet);
         return sessionMap;
 
     }

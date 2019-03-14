@@ -144,7 +144,7 @@ public class CreateSessionFragment extends Fragment {
                 RecyclerView.LayoutManager layoutManagerImport = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
                 recyclerViewImport.setLayoutManager(layoutManagerImport);
                 if (tagSetModel != null) {
-                    recyclerViewImport.setAdapter(new TemplateRecyclerAdapter(tagSetModel.getTemplates(), "start", InternetConnexionHelper.isConnectedToInternet(getActivity())));
+                    recyclerViewImport.setAdapter(new TemplateRecyclerAdapter(tagSetModel.getTemplates(), "start"));
                     ScrollHelper.DownScroll(scrollMain);
                 }
             }

@@ -22,10 +22,9 @@ public class TemplateRecyclerAdapter extends RecyclerView.Adapter<TemplateRecycl
     private ArrayList<TemplateModel> mTemplates;
     private Boolean mShowNumber;
 
-    public TemplateRecyclerAdapter(ArrayList<TemplateModel> templates, String from, Boolean showNumber) {
+    public TemplateRecyclerAdapter(ArrayList<TemplateModel> templates, String from) {
         mTemplates = templates;
         mFrom = from;
-        mShowNumber = showNumber;
     }
 
     @Override
@@ -45,13 +44,17 @@ public class TemplateRecyclerAdapter extends RecyclerView.Adapter<TemplateRecycl
         switch (mFrom) {
             case "create":
                 holder.ivMenu.setVisibility(View.VISIBLE);
+                holder.tvNum.setVisibility(View.INVISIBLE);
+                break;
             case "start":
-                holder.tvNum.setVisibility(View.GONE);
+                holder.tvNum.setVisibility(View.INVISIBLE);
+                break;
+            case "play":
+                holder.tvNum.setVisibility(View.VISIBLE);
                 break;
             default:
                 holder.tvNum.setVisibility(View.VISIBLE);
                 //TagsSetSession : les tags de la grille
-                holder.tvNum.setVisibility(View.GONE);
                 holder.viewForeground.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -75,7 +78,6 @@ public class TemplateRecyclerAdapter extends RecyclerView.Adapter<TemplateRecycl
         else
             holder.tvNum.setText(String.valueOf(template.getCount()));
 
-        if(!mShowNumber) holder.tvNum.setVisibility(View.INVISIBLE);
     }
 
     @Override

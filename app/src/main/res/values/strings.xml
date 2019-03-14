@@ -50,7 +50,7 @@
     <string name="record_session">Enregistrer une session</string>
     <string name="modif_tags">Ajouter ou modifier les tags</string>
     <string name="add_tags">Ajouter des tags</string>
-    <string name="edit_tags">Modifier les tagTemplates</string>
+    <string name="edit_tags">Modifier les tags</string>
     <string name="next">Suivant</string>
     <string name="video_save">Session enregistrée dans vos vidéos</string>
     <string name="back_to_main">Retour à l\'accueil</string>

@@ -47,7 +47,7 @@ public class TemplatesFragment extends Fragment {
             @Override
             public void onChanged(@Nullable TagSetModel tagSetModel) {
                 if (tagSetModel != null) {
-                    mAdapterTags = new TemplateRecyclerAdapter(tagSetModel.getTemplates(), "start", InternetConnexionHelper.isConnectedToInternet(getActivity()));
+                    mAdapterTags = new TemplateRecyclerAdapter(tagSetModel.getTemplates(), "start");
                     mRecyclerView.setAdapter(mAdapterTags);
                     mTvTagSetName.setText("Grille visualisée :"+" "+tagSetModel.getName());
 
