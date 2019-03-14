@@ -179,5 +179,6 @@
     <string name="save">Sauver</string>
     <string name="quiet">Quitter</string>
     <string name="dont_save">Vous n\'avez pas enregistré vos modifications</string>
+    <string name="confirm_delete_tag_sets">Etês vous sur de vouloir supprimées les grilles selectionnées ?</string>
 
 </resources>
