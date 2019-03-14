@@ -151,7 +151,7 @@
     <string name="duration_session">Durée :</string>
     <string name="info_max_tags">Attention si vous utilisez plus de 10 tags, le feedback ne va pas être optimal.Nous vous conseillons d\'utiliser au maximum 10 tags</string>
     <string name="off_on">Off/On : </string>
-    <string name="start_live">Lancement d\'une session coopérative</string>
+    <string name="start_live">Lancement d\'une session collaborative</string>
     <string name="Grid">Grille</string>
     <string name="live">Live</string>
     <string name="add_connexion">Vous devez posseder une connexion Internet pour lire cette vidéo</string>

@@ -28,7 +28,7 @@ import fr.vyfe.helper.AuthHelper;
 import fr.vyfe.model.ObserverModel;
 import fr.vyfe.viewModel.RecordVideoViewModel;
 
-public class CooperationFragment extends Fragment {
+public class LiveSessionFragment extends Fragment {
     private RecordVideoViewModel viewModel;
     private Switch liveRecordingSwitch;
     private RecyclerView mRecyclerViewObservers;
@@ -37,8 +37,8 @@ public class CooperationFragment extends Fragment {
     private AuthHelper mAuth;
     private WifiManager wifiManager;
 
-    public static CooperationFragment newInstance() {
-        return new CooperationFragment();
+    public static LiveSessionFragment newInstance() {
+        return new LiveSessionFragment();
     }
 
     @Override
@@ -50,7 +50,7 @@ public class CooperationFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_cooperation, container, false);
+        View view = inflater.inflate(R.layout.fragment_live_session, container, false);
         mRecyclerViewObservers = view.findViewById(R.id.rv_observer);
         liveRecordingSwitch = view.findViewById(R.id.switch_live_conexion);
         tvNumber = view.findViewById(R.id.tv_observer);
