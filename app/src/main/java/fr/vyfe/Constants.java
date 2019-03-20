@@ -2,6 +2,7 @@ package fr.vyfe;
 
 public final class Constants {
 
+    // TODO Handle env variables
     public final static String FIREBASE_DB_VERSION_URL = "https://vyfe-dev-8702b.firebaseio.com/";
     public static  String FIREBASE_DB_FUNCTIONSPRODUCTION = "production";
     public static String FIREBASE_DB_FUNCTIONSDEV="";

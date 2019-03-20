@@ -22,8 +22,6 @@ public class SessionEntity {
     private int duration;
     private HashMap<String, ObserverEntity> observers;
     private HashMap<String, TagEntity> tags;
-
-
     private String tagSetId;
 
     public SessionEntity() {
@@ -31,13 +29,17 @@ public class SessionEntity {
 
     public Map<String, Object> toHashmap() {
         Map<String, Object> sessionMap = new HashMap<>();
+        sessionMap.put("author", author);
+        sessionMap.put("name", name);
+        sessionMap.put("description", description);
+        sessionMap.put("tagSet", tagSet);
+        sessionMap.put("videoLink", videoLink);
+        sessionMap.put("pathApp", pathApp);
+        sessionMap.put("idAndroid", idAndroid);
         sessionMap.put("cooperative", cooperative);
         sessionMap.put("recording", recording);
-        sessionMap.put("videoLink", videoLink);
+        sessionMap.put("timestamp", timestamp);
         sessionMap.put("duration", duration);
-        sessionMap.put("description", description);
-        sessionMap.put("pathApp", pathApp);
-        sessionMap.put("tagSet", tagSet);
         return sessionMap;
 
     }

@@ -1,6 +1,9 @@
 package fr.vyfe.viewModel;
 
 
+import android.arch.lifecycle.MutableLiveData;
+import android.database.Observable;
+
 import com.google.android.gms.tasks.Task;
 
 import fr.vyfe.model.SessionModel;
@@ -9,11 +12,13 @@ import fr.vyfe.repository.SessionRepository;
 public class EditSessionViewModel extends VyfeViewModel {
     private String newDescription;
     private String newName;
+    private MutableLiveData<Boolean> hasDataChanged;
 
 
     public EditSessionViewModel(String companyId) {
         sessionRepository = new SessionRepository(companyId);
-
+        hasDataChanged = new MutableLiveData<>();
+        hasDataChanged.setValue(false);
     }
 
     public void init(String sessionId) {
@@ -26,19 +31,19 @@ public class EditSessionViewModel extends VyfeViewModel {
 
     public void setNewDescription(String newDescription) {
         this.newDescription = newDescription;
+        hasDataChanged.setValue(true);
     }
 
     public void setNewName(String newName) {
         this.newName = newName;
+        hasDataChanged.setValue(true);
     }
 
-    public Task<Void> editSession() {
-        SessionModel sessionModel = session.getValue();
-        if (newName == null) newName = getSession().getValue().getName();
-        if (newDescription == null) newDescription = getSession().getValue().getDescription();
-        sessionModel.setName(this.newName);
-        sessionModel.setDescription(this.newDescription);
-        return sessionRepository.update(sessionModel);
+    public Task<Void> updateSession() {
+        SessionModel session = this.session.getValue();
+        if (this.newName != null) session.setName(this.newName);
+        if (this.newDescription != null) session.setDescription(this.newDescription);
+        return sessionRepository.update(session);
     }
 
     public Task<Void> deleteLinkAppSession() {
@@ -48,11 +53,11 @@ public class EditSessionViewModel extends VyfeViewModel {
     }
 
     @Override
-    protected void onCleared() {
+    public void onCleared() {
         sessionRepository.removeListeners();
     }
 
-    public void stopListener() {
-        sessionRepository.removeListeners();
+    public MutableLiveData<Boolean> watchDataChange() {
+        return hasDataChanged;
     }
 }
