@@ -25,6 +25,7 @@ import com.google.firebase.FirebaseApp;
 import fr.vyfe.Constants;
 import fr.vyfe.R;
 import fr.vyfe.helper.AuthHelper;
+import fr.vyfe.model.UserModel;
 
 public abstract class VyfeActivity extends AppCompatActivity {
 
@@ -55,6 +56,16 @@ public abstract class VyfeActivity extends AppCompatActivity {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(view, fragment);
         transaction.commit();
+    }
+
+    public String getDisplayName() {
+        UserModel currentUser = mAuth.getCurrentUser();
+        String firstName, lastName, displayName;
+        if (currentUser.getFirstname()!=null) firstName = currentUser.getFirstname();
+        else firstName = "";
+        if(currentUser.getLastName()!=null) lastName = currentUser.getLastName();
+        else lastName ="";
+       return firstName +" " +lastName;
     }
 
     @Override

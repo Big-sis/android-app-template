@@ -22,6 +22,7 @@ public class SessionEntity {
     private int duration;
     private HashMap<String, ObserverEntity> observers;
     private HashMap<String, TagEntity> tags;
+    private OwnerEntity owner;
 
 
     private String tagSetId;
@@ -43,6 +44,15 @@ public class SessionEntity {
 
 
     //Generated code
+
+
+    public OwnerEntity getOwner() {
+        return owner;
+    }
+
+    public void setOwner(OwnerEntity owner) {
+        this.owner = owner;
+    }
 
     public int getDuration() {
         return duration;

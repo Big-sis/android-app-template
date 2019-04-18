@@ -6,7 +6,9 @@ import android.support.annotation.NonNull;
 import java.util.ArrayList;
 import java.util.Date;
 
+import fr.vyfe.entity.OwnerEntity;
 import fr.vyfe.entity.SessionEntity;
+import fr.vyfe.model.OwnerModel;
 import fr.vyfe.model.SessionModel;
 import fr.vyfe.model.TagModel;
 import fr.vyfe.model.TagSetModel;
@@ -18,7 +20,7 @@ public class SessionMapper extends FirebaseMapper<SessionEntity, SessionModel> {
     public SessionModel map(@NonNull SessionEntity sessionEntity, String key) {
         SessionModel session = new SessionModel();
         if (sessionEntity != null) {
-            if (sessionEntity.getAuthor() != null) session.setAuthor(sessionEntity.getAuthor());
+
             if (sessionEntity.getTimestamp() != 0)
                 session.setDate(new Date(sessionEntity.getTimestamp()));
             if (sessionEntity.getIdAndroid() != null)
@@ -33,6 +35,16 @@ public class SessionMapper extends FirebaseMapper<SessionEntity, SessionModel> {
             if (sessionEntity.getDescription() != null)
                 session.setDescription(sessionEntity.getDescription());
             session.setId(key);
+
+            //Owner
+            OwnerModel owner = new OwnerModel();
+            if(sessionEntity.getOwner()!=null){
+                owner.setDiplayName(sessionEntity.getOwner().getDisplayName());
+                owner.setUid(sessionEntity.getOwner().getUid());
+                session.setOwner(owner);
+            } else {
+                if (sessionEntity.getAuthor() != null) owner.setUid(sessionEntity.getAuthor());
+            }
 
             //TagsSet
             TagSetModel tagSet = new TagSetModel();
@@ -62,7 +74,16 @@ public class SessionMapper extends FirebaseMapper<SessionEntity, SessionModel> {
     @Override
     public SessionEntity unMap(SessionModel sessionModel) {
         SessionEntity sessionEntity = new SessionEntity();
-        sessionEntity.setAuthor(sessionModel.getAuthor());
+
+
+        if(sessionModel.getOwner()!= null){
+            OwnerEntity owner = new OwnerEntity();
+            owner.setDisplayName(sessionModel.getOwner().getDiplayName());
+            owner.setUid(sessionModel.getOwner().getUid());
+            sessionEntity.setOwner(owner);
+        }
+
+
         sessionEntity.setTimestamp(sessionModel.getDate().getTime());
         sessionEntity.setDescription(sessionModel.getDescription());
         sessionEntity.setIdAndroid(sessionModel.getIdAndroid());
@@ -78,6 +99,8 @@ public class SessionMapper extends FirebaseMapper<SessionEntity, SessionModel> {
         if (sessionModel.getObservers() != null)
             sessionEntity.setObservers(new ObserverMapper().unMapList(sessionModel.getObservers()));
         else sessionEntity.setObservers(null);
+
+
 
         return sessionEntity;
     }

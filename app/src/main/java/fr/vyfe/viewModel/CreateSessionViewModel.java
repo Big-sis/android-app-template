@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import fr.vyfe.model.OwnerModel;
 import fr.vyfe.model.SessionModel;
 import fr.vyfe.model.TagSetModel;
 import fr.vyfe.model.TemplateModel;
@@ -24,14 +25,16 @@ public class CreateSessionViewModel extends VyfeViewModel {
     private String userId;
     private String selectedTagSetId;
     private String androidId;
+    private String diplayName;
 
-    public CreateSessionViewModel(String userId, String companyId, String androidId) {
+    public CreateSessionViewModel(String userId, String diplayName, String companyId, String androidId) {
         tagSetRepository = new TagSetRepository(userId, companyId);
         sessionRepository = new SessionRepository(companyId);
         tagSets = new MutableLiveData<>();
         sessionName = new MutableLiveData<>();
         this.userId = userId;
         this.androidId = androidId;
+        this.diplayName = diplayName;
 
     }
 
@@ -108,7 +111,11 @@ public class CreateSessionViewModel extends VyfeViewModel {
     public String pushSession() throws Exception {
         SessionModel session = new SessionModel();
         session.setName(this.sessionName.getValue());
-        session.setAuthor(this.userId);
+        OwnerModel owner = new OwnerModel();
+        owner.setUid(this.userId);
+        owner.setDiplayName(this.diplayName);
+        session.setOwner(owner);
+
         TagSetModel tagsSets = selectedTagSet.getValue();
         tagsSets.setId(null);
         tagsSets.setOwner(null);

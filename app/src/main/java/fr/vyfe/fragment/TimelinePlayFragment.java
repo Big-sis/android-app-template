@@ -107,6 +107,7 @@ public class TimelinePlayFragment extends Fragment {
                     //Creation teacher mainTimeline
                     createTimelineRow(observerModelAuthor, teacherContainer, sessionModel.getTagsSet());
 
+
                     //Creation Observers mainTimeline
                     ArrayList<ObserverModel> observers = viewModel.getSession().getValue().getObservers();
                     if (observers != null) for (ObserverModel observer : observers) {

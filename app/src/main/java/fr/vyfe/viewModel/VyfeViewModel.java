@@ -25,6 +25,7 @@ public abstract class VyfeViewModel extends ViewModel {
     protected MutableLiveData<TagSetModel> tagSet;
     protected String sessionId;
 
+
     public String getSessionId() {
         return sessionId;
     }

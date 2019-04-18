@@ -30,7 +30,8 @@ public class MyVideosViewModel extends VyfeViewModel {
     public MyVideosViewModel(String companyId, String mAuth, String androidId) {
         this.mAuth = mAuth;
         repository = new SessionRepository(companyId);
-        repository.setOrderByChildKey("author");
+        repository.setChild("owner");
+        repository.setOrderByChildKey("uid");
         repository.setEqualToKey(mAuth);
         filter = "";
         permissions = new MutableLiveData<>();
@@ -62,7 +63,7 @@ public class MyVideosViewModel extends VyfeViewModel {
 
     private void loadSessions() {
 
-        repository.addListListener(new BaseListValueEventListener.CallbackInterface<SessionModel>() {
+        repository.addListListenerChild(new BaseListValueEventListener.CallbackInterface<SessionModel>() {
             @Override
             public void onSuccess(List<SessionModel> result) {
 

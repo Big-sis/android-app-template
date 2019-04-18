@@ -28,6 +28,7 @@ public abstract class FirebaseDatabaseRepository<Model> {
     private String equalToKey;
     private String childKey;
     static boolean isPersistenceEnabled = false;
+    private String child;
 
     public FirebaseDatabaseRepository(FirebaseMapper mapper, String company) {
         this(mapper, company, null, null);
@@ -78,6 +79,10 @@ public abstract class FirebaseDatabaseRepository<Model> {
         this.orderByChildKey = orderByChildKey;
     }
 
+    public void setChild(String child){
+        this.child = child;
+    }
+
     public void setEqualToKey(String equalToKey) {
         this.equalToKey = equalToKey;
     }
@@ -88,6 +93,14 @@ public abstract class FirebaseDatabaseRepository<Model> {
         listListener = new BaseListValueEventListener(mapper, callback);
         Query query = databaseReference;
         if (orderByChildKey != null) query = query.orderByChild(orderByChildKey);
+        if (equalToKey != null) query = query.equalTo(equalToKey);
+        query.addValueEventListener(listListener);
+    }
+
+    public void addListListenerChild(BaseListValueEventListener.CallbackInterface<Model> callback) {
+        listListener = new BaseListValueEventListener(mapper, callback);
+        Query query = databaseReference;
+        if (orderByChildKey != null && child != null) query =  query.orderByChild(orderByChildKey);
         if (equalToKey != null) query = query.equalTo(equalToKey);
         query.addValueEventListener(listListener);
     }
