@@ -168,7 +168,7 @@
     <string name="your_tagSets">Vos grilles d\'observation</string>
     <string name="havent_tag_sets">Vous n\'avez pas de grille d\'observation</string>
     <string name="you_have" translatable="false">Vous avez</string>
-    <string name="tag_sets">grilles d\'observations</string>
+    <string name="tag_sets">grilles d\'observation</string>
     <string name="name_tag_set">Name Grid</string>
     <string name="delete_select">Supprimer la selection</string>
     <string name="select_all">Tout selectionner</string>

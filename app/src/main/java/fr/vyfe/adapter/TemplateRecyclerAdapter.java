@@ -80,7 +80,7 @@ public class TemplateRecyclerAdapter extends RecyclerView.Adapter<TemplateRecycl
 
     @Override
     public int getItemCount() {
-        if (mTemplates == null) return 0;
+        if (mTemplates==null) return 0;
         return mTemplates.size();
     }
 

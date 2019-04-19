@@ -111,7 +111,6 @@ public class TimelinePlayFragment extends Fragment {
                     ArrayList<ObserverModel> observers = viewModel.getSession().getValue().getObservers();
                     if (observers != null) for (ObserverModel observer : observers) {
                         LinearLayout layout = new LinearLayout(getContext());
-                       String g =  observer.getId();
                         layout.setTag(observer.getId());
                         layout.setOrientation(LinearLayout.VERTICAL);
                         layout.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));

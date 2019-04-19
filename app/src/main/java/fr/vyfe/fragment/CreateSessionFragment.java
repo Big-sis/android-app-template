@@ -146,7 +146,10 @@ public class CreateSessionFragment extends Fragment {
                 if (tagSetModel != null) {
                     recyclerViewImport.setAdapter(new TemplateRecyclerAdapter(tagSetModel.getTemplates(), "start", InternetConnexionHelper.isConnectedToInternet(getActivity())));
                     ScrollHelper.DownScroll(scrollMain);
+                } else {
+                    recyclerViewImport.setAdapter(new  TemplateRecyclerAdapter(null, "start", InternetConnexionHelper.isConnectedToInternet(getActivity())));
                 }
+
             }
         });
 
@@ -192,8 +195,7 @@ public class CreateSessionFragment extends Fragment {
             public void onClick(View v) {
 
                 Intent intent = new Intent(getContext(), RecordActivity.class);
-
-                if (viewModel.getSelectedTagSet() == null
+                if (viewModel.getSelectedTagSet().getValue() == null
                         || viewModel.getSessionName() == null
                         || viewModel.getSessionName().isEmpty()) {
                     Toast.makeText(getContext(), R.string.tagset_title_warning, Toast.LENGTH_LONG).show();
