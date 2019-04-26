@@ -146,8 +146,6 @@ public class CreateSessionFragment extends Fragment {
                 if (tagSetModel != null) {
                     recyclerViewImport.setAdapter(new TemplateRecyclerAdapter(tagSetModel.getTemplates(), "start"));
                     ScrollHelper.DownScroll(scrollMain);
-                } else {
-                    recyclerViewImport.setAdapter(new  TemplateRecyclerAdapter(null, "start", InternetConnexionHelper.isConnectedToInternet(getActivity())));
                 }
 
             }

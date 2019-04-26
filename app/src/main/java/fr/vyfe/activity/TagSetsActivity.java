@@ -13,8 +13,8 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import fr.vyfe.R;
-import fr.vyfe.fragment.UserTagSetsFragment;
 import fr.vyfe.fragment.TemplatesFragment;
+import fr.vyfe.fragment.UserTagSetsFragment;
 import fr.vyfe.model.TagSetModel;
 import fr.vyfe.viewModel.CreateGridViewModel;
 import fr.vyfe.viewModel.CreateGridViewModelFactory;
@@ -26,7 +26,7 @@ public class TagSetsActivity extends VyfeActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = ViewModelProviders.of(this, new CreateGridViewModelFactory(mAuth.getCurrentUser().getId(),getDisplayName(), mAuth.getCurrentUser().getCompany())).get(CreateGridViewModel.class);
+        viewModel = ViewModelProviders.of(this, new CreateGridViewModelFactory(mAuth.getCurrentUser().getId(), getDisplayName(), mAuth.getCurrentUser().getCompany())).get(CreateGridViewModel.class);
 
         setContentView(R.layout.activity_tag_sets);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -49,9 +49,10 @@ public class TagSetsActivity extends VyfeActivity {
             public void onChanged(@Nullable ArrayList<TagSetModel> tagSetModels) {
                 if (tagSetModels.size() == 0 || tagSetModels == null)
                     numberTagSet.setText(R.string.havent_tag_sets);
-                else if(tagSetModels.size()==1){numberTagSet.setText(getString(R.string.you_have) +" "+ String.valueOf(tagSetModels.size())+" " + getString(R.string.tag_set));}
-                else
-                    numberTagSet.setText(getString(R.string.you_have) +" "+ String.valueOf(tagSetModels.size())+" " + getString(R.string.tag_sets));
+                else if (tagSetModels.size() == 1) {
+                    numberTagSet.setText(getString(R.string.you_have) + " " + String.valueOf(tagSetModels.size()) + " " + getString(R.string.tag_set));
+                } else
+                    numberTagSet.setText(getString(R.string.you_have) + " " + String.valueOf(tagSetModels.size()) + " " + getString(R.string.tag_sets));
             }
         });
 
