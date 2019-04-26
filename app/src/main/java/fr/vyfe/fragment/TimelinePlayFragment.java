@@ -25,7 +25,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import fr.vyfe.Constants;
 import fr.vyfe.R;
 import fr.vyfe.model.ObserverModel;
 import fr.vyfe.model.SessionModel;
@@ -93,24 +92,14 @@ public class TimelinePlayFragment extends Fragment {
                 //Create MainContainer Timeline
                 if (sessionModel.getTagsSet().getTemplates() != null) {
 
-                    //Param Author
-                    String firstNameAuthor = sharedPreferences.getString(Constants.SHARED_PREF_USER_FIRSTNAME, "");
-                    String lastNameAuthor = sharedPreferences.getString(Constants.SHARED_PREF_USER_LASTNAME, "");
-                    if (!sharedPreferences.contains(Constants.SHARED_PREF_USER_FIRSTNAME))
-                        firstNameAuthor = "";
-                    if (!sharedPreferences.contains(Constants.SHARED_PREF_USER_LASTNAME)) lastNameAuthor = "";
-                    String namesAuthor = firstNameAuthor + " " + lastNameAuthor;
-                    ObserverModel observerModelAuthor = new ObserverModel();
-                    observerModelAuthor.setName(namesAuthor);
-                    observerModelAuthor.setId(viewModel.getSession().getValue().getAuthor());
-
+                    //TODO  timeline allTags
                     //Creation teacher mainTimeline
-                    createTimelineRow(observerModelAuthor, teacherContainer, sessionModel.getTagsSet());
-
+                    ObserverModel observerModelAuthorA = new ObserverModel(sessionModel.getOwner().getUid(), sessionModel.getOwner().getDiplayName());
+                    createTimelineRow(observerModelAuthorA, teacherContainer, sessionModel.getTagsSet());
 
                     //Creation Observers mainTimeline
-                    ArrayList<ObserverModel> observers = viewModel.getSession().getValue().getObservers();
-                    if (observers != null) for (ObserverModel observer : observers) {
+                    ArrayList<ObserverModel> observersA = viewModel.getSession().getValue().getObservers();
+                    if (observersA != null) for (ObserverModel observer : observersA) {
                         LinearLayout layout = new LinearLayout(getContext());
                         layout.setTag(observer.getId());
                         layout.setOrientation(LinearLayout.VERTICAL);
@@ -123,17 +112,13 @@ public class TimelinePlayFragment extends Fragment {
                     ArrayList<TagModel> tags = sessionModel.getTags();
                     if (tags != null) {
                         for (TagModel tag : tags) {
-                            // Create Teacher Tags
-                            if (tag.getTaggerId().equals(viewModel.getSession().getValue().getAuthor())) {
+                            if (tag.getAuthor().getUid().equals(viewModel.getSession().getValue().getOwner().getUid())) {
                                 ImageView ivTag = createIvTag(tag);
                                 RelativeLayout timelineRow = teacherContainer.findViewWithTag(tag.getTemplateId());
                                 timelineRow.addView(ivTag);
-
-                            }
-                            // Create Observers Tags
-                            else {
+                            } else {
                                 ImageView ivTag = createIvTag(tag);
-                                LinearLayout userContainer = togetherContainer.findViewWithTag(tag.getTaggerId());
+                                LinearLayout userContainer = togetherContainer.findViewWithTag(tag.getAuthor().getUid());
                                 if (userContainer != null) {
                                     RelativeLayout timelineRow = userContainer.findViewWithTag(tag.getTemplateId());
                                     timelineRow.addView(ivTag);
@@ -201,7 +186,7 @@ public class TimelinePlayFragment extends Fragment {
 
     public LinearLayout createTimelineRow(ObserverModel observerModel, LinearLayout containerLayout, TagSetModel tagSetModel) {
         final TextView TvNameTagguer = new TextView(getContext());
-        TvNameTagguer.setText(observerModel.getName());
+        if (observerModel.getName() != null) TvNameTagguer.setText(observerModel.getName());
         TvNameTagguer.setTextColor(Color.WHITE);
         TvNameTagguer.setMinimumHeight(convertToDp(15));
         RelativeLayout.LayoutParams layoutParamsTvTeacher = new RelativeLayout.LayoutParams(

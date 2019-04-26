@@ -8,6 +8,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import fr.vyfe.helper.TagSetsFilteredHelper;
 import fr.vyfe.model.OwnerModel;
 import fr.vyfe.model.SessionModel;
 import fr.vyfe.model.TagSetModel;
@@ -80,17 +81,8 @@ public class CreateSessionViewModel extends VyfeViewModel {
                     });
                 }
 
-                ArrayList<TagSetModel> tagSetModels = new ArrayList<>();
+                ArrayList<TagSetModel> tagSetModels =  TagSetsFilteredHelper.tagSetByAuthorAndShared(result,userId);
                 for (TagSetModel tagSet : result) {
-                    //TagsSets Author
-                    if (tagSet.getOwner().equals(userId)) {
-                        tagSetModels.add(tagSet);
-                    }
-                    //TagsSets shared
-                    if (!tagSet.getOwner().equals(userId) && tagSet.isShared()) {
-                        tagSetModels.add(tagSet);
-                    }
-
                     //selected TagsSet
                     if (selectedTagSetId != null) {
                         if (selectedTagSetId.equals(tagSet.getId()))
@@ -111,14 +103,13 @@ public class CreateSessionViewModel extends VyfeViewModel {
     public String pushSession() throws Exception {
         SessionModel session = new SessionModel();
         session.setName(this.sessionName.getValue());
-        OwnerModel owner = new OwnerModel();
-        owner.setUid(this.userId);
-        owner.setDiplayName(this.diplayName);
+        OwnerModel owner = new OwnerModel(this.userId,this.diplayName);
         session.setOwner(owner);
 
         TagSetModel tagsSets = selectedTagSet.getValue();
         tagsSets.setId(null);
         tagsSets.setOwner(null);
+        tagsSets.setAuthor(null);
         //TODO : delete boolean session
         tagsSets.setShared(Boolean.parseBoolean(null));
         session.setTagsSet(selectedTagSet.getValue());

@@ -65,10 +65,6 @@
         <activity
             android:name=".activity.PlayVideoActivity"
             android:screenOrientation="userLandscape" />
-        <activity
-            android:name=".activity.ForgotPasswordActivity"
-            android:screenOrientation="userLandscape"
-            android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <activity
             android:name=".activity.CreateGridActivity"

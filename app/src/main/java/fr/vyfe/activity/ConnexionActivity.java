@@ -19,6 +19,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+
 import java.util.HashMap;
 
 import androidx.annotation.NonNull;
@@ -102,7 +105,8 @@ public class ConnexionActivity extends AppCompatActivity {
                         @Override
                         public void onSuccessProfile(UserModel user) {
                             HashMap<String, Boolean> userRoles = user.getRoles();
-                            if (userRoles.get(Constants.BDDV2_CUSTOM_USERS_ROLE_TEACHER) || userRoles.get(Constants.BDDV2_CUSTOM_USERS_ROLE_STUDENT)) {
+                            //TODO enlver student
+                            if (userRoles.get(Constants.BDDV2_CUSTOM_USERS_ROLE_TEACHER)) {
                                 Intent intent = new Intent(ConnexionActivity.this, MainActivity.class);
                                 startActivity(intent);
                                 finish();
@@ -163,8 +167,35 @@ public class ConnexionActivity extends AppCompatActivity {
         forgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ConnexionActivity.this, ForgotPasswordActivity.class);
-                startActivity(intent);
+                if (!inputMail.getText().toString().isEmpty()) {
+                    auth.resetPassword(inputMail.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@android.support.annotation.NonNull Task<Void> task) {
+                            String messageAlerte = null;
+                            if (task.isSuccessful()) {
+                                messageAlerte = getString(R.string.mail_send);
+                            } else {
+                                messageAlerte = getString(R.string.mail_unkown);
+                            }
+
+                            final Snackbar snackbar = Snackbar.make(ConnexionActivity.this.findViewById(R.id.linear_layout_add), messageAlerte, Snackbar.LENGTH_INDEFINITE).setDuration(9000).setAction(R.string.try_again, new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+
+                                }
+                            });
+                            View snackBarView = snackbar.getView();
+                            TextView textView = snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                            textView.setMaxLines(3);
+                            textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                            snackbar.setDuration(7000);
+                            snackbar.show();
+                        }
+                    });
+
+                } else {
+                    Toast.makeText(ConnexionActivity.this, R.string.ask_email, Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -187,7 +218,7 @@ public class ConnexionActivity extends AppCompatActivity {
                     @Override
                     public void onClick(View v) {
                         Intent intent = new Intent(Intent.ACTION_VIEW);
-                        intent.setData(Uri.parse("https://vyfe.fr/"));
+                        intent.setData(Uri.parse(getString(R.string.vyfe_site)));
                         startActivity(intent);
                     }
                 });

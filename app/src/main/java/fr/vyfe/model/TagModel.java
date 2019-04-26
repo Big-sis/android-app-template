@@ -4,6 +4,7 @@ package fr.vyfe.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+
 public class TagModel implements Parcelable, VyfeModel {
 
     private String id;
@@ -14,6 +15,7 @@ public class TagModel implements Parcelable, VyfeModel {
     private String taggerId;
     private int start;
     private int end;
+    private OwnerModel author;
 
 
     public TagModel() {
@@ -47,6 +49,14 @@ public class TagModel implements Parcelable, VyfeModel {
         newTagModel.setTemplateId(template.getId());
         newTagModel.setColor(template.getColor());
         return newTagModel;
+    }
+
+    public OwnerModel getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(OwnerModel author) {
+        this.author = author;
     }
 
     public String getTaggerId() {

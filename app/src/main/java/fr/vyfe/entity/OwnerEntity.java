@@ -5,7 +5,13 @@ public class OwnerEntity {
     private String displayName;
 
     // generate code
+    public OwnerEntity() {
+    }
 
+    public OwnerEntity(String uid, String displayName) {
+        this.uid = uid;
+        this.displayName = displayName;
+    }
 
     public String getUid() {
         return uid;

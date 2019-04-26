@@ -176,5 +176,7 @@
     <string name="add_tag_set">Ajouter une grille</string>
     <string name="tag_set_selected">Grille sélectionnée :</string>
     <string name="tag_set">grille d\'observation</string>
+    <string name="vyfe_site">https://vyfe.fr/</string>
+    <string name="ask_email">Veuillez renseigner un email afin de reinitialiser votre mot de passe</string>
 
 </resources>

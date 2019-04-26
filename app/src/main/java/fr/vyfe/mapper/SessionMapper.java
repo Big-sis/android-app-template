@@ -37,13 +37,16 @@ public class SessionMapper extends FirebaseMapper<SessionEntity, SessionModel> {
             session.setId(key);
 
             //Owner
-            OwnerModel owner = new OwnerModel();
+            OwnerModel owner = null;
             if(sessionEntity.getOwner()!=null){
-                owner.setDiplayName(sessionEntity.getOwner().getDisplayName());
-                owner.setUid(sessionEntity.getOwner().getUid());
+               owner = new OwnerModel(sessionEntity.getOwner().getUid(),sessionEntity.getOwner().getDisplayName());
                 session.setOwner(owner);
             } else {
-                if (sessionEntity.getAuthor() != null) owner.setUid(sessionEntity.getAuthor());
+                //deprecated
+                if (sessionEntity.getAuthor() != null) {
+                    owner = new OwnerModel(sessionEntity.getAuthor(),null);
+                    session.setOwner(owner);
+                }
             }
 
             //TagsSet
@@ -75,14 +78,10 @@ public class SessionMapper extends FirebaseMapper<SessionEntity, SessionModel> {
     public SessionEntity unMap(SessionModel sessionModel) {
         SessionEntity sessionEntity = new SessionEntity();
 
-
         if(sessionModel.getOwner()!= null){
-            OwnerEntity owner = new OwnerEntity();
-            owner.setDisplayName(sessionModel.getOwner().getDiplayName());
-            owner.setUid(sessionModel.getOwner().getUid());
+            OwnerEntity owner = new OwnerEntity(sessionModel.getOwner().getUid(),sessionModel.getOwner().getDiplayName());
             sessionEntity.setOwner(owner);
         }
-
 
         sessionEntity.setTimestamp(sessionModel.getDate().getTime());
         sessionEntity.setDescription(sessionModel.getDescription());

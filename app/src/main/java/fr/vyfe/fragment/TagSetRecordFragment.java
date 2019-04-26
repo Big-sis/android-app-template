@@ -84,7 +84,7 @@ public class TagSetRecordFragment extends Fragment {
         viewModel.getSession().observe(getActivity(), new Observer<SessionModel>() {
             @Override
             public void onChanged(@Nullable SessionModel sessionModel) {
-                if (sessionModel.getTagsSet().getTemplates() != null) {
+                if (sessionModel.getTagsSet()!=null && sessionModel.getTagsSet().getTemplates() != null) {
                     Collections.sort(sessionModel.getTagsSet().getTemplates(), new Comparator<TemplateModel>() {
                         @Override
                         public int compare(TemplateModel o1, TemplateModel o2) {

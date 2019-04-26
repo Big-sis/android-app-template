@@ -4,6 +4,12 @@ public class OwnerModel {
     private String uid;
     private String diplayName;
 
+    public OwnerModel(String uid, String displayName) {
+        this.uid = uid;
+        this.diplayName = displayName;
+    }
+
+
     public String getUid() {
         return uid;
     }

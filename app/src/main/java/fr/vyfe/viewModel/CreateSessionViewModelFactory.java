@@ -13,9 +13,10 @@ public class CreateSessionViewModelFactory implements ViewModelProvider.Factory 
 
     public CreateSessionViewModelFactory(String userId, String displayName, String companyId, String androidId) {
         this.userId = userId;
+        this.displayName = displayName;
         this.companyId = companyId;
         this.androidId = androidId;
-        this.displayName = displayName;
+
     }
 
     @NonNull

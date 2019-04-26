@@ -13,6 +13,7 @@ public class TagSetModel implements Parcelable, VyfeModel {
     private ArrayList<TemplateModel> tagTemplates;
     private String owner;
     private boolean shared;
+    private OwnerModel author;
 
     public TagSetModel() {}
 
@@ -35,6 +36,14 @@ public class TagSetModel implements Parcelable, VyfeModel {
             return new TagSetModel[size];
         }
     };
+
+    public OwnerModel getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(OwnerModel author) {
+        this.author = author;
+    }
 
     public String getId() {
         return id;
