@@ -20,7 +20,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -74,6 +76,8 @@ public class SelectVideoActivity extends VyfeActivity {
     private String serverVideoLink;
     private ProgressBar progressBar;
     private SharedPreferences sharedPreferences;
+    private EditText pxUpload;
+    private LinearLayout containerUpload;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +98,8 @@ public class SelectVideoActivity extends VyfeActivity {
         videoMiniatureView = findViewById(R.id.vv_preview);
         progressBar = findViewById(R.id.progress_upload);
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        pxUpload = findViewById(R.id.tv_pourcentage_upload);
+        containerUpload = findViewById(R.id.container_upload);
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -118,7 +124,7 @@ public class SelectVideoActivity extends VyfeActivity {
                     //Create grid
                     TagSetModel tagSetModel = session.getTagsSet();
                     if (tagSetModel != null) {
-                        TemplateRecyclerAdapter adapterTags = new TemplateRecyclerAdapter(session.getTagsSet().getTemplates(), "count",InternetConnexionHelper.isConnectedToInternet(getApplicationContext()));
+                        TemplateRecyclerAdapter adapterTags = new TemplateRecyclerAdapter(session.getTagsSet().getTemplates(), "play");
                         recyclerTags.setAdapter(adapterTags);
                     }
 
@@ -172,16 +178,6 @@ public class SelectVideoActivity extends VyfeActivity {
             }
         });
 
-        viewModel.getSession().observe(this, new Observer<SessionModel>() {
-            @Override
-            public void onChanged(@Nullable SessionModel session) {
-                if (session.getTagsSet() != null) {
-                    TemplateRecyclerAdapter adapterTags = new TemplateRecyclerAdapter(session.getTagsSet().getTemplates(), "count",InternetConnexionHelper.isConnectedToInternet(getApplicationContext()));
-                    recyclerTags.setAdapter(adapterTags);
-                    gridTextView.setText(session.getTagsSet().getName());
-                }
-            }
-        });
 
         clickButton(playBtn, new Intent(this, PlayVideoActivity.class));
         clickButton(videoMiniatureView, new Intent(this, PlayVideoActivity.class));
@@ -200,11 +196,12 @@ public class SelectVideoActivity extends VyfeActivity {
 
     private void setUploadProgress(int progress) {
         progressBar.setProgress(progress);
+        pxUpload.setText(String.valueOf(progress)+" %");
     }
 
     private void startUpload(File file) {
         Toast.makeText(SelectVideoActivity.this, R.string.start_upload, Toast.LENGTH_LONG).show();
-        progressBar.setVisibility(View.VISIBLE);
+        containerUpload.setVisibility(View.VISIBLE);
         uploadButton.setVisibility(View.GONE);
         try {
             SharedPreferences pref = getSharedPreferences("tus", 0);
@@ -333,7 +330,7 @@ public class SelectVideoActivity extends VyfeActivity {
         @Override
         protected void onPostExecute(Void param) {
             viewModel.setServerVideoLink(serverVideoLink);
-            progressBar.setVisibility(View.GONE);
+            containerUpload.setVisibility(View.GONE);
             uploadButton.setVisibility(View.VISIBLE);
         }
 

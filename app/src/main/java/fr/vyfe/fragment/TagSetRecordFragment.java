@@ -89,7 +89,7 @@ public class TagSetRecordFragment extends Fragment {
                             return o1.getPosition() - o2.getPosition();
                         }
                     });
-                    mTemplateAdapter = new TemplateRecyclerAdapter(sessionModel.getTagsSet().getTemplates(), "record", InternetConnexionHelper.isConnectedToInternet(getActivity()));
+                    mTemplateAdapter = new TemplateRecyclerAdapter(sessionModel.getTagsSet().getTemplates(), "record");
                     mRecyclerView.setAdapter(mTemplateAdapter);
                     mTemplateAdapter.notifyDataSetChanged();
                 }

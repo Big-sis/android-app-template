@@ -50,7 +50,7 @@
     <string name="record_session">Enregistrer une session</string>
     <string name="modif_tags">Ajouter ou modifier les tags</string>
     <string name="add_tags">Ajouter des tags</string>
-    <string name="edit_tags">Modifier les tagTemplates</string>
+    <string name="edit_tags">Modifier les tags</string>
     <string name="next">Suivant</string>
     <string name="video_save">Session enregistrée dans vos vidéos</string>
     <string name="back_to_main">Retour à l\'accueil</string>
@@ -144,14 +144,14 @@
     <string name="save_session_record">Video enregistré:</string>
     <string name="info_movie">Informations sur votre vidéo</string>
     <string name="ask_connection">Vous devez vous connecter</string>
-    <string name="save_edit">Modifiactions enregistrées</string>
+    <string name="save_edit">Modifications enregistrées</string>
     <string name="change_movie">Modifier la vidéo</string>
     <string name="confirm_change_movie">Voulez-vous vraiment modifier cette vidéo ?</string>
     <string name="date_session">Date :</string>
     <string name="duration_session">Durée :</string>
     <string name="info_max_tags">Attention si vous utilisez plus de 10 tags, le feedback ne va pas être optimal.Nous vous conseillons d\'utiliser au maximum 10 tags</string>
     <string name="off_on">Off/On : </string>
-    <string name="start_live">Lancement d\'une session coopérative</string>
+    <string name="start_live">Lancement d\'une session collaborative</string>
     <string name="Grid">Grille</string>
     <string name="live">Live</string>
     <string name="add_connexion">Vous devez posseder une connexion Internet pour lire cette vidéo</string>
@@ -168,7 +168,7 @@
     <string name="your_tagSets">Vos grilles d\'observation</string>
     <string name="havent_tag_sets">Vous n\'avez pas de grille d\'observation</string>
     <string name="you_have" translatable="false">Vous avez</string>
-    <string name="tag_sets">grilles d\'observations</string>
+    <string name="tag_sets">grilles d\'observation</string>
     <string name="name_tag_set">Name Grid</string>
     <string name="delete_select">Supprimer la selection</string>
     <string name="select_all">Tout selectionner</string>
@@ -178,5 +178,9 @@
     <string name="tag_set">grille d\'observation</string>
     <string name="vyfe_site">https://vyfe.fr/</string>
     <string name="ask_email">Veuillez renseigner un email afin de reinitialiser votre mot de passe</string>
+    <string name="save">Sauver</string>
+    <string name="quiet">Quitter</string>
+    <string name="dont_save">Vous n\'avez pas enregistré vos modifications</string>
+    <string name="confirm_delete_tag_sets">Etês vous sur de vouloir supprimées les grilles selectionnées ?</string>
 
 </resources>

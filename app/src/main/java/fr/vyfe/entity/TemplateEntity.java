@@ -1,7 +1,5 @@
 package fr.vyfe.entity;
 
-import java.util.HashMap;
-import java.util.Map;
 
 public class TemplateEntity {
     private String color;
@@ -12,11 +10,7 @@ public class TemplateEntity {
     private boolean draft;
     private Integer count;
 
-    public Map<String, Object> toHashmap() {
-        Map<String, Object> map = new HashMap<>();
-        map.put("count", count);
-        return map;
-    }
+
 
     public int getPosition() {
         return position;

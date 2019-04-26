@@ -68,7 +68,7 @@ public class CreateTemplatesFragment extends Fragment implements AdapterView.OnI
 
         TagSetModel tagSetModel = new TagSetModel();
         tagSetModel.setTagTemplates(viewModel.getTemplates().getValue());
-        mAdapter = new TemplateRecyclerAdapter(tagSetModel.getTemplates(), "create", InternetConnexionHelper.isConnectedToInternet(getActivity()));
+        mAdapter = new TemplateRecyclerAdapter(tagSetModel.getTemplates(), "create");
     }
 
     @Override

@@ -9,7 +9,6 @@ public class TagSetEntity {
     private HashMap<String, TemplateEntity> Templates;
     private OwnerEntity author;
 
-
     public HashMap<String, TemplateEntity> getTemplates() {
         return Templates;
     }

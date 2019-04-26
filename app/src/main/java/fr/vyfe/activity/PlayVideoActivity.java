@@ -49,6 +49,7 @@ public class PlayVideoActivity extends VyfeActivity implements LifecycleOwner {
     private TextView tvEndVideo;
     private LinearLayout llprogressvideo;
     private LinearLayout llInfoProgress;
+    private  ImageView ivSizeContainer;
 
 
     @Override
@@ -67,7 +68,7 @@ public class PlayVideoActivity extends VyfeActivity implements LifecycleOwner {
 
         VideocontainerLayout = findViewById(R.id.linear_layoutVideo);
         scrollView = findViewById(R.id.scrollTimeline);
-        final ImageView ivSizeContainer = findViewById(R.id.iv_arrow_size);
+        ivSizeContainer = findViewById(R.id.iv_arrow_size);
         mSeekBarTimer = findViewById(R.id.timer_seekbar);
         tvPositionSeek = findViewById(R.id.tv_position_seek);
         tvEndVideo = findViewById(R.id.tv_end_time);
@@ -96,7 +97,7 @@ public class PlayVideoActivity extends VyfeActivity implements LifecycleOwner {
 
                 //Create Grid
                 if(session.getTags()!=null) {
-                    mAdapterTags = new TemplateRecyclerAdapter( session.getTagsSet().getTemplates(), "start", InternetConnexionHelper.isConnectedToInternet(getApplicationContext()));
+                    mAdapterTags = new TemplateRecyclerAdapter( session.getTagsSet().getTemplates(), "play");
                     mRecyclerView.setAdapter(mAdapterTags);
                 }
 
@@ -116,9 +117,9 @@ public class PlayVideoActivity extends VyfeActivity implements LifecycleOwner {
             @Override
             public void onChanged(@Nullable final Integer timelinesize) {
                 // For adapte size device:
-                // Video and tagSet is first module = sizePart1 (70% vertical)
-                // Timeline and time seekBar is second module = sizePart2 (30% vertical)
-                // if timeline height < 30%  , containertimeline height equal timeline height. And the video can take up more space
+                // Video and tagSet is first module = sizePart1 (65% vertical)
+                // Timeline and time seekBar is second module = sizePart2 (45% vertical)
+                // if timeline height < 45%  , containertimeline height equal timeline height. And the video can take up more space
                 final int videoContainerHeight = VideocontainerLayout.getMeasuredHeight();
                 final int timelineContainerHeight = llInfoProgress.getMeasuredHeight();
                 final int sizePartProgresse = llprogressvideo.getMeasuredHeight();
@@ -135,24 +136,7 @@ public class PlayVideoActivity extends VyfeActivity implements LifecycleOwner {
             }
         });
 
-        ivSizeContainer.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if (viewModel.isFullTimeline().getValue()) {
-                    containerSizeAdapter(viewModel.getTimelineContainerHeight().getValue(), viewModel.getVideoContainerHeight().getValue());
-                    ivSizeContainer.setBackground(getDrawable(R.drawable.caret_arrow_up));
-                } else {
-                    containerSizeAdapter(viewModel.getVideoContainerHeight().getValue() + viewModel.getTimelineContainerHeight().getValue(), 0);
-                    ivSizeContainer.setBackground(getDrawable(R.drawable.arrowdown));
-                }
-
-                if (viewModel.isFullTimeline().getValue()) viewModel.smallTimeline();
-                else viewModel.fullTimline();
-
-            }
-        });
-
+        onClickEvent(llprogressvideo);
     }
 
     private void containerSizeAdapter(Integer sizePart2Create, Integer sizePart1) {
@@ -165,6 +149,25 @@ public class PlayVideoActivity extends VyfeActivity implements LifecycleOwner {
 
         llInfoProgress.setLayoutParams(layoutParamsPart2);
         VideocontainerLayout.setLayoutParams(layoutParamsPart1);
+    }
+
+    private void onClickEvent(View view) {
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (viewModel.isFullTimeline().getValue()) {
+                    containerSizeAdapter(viewModel.getTimelineContainerHeight().getValue(), viewModel.getVideoContainerHeight().getValue());
+                    ivSizeContainer.setBackground(getDrawable(R.drawable.caret_arrow_up));
+                } else {
+                    containerSizeAdapter((int)Math.round((viewModel.getVideoContainerHeight().getValue() + viewModel.getTimelineContainerHeight().getValue())*0.8),(int) Math.round((viewModel.getVideoContainerHeight().getValue() + viewModel.getTimelineContainerHeight().getValue())*0.2));
+                    ivSizeContainer.setBackground(getDrawable(R.drawable.arrowdown));
+                }
+
+                if (viewModel.isFullTimeline().getValue()) viewModel.smallTimeline();
+                else viewModel.fullTimline();
+            }
+        });
+
     }
 
 

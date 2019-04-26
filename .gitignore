@@ -7,6 +7,7 @@
 # Built application files
 *.apk
 *.ap_
+app/release/app.aab
 
 # Files for the ART/Dalvik VM
 *.dex
@@ -138,5 +139,5 @@ app/src/main/res/values/password.xml
 
 app/src/main/res/values/password.xml
 
-app/keystore.jks
+app/keystore*
 

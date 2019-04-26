@@ -138,13 +138,21 @@ public class RecordVideoViewModel extends VyfeViewModel {
             newTag.setEnd((int) (getVideoTime().getValue() / Constants.UNIT_TO_MILLI_FACTOR + template.getRightOffset()));
             newTag.setColor(template.getColor());
             tagRepository.push(newTag);
-            //incrTemplate(template);
+            incrTemplate(template);
             return true;
         } else return false;
     }
 
     private void incrTemplate(TemplateModel template) {
-       tagSetRepository.update(template,session.getValue());
+        //TODO disable fct onTagAdded
+        SessionModel sessionModel = session.getValue();
+        for (int i =0; i<sessionModel.getTagsSet().getTemplates().size();i++){
+            TemplateModel templates = sessionModel.getTagsSet().getTemplates().get(i);
+            if(templates.getId()== template.getId()){
+                sessionModel.getTagsSet().getTemplates().get(i).incrCount();
+            }
+        }
+        sessionRepository.update(sessionModel);
     }
 
     public MutableLiveData<List<TagModel>> getTags() {
