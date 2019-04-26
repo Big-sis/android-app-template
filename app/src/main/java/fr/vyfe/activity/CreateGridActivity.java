@@ -17,7 +17,7 @@ public class CreateGridActivity extends VyfeActivity implements CreateGridFragme
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        viewModel = ViewModelProviders.of(this, new CreateGridViewModelFactory(mAuth.getCurrentUser().getId(), getDisplayName(),mAuth.getCurrentUser().getCompany())).get(CreateGridViewModel.class);
+        viewModel = ViewModelProviders.of(this, new CreateGridViewModelFactory(mAuth.getCurrentUser().getId(), getDisplayName(), mAuth.getCurrentUser().getCompany())).get(CreateGridViewModel.class);
 
         setContentView(R.layout.activity_prepare_session);
 

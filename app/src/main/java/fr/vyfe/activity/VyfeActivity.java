@@ -2,20 +2,15 @@ package fr.vyfe.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.telecom.Call;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -61,11 +56,11 @@ public abstract class VyfeActivity extends AppCompatActivity {
     public String getDisplayName() {
         UserModel currentUser = mAuth.getCurrentUser();
         String firstName, lastName, displayName;
-        if (currentUser.getFirstname()!=null) firstName = currentUser.getFirstname();
+        if (currentUser.getFirstname() != null) firstName = currentUser.getFirstname();
         else firstName = "";
-        if(currentUser.getLastName()!=null) lastName = currentUser.getLastName();
-        else lastName ="";
-       return firstName +" " +lastName;
+        if (currentUser.getLastName() != null) lastName = currentUser.getLastName();
+        else lastName = "";
+        return firstName + " " + lastName;
     }
 
     @Override
@@ -112,15 +107,15 @@ public abstract class VyfeActivity extends AppCompatActivity {
         }
 
         if (mAuth.getCurrentUser() != null) {
-            if (null != mAuth.getCurrentUser().getRoles()&&!mAuth.getCurrentUser().getRoles().get(Constants.BDDV2_CUSTOM_USERS_ROLE_TEACHER) && !mAuth.getCurrentUser().getRoles().get(Constants.BDDV2_CUSTOM_USERS_ROLE_STUDENT)) {
-                    if (mAuth.getCurrentUser().getRoles().get(Constants.BDDV2_CUSTOM_USERS_ROLE_ADMIN)) {
-                        Toast.makeText(this, R.string.no_license_available, Toast.LENGTH_LONG).show();
-                    } else
-                        Toast.makeText(this, R.string.havent_roles_teacher, Toast.LENGTH_LONG).show();
-                    Intent intent = new Intent(this, ConnexionActivity.class);
-                    this.startActivity(intent);
-                    mAuth.signOut();
-                    finish();
+            if (null != mAuth.getCurrentUser().getRoles() && !mAuth.getCurrentUser().getRoles().get(Constants.BDDV2_CUSTOM_USERS_ROLE_TEACHER) && !mAuth.getCurrentUser().getRoles().get(Constants.BDDV2_CUSTOM_USERS_ROLE_STUDENT)) {
+                if (mAuth.getCurrentUser().getRoles().get(Constants.BDDV2_CUSTOM_USERS_ROLE_ADMIN)) {
+                    Toast.makeText(this, R.string.no_license_available, Toast.LENGTH_LONG).show();
+                } else
+                    Toast.makeText(this, R.string.havent_roles_teacher, Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(this, ConnexionActivity.class);
+                this.startActivity(intent);
+                mAuth.signOut();
+                finish();
             }
         }
     }

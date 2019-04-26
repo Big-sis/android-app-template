@@ -30,6 +30,7 @@ public class TimelineRecordFragment extends Fragment {
     private RecordVideoViewModel viewModel;
     private LinearLayout containerLayout;
     private ArrayList<TextView> tvRowNameArray = new ArrayList<>();
+
     public static TimelineRecordFragment newInstance() {
         return new TimelineRecordFragment();
     }
@@ -55,7 +56,7 @@ public class TimelineRecordFragment extends Fragment {
             @Override
             public void onChanged(@Nullable TagSetModel tagSetModel) {
                 //Create timeline
-                if (tagSetModel!=null && tagSetModel.getTemplates() != null) {
+                if (tagSetModel != null && tagSetModel.getTemplates() != null) {
                     int titleLength = getResources().getInteger(R.integer.title_length_timeline);
                     for (TemplateModel template : tagSetModel.getTemplates()) {
                         RelativeLayout timelineRowView = new RelativeLayout(getContext());
@@ -84,7 +85,7 @@ public class TimelineRecordFragment extends Fragment {
             public void onChanged(@Nullable SessionModel sessionModel) {
 
                 //Create tags
-                if(sessionModel.getTags() != null) {
+                if (sessionModel.getTags() != null) {
                     for (TagModel tag : sessionModel.getTags()) {
                         if (tag.getEnd() > 0) {
 

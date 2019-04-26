@@ -81,7 +81,7 @@ public class CreateSessionViewModel extends VyfeViewModel {
                     });
                 }
 
-                ArrayList<TagSetModel> tagSetModels =  TagSetsFilteredHelper.tagSetByAuthorAndShared(result,userId);
+                ArrayList<TagSetModel> tagSetModels = TagSetsFilteredHelper.tagSetByAuthorAndShared(result, userId);
                 for (TagSetModel tagSet : result) {
                     //selected TagsSet
                     if (selectedTagSetId != null) {
@@ -103,7 +103,7 @@ public class CreateSessionViewModel extends VyfeViewModel {
     public String pushSession() throws Exception {
         SessionModel session = new SessionModel();
         session.setName(this.sessionName.getValue());
-        OwnerModel owner = new OwnerModel(this.userId,this.diplayName);
+        OwnerModel owner = new OwnerModel(this.userId, this.diplayName);
         session.setOwner(owner);
 
         TagSetModel tagsSets = selectedTagSet.getValue();

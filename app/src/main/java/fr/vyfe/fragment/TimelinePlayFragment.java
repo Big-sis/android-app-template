@@ -94,12 +94,12 @@ public class TimelinePlayFragment extends Fragment {
 
                     //TODO  timeline allTags
                     //Creation teacher mainTimeline
-                    ObserverModel observerModelAuthorA = new ObserverModel(sessionModel.getOwner().getUid(), sessionModel.getOwner().getDiplayName());
-                    createTimelineRow(observerModelAuthorA, teacherContainer, sessionModel.getTagsSet());
+                    ObserverModel authorObserverModel = new ObserverModel(sessionModel.getOwner().getUid(), sessionModel.getOwner().getDiplayName());
+                    createTimelineRow(authorObserverModel, teacherContainer, sessionModel.getTagsSet());
 
                     //Creation Observers mainTimeline
-                    ArrayList<ObserverModel> observersA = viewModel.getSession().getValue().getObservers();
-                    if (observersA != null) for (ObserverModel observer : observersA) {
+                    ArrayList<ObserverModel> observers = viewModel.getSession().getValue().getObservers();
+                    if (observers != null) for (ObserverModel observer : observers) {
                         LinearLayout layout = new LinearLayout(getContext());
                         layout.setTag(observer.getId());
                         layout.setOrientation(LinearLayout.VERTICAL);

@@ -100,12 +100,10 @@ public class ConnexionActivity extends AppCompatActivity {
 
                 } else {
 
-
                     auth.signInWithEmailAndPassword(mail, pass, new AuthHelper.AuthProfileListener() {
                         @Override
                         public void onSuccessProfile(UserModel user) {
                             HashMap<String, Boolean> userRoles = user.getRoles();
-                            //TODO enlver student
                             if (userRoles.get(Constants.BDDV2_CUSTOM_USERS_ROLE_TEACHER)) {
                                 Intent intent = new Intent(ConnexionActivity.this, MainActivity.class);
                                 startActivity(intent);
