@@ -107,7 +107,7 @@ public abstract class VyfeActivity extends AppCompatActivity {
         }
 
         if (mAuth.getCurrentUser() != null) {
-            if (null != mAuth.getCurrentUser().getRoles() && !mAuth.getCurrentUser().getRoles().get(Constants.BDDV2_CUSTOM_USERS_ROLE_TEACHER) && !mAuth.getCurrentUser().getRoles().get(Constants.BDDV2_CUSTOM_USERS_ROLE_STUDENT)) {
+            if (null != mAuth.getCurrentUser().getRoles() && !mAuth.getCurrentUser().getRoles().get(Constants.BDDV2_CUSTOM_USERS_ROLE_TEACHER)) {
                 if (mAuth.getCurrentUser().getRoles().get(Constants.BDDV2_CUSTOM_USERS_ROLE_ADMIN)) {
                     Toast.makeText(this, R.string.no_license_available, Toast.LENGTH_LONG).show();
                 } else
