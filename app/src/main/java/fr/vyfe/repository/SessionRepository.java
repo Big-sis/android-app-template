@@ -69,8 +69,6 @@ public class SessionRepository extends FirebaseDatabaseRepository<SessionModel> 
         return databaseReference.child(model.getId()).updateChildren(observers);
     }
 
-
-
     public void setTimestamp(SessionModel model) {
         Map<String, Object> time = new HashMap<>();
         time.put("timestamp", ServerValue.TIMESTAMP);

@@ -1,7 +1,9 @@
 package fr.vyfe.fragment;
 
+import android.app.AlertDialog;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -26,7 +28,8 @@ public class UserTagSetsFragment extends Fragment {
     private TagSetsRecyclerAdapter adapter;
     private Button selectButton;
     private CreateGridViewModel viewModel;
-    private  RecyclerView recyclerView;
+    private RecyclerView recyclerView;
+
     public static UserTagSetsFragment newInstance() {
         return new UserTagSetsFragment();
     }
@@ -83,12 +86,30 @@ public class UserTagSetsFragment extends Fragment {
         view.findViewById(R.id.show_button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                HashMap<TagSetModel, Boolean> select = adapter.getSelectedTagSetIds();
+                final HashMap<TagSetModel, Boolean> select = adapter.getSelectedTagSetIds();
                 if (select.size() > 0) {
-                    for(TagSetModel tagSetModel: select.keySet()){
-                        if(select.get(tagSetModel))viewModel.deleteTagSets(tagSetModel.getId());
-                        if(tagSetModel.getId().equals(viewModel.getSelectedTagSet().getValue().getId()))viewModel.getSelectedTagSet().setValue(new TagSetModel());
-                    }
+                    final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setMessage(R.string.confirm_delete_tag_sets)
+                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+
+                                    for (TagSetModel tagSetModel : select.keySet()) {
+                                        if (select.get(tagSetModel))
+                                            viewModel.deleteTagSets(tagSetModel.getId());
+                                        if (tagSetModel.getId().equals(viewModel.getSelectedTagSet().getValue().getId()))
+                                            viewModel.getSelectedTagSet().setValue(new TagSetModel());
+                                    }
+                                }
+                            })
+                            .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.cancel();
+                                }
+                            })
+                            .show();
+
                 }
             }
         });
@@ -111,4 +132,5 @@ public class UserTagSetsFragment extends Fragment {
                 }
             }
         });
-}}
+    }
+}

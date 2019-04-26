@@ -85,7 +85,7 @@ public class CreateGridFragment extends Fragment implements View.OnClickListener
 
         TagSetModel tagSetModel = new TagSetModel();
         tagSetModel.setTagTemplates(viewModel.getTemplates().getValue());
-        final TemplateRecyclerAdapter adapter = new TemplateRecyclerAdapter(tagSetModel.getTemplates(), "start", InternetConnexionHelper.isConnectedToInternet(getActivity()));
+        final TemplateRecyclerAdapter adapter = new TemplateRecyclerAdapter(tagSetModel.getTemplates(), "start");
         recyclerTemplateList.setAdapter(adapter);
 
         viewModel.getTemplates().observe(getActivity(), new Observer<ArrayList<TemplateModel>>() {
