@@ -184,5 +184,6 @@
     <string name="confirm_delete_tag_sets">Etês vous sur de vouloir supprimées les grilles selectionnées ?</string>
     <string name="ex_posture">Ex : Posture</string>
     <string name="ex_title_session">Ex : Discours Jean</string>
+    <string name="available">Disponible :</string>
 
 </resources>
