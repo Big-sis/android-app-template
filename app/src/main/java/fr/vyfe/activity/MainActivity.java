@@ -1,5 +1,6 @@
 package fr.vyfe.activity;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -7,6 +8,8 @@ import android.content.Intent;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,6 +27,7 @@ public class MainActivity extends VyfeActivity {
     private String networkPass;
 
 
+    @SuppressLint("ResourceType")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +41,9 @@ public class MainActivity extends VyfeActivity {
         LinearLayout btnVideos = findViewById(R.id.btn_videos);
         LinearLayout btnCreateGrid = findViewById(R.id.btn_create_grid);
 
+        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        initNavBar(navigationView, toolbar, drawerLayout);
 
         btnStartSession.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -185,5 +185,8 @@
     <string name="ex_posture">Ex : Posture</string>
     <string name="ex_title_session">Ex : Discours Jean</string>
     <string name="available">Disponible :</string>
+    <string name="home">Accueil</string>
+    <string name="start_video_session">Lancer une session vidéo</string>
+    <string name="movies">Mes vidéos</string>
 
 </resources>

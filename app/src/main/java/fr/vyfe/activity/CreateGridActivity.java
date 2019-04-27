@@ -2,6 +2,8 @@ package fr.vyfe.activity;
 
 import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 
 import fr.vyfe.R;
@@ -26,6 +28,10 @@ public class CreateGridActivity extends VyfeActivity {
 
         replaceFragment(R.id.create_grid_fragment_container, CreateGridFragment.newInstance());
         replaceFragment(R.id.create_template_fragment_container, CreateTemplatesFragment.newInstance());
+
+        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        initNavBar(navigationView, toolbar, drawerLayout);
     }
 
 }

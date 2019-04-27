@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 
 import fr.vyfe.Constants;
@@ -26,6 +28,9 @@ public class EditSessionActivity extends VyfeActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.infos_video);
 
+        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        initNavBar(navigationView, toolbar, drawerLayout);
         replaceFragment(R.id.edit_session_fragment_container, EditSessionFragment.newInstance());
     }
 
