@@ -2,9 +2,14 @@ package fr.vyfe.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -25,12 +30,24 @@ import com.google.firebase.FirebaseApp;
 import fr.vyfe.Constants;
 import fr.vyfe.R;
 import fr.vyfe.helper.AuthHelper;
+import fr.vyfe.helper.NetworkChangeReceiver;
 import fr.vyfe.model.UserModel;
 
 public abstract class VyfeActivity extends AppCompatActivity {
 
     protected static AuthHelper mAuth;
+    static MenuItem menuInternet;
     protected AppCompatActivity self;
+    private BroadcastReceiver mNetworkReceiver;
+
+    public static void dialog(boolean value, Context context) {
+        if (value) {
+            menuInternet.setIcon(context.getResources().getDrawable(R.drawable.wifi));
+
+        } else {
+            menuInternet.setIcon(context.getResources().getDrawable(R.drawable.nowifi));
+        }
+    }
 
     public void confirmDisconnection() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(self);
@@ -71,10 +88,16 @@ public abstract class VyfeActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.settings, menu);
+
+        menuInternet = menu.findItem(R.id.internet);
+
+        mNetworkReceiver = new NetworkChangeReceiver();
+        registerNetworkBroadcastForNougat();
         return true;
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
+
         switch (item.getItemId()) {
             case R.id.logout:
                 confirmDisconnection();
@@ -82,6 +105,7 @@ public abstract class VyfeActivity extends AppCompatActivity {
             case R.id.home:
                 Intent intentHome = new Intent(this, MainActivity.class);
                 startActivity(intentHome);
+
                 return true;
         }
 
@@ -183,5 +207,15 @@ public abstract class VyfeActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void registerNetworkBroadcastForNougat() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        }
+    }
+
 
 }

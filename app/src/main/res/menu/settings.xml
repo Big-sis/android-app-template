@@ -3,6 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/internet"
+        android:icon="@drawable/wifi"
+        android:title="@string/logout"
+        app:showAsAction="ifRoom"
+        />
+    <item
         android:id="@+id/home"
         android:icon="@drawable/home"
         android:title="Home"
@@ -15,6 +21,7 @@
         android:icon="@drawable/icons8_d_connexion_60"
         android:title="@string/logout"
         app:showAsAction="ifRoom"
-        android:visible="false"/>
+        android:visible="true"/>
+
 
 </menu>
