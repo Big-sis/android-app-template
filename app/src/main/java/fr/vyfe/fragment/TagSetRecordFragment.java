@@ -19,7 +19,6 @@ import java.util.Comparator;
 import fr.vyfe.R;
 import fr.vyfe.RecyclerTouchListener;
 import fr.vyfe.adapter.TemplateRecyclerAdapter;
-import fr.vyfe.helper.InternetConnexionHelper;
 import fr.vyfe.model.SessionModel;
 import fr.vyfe.model.TemplateModel;
 import fr.vyfe.viewModel.RecordVideoViewModel;
@@ -89,7 +88,7 @@ public class TagSetRecordFragment extends Fragment {
                             return o1.getPosition() - o2.getPosition();
                         }
                     });
-                    mTemplateAdapter = new TemplateRecyclerAdapter(sessionModel.getTagsSet().getTemplates(), "record");
+                    mTemplateAdapter = new TemplateRecyclerAdapter(sessionModel.getTags(), sessionModel.getTagsSet().getTemplates(), "record");
                     mRecyclerView.setAdapter(mTemplateAdapter);
                     mTemplateAdapter.notifyDataSetChanged();
                 }

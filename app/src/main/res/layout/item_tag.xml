@@ -60,7 +60,7 @@
                 android:textColor="@android:color/white"
                 android:visibility="visible"
                 app:fontFamily="@font/roboto"
-                tools:text="4"
+                tools:text="0"
                 tools:visibility="visible" />
 
             <ImageView

@@ -1,4 +1,6 @@
 apply plugin: 'com.android.application'
+apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-android'
 
 android {
     compileSdkVersion 26
@@ -67,6 +69,7 @@ dependencies {
     androidTestImplementation 'androidx.test:rules:1.1.1'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'androidx.test:runner:1.1.1'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
 }
 
 

@@ -42,6 +42,7 @@ public class CreateTemplatesFragment extends Fragment implements AdapterView.OnI
     private static CreateTemplatesFragment.OnButtonClickedListener mCallback;
     private static LinearLayout llImport;
     private Button saveGridBtn;
+    private TextView saveTv;
     private TextView gridInProgressTv;
 
     public static CreateTemplatesFragment newInstance() {
@@ -68,6 +69,7 @@ public class CreateTemplatesFragment extends Fragment implements AdapterView.OnI
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View result = inflater.inflate(R.layout.create_tags_fragment, container, false);
         saveGridBtn = result.findViewById(R.id.save_grid_btn);
+        saveTv = result.findViewById(R.id.tv_save);
         return result;
     }
 
@@ -86,18 +88,8 @@ public class CreateTemplatesFragment extends Fragment implements AdapterView.OnI
         colorSpinnerView.setAdapter(colorSpinnerAdapter);
         randomSelectSpinnerColor();
 
-        saveGridBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (viewModel.getTagSetName().getValue() != null && !viewModel.getTagSetName().getValue().isEmpty()) {
-                    viewModel.save();
-                    Toast.makeText(getActivity(), R.string.save_grid_info, Toast.LENGTH_LONG).show();
-                    getActivity().finish();
-                } else
-                    Toast.makeText(getActivity(), R.string.grid_name_empty_warning, Toast.LENGTH_LONG).show();
-            }
-        });
-
+        onClickSaveData(saveGridBtn);
+        onClickSaveData(saveTv);
 
         // Elements du recycler
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
@@ -120,6 +112,7 @@ public class CreateTemplatesFragment extends Fragment implements AdapterView.OnI
                     tagNameView.setText("");
                     gridInProgressTv.setVisibility(View.VISIBLE);
                     saveGridBtn.setVisibility(View.VISIBLE);
+                    saveTv.setVisibility(View.VISIBLE);
 
                     //Fermer clavier après avoir rentré un tag
                     KeyboardHelper.CloseKeyboard(getContext(), btnAddTag);
@@ -183,5 +176,19 @@ public class CreateTemplatesFragment extends Fragment implements AdapterView.OnI
 
     public interface OnButtonClickedListener {
         void onCreateTagsFragmentButtonClicked(View view);
+    }
+
+    public void onClickSaveData(View view){
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (viewModel.getTagSetName().getValue() != null && !viewModel.getTagSetName().getValue().isEmpty()) {
+                    viewModel.save();
+                    Toast.makeText(getActivity(), R.string.save_grid_info, Toast.LENGTH_LONG).show();
+                    getActivity().finish();
+                } else
+                    Toast.makeText(getActivity(), R.string.grid_name_empty_warning, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }

@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.Continuation;
@@ -23,10 +24,8 @@ import com.google.android.gms.tasks.Task;
 
 import java.io.File;
 
-import fr.vyfe.Constants;
 import fr.vyfe.R;
 import fr.vyfe.activity.MySessionsActivity;
-import fr.vyfe.activity.SelectVideoActivity;
 import fr.vyfe.model.SessionModel;
 import fr.vyfe.viewModel.EditSessionViewModel;
 
@@ -44,6 +43,8 @@ public class EditSessionFragment extends Fragment {
     private Button btnCancelDelete;
     private Button btnAppDelete;
     private Button btnAllDelete;
+    private TextView tvSave;
+    private  TextView tvDelete;
 
     public static EditSessionFragment newInstance() {
         return new EditSessionFragment();
@@ -64,6 +65,9 @@ public class EditSessionFragment extends Fragment {
 
         btnEdit = result.findViewById(R.id.btn_edit);
         btnDelete = result.findViewById(R.id.btn_delete);
+
+        tvSave = result.findViewById(R.id.tv_save);
+        tvDelete = result.findViewById(R.id.tv_delete);
 
         //Edit
         confirmEditModal = result.findViewById(R.id.confirm_action_edit);
@@ -120,15 +124,8 @@ public class EditSessionFragment extends Fragment {
                             viewModel.setNewName(s.toString());
                         }
                     });
-                    btnDelete.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            confirmDeleteModal.setVisibility(View.VISIBLE);
-                            confirmEditModal.setVisibility(View.GONE);
-                            if (session.getDeviceVideoLink() != null)
-                                btnAppDelete.setVisibility(View.VISIBLE);
-                        }
-                    });
+                    onClickDeleteData(btnDelete, session);
+                    onClickDeleteData(tvDelete, session);
                 }
             }
         });
@@ -137,16 +134,8 @@ public class EditSessionFragment extends Fragment {
             @Override
             public void onChanged(@Nullable Boolean hasDataChanged) {
                 if (hasDataChanged != null && hasDataChanged) {
-                    btnEdit.setClickable(true);
-                    btnEdit.setEnabled(true);
-                    btnEdit.setAlpha(1);
-                    btnEdit.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            confirmEditModal.setVisibility(View.VISIBLE);
-                            confirmDeleteModal.setVisibility(View.GONE);
-                        }
-                    });
+                    onClickSaveData(btnEdit);
+                    onClickSaveData(tvSave);
                 }
             }
         });
@@ -264,5 +253,29 @@ public class EditSessionFragment extends Fragment {
         });
 
         confirmDeleteModal.setVisibility(View.GONE);
+    }
+    
+    public void onClickSaveData(View view){
+        view.setClickable(true);
+        view.setEnabled(true);
+        view.setAlpha(1);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                confirmEditModal.setVisibility(View.VISIBLE);
+                confirmDeleteModal.setVisibility(View.GONE);
+            }
+        });
+    }
+    public void onClickDeleteData(View view, final SessionModel session){
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                confirmDeleteModal.setVisibility(View.VISIBLE);
+                confirmEditModal.setVisibility(View.GONE);
+                if (session.getDeviceVideoLink() != null)
+                    btnAppDelete.setVisibility(View.VISIBLE);
+            }
+        });
     }
 }

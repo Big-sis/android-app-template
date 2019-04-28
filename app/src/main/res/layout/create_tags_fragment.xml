@@ -128,9 +128,9 @@
             <Button
                 android:id="@+id/save_grid_btn"
                 style="@style/Widget.AppCompat.Button.Small"
-                android:layout_width="70dp"
-                android:layout_height="70dp"
-                android:background="@drawable/save"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/savedata"
                 android:fontFamily="@font/roboto_bold"
                 android:padding="5dp"
                 android:visibility="gone"
@@ -138,6 +138,17 @@
                 android:paddingTop="15dp"
                 android:textColor="@color/colorWhiteTwo"
                 android:textSize="16sp" />
+            <TextView
+                android:id="@+id/tv_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Sauvegarder"
+                android:visibility="gone"
+                android:textColor="@color/colorWhiteTwo"
+                android:textSize="17sp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="10dp"
+                app:fontFamily="@font/roboto"/>
 
         </LinearLayout>
 

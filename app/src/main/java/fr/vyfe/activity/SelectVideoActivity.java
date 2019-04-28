@@ -130,7 +130,7 @@ public class SelectVideoActivity extends VyfeActivity {
                     //Create grid
                     TagSetModel tagSetModel = session.getTagsSet();
                     if (tagSetModel != null) {
-                        TemplateRecyclerAdapter adapterTags = new TemplateRecyclerAdapter(session.getTagsSet().getTemplates(), "play");
+                        TemplateRecyclerAdapter adapterTags = new TemplateRecyclerAdapter(session.getTags(),session.getTagsSet().getTemplates(), "play");
                         recyclerTags.setAdapter(adapterTags);
                     }
 
