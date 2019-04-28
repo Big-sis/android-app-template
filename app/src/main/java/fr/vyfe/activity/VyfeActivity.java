@@ -105,8 +105,9 @@ public abstract class VyfeActivity extends AppCompatActivity {
             case R.id.home:
                 Intent intentHome = new Intent(this, MainActivity.class);
                 startActivity(intentHome);
-
                 return true;
+            case R.id.internet:
+            startActivityForResult(new Intent(android.provider.Settings.ACTION_SETTINGS), 0);
         }
 
         return super.onOptionsItemSelected(item);
