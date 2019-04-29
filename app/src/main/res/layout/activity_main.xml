@@ -107,7 +107,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_gravity="center_vertical"
                                 android:layout_marginLeft="16dp"
-                                android:text="@string/start_session"
+                                android:text="@string/start_video_session"
                                 android:textColor="@color/colorWhiteTwo"
                                 android:textSize="20sp"
                                 app:fontFamily="@font/roboto_bold" />
@@ -161,28 +161,13 @@
 
     </android.support.constraint.ConstraintLayout>
 
-    <LinearLayout
+
+    <include
+        android:id="@+id/burger"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@color/colorCharcoal"
-        android:orientation="vertical">
+        layout="@layout/burger_menu" />
 
-        <ImageView
-            android:layout_width="150dp"
-            android:layout_height="70dp"
-            android:layout_gravity="center"
-            android:background="@drawable/vyfe_blanc" />
-
-        <android.support.design.widget.NavigationView
-            android:id="@+id/nav_view"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="@color/colorCharcoal"
-            android:fitsSystemWindows="true"
-            app:itemIconTint="@color/colorWhiteTwo"
-            app:itemTextColor="@color/colorWhiteTwo"
-            app:menu="@menu/menu_main" />
-    </LinearLayout>
 
 </android.support.v4.widget.DrawerLayout>
