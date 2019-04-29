@@ -31,7 +31,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="60dp"
                     android:layout_marginStart="60dp"
-                    android:layout_marginTop="50dp"
                     android:text="@string/video_info"
                     android:textColor="@color/colorWhiteTwo"
                     android:textSize="24sp"
@@ -83,34 +82,74 @@
                 android:layout_weight="0.8"
                 android:orientation="vertical">
 
-                <Button
-                    android:id="@+id/btn_edit"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:alpha="0.4"
-                    android:layout_marginTop="100dp"
-                    android:background="@drawable/edit"
-                    android:enabled="false"
+                <TextView
+                    android:id="@+id/tv_action"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="60dp"
+                    android:layout_marginStart="60dp"
+                    android:text="Actions"
                     android:textColor="@color/colorWhiteTwo"
-                    android:textSize="18sp"
+                    android:textSize="24sp"
                     app:fontFamily="@font/roboto_bold"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginLeft="10dp">
+                    <Button
+                        android:id="@+id/btn_edit"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:alpha="0.4"
+                        android:background="@drawable/icons8_coche_96"
+                        android:enabled="false"
+                        android:textColor="@color/colorWhiteTwo"
+                        android:textSize="18sp"
+                        app:fontFamily="@font/roboto_bold"
+                        />
+                    <TextView
+                        android:layout_marginLeft="10dp"
+                        android:id="@+id/tv_save"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Sauvegarder"
+                        android:textColor="@color/colorWhiteTwo"
+                        android:textSize="17sp"
+                        app:fontFamily="@font/roboto"
+                         />
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_marginLeft="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="25dp">
 
                 <Button
                     android:id="@+id/btn_delete"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="40dp"
-                    android:layout_marginEnd="60dp"
-                    android:layout_marginRight="60dp"
                     android:background="@drawable/delete"
                     android:textSize="18sp"
                     app:fontFamily="@font/roboto_bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/btn_edit" />
-
+                     />
+                    <TextView
+                        android:id="@+id/tv_delete"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Supprimer"
+                        android:textColor="@color/colorWhiteTwo"
+                        android:textSize="17sp"
+                        android:layout_marginLeft="10dp"
+                        app:fontFamily="@font/roboto"
+                        />
+                </LinearLayout>
 
             </LinearLayout>
         </LinearLayout>

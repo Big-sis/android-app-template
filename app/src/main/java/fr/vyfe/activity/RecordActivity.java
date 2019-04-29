@@ -60,7 +60,7 @@ public class RecordActivity extends VyfeActivity {
         getSupportActionBar().setTitle(R.string.record_session);
 
         String sessionId = getIntent().getStringExtra(Constants.SESSIONMODELID_EXTRA);
-        viewModel = ViewModelProviders.of(this, new RecordVideoViewModelFactory(mAuth.getCurrentUser().getId(), mAuth.getCurrentUser().getCompany(), sessionId)).get(RecordVideoViewModel.class);
+        viewModel = ViewModelProviders.of(this, new RecordVideoViewModelFactory(mAuth.getCurrentUser().getCompany(), mAuth.getCurrentUser().getId(), sessionId, getDisplayName())).get(RecordVideoViewModel.class);
         viewModel.init();
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);

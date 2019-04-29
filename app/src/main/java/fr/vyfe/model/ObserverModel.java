@@ -17,6 +17,15 @@ public class ObserverModel implements VyfeModel {
 
     }
 
+    public ObserverModel(String uid, String displayName) {
+        this.id = uid;
+        this.name = displayName;
+    }
+
+    public ObserverModel() {
+
+    }
+
     public String getName() {
         return name;
     }

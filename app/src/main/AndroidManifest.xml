@@ -14,13 +14,28 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
 
-    <uses-feature android:name="android.hardware.camera" android:required="false" />
-    <uses-feature android:name="android.hardware.camera2.full" android:required="false" />
-    <uses-feature android:name="android.hardware.faketouch" android:required="false" />
-    <uses-feature android:name="android.hardware.location" android:required="false" />
-    <uses-feature android:name="android.hardware.microphone" android:required="false" />
-    <uses-feature android:name="android.hardware.wifi" android:required="false" />
-    <uses-feature android:name="android.hardware.touchscreen" android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.camera2.full"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.faketouch"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.location"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.microphone"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.wifi"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.touchscreen"
+        android:required="false" />
+
 
     <application
         android:allowBackup="true"
@@ -30,6 +45,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <receiver android:name=".helper.NetworkChangeReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
         <activity
             android:name=".activity.MainActivity"
             android:screenOrientation="userLandscape"
@@ -50,11 +71,11 @@
         <activity
             android:name=".activity.SelectVideoActivity"
             android:screenOrientation="userLandscape"
-            android:windowSoftInputMode="stateHidden|adjustPan"/>
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".activity.ConnexionActivity"
             android:screenOrientation="userLandscape"
-            android:windowSoftInputMode="stateHidden|adjustPan"/>
+            android:windowSoftInputMode="stateHidden|adjustPan" />
         <activity
             android:name=".activity.MySessionsActivity"
             android:screenOrientation="userLandscape" />
@@ -65,10 +86,6 @@
         <activity
             android:name=".activity.PlayVideoActivity"
             android:screenOrientation="userLandscape" />
-        <activity
-            android:name=".activity.ForgotPasswordActivity"
-            android:screenOrientation="userLandscape"
-            android:windowSoftInputMode="stateHidden|adjustPan" />
 
         <activity
             android:name=".activity.CreateGridActivity"

@@ -8,6 +8,8 @@ import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -79,6 +81,10 @@ public class PlayVideoActivity extends VyfeActivity implements LifecycleOwner {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        initNavBar(navigationView, toolbar, drawerLayout);
+
         mRecyclerView = findViewById(R.id.re_tags_selected);
 
         mSeekBarTimer.getProgressDrawable().setColorFilter(Color.CYAN, PorterDuff.Mode.SRC_IN);
@@ -97,7 +103,7 @@ public class PlayVideoActivity extends VyfeActivity implements LifecycleOwner {
 
                 //Create Grid
                 if(session.getTags()!=null) {
-                    mAdapterTags = new TemplateRecyclerAdapter( session.getTagsSet().getTemplates(), "play");
+                    mAdapterTags = new TemplateRecyclerAdapter( session.getTags(),session.getTagsSet().getTemplates(), "play");
                     mRecyclerView.setAdapter(mAdapterTags);
                 }
 

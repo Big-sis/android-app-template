@@ -2,8 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="@drawable/style_button_white"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    >
 
     <ImageView
         android:id="@+id/iv_color"
@@ -19,6 +19,6 @@
         android:layout_gravity="center"
         android:padding="5dp"
         android:text="Nom de la couleur"
-        android:textColor="@color/colorBlack"
+        android:textColor="@color/colorWhiteTwo"
         android:textSize="18sp" />
 </LinearLayout>

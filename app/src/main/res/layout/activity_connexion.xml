@@ -118,10 +118,10 @@
                     <ImageView
                         android:id="@+id/iv_show_password"
                         android:layout_width="0dp"
-                        android:layout_height="40dp"
+                        android:layout_height="50dp"
                         android:layout_weight="0.1"
                         android:layout_marginStart="10dp"
-                        android:src="@drawable/keypassword"
+                        android:src="@drawable/eye"
                         android:layout_gravity="bottom"
                         />
                 </LinearLayout>

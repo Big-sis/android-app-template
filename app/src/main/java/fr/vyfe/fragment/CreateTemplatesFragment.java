@@ -1,12 +1,10 @@
 package fr.vyfe.fragment;
 
-import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -24,19 +22,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Objects;
-
 import fr.vyfe.R;
 import fr.vyfe.adapter.ColorSpinnerAdapter;
 import fr.vyfe.adapter.TemplateRecyclerAdapter;
 import fr.vyfe.helper.ColorHelper;
-import fr.vyfe.helper.InternetConnexionHelper;
 import fr.vyfe.helper.KeyboardHelper;
 import fr.vyfe.model.ColorModel;
 import fr.vyfe.model.TagSetModel;
-import fr.vyfe.model.TemplateModel;
 import fr.vyfe.viewModel.CreateGridViewModel;
 
 public class CreateTemplatesFragment extends Fragment implements AdapterView.OnItemSelectedListener, View.OnClickListener {
@@ -49,6 +41,9 @@ public class CreateTemplatesFragment extends Fragment implements AdapterView.OnI
     private static CreateGridViewModel viewModel;
     private static CreateTemplatesFragment.OnButtonClickedListener mCallback;
     private static LinearLayout llImport;
+    private Button saveGridBtn;
+    private TextView saveTv;
+    private TextView gridInProgressTv;
 
     public static CreateTemplatesFragment newInstance() {
         return new CreateTemplatesFragment();
@@ -57,7 +52,6 @@ public class CreateTemplatesFragment extends Fragment implements AdapterView.OnI
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        this.createCallbackToParentActivity();
     }
 
     @Override
@@ -74,7 +68,8 @@ public class CreateTemplatesFragment extends Fragment implements AdapterView.OnI
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View result = inflater.inflate(R.layout.create_tags_fragment, container, false);
-        result.findViewById(R.id.end_btn).setOnClickListener(this);
+        saveGridBtn = result.findViewById(R.id.save_grid_btn);
+        saveTv = result.findViewById(R.id.tv_save);
         return result;
     }
 
@@ -85,6 +80,7 @@ public class CreateTemplatesFragment extends Fragment implements AdapterView.OnI
         final RecyclerView recyclerTagList = view.findViewById(R.id.recycler_view);
         ivColor = view.findViewById(R.id.iv_color);
         llImport = view.findViewById(R.id.linearLayout);
+        gridInProgressTv = view.findViewById(R.id.grid);
 
         colorSpinnerView = view.findViewById(R.id.colorSpinner);
         colorSpinnerView.setOnItemSelectedListener(this);
@@ -92,6 +88,8 @@ public class CreateTemplatesFragment extends Fragment implements AdapterView.OnI
         colorSpinnerView.setAdapter(colorSpinnerAdapter);
         randomSelectSpinnerColor();
 
+        onClickSaveData(saveGridBtn);
+        onClickSaveData(saveTv);
 
         // Elements du recycler
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
@@ -112,7 +110,9 @@ public class CreateTemplatesFragment extends Fragment implements AdapterView.OnI
 
                     viewModel.addTemplate(tagColor, tagName);
                     tagNameView.setText("");
-
+                    gridInProgressTv.setVisibility(View.VISIBLE);
+                    saveGridBtn.setVisibility(View.VISIBLE);
+                    saveTv.setVisibility(View.VISIBLE);
 
                     //Fermer clavier après avoir rentré un tag
                     KeyboardHelper.CloseKeyboard(getContext(), btnAddTag);
@@ -138,12 +138,7 @@ public class CreateTemplatesFragment extends Fragment implements AdapterView.OnI
         });
         itemTouchHelper.attachToRecyclerView(recyclerTagList);
 
-        viewModel.getTemplates().observe(getActivity(), new Observer<ArrayList<TemplateModel>>() {
-            @Override
-            public void onChanged(@Nullable ArrayList<TemplateModel> templates) {
-                mAdapter.notifyDataSetChanged();
-            }
-        });
+
     }
 
     @Override
@@ -164,7 +159,7 @@ public class CreateTemplatesFragment extends Fragment implements AdapterView.OnI
     }
 
     public void moveItem(int oldPos, int newPos) {
-        viewModel.moveItem(oldPos,newPos);
+        viewModel.moveItem(oldPos, newPos);
         mAdapter.notifyItemMoved(oldPos, newPos);
     }
 
@@ -178,15 +173,22 @@ public class CreateTemplatesFragment extends Fragment implements AdapterView.OnI
         mCallback.onCreateTagsFragmentButtonClicked(view);
     }
 
-    private void createCallbackToParentActivity() {
-        try {
-            mCallback = (OnButtonClickedListener) getActivity();
-        } catch (ClassCastException e) {
-            throw new ClassCastException(e.toString() + " must implement OnButtonClickedListener");
-        }
-    }
 
     public interface OnButtonClickedListener {
         void onCreateTagsFragmentButtonClicked(View view);
+    }
+
+    public void onClickSaveData(View view){
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (viewModel.getTagSetName().getValue() != null && !viewModel.getTagSetName().getValue().isEmpty()) {
+                    viewModel.save();
+                    Toast.makeText(getActivity(), R.string.save_grid_info, Toast.LENGTH_LONG).show();
+                    getActivity().finish();
+                } else
+                    Toast.makeText(getActivity(), R.string.grid_name_empty_warning, Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }

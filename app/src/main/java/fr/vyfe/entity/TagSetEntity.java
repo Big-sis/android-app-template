@@ -7,7 +7,7 @@ public class TagSetEntity {
     private String owner;
     private boolean shared;
     private HashMap<String, TemplateEntity> Templates;
-
+    private OwnerEntity author;
 
     public HashMap<String, TemplateEntity> getTemplates() {
         return Templates;
@@ -21,6 +21,14 @@ public class TagSetEntity {
 
     //Generate code
 
+
+    public OwnerEntity getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(OwnerEntity author) {
+        this.author = author;
+    }
 
     public String getName() {
         return name;

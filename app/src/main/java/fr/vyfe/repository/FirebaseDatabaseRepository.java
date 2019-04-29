@@ -92,6 +92,7 @@ public abstract class FirebaseDatabaseRepository<Model> {
         query.addValueEventListener(listListener);
     }
 
+
     public void addChildListener(String childId, BaseSingleValueEventListener.CallbackInterface<Model> callback) {
         this.addChildListener(childId, false, callback);
     }

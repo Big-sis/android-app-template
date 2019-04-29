@@ -59,7 +59,7 @@ public class LiveSessionFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         RecyclerView.LayoutManager tagLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         mRecyclerViewObservers.setLayoutManager(tagLayoutManager);
         wifiManager = (WifiManager) getActivity().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
@@ -130,11 +130,7 @@ public class LiveSessionFragment extends Fragment {
     }
 
     private boolean isConnectingToInternet() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) getActivity().getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-        if (networkInfo == null) {
-            return false;
-        }
-        return true;
+        NetworkInfo network = ((ConnectivityManager)getActivity().getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
+        return (network!=null && network.isConnected());
     }
 }

@@ -3,16 +3,12 @@ package fr.vyfe.viewModel;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 import fr.vyfe.model.SessionModel;
-import fr.vyfe.model.TagModel;
 import fr.vyfe.model.TagSetModel;
 import fr.vyfe.model.TemplateModel;
-import fr.vyfe.repository.BaseListValueEventListener;
 import fr.vyfe.repository.BaseSingleValueEventListener;
 import fr.vyfe.repository.SessionRepository;
 import fr.vyfe.repository.TagSetRepository;
@@ -24,6 +20,7 @@ public abstract class VyfeViewModel extends ViewModel {
     protected MutableLiveData<SessionModel> session;
     protected MutableLiveData<TagSetModel> tagSet;
     protected String sessionId;
+
 
     public String getSessionId() {
         return sessionId;
@@ -37,12 +34,13 @@ public abstract class VyfeViewModel extends ViewModel {
             @Override
             public void onSuccess(SessionModel result) {
                 //TODO il ne tris pas ?
-               if(result!=null&&result.getTagsSet()!=null&&result.getTagsSet().getTemplates()!=null) Collections.sort(result.getTagsSet().getTemplates(), new Comparator<TemplateModel>() {
-                    @Override
-                    public int compare(TemplateModel o1, TemplateModel o2) {
-                        return o1.getPosition() - o2.getPosition();
-                    }
-                });
+                if (result != null && result.getTagsSet() != null && result.getTagsSet().getTemplates() != null)
+                    Collections.sort(result.getTagsSet().getTemplates(), new Comparator<TemplateModel>() {
+                        @Override
+                        public int compare(TemplateModel o1, TemplateModel o2) {
+                            return o1.getPosition() - o2.getPosition();
+                        }
+                    });
 
 
                 session.postValue(result);
@@ -55,7 +53,7 @@ public abstract class VyfeViewModel extends ViewModel {
         });
     }
 
-    private void loadTagsSetSession(final String id){
+    private void loadTagsSetSession(final String id) {
         if (session == null)
             session = new MutableLiveData<>();
 
@@ -63,12 +61,13 @@ public abstract class VyfeViewModel extends ViewModel {
             @Override
             public void onSuccess(SessionModel result) {
 
-                Collections.sort(result.getTagsSet().getTemplates(), new Comparator<TemplateModel>() {
-                    @Override
-                    public int compare(TemplateModel o1, TemplateModel o2) {
-                        return o1.getPosition() - o2.getPosition();
-                    }
-                });
+                if (result.getTagsSet()!=null && result.getTagsSet().getTemplates() != null)
+                    Collections.sort(result.getTagsSet().getTemplates(), new Comparator<TemplateModel>() {
+                        @Override
+                        public int compare(TemplateModel o1, TemplateModel o2) {
+                            return o1.getPosition() - o2.getPosition();
+                        }
+                    });
                 tagSet.setValue(result.getTagsSet());
 
 
@@ -106,7 +105,7 @@ public abstract class VyfeViewModel extends ViewModel {
     }
 
     public MutableLiveData<SessionModel> getSession() {
-        if (session == null){
+        if (session == null) {
             session = new MutableLiveData<>();
             loadSession(this.sessionId);
         }
@@ -123,7 +122,7 @@ public abstract class VyfeViewModel extends ViewModel {
         return tagSet;
     }
 
-    public MutableLiveData<TagSetModel>getTagsSetSession(){
+    public MutableLiveData<TagSetModel> getTagsSetSession() {
         if (tagSet == null) {
             tagSet = new MutableLiveData<>();
         }

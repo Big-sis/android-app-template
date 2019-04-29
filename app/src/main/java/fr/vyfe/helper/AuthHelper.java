@@ -60,6 +60,10 @@ public class AuthHelper {
             FirebaseAuth.getInstance().signOut();
     }
 
+    public Task<Void> resetPassword(String mail) {
+        return FirebaseAuth.getInstance().sendPasswordResetEmail(mail);
+    }
+
     public Task<UserModel> signInWithEmailAndPassword(String mail, String pass, final AuthProfileListener authProfileListener) {
         return FirebaseAuth.getInstance().signInWithEmailAndPassword(mail, pass)
                 .continueWith(new Continuation<AuthResult, UserModel>() {

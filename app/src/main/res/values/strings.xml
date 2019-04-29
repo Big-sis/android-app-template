@@ -175,10 +175,18 @@
     <string name="select_nothing">Deselectionner</string>
     <string name="add_tag_set">Ajouter une grille</string>
     <string name="tag_set_selected">Grille sélectionnée :</string>
-    <string name="tag_set">grille d\'observation</string>
+    <string name="tag_set">Grille d\'observation</string>
+    <string name="vyfe_site">https://vyfe.fr/</string>
+    <string name="ask_email">Veuillez renseigner un email afin de reinitialiser votre mot de passe</string>
     <string name="save">Sauver</string>
     <string name="quiet">Quitter</string>
     <string name="dont_save">Vous n\'avez pas enregistré vos modifications</string>
     <string name="confirm_delete_tag_sets">Etês vous sur de vouloir supprimées les grilles selectionnées ?</string>
+    <string name="ex_posture">Ex : Posture</string>
+    <string name="ex_title_session">Ex : Discours Jean</string>
+    <string name="available">Disponible :</string>
+    <string name="home">Accueil</string>
+    <string name="start_video_session">Lancer une session vidéo</string>
+    <string name="movies">Mes vidéos</string>
 
 </resources>
