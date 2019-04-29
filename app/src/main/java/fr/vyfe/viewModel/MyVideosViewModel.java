@@ -30,8 +30,10 @@ public class MyVideosViewModel extends VyfeViewModel {
     public MyVideosViewModel(String companyId, String mAuth, String androidId) {
         this.mAuth = mAuth;
         repository = new SessionRepository(companyId);
-        repository.setOrderByChildKey("author");
+        repository.setOrderByChildKey("owner/uid");
         repository.setEqualToKey(mAuth);
+        //TODO a verifier
+
         filter = "";
         permissions = new MutableLiveData<>();
         permissions.setValue(false);
@@ -87,7 +89,6 @@ public class MyVideosViewModel extends VyfeViewModel {
 
                     }
 
-
                     for (SessionModel session : result) {
                         //recupe les videos sur vimeo et pas sur la tablette
                         if (session.getName() != null && session.getName().contains(filter) &&
@@ -101,7 +102,7 @@ public class MyVideosViewModel extends VyfeViewModel {
                                 session.getServerVideoLink() != null)
                             filtered.add(session);
                     }
-
+                //TODO recuperer les vidéos partagées
 
                 }
 

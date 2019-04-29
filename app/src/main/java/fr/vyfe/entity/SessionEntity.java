@@ -22,6 +22,7 @@ public class SessionEntity {
     private int duration;
     private HashMap<String, ObserverEntity> observers;
     private HashMap<String, TagEntity> tags;
+    private OwnerEntity owner;
 
 
     private String tagSetId;
@@ -31,18 +32,32 @@ public class SessionEntity {
 
     public Map<String, Object> toHashmap() {
         Map<String, Object> sessionMap = new HashMap<>();
+        sessionMap.put("author", author);
+        sessionMap.put("name", name);
+        sessionMap.put("description", description);
+        sessionMap.put("tagSet", tagSet);
+        sessionMap.put("videoLink", videoLink);
+        sessionMap.put("pathApp", pathApp);
+        sessionMap.put("idAndroid", idAndroid);
         sessionMap.put("cooperative", cooperative);
         sessionMap.put("recording", recording);
-        sessionMap.put("videoLink", videoLink);
+        sessionMap.put("timestamp", timestamp);
         sessionMap.put("duration", duration);
-        sessionMap.put("description", description);
-        sessionMap.put("pathApp", pathApp);
         return sessionMap;
 
     }
 
 
     //Generated code
+
+
+    public OwnerEntity getOwner() {
+        return owner;
+    }
+
+    public void setOwner(OwnerEntity owner) {
+        this.owner = owner;
+    }
 
     public int getDuration() {
         return duration;

@@ -67,14 +67,19 @@ public class VideoGridAdapter extends BaseAdapter implements Filterable {
         final TextView tvDate = convertView.findViewById(R.id.video_date);
         tvDate.setText(mContext.getString(R.string.date_session)+mSession.getFormatDate());
 
-        ImageView videoStatus = convertView.findViewById(R.id.img_upload_video);
-
-        if(mSession.getServerVideoLink()!= null){
-           videoStatus.setImageResource(R.drawable.uploadtocloudblanc);
-        }
 
         TextView tvDuration = convertView.findViewById(R.id.video_duration);
         tvDuration.setText(mContext.getString(R.string.duration_session)+ TimeHelper.formatMillisecTime(mSession.getDuration()));
+
+        ImageView ivAvailableDevice = convertView.findViewById(R.id.iv_available_device);
+        if (mSession.getDeviceVideoLink()!= null)
+            ivAvailableDevice.setBackgroundResource(R.drawable.dispo);
+        else ivAvailableDevice.setBackgroundResource(R.drawable.nodispo);
+
+        ImageView ivAvailablePlateforme = convertView.findViewById(R.id.iv_available_plateforme);
+        if (mSession.getServerVideoLink()!= null)
+            ivAvailablePlateforme.setBackgroundResource(R.drawable.dispo);
+        else ivAvailablePlateforme.setBackgroundResource(R.drawable.nodispo);
       
         return convertView;
     }

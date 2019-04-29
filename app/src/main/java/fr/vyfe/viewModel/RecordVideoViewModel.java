@@ -4,11 +4,11 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import fr.vyfe.Constants;
 import fr.vyfe.model.ObserverModel;
+import fr.vyfe.model.OwnerModel;
 import fr.vyfe.model.SessionModel;
 import fr.vyfe.model.TagModel;
 import fr.vyfe.model.TemplateModel;
@@ -33,12 +33,13 @@ public class RecordVideoViewModel extends VyfeViewModel {
     private MutableLiveData<List<TagModel>> tags;
 
     private String userId;
+    private String displayName;
     private MutableLiveData<Boolean> areTagsActive;
     private MutableLiveData<Boolean> isLiveRecording;
 
     private MutableLiveData<ArrayList<ObserverModel>> observers;
 
-    public RecordVideoViewModel(String userId, String companyId, String sessionId) {
+    public RecordVideoViewModel(String companyId, String userId, String sessionId, String displayName) {
         sessionRepository = new SessionRepository(companyId);
         tagSetRepository = new TagSetRepository(userId, companyId);
         tagRepository = new TagRepository(companyId, userId, sessionId);
@@ -46,10 +47,10 @@ public class RecordVideoViewModel extends VyfeViewModel {
         videoTime = new MutableLiveData<>();
         this.sessionId = sessionId;
         this.userId = userId;
+        this.displayName = displayName;
         areTagsActive = new MutableLiveData<>();
         isLiveRecording = new MutableLiveData<>();
     }
-
 
     public MutableLiveData<Boolean> getAreTagsActive() {
         return areTagsActive;
@@ -131,20 +132,16 @@ public class RecordVideoViewModel extends VyfeViewModel {
         if (session.getValue().getTagsSet() != null && getVideoTime().getValue() != null) {
             TemplateModel template = session.getValue().getTagsSet().getTemplates().get(position);
             TagModel newTag = TagModel.createFromTemplate(template);
-            newTag.setTaggerId(userId);
+            newTag.setAuthor(new OwnerModel(userId,displayName));
             newTag.setSessionId(getSessionId());
             newTag.setStart((int) Math.max(0, getVideoTime().getValue() / Constants.UNIT_TO_MILLI_FACTOR - template.getLeftOffset()));
             newTag.setEnd((int) (getVideoTime().getValue() / Constants.UNIT_TO_MILLI_FACTOR + template.getRightOffset()));
             newTag.setColor(template.getColor());
             tagRepository.push(newTag);
-            //incrTemplate(template);
             return true;
         } else return false;
     }
 
-    private void incrTemplate(TemplateModel template) {
-       tagSetRepository.update(template,session.getValue());
-    }
 
     public MutableLiveData<List<TagModel>> getTags() {
         if (tags == null) {

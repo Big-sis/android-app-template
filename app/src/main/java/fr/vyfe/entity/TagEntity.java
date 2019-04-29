@@ -7,7 +7,15 @@ public class TagEntity {
     private String taggerId;
     private int start;
     private int end;
+    private OwnerEntity author;
 
+    public OwnerEntity getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(OwnerEntity author) {
+        this.author = author;
+    }
 
     public String getColor() {
         return color;

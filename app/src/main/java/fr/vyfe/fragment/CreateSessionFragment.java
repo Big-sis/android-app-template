@@ -144,9 +144,10 @@ public class CreateSessionFragment extends Fragment {
                 RecyclerView.LayoutManager layoutManagerImport = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
                 recyclerViewImport.setLayoutManager(layoutManagerImport);
                 if (tagSetModel != null) {
-                    recyclerViewImport.setAdapter(new TemplateRecyclerAdapter(tagSetModel.getTemplates(), "start", InternetConnexionHelper.isConnectedToInternet(getActivity())));
+                    recyclerViewImport.setAdapter(new TemplateRecyclerAdapter(tagSetModel.getTemplates(), "start"));
                     ScrollHelper.DownScroll(scrollMain);
                 }
+
             }
         });
 
@@ -192,8 +193,7 @@ public class CreateSessionFragment extends Fragment {
             public void onClick(View v) {
 
                 Intent intent = new Intent(getContext(), RecordActivity.class);
-
-                if (viewModel.getSelectedTagSet() == null
+                if (viewModel.getSelectedTagSet().getValue() == null
                         || viewModel.getSessionName() == null
                         || viewModel.getSessionName().isEmpty()) {
                     Toast.makeText(getContext(), R.string.tagset_title_warning, Toast.LENGTH_LONG).show();

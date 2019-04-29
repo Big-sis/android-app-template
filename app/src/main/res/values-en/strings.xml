@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Vyfe</string>
-    <string name="video_tittle">Video Title</string>
+    <string name="video_tittle">Video Title : </string>
     <string name="video_info">Informations</string>
     <string name="no_description">No description</string>
     <string name="play_video">Play video</string>

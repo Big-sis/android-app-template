@@ -20,7 +20,7 @@ import android.widget.Button;
 import fr.vyfe.Constants;
 import fr.vyfe.R;
 import fr.vyfe.adapter.WindowsAdapter;
-import fr.vyfe.fragment.CooperationFragment;
+import fr.vyfe.fragment.LiveSessionFragment;
 import fr.vyfe.fragment.RecordPlayerFragment;
 import fr.vyfe.fragment.TagSetRecordFragment;
 import fr.vyfe.fragment.TimelineRecordFragment;
@@ -60,7 +60,7 @@ public class RecordActivity extends VyfeActivity {
         getSupportActionBar().setTitle(R.string.record_session);
 
         String sessionId = getIntent().getStringExtra(Constants.SESSIONMODELID_EXTRA);
-        viewModel = ViewModelProviders.of(this, new RecordVideoViewModelFactory(mAuth.getCurrentUser().getId(), mAuth.getCurrentUser().getCompany(), sessionId)).get(RecordVideoViewModel.class);
+        viewModel = ViewModelProviders.of(this, new RecordVideoViewModelFactory(mAuth.getCurrentUser().getCompany(), mAuth.getCurrentUser().getId(), sessionId, getDisplayName())).get(RecordVideoViewModel.class);
         viewModel.init();
 
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
@@ -180,7 +180,7 @@ public class RecordActivity extends VyfeActivity {
     private void setViewPager(ViewPager viewPager) {
         WindowsAdapter adapter = new WindowsAdapter(super.getSupportFragmentManager());
         adapter.addFragment(new TagSetRecordFragment(), getString(R.string.Grid));
-        adapter.addFragment(new CooperationFragment(), getString(R.string.live));
+        adapter.addFragment(new LiveSessionFragment(), getString(R.string.live));
         viewPager.setAdapter(adapter);
     }
 

@@ -10,22 +10,30 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import fr.vyfe.Constants;
 import fr.vyfe.R;
 import fr.vyfe.helper.ColorHelper;
+import fr.vyfe.model.TagModel;
 import fr.vyfe.model.TemplateModel;
 
 public class TemplateRecyclerAdapter extends RecyclerView.Adapter<TemplateRecyclerAdapter.ViewHolder> {
 
+    ArrayList<TagModel> mtagModels;
     private String mFrom;
     private ArrayList<TemplateModel> mTemplates;
     private Boolean mShowNumber;
 
-    public TemplateRecyclerAdapter(ArrayList<TemplateModel> templates, String from, Boolean showNumber) {
+    public TemplateRecyclerAdapter(ArrayList<TagModel> tagModels, ArrayList<TemplateModel> templates, String from) {
         mTemplates = templates;
         mFrom = from;
-        mShowNumber = showNumber;
+        mtagModels = tagModels;
+    }
+
+    public TemplateRecyclerAdapter(ArrayList<TemplateModel> templates, String from) {
+        mTemplates = templates;
+        mFrom = from;
     }
 
     @Override
@@ -40,22 +48,33 @@ public class TemplateRecyclerAdapter extends RecyclerView.Adapter<TemplateRecycl
     public void onBindViewHolder(final TemplateRecyclerAdapter.ViewHolder holder, final int position) {
 
         final TemplateModel template = mTemplates.get(position);
+        int occurrences = 0;
+        if (mtagModels != null) {
+            ArrayList<String> idTags = new ArrayList<>();
+            for (TagModel tagModel : mtagModels) {
+                idTags.add(tagModel.getTemplateId());
+            }
+            occurrences = Collections.frequency(idTags, template.getId());
+        }
 
 
         switch (mFrom) {
             case "create":
                 holder.ivMenu.setVisibility(View.VISIBLE);
+                holder.tvNum.setVisibility(View.INVISIBLE);
+                break;
             case "start":
-                holder.tvNum.setVisibility(View.GONE);
+                holder.tvNum.setVisibility(View.INVISIBLE);
+                break;
+            case "play":
+                holder.tvNum.setVisibility(View.VISIBLE);
                 break;
             default:
                 holder.tvNum.setVisibility(View.VISIBLE);
                 //TagsSetSession : les tags de la grille
-                holder.tvNum.setVisibility(View.GONE);
                 holder.viewForeground.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        template.incrCount();
                         holder.viewForeground.setBackgroundResource(R.drawable.color_gradient_yellow);
                         new Handler().postDelayed(new Runnable() {
                             @Override
@@ -68,19 +87,16 @@ public class TemplateRecyclerAdapter extends RecyclerView.Adapter<TemplateRecycl
 
                 break;
         }
+
         //View
         holder.tvName.setText(template.getName());
         holder.ivColor.setBackgroundResource(ColorHelper.getInstance().findColorById(template.getColor().getId()).getImage());
-        if (template.getCount() == null) holder.tvNum.setText("0");
-        else
-            holder.tvNum.setText(String.valueOf(template.getCount()));
-
-        if(!mShowNumber) holder.tvNum.setVisibility(View.INVISIBLE);
+        holder.tvNum.setText(String.valueOf(occurrences));
     }
 
     @Override
     public int getItemCount() {
-        if (mTemplates==null) return 0;
+        if (mTemplates == null) return 0;
         return mTemplates.size();
     }
 
@@ -102,4 +118,5 @@ public class TemplateRecyclerAdapter extends RecyclerView.Adapter<TemplateRecycl
 
         }
     }
+
 }

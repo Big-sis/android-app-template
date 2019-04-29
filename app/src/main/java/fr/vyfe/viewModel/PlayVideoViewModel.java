@@ -197,30 +197,4 @@ public class PlayVideoViewModel extends VyfeViewModel {
         });
     }
 
-    public LiveData<String> getNameUser(String IdUSer) {
-        if(nameUser ==null){
-            nameUser = new MutableLiveData<>();
-            loadNameUser(IdUSer);
-        }
-        return nameUser;
-    }
-
-    public void loadNameUser(String IdUser){
-        userRepository.addChildListener(IdUser,new BaseSingleValueEventListener.CallbackInterface<UserModel>() {
-            @Override
-            public void onSuccess(UserModel result) {
-                String firstName ="";
-                String lastName="";
-                if(result.getFirstname()!=null)  firstName = result.getFirstname();
-                if(result.getLastName()!=null)  lastName = result.getLastName();
-                nameUser.setValue("Auteur : "+firstName+" "+lastName);
-
-            }
-
-            @Override
-            public void onError(Exception e) {
-                nameUser.setValue(null);
-            }
-        });
-    }
 }

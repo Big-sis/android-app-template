@@ -9,7 +9,9 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
+import fr.vyfe.helper.TagSetsFilteredHelper;
 import fr.vyfe.model.ColorModel;
+import fr.vyfe.model.OwnerModel;
 import fr.vyfe.model.TagSetModel;
 import fr.vyfe.model.TemplateModel;
 import fr.vyfe.repository.BaseListValueEventListener;
@@ -21,19 +23,21 @@ public class CreateGridViewModel extends VyfeViewModel {
     private MutableLiveData<String> tagSetName;
     private MutableLiveData<ArrayList<TemplateModel>> templates;
     private String userId;
+    private String displayName;
     private MutableLiveData<TagSetModel> mTagsSetModel;
 
     private MutableLiveData<ArrayList<TagSetModel>> allTagSets;
     private MutableLiveData<TagSetModel> selectedTagSet;
 
 
-    CreateGridViewModel(String userId, String companyId) {
+    CreateGridViewModel(String userId, String displayName, String companyId) {
         tagSetRepository = new TagSetRepository(userId, companyId);
         tagSetName = new MutableLiveData<>();
         templates = new MutableLiveData<>();
 
         mTagsSetModel = new MutableLiveData<>();
         this.userId = userId;
+        this.displayName = displayName;
 
         allTagSets = new MutableLiveData<>();
         selectedTagSet = new MutableLiveData<>();
@@ -76,17 +80,8 @@ public class CreateGridViewModel extends VyfeViewModel {
                     });
                 }
 
-                ArrayList<TagSetModel> tagSetModels = new ArrayList<>();
-                for (TagSetModel tagSet : result) {
-                    //TagsSets Author
-                    if (tagSet.getOwner().equals(userId)) {
-                        tagSetModels.add(tagSet);
-                    }
-                    //TagsSets shared
-                    if (!tagSet.getOwner().equals(userId) && tagSet.isShared()) {
-                        tagSetModels.add(tagSet);
-                    }
-                }
+                ArrayList<TagSetModel> tagSetModels = TagSetsFilteredHelper.tagSetByAuthorAndShared(result, userId);
+
                 allTagSets.setValue(tagSetModels);
             }
 
@@ -98,7 +93,7 @@ public class CreateGridViewModel extends VyfeViewModel {
 
     }
 
-    public void deleteTagSets (String idTagSet){
+    public void deleteTagSets(String idTagSet) {
         tagSetRepository.deleteTagSets(idTagSet);
     }
 
@@ -163,7 +158,7 @@ public class CreateGridViewModel extends VyfeViewModel {
     public TagSetModel save() {
         TagSetModel tagSetModel = new TagSetModel();
         tagSetModel.setName(this.tagSetName.getValue());
-        tagSetModel.setOwner(this.userId);
+        tagSetModel.setAuthor(new OwnerModel(this.userId, displayName));
         String tagSetKey = tagSetRepository.push(tagSetModel);
         tagSetRepository.createTemplates(tagSetKey, this.templates.getValue());
         tagSetModel.setTagTemplates(this.templates.getValue());

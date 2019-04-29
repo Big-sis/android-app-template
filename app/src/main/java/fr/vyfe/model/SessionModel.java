@@ -31,6 +31,7 @@ public class SessionModel implements Parcelable, VyfeModel, Comparable<SessionMo
     private int duration;
     private ArrayList<ObserverModel> observers;
     private TagSetModel tagsSet;
+    private OwnerModel owner;
 
     public SessionModel(String name, String author, String videoLink, Date date, String idSession, String idTagSet) {
         this();
@@ -70,6 +71,14 @@ public class SessionModel implements Parcelable, VyfeModel, Comparable<SessionMo
         thumbnail = in.readString();
         duration = in.readInt();
 
+    }
+
+    public OwnerModel getOwner() {
+        return owner;
+    }
+
+    public void setOwner(OwnerModel owner) {
+        this.owner = owner;
     }
 
     public void setDuration(int duration) {

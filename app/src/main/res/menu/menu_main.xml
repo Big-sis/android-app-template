@@ -1,0 +1,24 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity">
+
+    <item
+        android:id="@+id/home"
+        android:icon="@drawable/home"
+        android:title="@string/home" />
+
+    <item
+        android:id="@+id/tag_set"
+        android:icon="@drawable/icons8_liste_de_v_rification_filled_100"
+        android:title="@string/tag_set" />
+
+    <item
+        android:id="@+id/session"
+        android:icon="@drawable/camsimple"
+        android:title="@string/start_video_session" />
+
+    <item
+        android:id="@+id/movie"
+        android:icon="@drawable/video"
+        android:title="@string/movies" />
+</menu>
