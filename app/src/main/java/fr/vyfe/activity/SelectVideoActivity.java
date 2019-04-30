@@ -129,12 +129,12 @@ public class SelectVideoActivity extends VyfeActivity {
 
                     //Create grid
                     TagSetModel tagSetModel = session.getTagsSet();
-                    if (tagSetModel != null) {
+                    if (tagSetModel != null && session.getTags()!=null) {
                         TemplateRecyclerAdapter adapterTags = new TemplateRecyclerAdapter(session.getTags(),session.getTagsSet().getTemplates(), "play");
                         recyclerTags.setAdapter(adapterTags);
                     }
 
-                    assert tagSetModel != null;
+                   if(tagSetModel != null && tagSetModel.getName() !=null)
                     gridTextView.setText(tagSetModel.getName());
 
 

@@ -225,7 +225,6 @@
                         android:layout_gravity="center"
                         android:layout_marginTop="8dp"
                         android:layout_marginBottom="8dp"
-                        android:text="@string/used_grid"
                         android:textColor="@color/colorWhiteTwo"
                         android:textSize="18sp"
                         app:fontFamily="@font/roboto" />

@@ -22,10 +22,6 @@ import fr.vyfe.helper.AuthHelper;
 
 public class MainActivity extends VyfeActivity {
 
-    private WifiManager wifiManager;
-    private String networkSSID;
-    private String networkPass;
-
 
     @SuppressLint("ResourceType")
     @Override
@@ -70,9 +66,6 @@ public class MainActivity extends VyfeActivity {
             }
         });
 
-        wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        networkSSID = MainActivity.this.getString(R.string.networkSSID);
-        networkPass = MainActivity.this.getString(R.string.networkPass);
     }
 
     @Override

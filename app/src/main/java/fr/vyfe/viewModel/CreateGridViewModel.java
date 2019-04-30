@@ -44,6 +44,9 @@ public class CreateGridViewModel extends VyfeViewModel {
 
     }
 
+    public String getUserId(){
+        return userId;
+    }
     public void init() {
         if (templates.getValue() == null) templates.setValue(new ArrayList<TemplateModel>());
     }

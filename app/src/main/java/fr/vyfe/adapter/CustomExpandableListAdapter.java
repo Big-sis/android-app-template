@@ -102,9 +102,15 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
         listTitleTextView.setText(listTitle.getName());
 
         ImageView ivDelete = convertView.findViewById(R.id.iv_delete);
+        if (viewModel.getUserId() != null && !listTitle.getAuthor().getUid().equals(viewModel.getUserId())) {
+            ivDelete.setVisibility(View.GONE);
+            ivDelete.setClickable(false);
+        }
         ivDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setMessage("Etes vous sur de vouloir supprimer cette grille?");
                 builder.setCancelable(false);
