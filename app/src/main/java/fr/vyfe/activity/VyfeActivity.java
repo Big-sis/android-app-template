@@ -2,7 +2,6 @@ package fr.vyfe.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.DatePickerDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -41,17 +40,10 @@ import fr.vyfe.repository.FirebaseRemote;
 
 public abstract class VyfeActivity extends AppCompatActivity {
 
-    private static final String LOADING_PHRASE_CONFIG_KEY = "loading_phrase";
-    private static final String WELCOME_MESSAGE_KEY = "welcome_message";
-    private static final String WELCOME_MESSAGE_CAPS_KEY = "welcome_message_caps";
     protected static AuthHelper mAuth;
     static MenuItem menuInternet;
     protected AppCompatActivity self;
-    FirebaseRemoteConfig mFirebaseRemoteConfig;
     private BroadcastReceiver mNetworkReceiver;
-    private String versionNameApp;
-    private String versionNamePlayStore;
-    private TextView mWelcomeTextView;
     private boolean isUpload = false;
 
     public static void dialog(boolean value, Context context) {
@@ -70,8 +62,9 @@ public abstract class VyfeActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         mAuth.signOut();
-                        self.finish();
-                        finishAffinity();
+                        Intent intent = new Intent(getApplicationContext(), ConnexionActivity.class);
+                        getApplicationContext().startActivity(intent);
+                        finish();
                     }
                 })
                 .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {

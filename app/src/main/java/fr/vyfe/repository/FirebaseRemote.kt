@@ -3,6 +3,7 @@ package fr.vyfe.repository
 import android.app.Activity
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
+import fr.vyfe.BuildConfig
 import fr.vyfe.R
 
 
@@ -16,7 +17,7 @@ class FirebaseRemote {
         remoteConfig = FirebaseRemoteConfig.getInstance()
 
         val configSettings = FirebaseRemoteConfigSettings.Builder()
-                .setDeveloperModeEnabled(true)
+                .setDeveloperModeEnabled(BuildConfig.DEBUG)
                 .setMinimumFetchIntervalInSeconds(4200)
                 .build()
         remoteConfig.setConfigSettings(configSettings)
@@ -33,7 +34,7 @@ class FirebaseRemote {
         remoteConfig.fetchAndActivate()
                 .addOnCompleteListener(activity) { task ->
                     if (task.isSuccessful) {
-                        FORCED_UPLOAD = task.getResult()!!
+                        FORCED_UPLOAD = remoteConfig.getBoolean(IS_UPLOAD)
                     }
                 }
     }
