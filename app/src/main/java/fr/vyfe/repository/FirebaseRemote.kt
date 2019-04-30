@@ -17,6 +17,7 @@ class FirebaseRemote {
         remoteConfig = FirebaseRemoteConfig.getInstance()
 
         val configSettings = FirebaseRemoteConfigSettings.Builder()
+                //TODO : delete DeveloperMode
                 .setDeveloperModeEnabled(BuildConfig.DEBUG)
                 .setMinimumFetchIntervalInSeconds(4200)
                 .build()
