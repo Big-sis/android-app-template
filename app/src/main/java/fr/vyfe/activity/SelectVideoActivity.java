@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -53,7 +54,6 @@ import fr.vyfe.R;
 import fr.vyfe.adapter.TemplateRecyclerAdapter;
 import fr.vyfe.helper.InternetConnexionHelper;
 import fr.vyfe.helper.TusAndroidUpload;
-import fr.vyfe.model.CompanyModel;
 import fr.vyfe.model.SessionModel;
 import fr.vyfe.model.TagSetModel;
 import fr.vyfe.viewModel.SelectVideoViewModel;
@@ -110,7 +110,7 @@ public class SelectVideoActivity extends VyfeActivity {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         if (sharedPreferences.contains(Constants.BDDV2_CUSTOM_USERS_VIMEOACCESSTOKEN))
-            vimeoToken =  sharedPreferences.getString(Constants.BDDV2_CUSTOM_USERS_VIMEOACCESSTOKEN, "");
+            vimeoToken = sharedPreferences.getString(Constants.BDDV2_CUSTOM_USERS_VIMEOACCESSTOKEN, "");
 
         mIntentFilter = new IntentFilter();
         mIntentFilter.addAction("link");
@@ -130,12 +130,12 @@ public class SelectVideoActivity extends VyfeActivity {
                     //Create grid
                     TagSetModel tagSetModel = session.getTagsSet();
                     if (tagSetModel != null) {
-                        TemplateRecyclerAdapter adapterTags = new TemplateRecyclerAdapter(session.getTags(),session.getTagsSet().getTemplates(), "play");
+                        TemplateRecyclerAdapter adapterTags = new TemplateRecyclerAdapter(session.getTags(), session.getTagsSet().getTemplates(), "play");
                         recyclerTags.setAdapter(adapterTags);
-                    }
 
-                    assert tagSetModel != null;
-                    gridTextView.setText(tagSetModel.getName());
+                        assert tagSetModel != null;
+                        gridTextView.setText(tagSetModel.getName());
+                    }
 
 
                     //View Upload
@@ -178,7 +178,13 @@ public class SelectVideoActivity extends VyfeActivity {
                     tvTitle.setText(session.getName());
 
                     //AFfichage miniature
+
                     videoMiniatureView.setImageBitmap(session.getThumbnail());
+                    if (InternetConnexionHelper.haveInternetConnection(SelectVideoActivity.this) && session.getThumbnailUrl() != null) {
+                        new fr.vyfe.helper.DownloadImageTask((ImageView) findViewById(R.id.vv_preview)).execute(session.getThumbnailUrl());
+                    }
+
+
 
                 }
             }
@@ -202,7 +208,7 @@ public class SelectVideoActivity extends VyfeActivity {
 
     private void setUploadProgress(int progress) {
         progressBar.setProgress(progress);
-        pxUpload.setText(String.valueOf(progress)+" %");
+        pxUpload.setText(String.valueOf(progress) + " %");
     }
 
     private void startUpload(File file) {

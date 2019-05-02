@@ -216,6 +216,10 @@ public class SessionModel implements Parcelable, VyfeModel, Comparable<SessionMo
         return ThumbnailUtils.createVideoThumbnail(getDeviceVideoLink(), MediaStore.Images.Thumbnails.MINI_KIND);
     }
 
+    public String getThumbnailUrl() {
+        return this.thumbnail;
+    }
+
     public void setThumbnail(String thumbnail) {
         this.thumbnail = thumbnail;
     }

@@ -1,5 +1,6 @@
 package fr.vyfe.fragment;
 
+import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import fr.vyfe.R;
 import fr.vyfe.viewModel.CreateGridViewModel;
@@ -64,9 +66,19 @@ public class CreateGridFragment extends Fragment implements View.OnClickListener
             @Override
             public void afterTextChanged(Editable s) {
                 viewModel.setTagSetName(s.toString());
+                viewModel.setIsEmptyTitleTagSet(false);
             }
         });
 
+        viewModel.isEmptyTitleGrid().observe(this, new Observer<Boolean>() {
+            @Override
+            public void onChanged(@Nullable Boolean aBoolean) {
+                if (aBoolean) {
+                    Toast.makeText(getActivity(), R.string.grid_name_empty_warning, Toast.LENGTH_LONG).show();
+                    gridTitleView.setBackgroundResource(R.drawable.style_input_error);
+                } else gridTitleView.setBackgroundResource(R.drawable.style_input);
+            }
+        });
     }
 
     @Override

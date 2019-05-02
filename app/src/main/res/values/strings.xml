@@ -25,7 +25,6 @@
     <string name="grid_title">Titre de la grille</string>
     <string name="create_tags">Créer des tags</string>
     <string name="go">Démarrer</string>
-    <string name="back">Retour</string>
     <string name="share_url">Partagez l\'adresse URL à vos apprenants</string>
     <string name="url">http://vyfe.co/live/356</string>
     <string name="category">Category</string>
@@ -40,7 +39,7 @@
     <string name="end">Terminer</string>
     <string name="tag_name">Nom du tag</string>
     <string name="tag_color">Couleur du tag</string>
-    <string name="def_color" translatable="false">Définissez un nom et une couleur au tag</string>
+    <string name="def_color" translatable="false">Définissez un nom au tag</string>
     <string name="grid_import">Choississez votre grille d\'observation :</string>
     <string name="new_grid2">Créer une nouvelle grille d\'observation</string>
     <string name="move">Tag déplacé</string>
@@ -146,7 +145,7 @@
     <string name="ask_connection">Vous devez vous connecter</string>
     <string name="save_edit">Modifications enregistrées</string>
     <string name="change_movie">Modifier la vidéo</string>
-    <string name="confirm_change_movie">Voulez-vous vraiment modifier cette vidéo ?</string>
+    <string name="confirm_change_movie">Valider les modifications ?</string>
     <string name="date_session">Date :</string>
     <string name="duration_session">Durée :</string>
     <string name="info_max_tags">Attention si vous utilisez plus de 10 tags, le feedback ne va pas être optimal.Nous vous conseillons d\'utiliser au maximum 10 tags</string>
@@ -188,5 +187,8 @@
     <string name="home">Accueil</string>
     <string name="start_video_session">Lancer une session vidéo</string>
     <string name="movies">Mes vidéos</string>
+    <string name="add_title_grid">Vous devez renseigner un titre à votre session</string>
+    <string name="init_password_email">Reinitialisation par email</string>
+    <string name="back">Retour</string>
 
 </resources>

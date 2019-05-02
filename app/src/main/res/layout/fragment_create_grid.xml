@@ -6,11 +6,7 @@
     android:layout_height="match_parent"
     tools:context="fr.vyfe.fragment.CreateGridFragment">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout_editor_absoluteX="330dp"
-        tools:layout_editor_absoluteY="315dp">
+
 
         <LinearLayout
             android:id="@+id/ll_import_grid2"
@@ -85,5 +81,4 @@
 
             </LinearLayout>
         </LinearLayout>
-    </ScrollView>
 </android.support.constraint.ConstraintLayout>

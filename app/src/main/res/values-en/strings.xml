@@ -38,7 +38,7 @@
     <string name="end">End</string>
     <string name="tag_name">Tag name</string>
     <string name="tag_color">Tag color</string>
-    <string name="def_color">Choose a tag name and a color</string>
+    <string name="def_color">Choose a tag name</string>
     <string name="grid_import">Import an analysis window</string>
     <string name="new_grid2">Create a new analysis window</string>
     <string name="move">Move tag</string>

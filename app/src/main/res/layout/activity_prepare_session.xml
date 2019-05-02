@@ -8,8 +8,7 @@
     android:background="@drawable/bg"
     tools:context="fr.vyfe.activity.CreateGridActivity">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/bg"
@@ -19,16 +18,25 @@
         <include
             android:id="@+id/appBar"
             layout="@layout/toolbar" />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/create_grid_fragment_container"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"/>
 
-        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/create_grid_fragment_container"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"></FrameLayout>
+                <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/create_template_fragment_container"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent" />
+            </LinearLayout>
 
-        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/create_template_fragment_container"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+        </ScrollView>
 
 
     </LinearLayout>

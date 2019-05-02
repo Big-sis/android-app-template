@@ -2,7 +2,6 @@ package fr.vyfe.viewModel;
 
 
 import android.arch.lifecycle.MutableLiveData;
-import android.database.Observable;
 
 import com.google.android.gms.tasks.Task;
 
@@ -32,6 +31,11 @@ public class EditSessionViewModel extends VyfeViewModel {
     public void setNewDescription(String newDescription) {
         this.newDescription = newDescription;
         hasDataChanged.setValue(true);
+    }
+
+    public String getNewName() {
+        return this.newName;
+
     }
 
     public void setNewName(String newName) {

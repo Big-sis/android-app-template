@@ -82,7 +82,7 @@
                         app:layout_constraintTop_toBottomOf="@+id/tv_connected" />
                     <ImageView
                         android:id="@+id/iv_show_password2"
-                        android:layout_width="0dp"
+                        android:layout_width="5dp"
                         android:layout_height="40dp"
                         android:visibility="invisible"
                         android:layout_marginStart="10dp"
@@ -96,7 +96,8 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:id="@+id/linear_password">
                     <EditText
                         android:id="@+id/et_password"
                         android:layout_width="0dp"
@@ -117,11 +118,11 @@
 
                     <ImageView
                         android:id="@+id/iv_show_password"
-                        android:layout_width="0dp"
-                        android:layout_height="50dp"
+                        android:layout_width="5dp"
+                        android:layout_height="40dp"
                         android:layout_weight="0.1"
                         android:layout_marginStart="10dp"
-                        android:src="@drawable/eye"
+                        android:background="@drawable/nopassword"
                         android:layout_gravity="bottom"
                         />
                 </LinearLayout>
