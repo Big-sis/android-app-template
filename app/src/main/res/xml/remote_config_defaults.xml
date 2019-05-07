@@ -1,9 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<!-- START xml_defaults -->
 <defaultsMap>
     <entry>
         <key>force_upload</key>
-        <value>ici</value>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>has_discount</key>
+        <value>false</value>
+    </entry>
+    <entry>
+        <key>main_color</key>
+        <value>red</value>
     </entry>
 </defaultsMap>

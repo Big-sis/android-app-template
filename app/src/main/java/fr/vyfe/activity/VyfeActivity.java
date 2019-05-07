@@ -24,11 +24,9 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.FirebaseApp;
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
 import fr.vyfe.Constants;
 import fr.vyfe.R;
@@ -44,7 +42,8 @@ public abstract class VyfeActivity extends AppCompatActivity {
     static MenuItem menuInternet;
     protected AppCompatActivity self;
     private BroadcastReceiver mNetworkReceiver;
-    private boolean isUpload = false;
+    private boolean isUpload;
+
 
     public static void dialog(boolean value, Context context) {
         if (value) {
@@ -128,7 +127,7 @@ public abstract class VyfeActivity extends AppCompatActivity {
         mAuth = AuthHelper.getInstance(this);
 
 
-        isUpload = new FirebaseRemote().forceUpload(self);
+        isUpload = new FirebaseRemote().initRemote(self);
 
         if (isUpload) {
             final AlertDialog.Builder popup = new AlertDialog.Builder(this);
@@ -248,5 +247,6 @@ public abstract class VyfeActivity extends AppCompatActivity {
             registerReceiver(mNetworkReceiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         }
     }
+
 
 }
