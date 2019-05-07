@@ -111,6 +111,10 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
             ivDelete.setVisibility(View.VISIBLE);
             ivDelete.setClickable(true);
         }
+        if (viewModel.getUserId() != null && !listTitle.getAuthor().getUid().equals(viewModel.getUserId())) {
+            ivDelete.setVisibility(View.GONE);
+            ivDelete.setClickable(false);
+        }
         ivDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -138,8 +142,6 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
             }
         });
 
-
-
         return convertView;
     }
 
@@ -152,6 +154,5 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
     public boolean isChildSelectable(int listPosition, int expandedListPosition) {
         return true;
     }
-
 }
 

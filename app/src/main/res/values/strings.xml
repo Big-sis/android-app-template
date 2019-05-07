@@ -190,5 +190,7 @@
     <string name="add_title_grid">Vous devez renseigner un titre à votre session</string>
     <string name="init_password_email">Reinitialisation par email</string>
     <string name="back">Retour</string>
+    <string name="upload_app">Mise à jour de l\'application</string>
+    <string name="info_upload">Vous devez télécharger l\'application pour avoir accès aux nouvelles fonctionnalités</string>
 
 </resources>

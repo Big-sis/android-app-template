@@ -102,7 +102,7 @@ public class PlayVideoActivity extends VyfeActivity implements LifecycleOwner {
                 tvEndVideo.setText(TimeHelper.formatMillisecTime(session.getDuration()));
 
                 //Create Grid
-                if(session.getTags()!=null) {
+                if(session.getTags()!=null && session.getTagsSet() != null) {
                     mAdapterTags = new TemplateRecyclerAdapter( session.getTags(),session.getTagsSet().getTemplates(), "play");
                     mRecyclerView.setAdapter(mAdapterTags);
                 }
@@ -133,6 +133,7 @@ public class PlayVideoActivity extends VyfeActivity implements LifecycleOwner {
 
                 viewModel.setTimelineContainerHeight(timelineContainerHeight);
                 viewModel.setVideoContainerHeight(videoContainerHeight);
+
 
                 if (sizePart2Create < timelineContainerHeight) {
                     containerSizeAdapter(sizePart2Create, (videoContainerHeight + timelineContainerHeight) - sizePart2Create);

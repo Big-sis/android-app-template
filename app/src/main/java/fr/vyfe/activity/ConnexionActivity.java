@@ -202,16 +202,18 @@ public class ConnexionActivity extends AppCompatActivity {
         forgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                llPassword.setVisibility(View.GONE);
-                connexion.setText(getResources().getString(R.string.init_password_email));
-                forgotPassword.setText(getResources().getString(R.string.back));
+
                 forgotPassword.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        if (forgotPassword.getText().equals("Annuler")) {
+                        if (forgotPassword.getText().equals("Retour")) {
                             llPassword.setVisibility(View.VISIBLE);
                             forgotPassword.setText(R.string.lost_password);
                             connexion.setText(R.string.connected_maj);
+                        } else {
+                            llPassword.setVisibility(View.GONE);
+                            connexion.setText(getResources().getString(R.string.init_password_email));
+                            forgotPassword.setText(getResources().getString(R.string.back));
                         }
                     }
                 });
