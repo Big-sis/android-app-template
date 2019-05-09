@@ -105,7 +105,6 @@
                         android:layout_marginTop="25dp"
                         android:layout_weight="0.9"
                         android:background="@drawable/style_input"
-                        android:ems="10"
                         android:fontFamily="@font/roboto"
                         android:hint="@string/password"
                         android:inputType="textPassword"

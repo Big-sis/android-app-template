@@ -42,7 +42,7 @@ public class CreateSessionActivity extends VyfeActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(R.string.start_session);
+        getSupportActionBar().setTitle(R.string.start_video_session);
 
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);

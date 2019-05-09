@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
@@ -20,6 +21,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -83,7 +86,7 @@ public abstract class VyfeActivity extends AppCompatActivity {
 
     public String getDisplayName() {
         UserModel currentUser = mAuth.getCurrentUser();
-        String firstName, lastName, displayName;
+        String firstName, lastName;
         if (currentUser.getFirstname() != null) firstName = currentUser.getFirstname();
         else firstName = "";
         if (currentUser.getLastName() != null) lastName = currentUser.getLastName();
@@ -96,13 +99,13 @@ public abstract class VyfeActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.settings, menu);
 
         menuInternet = menu.findItem(R.id.internet);
-
         mNetworkReceiver = new NetworkChangeReceiver();
         registerNetworkBroadcastForNougat();
         return true;
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
+
 
         switch (item.getItemId()) {
             case R.id.logout:
@@ -114,6 +117,8 @@ public abstract class VyfeActivity extends AppCompatActivity {
                 return true;
             case R.id.internet:
                 startActivityForResult(new Intent(android.provider.Settings.ACTION_WIFI_SETTINGS), 0);
+
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -230,6 +235,7 @@ public abstract class VyfeActivity extends AppCompatActivity {
                 return true;
             }
         });
+
         toolbar.setNavigationIcon(R.drawable.menu_burger);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
