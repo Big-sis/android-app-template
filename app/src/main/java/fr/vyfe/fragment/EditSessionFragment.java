@@ -44,7 +44,7 @@ public class EditSessionFragment extends Fragment {
     private Button btnAppDelete;
     private Button btnAllDelete;
     private TextView tvSave;
-    private  TextView tvDelete;
+    private TextView tvDelete;
 
     public static EditSessionFragment newInstance() {
         return new EditSessionFragment();
@@ -69,6 +69,7 @@ public class EditSessionFragment extends Fragment {
         tvSave = result.findViewById(R.id.tv_save);
         tvDelete = result.findViewById(R.id.tv_delete);
 
+
         //Edit
         confirmEditModal = result.findViewById(R.id.confirm_action_edit);
         btnCancelEdit = result.findViewById(R.id.btn_cancel_edit);
@@ -84,13 +85,14 @@ public class EditSessionFragment extends Fragment {
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
 
         viewModel.getSession().observe(getActivity(), new Observer<SessionModel>() {
             @Override
             public void onChanged(@Nullable final SessionModel session) {
                 if (session != null) {
-                    if (session.getDescription() != null) etDescription.setText(session.getDescription());
+                    if (session.getDescription() != null)
+                        etDescription.setText(session.getDescription());
                     if (session.getName() != null) etSessionTitle.setText(session.getName());
                     etDescription.addTextChangedListener(new TextWatcher() {
                         @Override
@@ -144,36 +146,45 @@ public class EditSessionFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 confirmEditModal.setVisibility(View.GONE);
+                setFocusableAction(true);
             }
         });
         btnCancelDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 confirmDeleteModal.setVisibility(View.GONE);
+                setFocusableAction(true);
             }
         });
 
         btnEditConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewModel.updateSession().continueWith(new Continuation<Void, Void>() {
-                    @Override
-                    public Void then(@NonNull Task<Void> task) throws Exception {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(getContext(), R.string.save_edit, Toast.LENGTH_LONG).show();
-                            getActivity().finish();
-                        } else
-                            Toast.makeText(getContext(), R.string.error, Toast.LENGTH_SHORT).show();
-                        return null;
-                    }
-                });
+                if (viewModel.getNewName().equals("")) {
+                    etSessionTitle.setBackgroundResource(R.drawable.style_input_error);
+                    confirmEditModal.setVisibility(View.GONE);
+                    setFocusableAction(true);
+                    Toast.makeText(getContext(), R.string.add_title_grid, Toast.LENGTH_SHORT).show();
+                } else {
+                    viewModel.updateSession().continueWith(new Continuation<Void, Void>() {
+                        @Override
+                        public Void then(@NonNull Task<Void> task) throws Exception {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(getContext(), R.string.save_edit, Toast.LENGTH_LONG).show();
+                                getActivity().finish();
+                            } else
+                                Toast.makeText(getContext(), R.string.error, Toast.LENGTH_SHORT).show();
+                            return null;
+                        }
+                    });
+                }
             }
         });
 
         btnAppDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(viewModel.getSession().getValue().getServerVideoLink()==null){
+                if (viewModel.getSession().getValue().getServerVideoLink() == null) {
                     final AlertDialog.Builder popup = new AlertDialog.Builder(getContext());
                     popup.setTitle(R.string.alert);
                     popup.setMessage(R.string.info_delete);
@@ -203,7 +214,7 @@ public class EditSessionFragment extends Fragment {
                     });
                     popup.show();
 
-                }else setDeleteFile(viewModel.getSession().getValue().getDeviceVideoLink());
+                } else setDeleteFile(viewModel.getSession().getValue().getDeviceVideoLink());
             }
         });
 
@@ -212,11 +223,10 @@ public class EditSessionFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //TODO supprimer du serveur la video
-                if(viewModel.getSession().getValue().getDeviceVideoLink()!=null){
+                if (viewModel.getSession().getValue().getDeviceVideoLink() != null) {
                     File file = new File(viewModel.getSession().getValue().getDeviceVideoLink());
-                    if(file!=null)file.delete();
+                    if (file != null) file.delete();
                 }
-
                 viewModel.onCleared();
                 viewModel.deleteSession().continueWith(new Continuation<Void, Void>() {
                     @Override
@@ -238,7 +248,7 @@ public class EditSessionFragment extends Fragment {
 
     public void setDeleteFile(String linkFile) {
         File file = new File(linkFile);
-        if(file!=null)file.delete();
+        if (file != null) file.delete();
         viewModel.deleteLinkAppSession().continueWith(new Continuation<Void, Object>() {
             @Override
             public Object then(@NonNull Task<Void> task) throws Exception {
@@ -254,8 +264,8 @@ public class EditSessionFragment extends Fragment {
 
         confirmDeleteModal.setVisibility(View.GONE);
     }
-    
-    public void onClickSaveData(View view){
+
+    public void onClickSaveData(View view) {
         view.setClickable(true);
         view.setEnabled(true);
         view.setAlpha(1);
@@ -264,18 +274,30 @@ public class EditSessionFragment extends Fragment {
             public void onClick(View v) {
                 confirmEditModal.setVisibility(View.VISIBLE);
                 confirmDeleteModal.setVisibility(View.GONE);
+                setFocusableAction(false);
             }
         });
+
     }
-    public void onClickDeleteData(View view, final SessionModel session){
+
+    public void onClickDeleteData(View view, final SessionModel session) {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 confirmDeleteModal.setVisibility(View.VISIBLE);
                 confirmEditModal.setVisibility(View.GONE);
+                setFocusableAction(false);
                 if (session.getDeviceVideoLink() != null)
                     btnAppDelete.setVisibility(View.VISIBLE);
             }
         });
+
+    }
+
+    public void setFocusableAction(Boolean bool) {
+        etDescription.setFocusable(bool);
+        etSessionTitle.setFocusable(bool);
+        etDescription.setFocusableInTouchMode(bool);
+        etSessionTitle.setFocusableInTouchMode(bool);
     }
 }

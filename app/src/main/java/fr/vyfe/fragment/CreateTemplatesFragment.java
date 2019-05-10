@@ -44,6 +44,8 @@ public class CreateTemplatesFragment extends Fragment implements AdapterView.OnI
     private Button saveGridBtn;
     private TextView saveTv;
     private TextView gridInProgressTv;
+    private EditText tagNameView;
+    private Button btnAddTag;
 
     public static CreateTemplatesFragment newInstance() {
         return new CreateTemplatesFragment();
@@ -76,7 +78,7 @@ public class CreateTemplatesFragment extends Fragment implements AdapterView.OnI
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
-        final EditText tagNameView = view.findViewById(R.id.tag_name_edit);
+        tagNameView = view.findViewById(R.id.tag_name_edit);
         final RecyclerView recyclerTagList = view.findViewById(R.id.recycler_view);
         ivColor = view.findViewById(R.id.iv_color);
         llImport = view.findViewById(R.id.linearLayout);
@@ -98,7 +100,7 @@ public class CreateTemplatesFragment extends Fragment implements AdapterView.OnI
         recyclerTagList.setItemAnimator(new DefaultItemAnimator());
         recyclerTagList.setAdapter(mAdapter);
 
-        final Button btnAddTag = view.findViewById(R.id.add_tag_btn);
+        btnAddTag = view.findViewById(R.id.add_tag_btn);
         btnAddTag.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -106,8 +108,12 @@ public class CreateTemplatesFragment extends Fragment implements AdapterView.OnI
 
                 if (tagName.equals("")) {
                     Toast.makeText(getContext(), R.string.def_color, Toast.LENGTH_SHORT).show();
-                } else {
+                    tagNameView.setBackgroundResource(R.drawable.style_input_error);
+                    btnAddTag.setBackgroundResource(R.drawable.add_error);
 
+                } else {
+                    tagNameView.setBackgroundResource(R.drawable.style_input);
+                    btnAddTag.setBackgroundResource(R.drawable.add);
                     viewModel.addTemplate(tagColor, tagName);
                     tagNameView.setText("");
                     gridInProgressTv.setVisibility(View.VISIBLE);
@@ -173,22 +179,35 @@ public class CreateTemplatesFragment extends Fragment implements AdapterView.OnI
         mCallback.onCreateTagsFragmentButtonClicked(view);
     }
 
-
-    public interface OnButtonClickedListener {
-        void onCreateTagsFragmentButtonClicked(View view);
-    }
-
-    public void onClickSaveData(View view){
+    public void onClickSaveData(View view) {
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (viewModel.getTagSetName().getValue() != null && !viewModel.getTagSetName().getValue().isEmpty()) {
+                if (viewModel.getTagSetName().getValue() != null && !viewModel.getTagSetName().getValue().isEmpty() && viewModel.getTemplates().getValue() != null && viewModel.getTemplates().getValue().size() > 0) {
                     viewModel.save();
                     Toast.makeText(getActivity(), R.string.save_grid_info, Toast.LENGTH_LONG).show();
                     getActivity().finish();
-                } else
-                    Toast.makeText(getActivity(), R.string.grid_name_empty_warning, Toast.LENGTH_LONG).show();
+                }
+                if (viewModel.getTagSetName().getValue() == null || viewModel.getTagSetName().getValue().isEmpty()) {
+                    viewModel.setIsEmptyTitleTagSet(true);
+                } else viewModel.setIsEmptyTitleTagSet(false);
+
+                if (viewModel.getTemplates().getValue() == null || viewModel.getTemplates().getValue().size() == 0) {
+                    tagNameView.setBackgroundResource(R.drawable.style_input_error);
+                    btnAddTag.setBackgroundResource(R.drawable.add_error);
+
+                    Toast.makeText(getActivity(), R.string.def_color, Toast.LENGTH_LONG).show();
+                } else {
+                    btnAddTag.setBackgroundResource(R.drawable.add);
+                    tagNameView.setBackgroundResource(R.drawable.style_input);
+                }
+
+
             }
         });
+    }
+
+    public interface OnButtonClickedListener {
+        void onCreateTagsFragmentButtonClicked(View view);
     }
 }

@@ -24,6 +24,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ScrollView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -35,11 +36,9 @@ import fr.vyfe.activity.CreateSessionActivity;
 import fr.vyfe.activity.RecordActivity;
 import fr.vyfe.adapter.TagSetSpinnerAdapter;
 import fr.vyfe.adapter.TemplateRecyclerAdapter;
-import fr.vyfe.helper.InternetConnexionHelper;
 import fr.vyfe.helper.KeyboardHelper;
 import fr.vyfe.helper.ScrollHelper;
 import fr.vyfe.model.TagSetModel;
-import fr.vyfe.model.TemplateModel;
 import fr.vyfe.viewModel.CreateSessionViewModel;
 
 import static android.content.Context.CONNECTIVITY_SERVICE;
@@ -60,6 +59,7 @@ public class CreateSessionFragment extends Fragment {
     private ScrollView scrollMain;
     private EditText mEtVideoTitle;
     private TagSetSpinnerAdapter tagSetsSpinnerAdapter;
+    private TextView tvChoose;
 
     public static CreateSessionFragment newInstance() {
         return new CreateSessionFragment();
@@ -83,6 +83,7 @@ public class CreateSessionFragment extends Fragment {
         btnCreateGrid = result.findViewById(R.id.btn_intent_create_grid);
         share = result.findViewById(R.id.layout_share);
         recyclerViewImport = result.findViewById(R.id.recycler_view_import);
+        tvChoose = result.findViewById(R.id.tv_choose_grid);
         spinner = result.findViewById(R.id.spinner_session_infos);
         scrollMain = result.findViewById(R.id.scrool_main);
         mEtVideoTitle = result.findViewById(R.id.et_video_title2);
@@ -196,6 +197,14 @@ public class CreateSessionFragment extends Fragment {
                 if (viewModel.getSelectedTagSet().getValue() == null
                         || viewModel.getSessionName() == null
                         || viewModel.getSessionName().isEmpty()) {
+
+                    if (viewModel.getSessionName() == null || viewModel.getSessionName().isEmpty()) {
+                        mEtVideoTitle.setBackgroundResource(R.drawable.style_input_error);
+                    } else mEtVideoTitle.setBackgroundResource(R.drawable.style_input);
+
+                    if (viewModel.getSelectedTagSet().getValue() == null) {
+                        spinner.setBackgroundResource(R.drawable.style_input_error);
+                    }
                     Toast.makeText(getContext(), R.string.tagset_title_warning, Toast.LENGTH_LONG).show();
                 } else {
                     //TODO : à voir cmt on le gere quand la raspberry sera en place

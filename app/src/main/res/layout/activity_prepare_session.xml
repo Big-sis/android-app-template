@@ -8,8 +8,7 @@
     android:background="@drawable/bg"
     tools:context="fr.vyfe.activity.CreateGridActivity">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/bg"
@@ -19,43 +18,35 @@
         <include
             android:id="@+id/appBar"
             layout="@layout/toolbar" />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+                <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/create_grid_fragment_container"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"/>
 
-        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/create_grid_fragment_container"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"></FrameLayout>
+                <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/create_template_fragment_container"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent" />
+            </LinearLayout>
 
-        <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/create_template_fragment_container"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content" />
+        </ScrollView>
 
 
     </LinearLayout>
 
-    <LinearLayout
+    <include
+        android:id="@+id/burger"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:background="@color/colorCharcoal"
-        android:orientation="vertical">
-
-        <ImageView
-            android:layout_width="150dp"
-            android:layout_height="70dp"
-            android:layout_gravity="center"
-            android:background="@drawable/vyfe_blanc" />
-
-        <android.support.design.widget.NavigationView
-            android:id="@+id/nav_view"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:background="@color/colorCharcoal"
-            android:fitsSystemWindows="true"
-            app:itemIconTint="@color/colorWhiteTwo"
-            app:itemTextColor="@color/colorWhiteTwo"
-            app:menu="@menu/menu_main" />
-    </LinearLayout>
+        layout="@layout/burger_menu" />
 </android.support.v4.widget.DrawerLayout>
 
 

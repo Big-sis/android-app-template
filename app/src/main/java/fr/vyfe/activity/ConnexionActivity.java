@@ -16,18 +16,20 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
+import androidx.test.espresso.IdlingResource;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 import java.util.HashMap;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.VisibleForTesting;
-import androidx.test.espresso.IdlingResource;
 import fr.vyfe.Constants;
 import fr.vyfe.R;
 import fr.vyfe.helper.AuthHelper;
@@ -56,10 +58,10 @@ public class ConnexionActivity extends AppCompatActivity {
         final AuthHelper auth = AuthHelper.getInstance(this);
         final EditText inputMail = findViewById(R.id.et_mail);
         final EditText inputPass = findViewById(R.id.et_password);
-        Button forgotPassword = findViewById(R.id.tv_lost_password);
+        final Button forgotPassword = findViewById(R.id.tv_lost_password);
         final TextView btnCreateAccount = findViewById(R.id.btn_create_account);
-        ImageView ivShowPassword = findViewById(R.id.iv_show_password);
-
+        final ImageView ivShowPassword = findViewById(R.id.iv_show_password);
+        final LinearLayout llPassword = findViewById(R.id.linear_password);
 
         ivShowPassword.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,90 +70,125 @@ public class ConnexionActivity extends AppCompatActivity {
                 if (mPasswordVisibility == PASSWORD_HIDDEN) {
                     inputPass.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
                     mPasswordVisibility = PASSWORD_VISIBLE;
+                    ivShowPassword.setBackgroundResource(R.drawable.password);
                 } else {
                     inputPass.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
                     mPasswordVisibility = PASSWORD_HIDDEN;
+                    ivShowPassword.setBackgroundResource(R.drawable.nopassword);
                 }
             }
         });
 
 
-        Button connexion = findViewById(R.id.btn_connect);
+        final Button connexion = findViewById(R.id.btn_connect);
         connexion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String mail = inputMail.getText().toString();
-                String pass = inputPass.getText().toString();
+                if (connexion.getText().toString().equals(getResources().getString(R.string.connected_maj))) {
+                    String mail = inputMail.getText().toString();
+                    String pass = inputPass.getText().toString();
 
-                if (TextUtils.isEmpty(mail)) {
-                    Toast.makeText(ConnexionActivity.this, R.string.enter_email, Toast.LENGTH_SHORT).show();
-                    return;
-                }
+                    if (TextUtils.isEmpty(mail)) {
+                        Toast.makeText(ConnexionActivity.this, R.string.enter_email, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
 
-                if (TextUtils.isEmpty(pass)) {
-                    Toast.makeText(ConnexionActivity.this, R.string.enter_password, Toast.LENGTH_SHORT).show();
-                    return;
-                }
+                    if (TextUtils.isEmpty(pass)) {
+                        Toast.makeText(ConnexionActivity.this, R.string.enter_password, Toast.LENGTH_SHORT).show();
+                        return;
+                    }
 
-                ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-                NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
-                if (networkInfo == null) {
-                    Toast.makeText(ConnexionActivity.this, R.string.active_wifi, Toast.LENGTH_SHORT).show();
+                    ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+                    NetworkInfo networkInfo = connectivityManager.getActiveNetworkInfo();
+                    if (networkInfo == null) {
+                        Toast.makeText(ConnexionActivity.this, R.string.active_wifi, Toast.LENGTH_SHORT).show();
 
-                } else {
+                    } else {
 
-                    auth.signInWithEmailAndPassword(mail, pass, new AuthHelper.AuthProfileListener() {
-                        @Override
-                        public void onSuccessProfile(UserModel user) {
-                            HashMap<String, Boolean> userRoles = user.getRoles();
-                            if (userRoles.get(Constants.BDDV2_CUSTOM_USERS_ROLE_TEACHER)) {
-                                Intent intent = new Intent(ConnexionActivity.this, MainActivity.class);
-                                startActivity(intent);
-                                finish();
-                            } else {
-                                if (userRoles.get(Constants.BDDV2_CUSTOM_USERS_ROLE_ADMIN)) {
-                                    Toast.makeText(ConnexionActivity.this, R.string.no_license_available, Toast.LENGTH_LONG).show();
+                        auth.signInWithEmailAndPassword(mail, pass, new AuthHelper.AuthProfileListener() {
+                            @Override
+                            public void onSuccessProfile(UserModel user) {
+                                HashMap<String, Boolean> userRoles = user.getRoles();
+                                if (userRoles.get(Constants.BDDV2_CUSTOM_USERS_ROLE_TEACHER)) {
+                                    Intent intent = new Intent(ConnexionActivity.this, MainActivity.class);
+                                    startActivity(intent);
+                                    finish();
                                 } else {
-                                    final Snackbar snackbar = Snackbar.make(ConnexionActivity.this.findViewById(R.id.linear_layout_add), R.string.havent_roles_teacher, Snackbar.LENGTH_INDEFINITE).setDuration(9000).setAction(R.string.ok, new View.OnClickListener() {
-                                        @Override
-                                        public void onClick(View v) {
+                                    if (userRoles.get(Constants.BDDV2_CUSTOM_USERS_ROLE_ADMIN)) {
+                                        Toast.makeText(ConnexionActivity.this, R.string.no_license_available, Toast.LENGTH_LONG).show();
+                                    } else {
+                                        final Snackbar snackbar = Snackbar.make(ConnexionActivity.this.findViewById(R.id.linear_layout_add), R.string.havent_roles_teacher, Snackbar.LENGTH_INDEFINITE).setDuration(9000).setAction(R.string.ok, new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
 
-                                        }
-                                    });
-                                    View snackBarView = snackbar.getView();
-                                    TextView textView = snackBarView.findViewById(android.support.design.R.id.snackbar_text);
-                                    textView.setMaxLines(3);
-                                    textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                                    snackbar.setDuration(8000);
-                                    snackbar.show();
+                                            }
+                                        });
+                                        View snackBarView = snackbar.getView();
+                                        TextView textView = snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                                        textView.setMaxLines(3);
+                                        textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                                        snackbar.setDuration(8000);
+                                        snackbar.show();
+                                    }
                                 }
                             }
-                        }
 
-                        @Override
-                        public void onProfileFailed(Exception e) {
-                            Toast.makeText(ConnexionActivity.this, "Erreur = " + e.getMessage(), Toast.LENGTH_SHORT).show();
-                        }
+                            @Override
+                            public void onProfileFailed(Exception e) {
+                                Toast.makeText(ConnexionActivity.this, "Erreur = " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            }
 
-                        @Override
-                        public void onLogginFailed(Exception e) {
-                            final Snackbar snackbar = Snackbar.make(ConnexionActivity.this.findViewById(R.id.linear_layout_add), R.string.bad_authentifiaction, Snackbar.LENGTH_INDEFINITE).setDuration(9000).setAction(R.string.try_again, new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    inputMail.setText("");
-                                    inputPass.setText("");
-                                    inputMail.requestFocus();
+                            @Override
+                            public void onLogginFailed(Exception e) {
+                                final Snackbar snackbar = Snackbar.make(ConnexionActivity.this.findViewById(R.id.linear_layout_add), R.string.bad_authentifiaction, Snackbar.LENGTH_INDEFINITE).setDuration(9000).setAction(R.string.try_again, new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        inputMail.setText("");
+                                        inputPass.setText("");
+                                        inputMail.requestFocus();
+                                    }
+                                });
+                                View snackBarView = snackbar.getView();
+                                TextView textView = snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                                textView.setMaxLines(3);
+                                textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                                snackbar.setDuration(7000);
+                                snackbar.show();
+                            }
+                        });
+                    }
+                } else {
+                    if (!inputMail.getText().toString().isEmpty()) {
+                        auth.resetPassword(inputMail.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@android.support.annotation.NonNull Task<Void> task) {
+                                String messageAlerte = null;
+                                if (task.isSuccessful()) {
+                                    messageAlerte = getString(R.string.mail_send);
+                                } else {
+                                    messageAlerte = getString(R.string.mail_unkown);
                                 }
-                            });
-                            View snackBarView = snackbar.getView();
-                            TextView textView = snackBarView.findViewById(android.support.design.R.id.snackbar_text);
-                            textView.setMaxLines(3);
-                            textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                            snackbar.setDuration(7000);
-                            snackbar.show();
-                        }
-                    });
+
+                                final Snackbar snackbar = Snackbar.make(ConnexionActivity.this.findViewById(R.id.linear_layout_add), messageAlerte, Snackbar.LENGTH_INDEFINITE).setDuration(9000).setAction(R.string.try_again, new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+
+                                    }
+                                });
+                                View snackBarView = snackbar.getView();
+                                TextView textView = snackBarView.findViewById(android.support.design.R.id.snackbar_text);
+                                textView.setMaxLines(3);
+                                textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                                snackbar.setDuration(7000);
+                                snackbar.show();
+                            }
+                        });
+
+                    } else {
+                        Toast.makeText(ConnexionActivity.this, R.string.ask_email, Toast.LENGTH_SHORT).show();
+                    }
                 }
+
 
             }
         });
@@ -165,35 +202,21 @@ public class ConnexionActivity extends AppCompatActivity {
         forgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (!inputMail.getText().toString().isEmpty()) {
-                    auth.resetPassword(inputMail.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
-                        @Override
-                        public void onComplete(@android.support.annotation.NonNull Task<Void> task) {
-                            String messageAlerte = null;
-                            if (task.isSuccessful()) {
-                                messageAlerte = getString(R.string.mail_send);
-                            } else {
-                                messageAlerte = getString(R.string.mail_unkown);
-                            }
 
-                            final Snackbar snackbar = Snackbar.make(ConnexionActivity.this.findViewById(R.id.linear_layout_add), messageAlerte, Snackbar.LENGTH_INDEFINITE).setDuration(9000).setAction(R.string.try_again, new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-
-                                }
-                            });
-                            View snackBarView = snackbar.getView();
-                            TextView textView = snackBarView.findViewById(android.support.design.R.id.snackbar_text);
-                            textView.setMaxLines(3);
-                            textView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
-                            snackbar.setDuration(7000);
-                            snackbar.show();
+                forgotPassword.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        if (forgotPassword.getText().equals("Retour")) {
+                            llPassword.setVisibility(View.VISIBLE);
+                            forgotPassword.setText(R.string.lost_password);
+                            connexion.setText(R.string.connected_maj);
+                        } else {
+                            llPassword.setVisibility(View.GONE);
+                            connexion.setText(getResources().getString(R.string.init_password_email));
+                            forgotPassword.setText(getResources().getString(R.string.back));
                         }
-                    });
-
-                } else {
-                    Toast.makeText(ConnexionActivity.this, R.string.ask_email, Toast.LENGTH_SHORT).show();
-                }
+                    }
+                });
             }
         });
 

@@ -8,7 +8,9 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.net.ConnectivityManager;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -19,6 +21,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,6 +36,8 @@ import fr.vyfe.R;
 import fr.vyfe.helper.AuthHelper;
 import fr.vyfe.helper.NetworkChangeReceiver;
 import fr.vyfe.model.UserModel;
+import fr.vyfe.repository.FirebaseRemote;
+
 
 public abstract class VyfeActivity extends AppCompatActivity {
 
@@ -39,6 +45,8 @@ public abstract class VyfeActivity extends AppCompatActivity {
     static MenuItem menuInternet;
     protected AppCompatActivity self;
     private BroadcastReceiver mNetworkReceiver;
+    private boolean isUpload;
+
 
     public static void dialog(boolean value, Context context) {
         if (value) {
@@ -56,8 +64,9 @@ public abstract class VyfeActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         mAuth.signOut();
-                        self.finish();
-                        finishAffinity();
+                        Intent intent = new Intent(getApplicationContext(), ConnexionActivity.class);
+                        getApplicationContext().startActivity(intent);
+                        finish();
                     }
                 })
                 .setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
@@ -77,7 +86,7 @@ public abstract class VyfeActivity extends AppCompatActivity {
 
     public String getDisplayName() {
         UserModel currentUser = mAuth.getCurrentUser();
-        String firstName, lastName, displayName;
+        String firstName, lastName;
         if (currentUser.getFirstname() != null) firstName = currentUser.getFirstname();
         else firstName = "";
         if (currentUser.getLastName() != null) lastName = currentUser.getLastName();
@@ -90,13 +99,13 @@ public abstract class VyfeActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.settings, menu);
 
         menuInternet = menu.findItem(R.id.internet);
-
         mNetworkReceiver = new NetworkChangeReceiver();
         registerNetworkBroadcastForNougat();
         return true;
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
+
 
         switch (item.getItemId()) {
             case R.id.logout:
@@ -108,6 +117,8 @@ public abstract class VyfeActivity extends AppCompatActivity {
                 return true;
             case R.id.internet:
                 startActivityForResult(new Intent(android.provider.Settings.ACTION_WIFI_SETTINGS), 0);
+
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -119,6 +130,30 @@ public abstract class VyfeActivity extends AppCompatActivity {
         self = this;
         FirebaseApp.initializeApp(self);
         mAuth = AuthHelper.getInstance(this);
+
+
+        isUpload = new FirebaseRemote().initRemote(self);
+
+        if (isUpload) {
+            final AlertDialog.Builder popup = new AlertDialog.Builder(this);
+            popup.setTitle(R.string.upload_app);
+            popup.setMessage(R.string.info_upload);
+            popup.setPositiveButton("OUI", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent i = new Intent(android.content.Intent.ACTION_VIEW);
+                    i.setData(Uri.parse("https://play.google.com/store/apps/details?id=fr.vyfe"));
+                    startActivity(i);
+                }
+            });
+            popup.setNegativeButton("NON", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    mAuth.signOut();
+                }
+            });
+            popup.show();
+        }
 
 
         if (null == mAuth.getCurrentUser()) {
@@ -200,6 +235,7 @@ public abstract class VyfeActivity extends AppCompatActivity {
                 return true;
             }
         });
+
         toolbar.setNavigationIcon(R.drawable.menu_burger);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

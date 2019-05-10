@@ -90,7 +90,7 @@ public class TimelinePlayFragment extends Fragment {
             public void onChanged(@Nullable SessionModel sessionModel) {
 
                 //Create MainContainer Timeline
-                if (sessionModel.getTagsSet().getTemplates() != null) {
+                if (sessionModel.getTagsSet()!= null && sessionModel.getTagsSet().getTemplates() != null) {
 
                     //TODO  timeline allTags
                     //Creation teacher mainTimeline

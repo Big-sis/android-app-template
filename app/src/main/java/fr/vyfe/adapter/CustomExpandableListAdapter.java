@@ -4,6 +4,7 @@ package fr.vyfe.adapter;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.database.DataSetObserver;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,6 +103,18 @@ public class CustomExpandableListAdapter extends BaseExpandableListAdapter {
         listTitleTextView.setText(listTitle.getName());
 
         ImageView ivDelete = convertView.findViewById(R.id.iv_delete);
+
+        if (viewModel.getUserId() != null && !listTitle.getAuthor().getUid().equals(viewModel.getUserId())) {
+            ivDelete.setVisibility(View.GONE);
+            ivDelete.setClickable(false);
+        } else {
+            ivDelete.setVisibility(View.VISIBLE);
+            ivDelete.setClickable(true);
+        }
+        if (viewModel.getUserId() != null && !listTitle.getAuthor().getUid().equals(viewModel.getUserId())) {
+            ivDelete.setVisibility(View.GONE);
+            ivDelete.setClickable(false);
+        }
         ivDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

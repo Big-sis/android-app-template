@@ -29,6 +29,8 @@ public class CreateGridViewModel extends VyfeViewModel {
     private MutableLiveData<ArrayList<TagSetModel>> allTagSets;
     private MutableLiveData<TagSetModel> selectedTagSet;
 
+    private MutableLiveData<Boolean> isEmptyTitleTagSet;
+
 
     CreateGridViewModel(String userId, String displayName, String companyId) {
         tagSetRepository = new TagSetRepository(userId, companyId);
@@ -42,6 +44,21 @@ public class CreateGridViewModel extends VyfeViewModel {
         allTagSets = new MutableLiveData<>();
         selectedTagSet = new MutableLiveData<>();
 
+        isEmptyTitleTagSet = new MutableLiveData<>();
+        isEmptyTitleTagSet.setValue(false);
+
+    }
+
+    public MutableLiveData<Boolean> isEmptyTitleGrid() {
+        return isEmptyTitleTagSet;
+    }
+
+    public void setIsEmptyTitleTagSet(Boolean isEmpty) {
+        isEmptyTitleTagSet.setValue(isEmpty);
+    }
+
+    public String getUserId() {
+        return userId;
     }
 
     public void init() {
@@ -71,7 +88,10 @@ public class CreateGridViewModel extends VyfeViewModel {
         tagSetRepository.addListListener(new BaseListValueEventListener.CallbackInterface<TagSetModel>() {
             @Override
             public void onSuccess(List<TagSetModel> result) {
-                for (TagSetModel tagSet : result) {
+
+
+                ArrayList<TagSetModel> tagSetModels = TagSetsFilteredHelper.tagSetByAuthorAndShared(result, userId);
+                for (TagSetModel tagSet : tagSetModels) {
                     Collections.sort(tagSet.getTemplates(), new Comparator<TemplateModel>() {
                         @Override
                         public int compare(TemplateModel o1, TemplateModel o2) {
@@ -79,8 +99,6 @@ public class CreateGridViewModel extends VyfeViewModel {
                         }
                     });
                 }
-
-                ArrayList<TagSetModel> tagSetModels = TagSetsFilteredHelper.tagSetByAuthorAndShared(result, userId);
 
                 allTagSets.setValue(tagSetModels);
             }

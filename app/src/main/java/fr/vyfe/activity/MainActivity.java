@@ -15,16 +15,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import fr.vyfe.R;
 import fr.vyfe.helper.AuthHelper;
 
 public class MainActivity extends VyfeActivity {
-
-    private WifiManager wifiManager;
-    private String networkSSID;
-    private String networkPass;
 
 
     @SuppressLint("ResourceType")
@@ -37,6 +34,8 @@ public class MainActivity extends VyfeActivity {
         toolbar.setLogo(R.drawable.vyfe_blanc);
         setSupportActionBar(toolbar);
 
+
+        TextView tvHelloUser = findViewById(R.id.hello_user);
         LinearLayout btnStartSession = findViewById(R.id.btn_start_session);
         LinearLayout btnVideos = findViewById(R.id.btn_videos);
         LinearLayout btnCreateGrid = findViewById(R.id.btn_create_grid);
@@ -44,6 +43,8 @@ public class MainActivity extends VyfeActivity {
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         initNavBar(navigationView, toolbar, drawerLayout);
+
+        tvHelloUser.setText(getResources().getString(R.string.hello_user) +" "+ getDisplayName()+",");
 
         btnStartSession.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,9 +71,6 @@ public class MainActivity extends VyfeActivity {
             }
         });
 
-        wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-        networkSSID = MainActivity.this.getString(R.string.networkSSID);
-        networkPass = MainActivity.this.getString(R.string.networkPass);
     }
 
     @Override
