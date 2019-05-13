@@ -8,7 +8,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
-import android.graphics.Color;
 import android.net.ConnectivityManager;
 import android.net.Uri;
 import android.os.Build;
@@ -21,8 +20,6 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -87,9 +84,11 @@ public abstract class VyfeActivity extends AppCompatActivity {
     public String getDisplayName() {
         UserModel currentUser = mAuth.getCurrentUser();
         String firstName, lastName;
-        if (currentUser.getFirstname() != null) firstName = currentUser.getFirstname();
+        if (currentUser != null && currentUser.getFirstname() != null)
+            firstName = currentUser.getFirstname();
         else firstName = "";
-        if (currentUser.getLastName() != null) lastName = currentUser.getLastName();
+        if (currentUser != null && currentUser.getLastName() != null)
+            lastName = currentUser.getLastName();
         else lastName = "";
         return firstName + " " + lastName;
     }

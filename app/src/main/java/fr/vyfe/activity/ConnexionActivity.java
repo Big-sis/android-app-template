@@ -2,6 +2,7 @@ package fr.vyfe.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
@@ -12,6 +13,7 @@ import android.text.Editable;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -45,6 +47,7 @@ public class ConnexionActivity extends AppCompatActivity {
     private static final int PASSWORD_HIDDEN = 1;
     private static final int PASSWORD_VISIBLE = 2;
     private int mPasswordVisibility = PASSWORD_HIDDEN;
+    private Button forgotPassword;
 
     // The Idling Resource which will be null in production.
     @Nullable
@@ -58,7 +61,7 @@ public class ConnexionActivity extends AppCompatActivity {
         final AuthHelper auth = AuthHelper.getInstance(this);
         final EditText inputMail = findViewById(R.id.et_mail);
         final EditText inputPass = findViewById(R.id.et_password);
-        final Button forgotPassword = findViewById(R.id.tv_lost_password);
+        forgotPassword = findViewById(R.id.tv_lost_password);
         final TextView btnCreateAccount = findViewById(R.id.btn_create_account);
         final ImageView ivShowPassword = findViewById(R.id.iv_show_password);
         final LinearLayout llPassword = findViewById(R.id.linear_password);
@@ -203,20 +206,15 @@ public class ConnexionActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                forgotPassword.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        if (forgotPassword.getText().equals("Retour")) {
-                            llPassword.setVisibility(View.VISIBLE);
-                            forgotPassword.setText(R.string.lost_password);
-                            connexion.setText(R.string.connected_maj);
-                        } else {
-                            llPassword.setVisibility(View.GONE);
-                            connexion.setText(getResources().getString(R.string.init_password_email));
-                            forgotPassword.setText(getResources().getString(R.string.back));
-                        }
-                    }
-                });
+                if (forgotPassword.getText().equals(getResources().getString(R.string.back))) {
+                    llPassword.setVisibility(View.VISIBLE);
+                    forgotPassword.setText(R.string.lost_password);
+                    connexion.setText(R.string.connected_maj);
+                } else {
+                    llPassword.setVisibility(View.GONE);
+                    connexion.setText(getResources().getString(R.string.init_password_email));
+                    forgotPassword.setText(getResources().getString(R.string.back));
+                }
             }
         });
 
@@ -266,5 +264,15 @@ public class ConnexionActivity extends AppCompatActivity {
         return mIdlingResource;
     }
 
+    @Override
+    public void onBackPressed() {
 
+        if (forgotPassword.getText().equals(getResources().getString(R.string.lost_password))) {
+            finishAffinity();
+            this.finish();
+        } else {
+            Intent intent = new Intent(this, ConnexionActivity.class);
+            this.startActivity(intent);
+        }
+    }
 }
