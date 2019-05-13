@@ -24,6 +24,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.FirebaseApp;
@@ -104,8 +105,6 @@ public abstract class VyfeActivity extends AppCompatActivity {
     }
 
     public boolean onOptionsItemSelected(MenuItem item) {
-
-
         switch (item.getItemId()) {
             case R.id.logout:
                 confirmDisconnection();
@@ -116,7 +115,6 @@ public abstract class VyfeActivity extends AppCompatActivity {
                 return true;
             case R.id.internet:
                 startActivityForResult(new Intent(android.provider.Settings.ACTION_WIFI_SETTINGS), 0);
-
 
         }
 
@@ -207,8 +205,11 @@ public abstract class VyfeActivity extends AppCompatActivity {
             return true;
     }
 
-    public void initNavBar(NavigationView mNavigationView, Toolbar toolbar, final DrawerLayout drawerLayout) {
+    public void initNavBar(final NavigationView mNavigationView, Toolbar toolbar, final DrawerLayout drawerLayout) {
 
+
+        MenuItem versionItem = mNavigationView.getMenu().findItem(R.id.version);
+        versionItem.setTitle(getResources().getString(R.string.version) + new FirebaseRemote().getVersionInfo(self));
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {
