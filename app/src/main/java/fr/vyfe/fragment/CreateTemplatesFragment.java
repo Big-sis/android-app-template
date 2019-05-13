@@ -131,7 +131,6 @@ public class CreateTemplatesFragment extends Fragment implements AdapterView.OnI
         ItemTouchHelper itemTouchHelper = new ItemTouchHelper(new ItemTouchHelper.SimpleCallback(ItemTouchHelper.UP | ItemTouchHelper.DOWN, ItemTouchHelper.LEFT | ItemTouchHelper.RIGHT) {
             @Override
             public boolean onMove(RecyclerView recyclerView, RecyclerView.ViewHolder viewHolder, RecyclerView.ViewHolder target) {
-                Toast.makeText(getContext(), R.string.move, Toast.LENGTH_SHORT).show();
                 moveItem(viewHolder.getAdapterPosition(), target.getAdapterPosition());
                 return true;
             }
@@ -201,7 +200,6 @@ public class CreateTemplatesFragment extends Fragment implements AdapterView.OnI
                     btnAddTag.setBackgroundResource(R.drawable.add);
                     tagNameView.setBackgroundResource(R.drawable.style_input);
                 }
-
 
             }
         });

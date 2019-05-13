@@ -83,11 +83,12 @@ public class RecordVideoViewModel extends VyfeViewModel {
     public void startRecord() {
         if (!stepRecord.getValue().equals(STEP_RECODRING)) {
             stepRecord.setValue(STEP_RECODRING);
-            sessionRepository.setTimestamp(session.getValue());
+
         }
         if (areTagsActive.getValue() != null && areTagsActive.getValue().booleanValue()) {
             isLiveRecording.setValue(true);
         }
+        sessionRepository.setTimestamp(session.getValue());
         activeLiveRecording();
     }
 
