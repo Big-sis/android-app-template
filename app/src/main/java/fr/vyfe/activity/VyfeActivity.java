@@ -24,7 +24,6 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.FirebaseApp;
@@ -111,7 +110,7 @@ public abstract class VyfeActivity extends AppCompatActivity {
                 return true;
             case R.id.home:
                 Intent intentHome = new Intent(this, MainActivity.class);
-                startActivity(intentHome);
+                if (!isCurrentActivity(self.toString(), "MainActivity")) startActivity(intentHome);
                 return true;
             case R.id.internet:
                 startActivityForResult(new Intent(android.provider.Settings.ACTION_WIFI_SETTINGS), 0);
@@ -216,20 +215,30 @@ public abstract class VyfeActivity extends AppCompatActivity {
                 switch (menuItem.getItemId()) {
                     case R.id.home:
                         Intent intentMain = new Intent(self, MainActivity.class);
-                        self.startActivity(intentMain);
+                        if (isCurrentActivity(self.toString(), "MainActivity")) {
+                            drawerLayout.closeDrawer(Gravity.LEFT);
+                        } else self.startActivity(intentMain);
+
                         return true;
                     case R.id.tag_set:
                         Intent intentCreateGrid = new Intent(self, TagSetsActivity.class);
-                        self.startActivity(intentCreateGrid);
+                        if (isCurrentActivity(self.toString(), "TagSetsActivity")) {
+                            drawerLayout.closeDrawer(Gravity.LEFT);
+                        } else self.startActivity(intentCreateGrid);
+
                         return true;
                     case R.id.session:
                         Intent intentCreateSession = new Intent(self, CreateSessionActivity.class);
-                        self.startActivity(intentCreateSession);
+                        if (isCurrentActivity(self.toString(), "CreateSessionActivity")) {
+                            drawerLayout.closeDrawer(Gravity.LEFT);
+                        } else self.startActivity(intentCreateSession);
                         return true;
 
                     case R.id.movie:
                         Intent intentMovie = new Intent(self, MySessionsActivity.class);
-                        self.startActivity(intentMovie);
+                        if (isCurrentActivity(self.toString(), "MySessionsActivity")) {
+                            drawerLayout.closeDrawer(Gravity.LEFT);
+                        } else self.startActivity(intentMovie);
                         return true;
                 }
                 return true;
@@ -254,5 +263,9 @@ public abstract class VyfeActivity extends AppCompatActivity {
         }
     }
 
-
+    public Boolean isCurrentActivity(String activity, String intentActivity) {
+        String[] separatedActivity = activity.split(".activity.");
+        String[] nameActivity = separatedActivity[1].split("@");
+        return nameActivity[0].equals(intentActivity);
+    }
 }
