@@ -30,7 +30,7 @@ class FirebaseRemote  {
     }
 
     fun fetchUpload(activity: Activity) {
-        var versionStore = ""
+        var versionStore: String
         remoteConfig.fetchAndActivate()
                 .addOnCompleteListener(activity) { task ->
                     if (task.isSuccessful) {

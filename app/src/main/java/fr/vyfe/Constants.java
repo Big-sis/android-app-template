@@ -2,9 +2,6 @@ package fr.vyfe;
 
 public final class Constants {
 
-    public final static String FIREBASE_DB_VERSION_URL = "https://vyfe-dev-8702b.firebaseio.com/";
-    public static  String FIREBASE_DB_FUNCTIONSPRODUCTION = "production";
-    public static String FIREBASE_DB_FUNCTIONSDEV="";
     public static final int DAY_TO_MILLISECOND_FACTOR = 86400000; // Operation = 24(day) * 60(hour) * 60(minute) * 1000 (millis)
     public static final int UNIT_TO_MILLI_FACTOR = 1000;
     public static final int SPLASH_TIME_OUT = 300;
@@ -43,7 +40,7 @@ public final class Constants {
     public static final String VIMEO_TOKEN_EXTRA = "vimeo_token";
     public static final String COMPANYID_EXTRA = "company_id";
 
-    //CUSTUM
+    //CUSTOM
     public static final String BDDV2_CUSTOM_USERS_ROLE_ADMIN = "admin";
     public static final String BDDV2_CUSTOM_USERS_ROLE_TEACHER = "teacher";
     public static final String BDDV2_CUSTOM_USERS_ROLE_STUDENT = "student";

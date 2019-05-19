@@ -13,10 +13,38 @@ android {
         versionName "1.1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
+    signingConfigs {
+        dev {
+            storeFile file("debug.keystore")
+        }
+
+        prod {
+            storeFile file("../keystorev2.jks")
+            storePassword RELEASE_STORE_PASSWORD
+            keyAlias RELEASE_KEY_ALIAS
+            keyPassword RELEASE_KEY_PASSWORD
+        }
+    }
     buildTypes {
-        release {
-            minifyEnabled false
+        prod.initWith(buildTypes.release)
+        prod {
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "FIREBASE_DATABASE_URL", FIREBASE_DATABASE_URL_PROD
+            buildConfigField "String", "DB_PREFIX", '"prod"'
+            signingConfig signingConfigs.prod
+        }
+        staging {
+            buildConfigField "String", "FIREBASE_DATABASE_URL", FIREBASE_DATABASE_URL_STAGING
+            buildConfigField "String", "DB_PREFIX", '"staging"'
+            signingConfig signingConfigs.prod
+            debuggable true
+        }
+        dev.initWith(buildTypes.debug)
+        dev {
+            buildConfigField "String", "FIREBASE_DATABASE_URL", FIREBASE_DATABASE_URL_DEV
+            buildConfigField "String", "DB_PREFIX", '"dev"'
+            debuggable true
         }
     }
     lintOptions {
@@ -31,8 +59,6 @@ android {
     // Temporary fix until alpha10
     packagingOptions {
         exclude 'META-INF/proguard/androidx-annotations.pro'
-    }
-    productFlavors {
     }
 }
 
@@ -73,6 +99,10 @@ dependencies {
     implementation 'com.google.firebase:firebase-config:16.5.0'
 }
 
-
+android.variantFilter { variant ->
+    if(variant.buildType.name.equals('release') || variant.buildType.name.equals('debug')) {
+        variant.setIgnore(true)
+    }
+}
 
 apply plugin: 'com.google.gms.google-services'

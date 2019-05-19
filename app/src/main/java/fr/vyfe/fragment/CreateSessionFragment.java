@@ -170,25 +170,6 @@ public class CreateSessionFragment extends Fragment {
         });
         KeyboardHelper.CloseKeyboard(getContext(), spinner);
 
-        if (((CreateSessionActivity) getActivity()).isMulti) {
-            buttonGo.setText(R.string.next);
-            WifiManager wifiManager = (WifiManager) getContext().getApplicationContext().getSystemService(Context.WIFI_SERVICE);
-            final String networkSSID = getContext().getString(R.string.networkSSID);
-            String wifiManagerConnectionInfo = wifiManager.getConnectionInfo().getSSID();
-            if (wifiManagerConnectionInfo.equals('"' + networkSSID + '"')) {
-                Toast.makeText(getContext(), "Vous êtes co au rasberry", Toast.LENGTH_SHORT).show();
-            }
-
-
-            ConnectivityManager connManager = (ConnectivityManager) getContext().getSystemService(CONNECTIVITY_SERVICE);
-            assert connManager != null;
-            final String wifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI).getExtraInfo();
-            if (wifi != null && wifi.equals('"' + networkSSID + '"')) {
-                Toast.makeText(getContext(), "yes", Toast.LENGTH_SHORT).show();
-            } else Toast.makeText(getContext(), "non", Toast.LENGTH_SHORT).show();
-        }
-
-
         buttonGo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

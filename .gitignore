@@ -134,10 +134,6 @@ fabric.properties
 
 # End of https://www.gitignore.io/api/androidstudio
 
-app/src/main/res/values/conf.xml
-app/src/main/res/values/password.xml
+keystorev2.jks
 
-app/src/main/res/values/password.xml
-
-app/keystore*
-
+gradle.properties

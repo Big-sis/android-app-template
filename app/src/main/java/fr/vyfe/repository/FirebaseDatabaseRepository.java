@@ -8,6 +8,7 @@ import com.google.firebase.database.Query;
 import java.util.HashMap;
 import java.util.Map;
 
+import fr.vyfe.BuildConfig;
 import fr.vyfe.Constants;
 import fr.vyfe.mapper.FirebaseMapper;
 import fr.vyfe.model.SessionModel;
@@ -49,10 +50,10 @@ public abstract class FirebaseDatabaseRepository<Model> {
         this.tagSetId = tagSetId;
         if (!isPersistenceEnabled)
         {
-            FirebaseDatabase.getInstance(Constants.FIREBASE_DB_VERSION_URL).setPersistenceEnabled(true);
+            FirebaseDatabase.getInstance(BuildConfig.FIREBASE_DATABASE_URL).setPersistenceEnabled(true);
             isPersistenceEnabled = true;
         }
-        databaseReference = FirebaseDatabase.getInstance(Constants.FIREBASE_DB_VERSION_URL).getReference(getRootNode());
+        databaseReference = FirebaseDatabase.getInstance(BuildConfig.FIREBASE_DATABASE_URL).getReference(getRootNode());
         databaseReference.keepSynced(true);
 
     }
