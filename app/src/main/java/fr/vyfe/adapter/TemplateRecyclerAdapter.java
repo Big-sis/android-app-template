@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Objects;
 
 import fr.vyfe.Constants;
 import fr.vyfe.R;
@@ -62,15 +63,19 @@ public class TemplateRecyclerAdapter extends RecyclerView.Adapter<TemplateRecycl
             case "create":
                 holder.ivMenu.setVisibility(View.VISIBLE);
                 holder.tvNum.setVisibility(View.INVISIBLE);
+                holder.ivDelete.setVisibility(View.VISIBLE);
                 break;
             case "start":
                 holder.tvNum.setVisibility(View.INVISIBLE);
+                holder.ivDelete.setVisibility(View.GONE);
                 break;
             case "play":
                 holder.tvNum.setVisibility(View.VISIBLE);
+                holder.ivDelete.setVisibility(View.GONE);
                 break;
             default:
                 holder.tvNum.setVisibility(View.VISIBLE);
+                holder.ivDelete.setVisibility(View.GONE);
                 //TagsSetSession : les tags de la grille
                 holder.viewForeground.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -92,12 +97,36 @@ public class TemplateRecyclerAdapter extends RecyclerView.Adapter<TemplateRecycl
         holder.tvName.setText(template.getName());
         holder.ivColor.setBackgroundResource(ColorHelper.getInstance().findColorById(template.getColor().getId()).getImage());
         holder.tvNum.setText(String.valueOf(occurrences));
+
+        holder.ivDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                holder.ivDelete.setBackgroundResource(R.drawable.deletered);
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        deleteItem(position);
+                        notifyDataSetChanged();
+                        holder.ivDelete.setBackgroundResource(R.drawable.delete);
+                    }
+                }, Constants.SPLASH_TIME_OUT_400);
+
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
         if (mTemplates == null) return 0;
         return mTemplates.size();
+    }
+
+    public void deleteItem(int position) {
+
+        for (int i = position + 1; i < mTemplates.size(); i++) {
+            mTemplates.get(i).setPosition(mTemplates.get(i).getPosition() - 1);
+        }
+        Objects.requireNonNull(mTemplates).remove(position);
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
@@ -107,6 +136,7 @@ public class TemplateRecyclerAdapter extends RecyclerView.Adapter<TemplateRecycl
         TextView tvNum;
         LinearLayout viewForeground;
         ImageView ivMenu;
+        ImageView ivDelete;
 
         public ViewHolder(View v) {
             super(v);
@@ -115,6 +145,7 @@ public class TemplateRecyclerAdapter extends RecyclerView.Adapter<TemplateRecycl
             this.tvNum = v.findViewById(R.id.tv_stats);
             this.viewForeground = v.findViewById(R.id.view_foreground);
             this.ivMenu = v.findViewById(R.id.iv_menu);
+            this.ivDelete = v.findViewById(R.id.iv_delete);
 
         }
     }

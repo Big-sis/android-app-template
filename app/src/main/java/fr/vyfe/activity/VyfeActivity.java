@@ -28,12 +28,14 @@ import android.widget.Toast;
 
 import com.google.firebase.FirebaseApp;
 
+
+import fr.vyfe.BuildConfig;
 import fr.vyfe.Constants;
 import fr.vyfe.R;
 import fr.vyfe.helper.AuthHelper;
 import fr.vyfe.helper.NetworkChangeReceiver;
 import fr.vyfe.model.UserModel;
-import fr.vyfe.repository.FirebaseRemote;
+import fr.vyfe.helper.FirebaseRemoteHelper;
 
 
 public abstract class VyfeActivity extends AppCompatActivity {
@@ -43,6 +45,7 @@ public abstract class VyfeActivity extends AppCompatActivity {
     protected AppCompatActivity self;
     private BroadcastReceiver mNetworkReceiver;
     private boolean isUpload;
+    private String buildTypes;
 
 
     public static void dialog(boolean value, Context context) {
@@ -127,8 +130,8 @@ public abstract class VyfeActivity extends AppCompatActivity {
         FirebaseApp.initializeApp(self);
         mAuth = AuthHelper.getInstance(this);
 
-
-        isUpload = new FirebaseRemote().initRemote(self);
+     // if(BuildConfig.BUILD_TYPE !=null)  buildTypes = BuildConfig.BUILD_TYPE;
+        isUpload = new FirebaseRemoteHelper().initRemote(self);
 
         if (isUpload) {
             final AlertDialog.Builder popup = new AlertDialog.Builder(this);
@@ -206,9 +209,12 @@ public abstract class VyfeActivity extends AppCompatActivity {
 
     public void initNavBar(final NavigationView mNavigationView, Toolbar toolbar, final DrawerLayout drawerLayout) {
 
-
         MenuItem versionItem = mNavigationView.getMenu().findItem(R.id.version);
-        versionItem.setTitle(getResources().getString(R.string.version) + new FirebaseRemote().getVersionInfo(self));
+        if(buildTypes!=null && (buildTypes.equals("dev")||buildTypes.equals("staging")))
+            versionItem.setTitle(getResources().getString(R.string.version) + new FirebaseRemoteHelper().getVersionInfo(self)+" , Env : "+ buildTypes);
+        else versionItem.setTitle(getResources().getString(R.string.version) + new FirebaseRemoteHelper().getVersionInfo(self));
+
+
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem menuItem) {

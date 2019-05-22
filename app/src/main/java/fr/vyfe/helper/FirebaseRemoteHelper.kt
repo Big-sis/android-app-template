@@ -1,4 +1,4 @@
-package fr.vyfe.repository
+package fr.vyfe.helper
 
 import android.app.Activity
 import android.content.pm.PackageManager
@@ -6,7 +6,7 @@ import com.google.firebase.remoteconfig.FirebaseRemoteConfig
 import com.google.firebase.remoteconfig.FirebaseRemoteConfigSettings
 
 
-class FirebaseRemote  {
+class FirebaseRemoteHelper  {
 
     private lateinit var remoteConfig: FirebaseRemoteConfig
     private var IS_UPLOAD = "force_upload"
@@ -48,12 +48,8 @@ class FirebaseRemote  {
 
     fun getVersionInfo(activity: Activity): String {
         var versionName = ""
-        try {
             val packageInfo = activity.getPackageManager().getPackageInfo(activity.getPackageName(), 0)
             versionName = packageInfo.versionName
-        } catch (e: PackageManager.NameNotFoundException) {
-            e.printStackTrace()
-        }
         return versionName
     }
 }

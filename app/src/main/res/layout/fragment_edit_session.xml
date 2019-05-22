@@ -263,34 +263,22 @@
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
             android:layout_marginTop="8dp"
+            android:layout_marginBottom="100dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
-            <ImageView
-                android:id="@+id/iv_delete"
-                android:layout_width="90dp"
-                android:layout_height="84dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginStart="8dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:srcCompat="@drawable/icons8_effacer_96"
-                tools:ignore="MissingConstraints" />
 
             <TextView
                 android:id="@+id/tv_video_save"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
                 android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
-                android:text="@string/confirm_delete_video"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:text="Sur quel support voulez vous supprimer la vidéo ?"
                 android:textColor="@color/colorWhiteTwo"
                 android:textSize="18sp"
                 app:fontFamily="@font/roboto_bold"
@@ -301,11 +289,11 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="40dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/tv_video_save">
@@ -315,29 +303,114 @@
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:background="@null"
+                    android:layout_gravity="center_vertical"
                     android:text="@string/cancel"
                     android:textColor="@color/colorWhiteTwo"
                     app:layout_constraintStart_toStartOf="parent" />
 
-                <Button
-                    android:id="@+id/btn_app_delete"
+                <android.support.constraint.ConstraintLayout
                     android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_marginLeft="36dp"
-                    android:background="@drawable/style_button"
-                    android:text="@string/delete_app"
-                    android:textColor="@color/colorWhiteTwo"
-                    android:visibility="gone"/>
+                    android:layout_height="100dp"
+                    android:background="@drawable/style_input"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
+                    android:id="@+id/container_app_delete"
+                    >
 
+                    <ImageView
+                        android:id="@+id/iv_app_delete"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/tab"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                <Button
-                    android:id="@+id/btn_all_delete"
+                    <ImageView
+                        android:id="@+id/imageView3"
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginStart="36dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/icons8_effacer_96"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="@+id/iv_app_delete" />
+
+                </android.support.constraint.ConstraintLayout>
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/container_all_delete"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginRight="20dp"
                     android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_marginLeft="36dp"
-                    android:background="@drawable/style_button"
-                    android:text="@string/delete_all"
-                    android:textColor="@color/colorWhiteTwo" />
+                    android:layout_height="100dp"
+                    android:background="@drawable/style_input">
+
+                    <ImageView
+                        android:id="@+id/iv_web_delete"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_marginStart="12dp"
+                        android:layout_marginTop="8dp"
+                        android:background="@drawable/laptop"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginStart="44dp"
+                        android:background="@drawable/icons8_effacer_96"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="@+id/iv_web_delete" />
+
+                    <TextView
+                        android:id="@+id/textView2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+
+                        android:layout_marginBottom="8dp"
+                        android:text="ET"
+                        android:textColor="@color/colorWhiteTwo"
+                        android:textSize="18sp"
+                        app:fontFamily="@font/roboto_bold"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@+id/iv_web_delete"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:id="@+id/imageView2"
+                        android:layout_width="80dp"
+                        android:layout_height="80dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/tab"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.8"
+                        app:layout_constraintStart_toEndOf="@+id/textView2"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <ImageView
+                        android:layout_width="50dp"
+                        android:layout_height="50dp"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="4dp"
+                        android:background="@drawable/icons8_effacer_96"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toStartOf="@+id/imageView2" />
+
+                </android.support.constraint.ConstraintLayout>
+
 
             </LinearLayout>
         </android.support.constraint.ConstraintLayout>

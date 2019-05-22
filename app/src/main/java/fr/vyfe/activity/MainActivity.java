@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import fr.vyfe.BuildConfig;
 import fr.vyfe.R;
 import fr.vyfe.helper.AuthHelper;
 
@@ -33,6 +34,9 @@ public class MainActivity extends VyfeActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setLogo(R.drawable.vyfe_blanc);
         setSupportActionBar(toolbar);
+
+        String a = BuildConfig.BUILD_TYPE;
+
 
 
         TextView tvHelloUser = findViewById(R.id.hello_user);

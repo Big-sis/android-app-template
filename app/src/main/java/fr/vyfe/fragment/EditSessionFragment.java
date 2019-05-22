@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -41,10 +42,10 @@ public class EditSessionFragment extends Fragment {
     private Button btnEditConfirm;
     private View confirmDeleteModal;
     private Button btnCancelDelete;
-    private Button btnAppDelete;
-    private Button btnAllDelete;
     private TextView tvSave;
     private TextView tvDelete;
+    private ConstraintLayout containerBtnAppDelete;
+    private ConstraintLayout containerBtnAllDelete;
 
     public static EditSessionFragment newInstance() {
         return new EditSessionFragment();
@@ -78,8 +79,8 @@ public class EditSessionFragment extends Fragment {
         //Delete
         confirmDeleteModal = result.findViewById(R.id.confirm_action_delete);
         btnCancelDelete = result.findViewById(R.id.btn_cancel_delete);
-        btnAppDelete = result.findViewById(R.id.btn_app_delete);
-        btnAllDelete = result.findViewById(R.id.btn_all_delete);
+        containerBtnAppDelete = result.findViewById(R.id.container_app_delete);
+        containerBtnAllDelete = result.findViewById(R.id.container_all_delete);
 
         return result;
     }
@@ -181,7 +182,7 @@ public class EditSessionFragment extends Fragment {
             }
         });
 
-        btnAppDelete.setOnClickListener(new View.OnClickListener() {
+        containerBtnAppDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (viewModel.getSession().getValue().getServerVideoLink() == null) {
@@ -219,7 +220,7 @@ public class EditSessionFragment extends Fragment {
         });
 
 
-        btnAllDelete.setOnClickListener(new View.OnClickListener() {
+        containerBtnAllDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //TODO supprimer du serveur la video
@@ -287,8 +288,14 @@ public class EditSessionFragment extends Fragment {
                 confirmDeleteModal.setVisibility(View.VISIBLE);
                 confirmEditModal.setVisibility(View.GONE);
                 setFocusableAction(false);
-                if (session.getDeviceVideoLink() != null)
-                    btnAppDelete.setVisibility(View.VISIBLE);
+                if (session.getDeviceVideoLink() != null) {
+                    containerBtnAppDelete.setVisibility(View.VISIBLE);
+                    containerBtnAppDelete.setAlpha(1f);
+                    containerBtnAppDelete.setClickable(true);
+                } else {
+                    containerBtnAppDelete.setClickable(false);
+                    containerBtnAppDelete.setAlpha(0.4f);
+                }
             }
         });
 

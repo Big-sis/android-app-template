@@ -5,11 +5,16 @@
     android:id="@+id/view_foreground"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/color_gradient_grey"
-    android:orientation="horizontal"
     android:layout_marginBottom="5dp"
+    android:orientation="horizontal"
     tools:layout_editor_absoluteY="25dp">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="9"
+        android:background="@drawable/color_gradient_grey"
+        android:orientation="horizontal">
 
         <ImageView
             android:id="@+id/iv_color"
@@ -17,26 +22,25 @@
             android:layout_height="fill_parent"
             android:layout_weight="0.1"
             android:background="@android:color/holo_blue_light"
-            android:minHeight="10dp"
-            android:minWidth="10dp" />
+            android:minWidth="10dp"
+            android:minHeight="10dp" />
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
             android:layout_weight="0.9"
-            >
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/tv_name"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
                 android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
                 android:layout_weight="8"
                 android:gravity="center_vertical"
                 android:singleLine="false"
@@ -47,17 +51,17 @@
 
             <TextView
                 android:id="@+id/tv_stats"
-                android:textSize="15sp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginBottom="8dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:layout_weight="2"
                 android:gravity="end"
                 android:textColor="@android:color/white"
+                android:textSize="15sp"
                 android:visibility="visible"
                 app:fontFamily="@font/roboto"
                 tools:text="0"
@@ -68,16 +72,31 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_gravity="center"
-                android:layout_marginBottom="5dp"
-                android:layout_marginRight="15dp"
                 android:layout_marginTop="5dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginBottom="5dp"
                 android:layout_weight="1"
                 android:src="@drawable/move"
                 android:visibility="gone" />
+
         </LinearLayout>
 
 
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_delete"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="center"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:layout_weight="1"
+        android:background="@drawable/delete"
+        android:foregroundGravity="center"
+        android:visibility="gone" />
+</LinearLayout>
 
 
 
