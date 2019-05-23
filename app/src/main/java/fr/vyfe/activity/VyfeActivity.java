@@ -43,7 +43,7 @@ public abstract class VyfeActivity extends AppCompatActivity {
     static MenuItem menuInternet;
     protected AppCompatActivity self;
     private BroadcastReceiver mNetworkReceiver;
-    private boolean isUpload;
+    private boolean isUpdate;
     private String buildTypes;
 
 
@@ -130,9 +130,9 @@ public abstract class VyfeActivity extends AppCompatActivity {
         mAuth = AuthHelper.getInstance(this);
 
         if (BuildConfig.BUILD_TYPE != null) buildTypes = BuildConfig.BUILD_TYPE;
-        isUpload = new FirebaseRemoteHelper().initRemote(self);
+        isUpdate = new FirebaseRemoteHelper().initRemote(self);
 
-        if (isUpload) {
+        if (isUpdate) {
             final AlertDialog.Builder popup = new AlertDialog.Builder(this);
             popup.setTitle(R.string.upload_app);
             popup.setMessage(R.string.info_upload);

@@ -33,7 +33,6 @@ android {
             buildConfigField "String", "FIREBASE_DATABASE_URL", FIREBASE_DATABASE_URL_PROD
             buildConfigField "String", "DB_PREFIX", '"prod"'
             signingConfig signingConfigs.prod
-            debuggable true
         }
         staging {
             buildConfigField "String", "FIREBASE_DATABASE_URL", FIREBASE_DATABASE_URL_STAGING
