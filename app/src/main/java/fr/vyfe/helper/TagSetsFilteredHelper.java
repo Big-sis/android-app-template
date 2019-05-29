@@ -17,7 +17,7 @@ public class TagSetsFilteredHelper {
                 }
             }
             //TagsSets shared
-            if (tagSet.getAuthor() != null && tagSet.getAuthor().getUid() != null && !tagSet.getAuthor().equals(userId) && tagSet.isShared()) {
+            if (tagSet.getAuthor() != null && tagSet.getAuthor().getUid() != null && !tagSet.getAuthor().getUid().equals(userId) && tagSet.isShared()) {
                 tagSetModels.add(tagSet);
             }
         }

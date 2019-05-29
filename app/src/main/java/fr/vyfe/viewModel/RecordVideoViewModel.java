@@ -88,8 +88,9 @@ public class RecordVideoViewModel extends VyfeViewModel {
         if (areTagsActive.getValue() != null && areTagsActive.getValue().booleanValue()) {
             isLiveRecording.setValue(true);
         }
-        sessionRepository.setTimestamp(session.getValue());
+
         activeLiveRecording();
+        sessionRepository.setTimestamp(session.getValue());
     }
 
     public void stop() {
