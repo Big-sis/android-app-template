@@ -22,11 +22,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.VisibleForTesting;
-import androidx.test.espresso.IdlingResource;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
@@ -35,7 +30,6 @@ import java.util.HashMap;
 import fr.vyfe.Constants;
 import fr.vyfe.R;
 import fr.vyfe.helper.AuthHelper;
-import fr.vyfe.idlingResource.SimpleIdlingResource;
 import fr.vyfe.model.UserModel;
 
 
@@ -50,8 +44,7 @@ public class ConnexionActivity extends AppCompatActivity {
     private Button forgotPassword;
 
     // The Idling Resource which will be null in production.
-    @Nullable
-    private SimpleIdlingResource mIdlingResource;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -252,17 +245,6 @@ public class ConnexionActivity extends AppCompatActivity {
     }
 
 
-    /**
-     * Only called from test, creates and returns a new {@link SimpleIdlingResource}.
-     */
-    @VisibleForTesting
-    @NonNull
-    public IdlingResource getIdlingResource() {
-        if (mIdlingResource == null) {
-            mIdlingResource = new SimpleIdlingResource();
-        }
-        return mIdlingResource;
-    }
 
     @Override
     public void onBackPressed() {
