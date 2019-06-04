@@ -101,7 +101,7 @@
                     android:layout_marginTop="25dp"
                     android:layout_marginLeft="10dp">
                     <Button
-                        android:id="@+id/btn_edit"
+                        android:id="@+id/img_button_edit"
                         android:layout_width="50dp"
                         android:layout_height="50dp"
                         android:alpha="0.4"
@@ -131,7 +131,7 @@
                     android:layout_marginTop="25dp">
 
                 <Button
-                    android:id="@+id/btn_delete"
+                    android:id="@+id/img_btn_delete"
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:background="@drawable/delete"

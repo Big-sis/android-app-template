@@ -64,8 +64,8 @@ public class EditSessionFragment extends Fragment {
         etSessionTitle = result.findViewById(R.id.et_video_title);
         etDescription = result.findViewById(R.id.et_description);
 
-        btnEdit = result.findViewById(R.id.btn_edit);
-        btnDelete = result.findViewById(R.id.btn_delete);
+        btnEdit = result.findViewById(R.id.img_button_edit);
+        btnDelete = result.findViewById(R.id.img_btn_delete);
 
         tvSave = result.findViewById(R.id.tv_save);
         tvDelete = result.findViewById(R.id.tv_delete);

@@ -25,23 +25,53 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <android.support.v7.widget.SearchView
-            android:id="@+id/search_video"
+        <LinearLayout
+            android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:defaultQueryHint="@string/search"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            android:orientation="horizontal"
+            android:gravity="end"
             app:layout_constraintTop_toBottomOf="@+id/appBar">
 
-        </android.support.v7.widget.SearchView>
+            <android.support.v7.widget.SearchView
+                android:id="@+id/search_video"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:defaultQueryHint="@string/search"
+                android:layout_gravity="center_vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/appBar">
+
+            </android.support.v7.widget.SearchView>
+            <Button
+                android:id="@+id/btn_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="@string/cancel"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/search_video" />
+            <Button
+                android:id="@+id/btn_delete_all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="@string/delete_selection"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/search_video" />
+        </LinearLayout>
 
         <GridView
             android:id="@+id/grid_videos"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
             android:clipToPadding="false"
-            android:columnWidth="150dp"
+            android:columnWidth="190dp"
             android:gravity="center"
             android:horizontalSpacing="16dp"
             android:numColumns="auto_fit"
@@ -50,7 +80,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/search_video"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
             tools:listitem="@layout/item_video" />
 
     </android.support.constraint.ConstraintLayout>

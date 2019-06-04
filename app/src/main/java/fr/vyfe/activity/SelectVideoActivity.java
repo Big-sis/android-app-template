@@ -9,7 +9,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -95,7 +94,7 @@ public class SelectVideoActivity extends VyfeActivity {
         initNavBar(navigationView, toolbar, drawerLayout);
 
         Button playBtn = findViewById(R.id.bt_play);
-        Button editBtn = findViewById(R.id.btn_edit);
+        Button editBtn = findViewById(R.id.img_button_edit);
         final TextView tvTitle = findViewById(R.id.tv_title);
         final TextView tvDescription = findViewById(R.id.tv_description);
         final TextView gridTextView = findViewById(R.id.tv_grid);

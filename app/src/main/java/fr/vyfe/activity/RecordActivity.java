@@ -67,7 +67,7 @@ public class RecordActivity extends VyfeActivity {
 
         constraintErrorSpace = findViewById(R.id.session_error_space);
         contrainOkRecord = findViewById(R.id.session_record);
-        Button btnPlay = findViewById(R.id.btn_play);
+        Button btnPlay = findViewById(R.id.img_button_play);
         Button btnBackMain = findViewById(R.id.btn_back_main);
         Button btnRestart = findViewById(R.id.btn_restart);
         Button btnBackMainError = findViewById(R.id.btn_back_main_error);

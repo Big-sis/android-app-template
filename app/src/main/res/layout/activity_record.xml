@@ -172,7 +172,7 @@
                     android:visibility="visible" />
 
                 <Button
-                    android:id="@+id/btn_play"
+                    android:id="@+id/img_button_play"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="36dp"

@@ -143,7 +143,7 @@
                             app:fontFamily="@font/roboto_bold" />
 
                         <Button
-                            android:id="@+id/btn_edit"
+                            android:id="@+id/img_button_edit"
                             style="?android:attr/buttonBarButtonStyle"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"

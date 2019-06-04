@@ -193,5 +193,9 @@
     <string name="upload_app">Mise à jour de l\'application</string>
     <string name="info_upload">Vous devez télécharger l\'application pour avoir accès aux nouvelles fonctionnalités</string>
     <string name="version">Version :</string>
+    <string name="delete_selection">Supprimer la sélection</string>
+    <string name="do_you_want">Voulez vous supprimer</string>
+    <string name="ask_delete_selection">Voulez vous supprimer la selection</string>
+    <string name="videos">videos</string>
 
 </resources>

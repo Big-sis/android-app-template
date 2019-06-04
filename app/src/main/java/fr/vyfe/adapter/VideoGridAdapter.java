@@ -5,8 +5,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -18,6 +21,7 @@ import fr.vyfe.activity.VyfeActivity;
 import fr.vyfe.helper.TimeHelper;
 import fr.vyfe.model.SessionModel;
 
+
 public class VideoGridAdapter extends BaseAdapter implements Filterable {
 
     private final VyfeActivity mContext;
@@ -25,13 +29,14 @@ public class VideoGridAdapter extends BaseAdapter implements Filterable {
 
     private ArrayList<SessionModel> filterList;
     private CustomVideoFilter filter;
-
     private SessionModel mSession;
+
 
     public VideoGridAdapter(VyfeActivity context, ArrayList<SessionModel> sessions) {
         this.mContext = context;
         this.mSessions = sessions;
         this.filterList = sessions;
+
     }
 
     @Override
@@ -51,7 +56,7 @@ public class VideoGridAdapter extends BaseAdapter implements Filterable {
 
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, final ViewGroup parent) {
 
         mSession = this.mSessions.get(position);
 
@@ -60,27 +65,46 @@ public class VideoGridAdapter extends BaseAdapter implements Filterable {
             convertView = layoutInflater.inflate(R.layout.item_video, null);
         }
 
-        //Test avec seulement le nom
         final TextView tvName = convertView.findViewById(R.id.title_video);
-        tvName.setText(mSession.getName());
-
         final TextView tvDate = convertView.findViewById(R.id.video_date);
-        tvDate.setText(mContext.getString(R.string.date_session)+mSession.getFormatDate());
-
-
         TextView tvDuration = convertView.findViewById(R.id.video_duration);
-        tvDuration.setText(mContext.getString(R.string.duration_session)+ TimeHelper.formatMillisecTime(mSession.getDuration()));
 
         ImageView ivAvailableDevice = convertView.findViewById(R.id.iv_available_device);
-        if (mSession.getDeviceVideoLink()!= null)
+        ImageView ivAvailablePlateforme = convertView.findViewById(R.id.iv_available_plateforme);
+
+        ImageButton imgBtnPlay = convertView.findViewById(R.id.img_button_play);
+        ImageButton imgBtnEdit = convertView.findViewById(R.id.img_button_edit);
+        ImageButton imgBtnDelete = convertView.findViewById(R.id.img_btn_delete);
+        final CheckBox checkBoxDelete = convertView.findViewById(R.id.checkbox_delete);
+
+        tvName.setText(mSession.getName());
+        tvDate.setText(mContext.getString(R.string.date_session) + mSession.getFormatDate());
+        tvDuration.setText(mContext.getString(R.string.duration_session) + TimeHelper.formatMillisecTime(mSession.getDuration()));
+
+
+        if (mSession.getDeviceVideoLink() != null)
             ivAvailableDevice.setBackgroundResource(R.drawable.dispo);
         else ivAvailableDevice.setBackgroundResource(R.drawable.nodispo);
 
-        ImageView ivAvailablePlateforme = convertView.findViewById(R.id.iv_available_plateforme);
-        if (mSession.getServerVideoLink()!= null)
+        if (mSession.getServerVideoLink() != null)
             ivAvailablePlateforme.setBackgroundResource(R.drawable.dispo);
         else ivAvailablePlateforme.setBackgroundResource(R.drawable.nodispo);
-      
+
+        setOnClickAction(imgBtnPlay, parent, position);
+        setOnClickAction(imgBtnDelete, parent, position);
+        setOnClickAction(imgBtnEdit, parent, position);
+        setOnClickAction(checkBoxDelete,parent,position);
+
+        convertView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                checkBoxDelete.setVisibility(View.VISIBLE);
+                checkBoxDelete.setChecked(true);
+                ((GridView) parent).performItemClick(v, position, 0);
+                return false;
+            }
+        });
+
         return convertView;
     }
 
@@ -90,5 +114,16 @@ public class VideoGridAdapter extends BaseAdapter implements Filterable {
             filter = new CustomVideoFilter(filterList, this);
         }
         return filter;
+    }
+
+    public void setOnClickAction(final View view, final View parent, final int position) {
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((GridView) parent).performItemClick(v, position, 0);
+
+            }
+        });
+
     }
 }

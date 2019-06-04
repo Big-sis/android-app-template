@@ -3,10 +3,13 @@ package fr.vyfe.viewModel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 
+import com.google.android.gms.tasks.Task;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 
 import fr.vyfe.Constants;
@@ -26,6 +29,9 @@ public class MyVideosViewModel extends VyfeViewModel {
     private String filter;
     private MutableLiveData<Boolean> permissions;
     private String androidId;
+    private HashMap<SessionModel, Boolean> mSelectedSessions;
+    private MutableLiveData<Boolean> isCancel;
+
 
     public MyVideosViewModel(String companyId, String mAuth, String androidId) {
         this.mAuth = mAuth;
@@ -38,8 +44,50 @@ public class MyVideosViewModel extends VyfeViewModel {
         permissions = new MutableLiveData<>();
         permissions.setValue(false);
         this.androidId = androidId;
+        isCancel = new MutableLiveData<>();
+        isCancel.setValue(true);
+    }
+
+    public void initSelectedSession() {
+
+        mSelectedSessions = new HashMap<>();
+        for (SessionModel sessionModel : sessions.getValue()) {
+            mSelectedSessions.put(sessionModel,false);
+        }
+    }
+
+    public void selectedSession(SessionModel sessionModel){
+        if (!mSelectedSessions.get(sessionModel).booleanValue()){
+            mSelectedSessions.put(sessionModel,true);
+        }
+
+        else {
+            mSelectedSessions.remove(sessionModel);
+            mSelectedSessions.put(sessionModel,false);
+        }
 
     }
+    public MutableLiveData<Boolean> isCancelSelection(){
+        return isCancel;
+    }
+    public void cancelSelected(){
+        isCancel.setValue(true);
+    }
+
+    public void inProgress(){
+        isCancel.setValue(false);
+    }
+
+
+    public void longSelectedSession(SessionModel sessionModel){
+         mSelectedSessions.remove(sessionModel);
+            mSelectedSessions.put(sessionModel,true);
+
+    }
+    public HashMap<SessionModel, Boolean> getmSelectedSessions() {
+        return mSelectedSessions;
+    }
+
 
     public void permissionsAccepted() {
         permissions.setValue(true);
@@ -60,6 +108,10 @@ public class MyVideosViewModel extends VyfeViewModel {
     @Override
     protected void onCleared() {
         repository.removeListeners();
+    }
+
+    public Task<Void> deleteSession(String id) {
+        return repository.remove(id);
     }
 
     private void loadSessions() {
@@ -84,9 +136,7 @@ public class MyVideosViewModel extends VyfeViewModel {
                                     session.getDeviceVideoLink() != null &&
                                     session.getDeviceVideoLink().equals(nameCache))
                                 filtered.add(session);
-
                         }
-
                     }
 
                     for (SessionModel session : result) {
