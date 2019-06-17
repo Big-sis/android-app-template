@@ -23,6 +23,7 @@ public class SessionEntity {
     private HashMap<String, ObserverEntity> observers;
     private HashMap<String, TagEntity> tags;
     private OwnerEntity owner;
+    private Boolean shared;
 
 
     private String tagSetId;
@@ -178,5 +179,13 @@ public class SessionEntity {
 
     public void setTagSet(TagSetEntity tagSet) {
         this.tagSet = tagSet;
+    }
+
+    public void setShared(Boolean shared) {
+        this.shared = shared;
+    }
+
+    public Boolean getShared() {
+        return shared;
     }
 }

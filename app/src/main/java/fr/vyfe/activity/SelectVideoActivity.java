@@ -168,7 +168,7 @@ public class SelectVideoActivity extends VyfeActivity {
                         });
                     }
 
-                    if (session.getDescription() != null) {
+                    if (session.getDescription() != null && !session.getDescription().equals("")) {
                         tvDescription.setText(session.getDescription());
                     } else {
                         tvDescription.setText(R.string.no_description);

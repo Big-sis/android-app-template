@@ -33,6 +33,10 @@ public class EditSessionViewModel extends VyfeViewModel {
         hasDataChanged.setValue(true);
     }
 
+    public String getNewDescription(){
+        return this.newDescription;
+    }
+
     public String getNewName() {
         return this.newName;
 

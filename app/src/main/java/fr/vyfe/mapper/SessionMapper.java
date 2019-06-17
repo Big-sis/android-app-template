@@ -38,13 +38,13 @@ public class SessionMapper extends FirebaseMapper<SessionEntity, SessionModel> {
 
             //Owner
             OwnerModel owner = null;
-            if(sessionEntity.getOwner()!=null){
-               owner = new OwnerModel(sessionEntity.getOwner().getUid(),sessionEntity.getOwner().getDisplayName());
+            if (sessionEntity.getOwner() != null) {
+                owner = new OwnerModel(sessionEntity.getOwner().getUid(), sessionEntity.getOwner().getDisplayName());
                 session.setOwner(owner);
             } else {
                 //deprecated
                 if (sessionEntity.getAuthor() != null) {
-                    owner = new OwnerModel(sessionEntity.getAuthor(),null);
+                    owner = new OwnerModel(sessionEntity.getAuthor(), null);
                     session.setOwner(owner);
                 }
             }
@@ -78,13 +78,16 @@ public class SessionMapper extends FirebaseMapper<SessionEntity, SessionModel> {
     public SessionEntity unMap(SessionModel sessionModel) {
         SessionEntity sessionEntity = new SessionEntity();
 
-        if(sessionModel.getOwner()!= null){
-            OwnerEntity owner = new OwnerEntity(sessionModel.getOwner().getUid(),sessionModel.getOwner().getDiplayName());
+        if (sessionModel.getOwner() != null) {
+            OwnerEntity owner = new OwnerEntity(sessionModel.getOwner().getUid(), sessionModel.getOwner().getDiplayName());
             sessionEntity.setOwner(owner);
         }
 
         sessionEntity.setTimestamp(sessionModel.getDate().getTime());
-        sessionEntity.setDescription(sessionModel.getDescription());
+        sessionEntity.setShared(true);
+        if (sessionModel.getDescription() == null) {
+            sessionEntity.setDescription("");
+        } else sessionEntity.setDescription(sessionModel.getDescription());
         sessionEntity.setIdAndroid(sessionModel.getIdAndroid());
         sessionEntity.setName(sessionModel.getName());
         sessionEntity.setPathApp(sessionModel.getDeviceVideoLink());
@@ -98,7 +101,6 @@ public class SessionMapper extends FirebaseMapper<SessionEntity, SessionModel> {
         if (sessionModel.getObservers() != null)
             sessionEntity.setObservers(new ObserverMapper().unMapList(sessionModel.getObservers()));
         else sessionEntity.setObservers(null);
-
 
 
         return sessionEntity;

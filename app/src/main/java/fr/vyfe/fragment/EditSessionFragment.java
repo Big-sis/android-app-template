@@ -161,7 +161,7 @@ public class EditSessionFragment extends Fragment {
         btnEditConfirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (viewModel.getNewName().equals("")) {
+                if (viewModel.getNewName() != null && viewModel.getNewName().equals("") && !viewModel.getNewDescription().equals("")) {
                     etSessionTitle.setBackgroundResource(R.drawable.style_input_error);
                     confirmEditModal.setVisibility(View.GONE);
                     setFocusableAction(true);
