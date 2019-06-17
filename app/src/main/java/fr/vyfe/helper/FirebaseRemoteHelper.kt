@@ -47,8 +47,8 @@ class FirebaseRemoteHelper  {
     }
 
     fun getVersionInfo(activity: Activity): String {
-        var versionName = ""
-            val packageInfo = activity.getPackageManager().getPackageInfo(activity.getPackageName(), 0)
+        var versionName: String
+        val packageInfo = activity.getPackageManager().getPackageInfo(activity.getPackageName(), 0)
             versionName = packageInfo.versionName
         return versionName
     }

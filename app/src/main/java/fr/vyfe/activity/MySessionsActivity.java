@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.SearchView;
@@ -36,6 +37,7 @@ import java.util.Map;
 import fr.vyfe.Constants;
 import fr.vyfe.R;
 import fr.vyfe.adapter.VideoGridAdapter;
+import fr.vyfe.helper.OpenInfoHelper;
 import fr.vyfe.model.SessionModel;
 import fr.vyfe.viewModel.MyVideosViewModel;
 import fr.vyfe.viewModel.MyVideosViewModelFactory;
@@ -77,8 +79,11 @@ public class MySessionsActivity extends VyfeActivity {
         getSupportActionBar().setTitle(R.string.my_videos);
 
         DrawerLayout drawerLayout = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        NavigationView navigationView = findViewById(R.id.nav_view);
         initNavBar(navigationView, toolbar, drawerLayout);
+
+        ConstraintLayout containerInfo = findViewById(R.id.info);
+        OpenInfoHelper.setOnClick(Constants.INFO_VIDEO,containerInfo,this);
 
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override

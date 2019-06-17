@@ -37,6 +37,7 @@ import fr.vyfe.activity.RecordActivity;
 import fr.vyfe.adapter.TagSetSpinnerAdapter;
 import fr.vyfe.adapter.TemplateRecyclerAdapter;
 import fr.vyfe.helper.KeyboardHelper;
+import fr.vyfe.helper.OpenInfoHelper;
 import fr.vyfe.helper.ScrollHelper;
 import fr.vyfe.model.TagSetModel;
 import fr.vyfe.viewModel.CreateSessionViewModel;
@@ -60,7 +61,7 @@ public class CreateSessionFragment extends Fragment {
     private EditText mEtVideoTitle;
     private TagSetSpinnerAdapter tagSetsSpinnerAdapter;
     private TextView tvChoose;
-
+    private ConstraintLayout mContainerInfo;
     public static CreateSessionFragment newInstance() {
         return new CreateSessionFragment();
     }
@@ -87,12 +88,14 @@ public class CreateSessionFragment extends Fragment {
         spinner = result.findViewById(R.id.spinner_session_infos);
         scrollMain = result.findViewById(R.id.scrool_main);
         mEtVideoTitle = result.findViewById(R.id.et_video_title2);
+        mContainerInfo = result.findViewById(R.id.info);
         return result;
     }
 
     @Override
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
 
+        OpenInfoHelper.setOnClick(Constants.INFO_SESSION,mContainerInfo,getContext());
         mEtVideoTitle.setText(viewModel.getSessionName());
 
         if (((CreateSessionActivity) getActivity()).isMulti) buttonGo.setText(R.string.next);

@@ -26,7 +26,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
-            android:id="@+id/linearLayout2"
+            android:id="@+id/container_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -41,9 +41,11 @@
                 android:layout_gravity="center_vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/appBar">
+                app:layout_constraintTop_toBottomOf="@+id/appBar"/>
 
-            </android.support.v7.widget.SearchView>
+            <include
+                android:id="@+id/info"
+                layout="@layout/_mock_info" />
             <Button
                 android:id="@+id/btn_cancel"
                 android:layout_width="wrap_content"
@@ -80,15 +82,15 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout2"
+            app:layout_constraintTop_toBottomOf="@+id/container_info"
             tools:listitem="@layout/item_video" />
 
     </android.support.constraint.ConstraintLayout>
 
     <include
         android:id="@+id/burger"
+        layout="@layout/burger_menu"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_gravity="start"
-        layout="@layout/burger_menu" />
+        android:layout_gravity="start" />
 </android.support.v4.widget.DrawerLayout>

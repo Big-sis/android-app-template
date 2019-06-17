@@ -57,6 +57,11 @@ public final class Constants {
     public static final String SHARED_PREF_USER_FIRSTNAME = "userFirstname";
     public static final String SHARED_PREF_USER_LASTNAME = "userLastname";
 
+    public static final String INFO_SESSION= "infoSession";
+    public static final String INFO_TAGSET= "infoTagSet";
+    public static final String INFO_CREATE_TAGSET= "infoCreateTagSet";
+    public static final String INFO_VIDEO = "infoVideo";
+
 
 
 }

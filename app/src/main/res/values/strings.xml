@@ -193,6 +193,10 @@
     <string name="upload_app">Mise à jour de l\'application</string>
     <string name="info_upload">Vous devez télécharger l\'application pour avoir accès aux nouvelles fonctionnalités</string>
     <string name="version">Version :</string>
+    <string name="info_tagSet">Une grille d\'observation est constituée de tags. Ils représentent vos critères à observer pour améliorer le debriefing  Si une grille est partagée et que vous n\'êtes pas l\'auteur vous ne pourrez pas la supprimer</string>
+    <string name="info_sessions">Une session correspond aux informations d\'une séance d\'enregistrement: titre, grille, tags et vidéo</string>
+    <string name="info_create_tagSet">Le titre de votre grille vous permettra de la retrouver facilement lors du lancement d\'une Session Vidéo. Vos tags correspondent aux items que vous souhaitez observer Previlegier des noms de tag court et explicite</string>
+    <string name="info_video">Vos vidéos correspondent aux vidéos dont vous êtes l\'auteur.  Pour consulter des vidéos partagées vous pouvez vous rendre sur www.app-vyfe.fr</string>
     <string name="delete_selection">Supprimer la sélection</string>
     <string name="do_you_want">Voulez vous supprimer</string>
     <string name="ask_delete_selection">Voulez vous supprimer la selection</string>

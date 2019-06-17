@@ -5,18 +5,23 @@ import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
+import android.text.Layout;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import fr.vyfe.Constants;
 import fr.vyfe.R;
 import fr.vyfe.fragment.TemplatesFragment;
 import fr.vyfe.fragment.UserTagSetsFragment;
+import fr.vyfe.helper.OpenInfoHelper;
 import fr.vyfe.model.TagSetModel;
 import fr.vyfe.viewModel.CreateGridViewModel;
 import fr.vyfe.viewModel.CreateGridViewModelFactory;
@@ -64,6 +69,8 @@ public class TagSetsActivity extends VyfeActivity {
             }
         });
 
+        ConstraintLayout containerInfo = findViewById(R.id.info);
+        OpenInfoHelper.setOnClick(Constants.INFO_TAGSET,containerInfo,this);
     }
 
 

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
@@ -21,15 +20,25 @@
             android:id="@+id/appBar"
             layout="@layout/toolbar" />
 
-        <TextView
-            android:id="@+id/number_tag_set_tv"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="30dp"
-            android:layout_marginTop="30dp"
-            android:text="@string/you_have"
-            android:textColor="@color/colorWhiteTwo"
-            android:textSize="17dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/number_tag_set_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="30dp"
+                android:text="@string/you_have"
+                android:textColor="@color/colorWhiteTwo"
+                android:textSize="17dp" />
+
+            <include
+                android:id="@+id/info"
+                layout="@layout/_mock_info" />
+        </LinearLayout>
+
 
         <LinearLayout
             android:id="@+id/container_create_grid"
@@ -93,8 +102,8 @@
 
     <include
         android:id="@+id/burger"
+        layout="@layout/burger_menu"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_gravity="start"
-        layout="@layout/burger_menu" />
+        android:layout_gravity="start" />
 </android.support.v4.widget.DrawerLayout>

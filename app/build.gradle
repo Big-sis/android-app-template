@@ -15,7 +15,7 @@ android {
     }
     signingConfigs {
         dev {
-            storeFile file('/Users/vyfe/AndroidStudioProjects/toulouse-0218-java-vyfe/keystorev2.jks')
+            storeFile file("debug.keystore")
         }
 
         prod {
@@ -60,6 +60,7 @@ android {
     packagingOptions {
         exclude 'META-INF/proguard/androidx-annotations.pro'
     }
+
 }
 
 repositories {
