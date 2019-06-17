@@ -136,4 +136,10 @@ fabric.properties
 
 keystorev2.jks
 
+# App
+app/prod/
+app/staging/
+app/debug/
+
+
 gradle.properties
