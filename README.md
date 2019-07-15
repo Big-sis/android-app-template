@@ -19,3 +19,6 @@
 
 - ViewModel
     https://medium.com/globallogic-latinoamerica-mobile/viewmodel-firebase-database-3cc708044b5d
+
+- Config Gradle
+    https://medium.com/mindorks/avoiding-conflicts-in-android-gradle-dependencies-28e4200ca235
