@@ -3,9 +3,10 @@ package fr.vyfe.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
 
-public class TagModel implements Parcelable, VyfeModel {
+public class TagModel implements Parcelable, VyfeModel,  Comparable<TagModel> {
 
     private String id;
     private ColorModel color;
@@ -137,6 +138,11 @@ public class TagModel implements Parcelable, VyfeModel {
         dest.writeString(taggerId);
         dest.writeInt(start);
         dest.writeInt(end);
+    }
+
+    @Override
+    public int compareTo(@NonNull TagModel o) {
+        return (this.start - o.getStart());
     }
 }
 

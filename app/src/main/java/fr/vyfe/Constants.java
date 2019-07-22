@@ -62,6 +62,9 @@ public final class Constants {
     public static final String INFO_CREATE_TAGSET= "infoCreateTagSet";
     public static final String INFO_VIDEO = "infoVideo";
 
+    public static final String LOW_SPEED = "low";
+    public static final String MEDIUM_SPEED = "medium";
+    public static final String HIGHT_SPEED = "hight";
 
-
+    public static final int SIZE_WINDOWS_TIMELINE = 20000;
 }

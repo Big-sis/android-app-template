@@ -142,7 +142,6 @@ public class TimelinePlayFragment extends Fragment {
                                 mSeekBar.setThumb(newThumb);
                                 mSeekBar.getViewTreeObserver().removeOnPreDrawListener(this);
                                 mSeekBar.setMax(viewModel.getSession().getValue().getDuration());
-                                viewModel.setTimelinesize(togetherContainer.getMeasuredHeight());
                                 return true;
                             }
                         });

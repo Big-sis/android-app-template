@@ -5,7 +5,6 @@ import android.support.constraint.ConstraintLayout;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import fr.vyfe.Constants;
 import fr.vyfe.R;
@@ -33,8 +32,6 @@ public class OpenInfoHelper {
                 break;
 
         }
-
-
 
         tvInfo.setText(info);
         ivInfo.setOnClickListener(new View.OnClickListener() {

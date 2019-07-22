@@ -2,6 +2,7 @@ package fr.vyfe.viewModel;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
+import android.view.ViewGroup;
 
 import java.util.List;
 
@@ -26,10 +27,6 @@ public class PlayVideoViewModel extends VyfeViewModel {
     private MutableLiveData<Integer> seekPosition;
     private MutableLiveData<Boolean> moveSeek;
 
-    private MutableLiveData<Integer> timelinesize;
-    private MutableLiveData<Integer> videoContainerHeight;
-    private MutableLiveData<Integer> timelineContainerHeight;
-
     private MutableLiveData<Boolean> fullTimeline;
     private MutableLiveData<String> linkPlayer;
     private String androidId;
@@ -38,6 +35,10 @@ public class PlayVideoViewModel extends VyfeViewModel {
     private MutableLiveData<CompanyModel> company;
     private MutableLiveData<String> nameUser;
     private UserRepository userRepository;
+
+    private MutableLiveData<Boolean> isFullScreen;
+    private MutableLiveData<ViewGroup.LayoutParams> playerLayoutParams;
+    private MutableLiveData<Boolean> isOpenTimelineVideo;
 
 
     public PlayVideoViewModel(String companyId, String userId, String sessionId, String androidId) {
@@ -51,9 +52,6 @@ public class PlayVideoViewModel extends VyfeViewModel {
         moveSeek = new MutableLiveData<>();
         moveSeek.setValue(false);
 
-        timelinesize = new MutableLiveData<>();
-        videoContainerHeight = new MutableLiveData<>();
-        timelineContainerHeight = new MutableLiveData<>();
         fullTimeline = new MutableLiveData<>();
         fullTimeline.setValue(false);
         linkPlayer = new MutableLiveData<>();
@@ -62,28 +60,52 @@ public class PlayVideoViewModel extends VyfeViewModel {
         this.androidId = androidId;
         companyRepository = new CompanyRepository(companyId);
         userRepository = new UserRepository(companyId);
+
+        isFullScreen = new MutableLiveData<>();
+        playerLayoutParams = new MutableLiveData<>();
+        isOpenTimelineVideo = new MutableLiveData<>();
     }
 
+
+
+    public MutableLiveData<Boolean> isOpenTimelineVideo() {
+        return isOpenTimelineVideo;
+    }
+
+    public void openTimelineVideo() {
+        isOpenTimelineVideo.setValue(true);
+    }
+
+    public void closeTimelineVideo() {
+        isOpenTimelineVideo.setValue(false);
+    }
+
+
+    public MutableLiveData<ViewGroup.LayoutParams> getPlayerLayoutParamsMutableLiveData() {
+        return playerLayoutParams;
+    }
+
+    public void setPlayerLayoutParamsMutableLiveData(ViewGroup.LayoutParams playerLayoutParams) {
+
+        this.playerLayoutParams.setValue(playerLayoutParams);
+    }
+
+    public void fullMovie() {
+        isFullScreen.setValue(true);
+    }
+
+    public void miniMovie() {
+        isFullScreen.setValue(false);
+    }
+
+    public LiveData<Boolean> isFullScreen(){
+        return isFullScreen;
+    }
 
     public String getAndroidId(){
         return this.androidId;
     }
 
-    public MutableLiveData<Integer> getTimelinesize() {
-        return timelinesize;
-    }
-
-    public MutableLiveData<Integer> getTimelineContainerHeight() {
-        return timelineContainerHeight;
-    }
-
-    public void setTimelinesize(Integer timelinesize){
-        this.timelinesize.setValue(timelinesize);
-    }
-
-    public void setTimelineContainerHeight(Integer integer){
-        this.timelineContainerHeight.setValue(integer);
-    }
 
     public void setLinkPlayer(String linkPlayer){
         this.linkPlayer.setValue(linkPlayer);
@@ -93,18 +115,13 @@ public class PlayVideoViewModel extends VyfeViewModel {
         return linkPlayer;
     }
 
-    public MutableLiveData<Integer> getVideoContainerHeight() {
-        return videoContainerHeight;
-    }
-
-    public void setVideoContainerHeight(Integer videoContainerHeight) {
-        this.videoContainerHeight.setValue(videoContainerHeight);
-    }
 
     public void init() {
         loadCompany();
         isPlaying.setValue(false);
         this.videoPosition.setValue(0);
+        isFullScreen.setValue(false);
+        isOpenTimelineVideo.setValue(false);
     }
 
     public LiveData<Integer> getVideoPosition() {

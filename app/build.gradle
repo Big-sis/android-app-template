@@ -120,6 +120,8 @@ dependencies {
     }
     androidTestImplementation 'androidx.test:runner:1.2.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'com.google.firebase:firebase-config:16.5.0'
+    implementation 'com.android.support:cardview-v7:26.1.0'
 }
 
 android.variantFilter { variant ->

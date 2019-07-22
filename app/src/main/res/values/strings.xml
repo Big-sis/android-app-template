@@ -201,5 +201,6 @@
     <string name="do_you_want">Voulez vous supprimer</string>
     <string name="ask_delete_selection">Voulez vous supprimer la selection</string>
     <string name="videos">videos</string>
+    <string name="low">Low</string>
 
 </resources>
