@@ -11,6 +11,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import fr.vyfe.R;
+import fr.vyfe.helper.ScrollHelper;
 import fr.vyfe.model.SessionModel;
 import fr.vyfe.model.TagModel;
 import fr.vyfe.model.TagSetModel;
@@ -30,6 +32,7 @@ public class TimelineRecordFragment extends Fragment {
     private RecordVideoViewModel viewModel;
     private LinearLayout containerLayout;
     private ArrayList<TextView> tvRowNameArray = new ArrayList<>();
+    private HorizontalScrollView horizontalScrollView;
 
     public static TimelineRecordFragment newInstance() {
         return new TimelineRecordFragment();
@@ -46,6 +49,7 @@ public class TimelineRecordFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_record_timeline, container, false);
         containerLayout = view.findViewById(R.id.ll_main);
+        horizontalScrollView = view.findViewById(R.id.horizontal_scroll_view);
         return view;
     }
 
@@ -110,6 +114,7 @@ public class TimelineRecordFragment extends Fragment {
                         textView.bringToFront();
                     }
                 }
+                ScrollHelper.RigthScroll(horizontalScrollView);
             }
         });
 
