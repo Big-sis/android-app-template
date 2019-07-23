@@ -180,5 +180,7 @@
     <string name="quiet">Quit</string>
     <string name="dont_save">You did not save your modifications</string>
     <string name="confirm_delete_tag_sets">Are you sure you want to delete the selected grids?</string>
+    <string name="end_licence">"End license : "</string>
+    <string name="size">Size :</string>
 
 </resources>

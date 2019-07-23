@@ -28,6 +28,9 @@ import android.widget.Toast;
 
 import com.google.firebase.FirebaseApp;
 
+import java.sql.Timestamp;
+import java.text.DateFormat;
+
 import fr.vyfe.BuildConfig;
 import fr.vyfe.Constants;
 import fr.vyfe.R;
@@ -213,6 +216,10 @@ public abstract class VyfeActivity extends AppCompatActivity {
             versionItem.setTitle(getResources().getString(R.string.version) + new FirebaseRemoteHelper().getVersionInfo(self) + " , Env : " + buildTypes);
         else
             versionItem.setTitle(getResources().getString(R.string.version) + new FirebaseRemoteHelper().getVersionInfo(self));
+
+        MenuItem endLicenseItem = mNavigationView.getMenu().findItem(R.id.end_license);
+        Timestamp endLicenseTimestamp = mAuth.getCurrentUser().getLicenseEnd();
+        endLicenseItem.setTitle(getResources().getString(R.string.end_licence) + " " + DateFormat.getDateInstance().format(endLicenseTimestamp)).toString();
 
 
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {

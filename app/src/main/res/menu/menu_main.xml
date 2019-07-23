@@ -23,6 +23,11 @@
         android:title="@string/movies" />
 
     <item
+        android:id="@+id/end_license"
+        android:title="@string/end_licence" />
+    <item
         android:id="@+id/version"
         android:title="@string/version" />
+
+
 </menu>

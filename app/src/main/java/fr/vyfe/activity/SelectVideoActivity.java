@@ -62,6 +62,8 @@ import io.tus.java.client.TusClient;
 import io.tus.java.client.TusUpload;
 import io.tus.java.client.TusUploader;
 
+import static fr.vyfe.helper.FormattedFileSizeHelperKt.sizeFormat;
+
 //TODO: Mise en place de Fragment?
 public class SelectVideoActivity extends VyfeActivity {
     private static String TAG = "SelectVideoActivity";
@@ -98,6 +100,7 @@ public class SelectVideoActivity extends VyfeActivity {
         final TextView tvTitle = findViewById(R.id.tv_title);
         final TextView tvDescription = findViewById(R.id.tv_description);
         final TextView gridTextView = findViewById(R.id.tv_grid);
+        final TextView tvSizeMovie = findViewById(R.id.tv_size_video);
         final RecyclerView recyclerTags = findViewById(R.id.re_tags);
         uploadButton = findViewById(R.id.btn_upload);
         videoMiniatureView = findViewById(R.id.vv_preview);
@@ -128,13 +131,13 @@ public class SelectVideoActivity extends VyfeActivity {
 
                     //Create grid
                     TagSetModel tagSetModel = session.getTagsSet();
-                    if (tagSetModel != null && session.getTags()!=null) {
-                        TemplateRecyclerAdapter adapterTags = new TemplateRecyclerAdapter(session.getTags(),session.getTagsSet().getTemplates(), "play");
+                    if (tagSetModel != null && session.getTags() != null) {
+                        TemplateRecyclerAdapter adapterTags = new TemplateRecyclerAdapter(session.getTags(), session.getTagsSet().getTemplates(), "play");
                         recyclerTags.setAdapter(adapterTags);
                     }
 
-                   if(tagSetModel != null && tagSetModel.getName() !=null)
-                    gridTextView.setText(tagSetModel.getName());
+                    if (tagSetModel != null && tagSetModel.getName() != null)
+                        gridTextView.setText(tagSetModel.getName());
 
 
                     //View Upload
@@ -176,12 +179,19 @@ public class SelectVideoActivity extends VyfeActivity {
 
                     tvTitle.setText(session.getName());
 
+                    try {
+                        long fileLength = (new File(session.getDeviceVideoLink())).length();
+                        tvSizeMovie.setText(String.format("%s %s", getResources().getString(R.string.size),  sizeFormat(fileLength)));
+                    } catch (Exception e) {
+                        tvSizeMovie.setVisibility(View.GONE);
+                    }
+
+
                     //AFfichage miniature
                     videoMiniatureView.setImageBitmap(session.getThumbnail());
                     if (InternetConnexionHelper.haveInternetConnection(SelectVideoActivity.this) && session.getThumbnailUrl() != null) {
                         new fr.vyfe.helper.DownloadImageTask((ImageView) findViewById(R.id.vv_preview)).execute(session.getThumbnailUrl());
                     }
-
 
 
                 }

@@ -92,12 +92,13 @@
                             android:textColor="@color/colorWhiteTwo"
                             android:textSize="20sp"
                             app:fontFamily="@font/roboto_bold" />
+
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="20dp"
+                        android:layout_marginBottom="8dp"
                         android:orientation="horizontal">
 
                         <TextView
@@ -123,6 +124,15 @@
                             android:textSize="16sp"
                             app:fontFamily="@font/roboto" />
                     </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tv_size_video"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="20dp"
+                        android:textColor="@color/colorWhiteTwo"
+                        android:textSize="16sp"
+                        app:fontFamily="@font/roboto" />
 
                     <LinearLayout
                         style="?android:attr/buttonBarStyle"
@@ -245,8 +255,8 @@
 
     <include
         android:id="@+id/burger"
+        layout="@layout/burger_menu"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_gravity="start"
-        layout="@layout/burger_menu" />
+        android:layout_gravity="start" />
 </android.support.v4.widget.DrawerLayout>

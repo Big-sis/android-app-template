@@ -202,5 +202,7 @@
     <string name="ask_delete_selection">Voulez vous supprimer la selection</string>
     <string name="videos">videos</string>
     <string name="low">Low</string>
+    <string name="end_licence">Fin de licence : </string>
+    <string name="size">Taille : </string>
 
 </resources>
