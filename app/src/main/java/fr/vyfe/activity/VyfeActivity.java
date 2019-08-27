@@ -218,7 +218,9 @@ public abstract class VyfeActivity extends AppCompatActivity {
             versionItem.setTitle(getResources().getString(R.string.version) + new FirebaseRemoteHelper().getVersionInfo(self));
 
         MenuItem endLicenseItem = mNavigationView.getMenu().findItem(R.id.end_license);
-        Timestamp endLicenseTimestamp = mAuth.getCurrentUser().getLicenseEnd();
+        Timestamp endLicenseTimestamp = new Timestamp(0);
+        if (mAuth.getCurrentUser() != null && mAuth.getCurrentUser().getLicenseEnd() != null)
+            endLicenseTimestamp = mAuth.getCurrentUser().getLicenseEnd();
         endLicenseItem.setTitle(getResources().getString(R.string.end_licence) + " " + DateFormat.getDateInstance().format(endLicenseTimestamp)).toString();
 
 

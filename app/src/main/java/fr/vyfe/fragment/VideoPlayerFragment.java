@@ -12,12 +12,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.Toast;
@@ -112,7 +110,7 @@ public class VideoPlayerFragment extends Fragment {
         viewModel.getSession().observe(getActivity(), new Observer<SessionModel>() {
             @Override
             public void onChanged(@Nullable SessionModel session) {
-                if ((session.getDeviceVideoLink() == null) || (!session.getIdAndroid().equals(viewModel.getAndroidId()) && session.getDeviceVideoLink() != null)) {
+                if ((session.getDeviceVideoLink() == null) || session.getIdAndroid() == null || (!session.getIdAndroid().equals(viewModel.getAndroidId()) && session.getDeviceVideoLink() != null)) {
                     if (InternetConnexionHelper.haveInternetConnection(getActivity()))
 
                         uploadVimeoMovieLink(session.getServerVideoLink());
@@ -289,7 +287,7 @@ public class VideoPlayerFragment extends Fragment {
             public void onChanged(@Nullable Integer positionVideo) {
                 mSeekBar.setProgress(positionVideo);
 
-                if (viewModel.getSession().getValue()!=null && viewModel.getSession().getValue().getTags() != null) {
+                if (viewModel.getSession().getValue() != null && viewModel.getSession().getValue().getTags() != null) {
                     Collections.sort(viewModel.getSession().getValue().getTags(), new Comparator<TagModel>() {
                         @Override
                         public int compare(TagModel o1, TagModel o2) {
